@@ -2,7 +2,7 @@
 name: adsagent-reliability
 description: Use AdsAgent MCP without overloading the server. Applies when making repeated Meta, Google Ads, or TikTok AdsAgent MCP calls, handling 404 stale sessions, 429 concurrency limits, 503 dependency errors, retries, large reads, exports, or parallel agent work.
 argument-hint: "<retry, backoff, concurrency, MCP stability>"
-version: 0.6.1
+version: 0.6.2
 ---
 
 # AdsAgent Reliability

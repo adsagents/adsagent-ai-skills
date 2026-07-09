@@ -28,7 +28,7 @@ Only after explicit user confirmation. The agent should show a sanitized approva
 
 ## Does one install cover Google Ads and TikTok?
 
-Yes. v0.6.1 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and overview tools.
+Yes. v0.6.2 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and overview tools.
 
 ## Should agents use the same overview tool for every platform?
 

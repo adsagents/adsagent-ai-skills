@@ -2,7 +2,7 @@
 name: adsagent-setup
 description: Connect and verify AdsAgent hosted MCP access without exposing internal tooling. Use when the user wants to install AdsAgent MCP, refresh a Meta, Google Ads, or TikTok connection, verify setup status, or troubleshoot first-time OAuth onboarding.
 argument-hint: "<connect AdsAgent, verify setup, refresh MCP>"
-version: 0.6.1
+version: 0.6.2
 ---
 
 # AdsAgent Setup

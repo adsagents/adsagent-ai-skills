@@ -2,7 +2,7 @@
 name: meta-copy
 description: Copy, compare, diff, inspect, duplicate, recreate, or prepare Meta ad launches through AdsAgent with explicit confirmation and semi-black-box safety. Use when the user asks to copy winning ads, duplicate ads to another ad account, compare current Meta state to creation history, compare old vs live ads, inspect targeting differences, find budget/country/start-time/copy-mode differences, review campaign/adset/ad settings, prepare a launch, or handle operator-review on a copy/create workflow.
 argument-hint: "<source ad, target account, copy goal>"
-version: 0.6.1
+version: 0.6.2
 ---
 
 # Meta Copy And Comparison
@@ -52,6 +52,16 @@ The public MCP response is intentionally sanitized. Do not reconstruct hidden pa
 5. Show the sanitized approval summary.
 6. Ask for explicit user confirmation before creation.
 7. Poll task status after creation until the task is terminal.
+
+## QuickCreate launch source modes
+
+When preparing a new launch through `campaigns_quick_create`, choose exactly one source mode:
+
+- Single-material creative ads: pass `creative_names`, or `creative_source.mode="creative"` with names/ids.
+- Partnership ads: pass `partnership_rows`.
+- Carousel ads: pass `creative_source.mode="carousel"` with `carousel_groups`.
+
+For carousel groups, each group becomes one ad. Use `ad_name` (or `name`) as the ad name, and provide either `creative_names` or `creative_ids` with 2-10 image creatives in the intended card order. Do not mix ids and names inside the same carousel group, and do not use video creatives for carousel v1.
 
 ## Comparison Flow
 

@@ -2,7 +2,7 @@
 name: google-ads-insights
 description: Use when the user asks AdsAgent Google Ads MCP questions about Google Ads accounts, MCC, customer IDs, Search, PMax, spend, conversions, CPA, ROAS, campaigns, ad groups, ads, keywords, assets, or multi-account Google performance summaries.
 argument-hint: "<Google Ads customer/account, date range, grouping>"
-version: 0.6.1
+version: 0.6.2
 ---
 
 # Google Ads Insights Through AdsAgent

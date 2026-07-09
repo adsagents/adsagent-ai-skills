@@ -2,7 +2,7 @@
 name: adsagent-router
 description: "Route AdsAgent requests to the right AdsAgent skill. Use when the user mentions AdsAgent, Meta/Facebook, Google Ads, TikTok, hosted MCP setup, product spend, campaign/adset/ad performance, CPA, ROAS, AppsFlyer, copy ad, duplicate ad, targeting diff, Retry-After, 429, 503, stale sessions, or operator-review."
 argument-hint: "<AdsAgent request>"
-version: 0.6.1
+version: 0.6.2
 ---
 
 # AdsAgent Router

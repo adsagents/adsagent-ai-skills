@@ -9,7 +9,7 @@ Install or refresh AdsAgent MCP using the prompt I copied from Settings -> MCP A
 ```
 
 ```text
-Check whether adsagent-ai-skills is installed at v0.6.0 or newer. If it is older, update the user-scope plugin; if it is duplicated in local and user scope, keep user scope and remove local scope. Then tell me to start a fresh Claude Code session.
+Check whether adsagent-ai-skills is installed at v0.6.1 or newer. If it is older, update the user-scope plugin; if it is duplicated in local and user scope, keep user scope and remove local scope. Then tell me to start a fresh Claude Code session.
 ```
 
 ```text

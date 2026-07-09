@@ -2,7 +2,7 @@
 name: meta-copy
 description: Copy, compare, diff, inspect, duplicate, recreate, or prepare Meta ad launches through AdsAgent with explicit confirmation and semi-black-box safety. Use when the user asks to copy winning ads, duplicate ads to another ad account, compare current Meta state to creation history, compare old vs live ads, inspect targeting differences, find budget/country/start-time/copy-mode differences, review campaign/adset/ad settings, prepare a launch, or handle operator-review on a copy/create workflow.
 argument-hint: "<source ad, target account, copy goal>"
-version: 0.6.0
+version: 0.6.1
 ---
 
 # Meta Copy And Comparison

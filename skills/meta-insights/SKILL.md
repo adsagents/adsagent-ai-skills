@@ -2,7 +2,7 @@
 name: meta-insights
 description: Analyze Meta Ads performance through AdsAgent for B2B operators while keeping queries bounded, aggregated, Markdown-first, and resource-aware. Use when the user asks about AdsAgent, adsagent.md, Meta ads through AdsAgent, product cards, product count, product spend, campaign spend, adset/ad performance, today's spend, yesterday's spend, date ranges, cost, CPA, ROAS, conversions, registrations, impressions, clicks, CTR, CPC, CPM, MMP, AppsFlyer, cohort, country, placement, breakdowns, CSV export, or comparing Meta performance across products/accounts/campaigns/adsets/ads/dates.
 argument-hint: "<product, campaign, date range, grouping>"
-version: 0.6.0
+version: 0.6.1
 ---
 
 # Meta Insights Through AdsAgent

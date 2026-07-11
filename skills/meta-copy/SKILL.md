@@ -1,123 +1,61 @@
 ---
 name: meta-copy
-description: Copy, compare, diff, inspect, duplicate, recreate, or prepare Meta ad launches through AdsAgent with explicit confirmation and semi-black-box safety. Use when the user asks to copy winning ads, duplicate ads to another ad account, compare current Meta state to creation history, compare old vs live ads, inspect targeting differences, find budget/country/start-time/copy-mode differences, review campaign/adset/ad settings, prepare a launch, or handle operator-review on a copy/create workflow.
-argument-hint: "<source ad, target account, copy goal>"
+description: Use when the user asks AdsAgent to copy, duplicate, clone, recreate, compare, or prepare Meta ads, campaigns, ad sets, partnership ads, carousels, budgets, targeting, or live delivery changes.
+argument-hint: "<source ad/campaign/adset, target account, copy goal>"
 version: 0.6.2
 ---
 
 # Meta Copy And Comparison
 
-Use this skill when the user asks AdsAgent to copy Meta ads, compare historical creation records, or inspect differences between a prior task and the live Meta state.
+Use public handles and sanitized approval summaries. Never reconstruct hidden payloads or validation internals.
 
-User-facing outputs must be Markdown. For comparisons, use a compact diff table. For copy/launch preparation, use an approval summary table.
+## Route Before Preparing
 
+Ask at every fork; never guess:
 
-## Copy/recreate routing (ask at every fork, never guess)
+- One source ad -> `copy_ad_quick_copy`.
+- Campaign or ad set -> `copy_ad_clone_structure`; preserve the 1:1 tree and each ad's own creative.
+- Repeat a past creation -> `campaigns_recreate_from_task` with `task_ref` from `tasks_list_create_history`.
 
-Route by what the user wants to reproduce:
+For both copy paths, ask deep versus fresh:
 
-- **A single AD** → `copy_ad_quick_copy` (fan-out of one winning ad).
-- **A CAMPAIGN or AD SET** → `copy_ad_clone_structure` — 1:1 tree clone
-  where EVERY ad keeps ITS OWN creative (materials 12345 stay 12345,
-  never flattened to one).
-- **"Create that again" (repeat a past creation)** →
-  `campaigns_recreate_from_task` with the task_ref from
-  `tasks_list_create_history` — replays the ORIGINAL payload, every
-  material re-uploaded fresh.
+- Deep reuses each source page post and preserves engagement. Dead posts are disclosed and skipped, never substituted.
+- Fresh uploads each distinct material into new creatives. Nothing is skipped; engagement does not carry.
 
-For BOTH copy paths, then ask **deep vs fresh**:
+## Safe Flow
 
-- deep — each new ad reuses its source ad's original page post;
-  engagement (likes/comments) carries over; ads with dead posts are
-  listed in the approval summary and SKIPPED, never substituted.
-- fresh — every distinct material is re-uploaded once into a new
-  creative (shared materials stay shared); nothing is skipped;
-  engagement does NOT carry over.
+1. Resolve source level/account and target account.
+2. Confirm structure, budget, countries, start time, copy mode, and public library selections.
+3. Prepare through AdsAgent.
+4. Show only `approval_request.summary`, including warnings and live current -> requested values.
+5. Call confirm only after explicit user approval. Preserve the exact single-use confirm token; never retype it.
+6. Poll the returned `task_ref` until `terminal=true`.
 
-Present the options with these differences and let the user choose
-before preparing anything.
+Never automatically retry confirm, creation, budget, status, bid, or targeting writes.
 
-## Operating Model
+## QuickCreate Sources
 
-AdsAgent is the operator surface. The agent should describe the user's goal, resolve public handles, prepare the request, and ask for confirmation before any write.
+Choose exactly one:
 
-The public MCP response is intentionally sanitized. Do not reconstruct hidden payloads or internal validation logic.
+- Normal creative ads: `creative_names` or creative source mode.
+- Partnership ads: `partnership_rows`.
+- Carousel ads: `creative_source.mode="carousel"` with `carousel_groups`.
 
-## Safe Copy Flow
+Each carousel group becomes one ad. Use its `ad_name`/`name`, provide 2-10 image creatives in intended card order, do not mix IDs and names within a group, and do not use video cards in carousel v1.
 
-1. Identify the source ad, source account, and target account.
-2. Confirm the desired structure, budget, countries, start time, and copy mode in plain language.
-3. Resolve public library items by name where applicable.
-4. Prepare the copy request through AdsAgent.
-5. Show the sanitized approval summary.
-6. Ask for explicit user confirmation before creation.
-7. Poll task status after creation until the task is terminal.
+## Comparison
 
-## QuickCreate launch source modes
+Task history is creation-time intent, not proof of current Meta state. For live-edit questions, compare the sanitized creation snapshot with a current AdsAgent platform snapshot.
 
-When preparing a new launch through `campaigns_quick_create`, choose exactly one source mode:
+Return Markdown:
 
-- Single-material creative ads: pass `creative_names`, or `creative_source.mode="creative"` with names/ids.
-- Partnership ads: pass `partnership_rows`.
-- Carousel ads: pass `creative_source.mode="carousel"` with `carousel_groups`.
-
-For carousel groups, each group becomes one ad. Use `ad_name` (or `name`) as the ad name, and provide either `creative_names` or `creative_ids` with 2-10 image creatives in the intended card order. Do not mix ids and names inside the same carousel group, and do not use video creatives for carousel v1.
-
-## Comparison Flow
-
-When the user asks what changed between an old launch and today's platform state:
-
-1. Find candidate creation history through AdsAgent's public history surface.
-2. Read the sanitized creation snapshot.
-3. If the user asks about live manual edits, request the current platform snapshot through AdsAgent.
-4. Diff creation-time intent against live state.
-5. Report concrete differences in targeting, budget, status, campaign/adset/ad naming, and other user-visible fields.
-
-Do not assume the AdsAgent task history equals today's Meta backend state. A human may have edited the campaign directly in Meta after creation.
-
-Recommended Markdown shape:
-
-```markdown
-## Answer
-The main difference is country targeting changed from PH to MX.
-
-## Compared
-- Creation task:
-- Live state:
-- Source ad/adset:
-
-## Differences
 | Field | Creation snapshot | Live Meta state | Impact |
 | --- | --- | --- | --- |
 
-## Notes
-- Data source:
-- Missing fields:
-- Next safe action:
-```
+Cover targeting, budget, status, naming, structure, and user-visible creative mode. State missing fields and data sources.
 
-## Operator-Review Stop Rule
+## Stop Rule
 
-If AdsAgent returns an operator-review or intentionally redacted rejection:
+On `operator_review_required` or another redacted business-rule rejection, stop. Do not probe alternate fields. Hand off public IDs, requested structure, timestamp, and exact public error to the AdsAgent operator.
 
-- Stop immediately.
-- Do not retry with guessed field names.
-- Do not try smaller variations just to probe the schema.
-- Give the user a clean handoff containing public IDs, requested structure, timestamp, and the exact public error.
-- Ask the AdsAgent operator to inspect internal diagnostics.
-
-## User Confirmation
-
-Any ad creation, copy, budget change, pause, enable, or targeting change requires explicit confirmation. A reasonable confirmation message includes:
-
-- Source ad or campaign
-- Target ad account
-- Structure
-- Budget
-- Countries
-- Start time
-- Expected side effects
-
-Do not create ads from an ambiguous request.
-
-Do not paste raw task logs, platform payloads, or hidden validation details into the approval summary. The summary is for the operator, not for reverse engineering AdsAgent internals.
+Do not paste raw task logs, Meta payloads, tokens, or hidden diagnostics.

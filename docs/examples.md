@@ -32,7 +32,7 @@ Show campaign-level spend, revenue, CPA, and ROAS for yesterday. If the result i
 ```
 
 ```text
-Compare yesterday's spend and CPA for these three product_refs. Use one batch overview request and report the server summaries; do not run one overview request per product.
+Compare yesterday's spend and CPA for these three product_refs. Use one batch overview request, require meta.complete=true, and report missing scopes as unknown; do not run one overview request per product.
 ```
 
 ```text

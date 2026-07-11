@@ -2,6 +2,8 @@
 
 Private skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta, Google Ads, and TikTok.
 
+Current contract version: `0.6.2`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
 The operating model is B2B and resource-aware:
@@ -177,7 +179,8 @@ Settings -> MCP Access -> Copy install prompt
 Paste the copied prompt into a fresh chat in your AI client. The prompt provides the hosted HTTP MCP URLs and bearer token flow for:
 
 ```text
-Meta: https://adsagent.md/mcp
+Meta default: https://adsagent.md/mcp/v2
+Meta legacy fallback: https://adsagent.md/mcp
 Google Ads: https://google.adsagent.md/mcp
 TikTok: https://tiktok.adsagent.md/mcp
 ```
@@ -185,16 +188,20 @@ TikTok: https://tiktok.adsagent.md/mcp
 ## Important Runtime Rules
 
 - Hosted HTTP MCP only.
+- Use `https://adsagent.md/mcp/v2` for new Meta connections; `/mcp` is the legacy fallback.
 - Do not run AdsAgent MCP code locally.
 - Do not use a local relay unless the AdsAgent dashboard explicitly says to.
 - Cache connection setup where the client supports it.
 - Keep per-token MCP concurrency bounded.
 - Respect `Retry-After`.
+- Parse `Retry-After` from the HTTP header, top-level `data`, or JSON-RPC `error.data`.
 - Honor `mcp_concurrency_limited` with wait plus jitter.
 - Use server-side batch tools for multi-scope reads: Meta/TikTok `insights_query_batch_overview`, Google `google_ads_insights_overview_batch`.
 - Query aggregated data first.
 - For one Meta product/account scope, use `insights_query_overview`; for several scopes, call `insights_query_batch_overview` once instead of client-side fanout.
 - Report server-computed totals from the response; do not sum currently visible rows.
+- Trust totals only when `meta.complete=true`; missing scopes are unknown, never zero.
+- Poll queued tasks to `terminal=true` and return the artifact link instead of raw CSV.
 - Avoid raw-row reads in normal user conversations.
 - Use Markdown tables for numbers.
 - Confirm before ad creation or modification.

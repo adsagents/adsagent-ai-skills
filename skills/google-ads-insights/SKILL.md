@@ -22,7 +22,9 @@ Use this skill for Google Ads performance reads through the AdsAgent Google Ads 
 - Single scope: use `google_ads_insights_overview_query`.
 - Multiple accounts or multiple scopes: use `google_ads_insights_overview_batch`.
 - Do not create client-side fan-out by sending one overview request per customer or date slice.
+- If the server returns `mcp_fanout_detected`, stop the single-scope loop and rerun current plus pending customers through `google_ads_insights_overview_batch`, chunked by the server hint when present.
 - Use the server returned `summary/total` fields. Do not manually sum visible rows and present that as the total.
+- Trust a scope only when the response marks it complete. Treat missing scopes as unknown, never zero.
 - If the server returns pagination or a capped visible row list, explain rows shown separately from totals.
 
 ## Retry And Backoff
@@ -34,7 +36,11 @@ If Google Ads MCP returns `429` with `mcp_concurrency_limited`:
 3. Prefer the server-side batch tool for multi-scope reads instead of parallel calls.
 4. Do not use token rotation or multiple sessions to bypass limits.
 
+Parse backoff from the HTTP header, top-level `data`, or JSON-RPC `error.data`; never regex human message text.
+
 Treat `503` as dependency unavailable, not as a concurrency cap. Follow `/adsagent-reliability` for retry boundaries.
+
+If Google Ads MCP returns `429` with `mcp_fanout_detected`, do not backoff-retry the same call. Switch to the batch overview tool.
 
 ## User-Facing Output
 
@@ -61,3 +67,5 @@ Customer X spent $123 yesterday.
 ```
 
 Do not dump raw JSON, hidden diagnostics, tool schemas, or every returned field.
+
+For explicit full-table/export requests, poll the returned task handle to terminal and return the artifact link instead of raw rows.

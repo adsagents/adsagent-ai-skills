@@ -28,7 +28,7 @@ Only after explicit user confirmation. The agent should show a sanitized approva
 
 ## Does one install cover Google Ads and TikTok?
 
-Yes. v0.6.2 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and overview tools.
+Yes. v0.6.2 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and overview tools.
 
 ## Should agents use the same overview tool for every platform?
 
@@ -48,8 +48,11 @@ The client should respect AdsAgent's recovery contract:
 
 - discard stale sessions and re-initialize when told to,
 - respect `Retry-After`,
+- parse backoff from the header, top-level `data`, or JSON-RPC `error.data`,
 - add jitter,
 - keep concurrency below server caps,
+- switch to the server-side batch overview tool when AdsAgent returns `mcp_fanout_detected`,
 - cache setup/discovery instead of repeating it per call.
+- trust totals only when the response is complete and treat missing scopes as unknown.
 
 If the retry budget is exhausted, narrow the query or retry later.

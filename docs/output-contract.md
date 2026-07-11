@@ -34,6 +34,7 @@ One concise answer.
 - Fetch enough to answer the requested metrics; do not return placeholder counts when metric rows are available.
 - Prefer cleaned and aggregated AdsAgent reads.
 - Report server-computed totals from the response. Do not sum currently visible rows; row pages can be capped or paginated.
+- Trust totals only when `meta.complete=true`; follow `meta.has_more` and treat missing scopes as unknown, never zero.
 - For one Meta or TikTok product/account/advertiser scope, use `insights_query_overview`; for several explicit Meta or TikTok scopes, call `insights_query_batch_overview` once.
 - For one Google Ads customer scope, use `google_ads_insights_overview_query`; for several explicit Google Ads scopes, call `google_ads_insights_overview_batch` once.
 - Do not read raw rows for normal business questions.
@@ -43,14 +44,16 @@ One concise answer.
 - For multi-scope overview requests, prefer server-side batch tools: Meta/TikTok `insights_query_batch_overview`, Google `google_ads_insights_overview_batch`.
 - Use server `summary/total` fields and distinguish them from visible rows.
 - Use export or async workflows for large tables.
-- Summarize exported data in Markdown; do not paste full CSV into chat.
+- Poll queued work to terminal, then summarize the artifact in Markdown; do not paste full CSV into chat.
 
 ## Resource Rules
 
 - Start narrow: yesterday or the user-supplied date window.
 - Keep page size modest for chat answers.
 - Respect `Retry-After`.
+- Parse it from the HTTP header, top-level `data`, or JSON-RPC `error.data`.
 - Honor `mcp_concurrency_limited` as a 429 concurrency signal.
+- Honor `mcp_fanout_detected` as a batch-routing signal; do not retry the blocked single-scope overview request.
 - Treat 503 dependency unavailable separately from 429 concurrency.
 - Retry serially after concurrency limits.
 - Do not use token rotation to bypass customer caps.

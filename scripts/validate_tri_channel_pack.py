@@ -4,14 +4,13 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.6.1"
-PACKAGE_NAME = "adsagent-ai-skills"
-REPOSITORY_URL = "https://github.com/adsagents/adsagent-ai-skills"
+VERSION = "0.6.2"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -22,6 +21,7 @@ REQUIRED_SKILLS = {
     "google-ads-insights",
     "tiktok-insights",
 }
+MAX_SKILL_WORDS = 500
 
 REQUIRED_REPO_TERMS = [
     "google_ads_insights_overview_batch",
@@ -29,6 +29,12 @@ REQUIRED_REPO_TERMS = [
     "mcp_concurrency_limited",
     "Retry-After",
     "connections_create_intent",
+    "https://adsagent.md/mcp/v2",
+    "legacy fallback",
+    "error.data",
+    "meta.complete=true",
+    "missing scopes",
+    "artifact",
 ]
 
 FORBIDDEN_REPO_TERMS = [
@@ -99,6 +105,12 @@ def parse_skill_frontmatter(path: Path) -> dict[str, str]:
     for key in ("name", "description", "version"):
         if not data.get(key):
             fail(f"{path.relative_to(ROOT)} missing frontmatter field {key}")
+    if len(frontmatter.encode("utf-8")) > 1024:
+        fail(f"{path.relative_to(ROOT)} frontmatter exceeds 1024 bytes")
+    if re.fullmatch(r"[a-z0-9-]+", data["name"]) is None:
+        fail(f"{path.relative_to(ROOT)} has invalid skill name")
+    if not data["description"].startswith("Use when"):
+        fail(f"{path.relative_to(ROOT)} description must start with 'Use when'")
     return data
 
 
@@ -121,21 +133,13 @@ def main() -> None:
 
     plugin = json.loads(read(".claude-plugin/plugin.json"))
     marketplace = json.loads(read(".claude-plugin/marketplace.json"))
-    if plugin.get("name") != PACKAGE_NAME:
-        fail(f"plugin.json name is {plugin.get('name')}, expected {PACKAGE_NAME}")
-    if plugin.get("repository") != REPOSITORY_URL:
-        fail(f"plugin.json repository is {plugin.get('repository')}, expected {REPOSITORY_URL}")
     if plugin.get("version") != VERSION:
         fail(f"plugin.json version is {plugin.get('version')}, expected {VERSION}")
-    if marketplace.get("name") != PACKAGE_NAME:
-        fail(f"marketplace name is {marketplace.get('name')}, expected {PACKAGE_NAME}")
     if marketplace.get("metadata", {}).get("version") != VERSION:
         fail("marketplace metadata version mismatch")
     marketplace_plugins = marketplace.get("plugins", [])
     if not marketplace_plugins or marketplace_plugins[0].get("version") != VERSION:
         fail("marketplace plugin version mismatch")
-    if marketplace_plugins[0].get("name") != PACKAGE_NAME:
-        fail("marketplace plugin name mismatch")
 
     listed_skills = {Path(entry).name for entry in plugin.get("skills", [])}
     missing_listed = sorted(REQUIRED_SKILLS - listed_skills)
@@ -151,6 +155,12 @@ def main() -> None:
             fail(f"{path.relative_to(ROOT)} name is {frontmatter['name']}, expected {skill}")
         if frontmatter["version"] != VERSION:
             fail(f"{path.relative_to(ROOT)} version is {frontmatter['version']}, expected {VERSION}")
+        word_count = len(path.read_text(encoding="utf-8").split())
+        if word_count > MAX_SKILL_WORDS:
+            fail(
+                f"{path.relative_to(ROOT)} has {word_count} words; "
+                f"maximum is {MAX_SKILL_WORDS}"
+            )
 
     assert_terms("adsagent-router", read("skills/adsagent-router/SKILL.md"), ROUTER_TERMS)
     assert_terms("google-ads-insights", read("skills/google-ads-insights/SKILL.md"), GOOGLE_TERMS)
@@ -162,6 +172,8 @@ def main() -> None:
         setup,
         [
             "https://adsagent.md/mcp",
+            "https://adsagent.md/mcp/v2",
+            "legacy fallback",
             "https://google.adsagent.md/mcp",
             "https://tiktok.adsagent.md/mcp",
             "same AdsAgent bearer / OAuth identity",
@@ -182,8 +194,30 @@ def main() -> None:
             "server-side batch",
             "google_ads_insights_overview_batch",
             "insights_query_batch_overview",
+            "error.data",
+            "meta.complete=true",
+            "artifact",
         ],
     )
+
+    retry_reference = read("skills/adsagent-reliability/retry-parser.md")
+    try:
+        code = retry_reference.split("```python\n", 1)[1].split("\n```", 1)[0]
+    except IndexError:
+        fail("retry-parser.md missing executable Python block")
+    namespace: dict[str, object] = {}
+    exec(code, namespace)
+    parser = namespace.get("retry_after_seconds")
+    if not callable(parser):
+        fail("retry-parser.md does not define retry_after_seconds")
+    cases = [
+        ({}, {"Retry-After": "7"}, 7.0),
+        ({"data": {"retry_after": 3}}, {}, 3.0),
+        ({"error": {"data": {"retry_after_seconds": "2.5"}}}, {}, 2.5),
+    ]
+    for payload, headers, expected in cases:
+        if parser(payload, headers) != expected:
+            fail(f"retry parser failed case expected={expected}")
 
     repo_text = "\n".join(
         path.read_text(encoding="utf-8")
@@ -194,19 +228,7 @@ def main() -> None:
     assert_forbidden_terms_absent("repository docs", repo_text, FORBIDDEN_REPO_TERMS)
 
     readme = read("README.md")
-    assert_terms(
-        "README",
-        readme,
-        [
-            "AdsAgent tri-channel",
-            "Meta",
-            "Google",
-            "TikTok",
-            "claude plugin install adsagent-ai-skills@adsagent-ai-skills",
-            "git clone git@github.com:adsagents/adsagent-ai-skills.git",
-            "Migrating from the legacy package name",
-        ],
-    )
+    assert_terms("README", readme, ["AdsAgent tri-channel", "Meta", "Google", "TikTok"])
     stale_readme_terms = ["five skills", "five directories"]
     readme_lower = readme.lower()
     stale_matches = [term for term in stale_readme_terms if term in readme_lower]

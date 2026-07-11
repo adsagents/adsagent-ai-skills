@@ -196,6 +196,7 @@ TikTok: https://tiktok.adsagent.md/mcp
 - Respect `Retry-After`.
 - Parse `Retry-After` from the HTTP header, top-level `data`, or JSON-RPC `error.data`.
 - Honor `mcp_concurrency_limited` with wait plus jitter.
+- Honor `mcp_fanout_detected` by switching to the platform batch overview tool instead of retrying the blocked single-scope request.
 - Use server-side batch tools for multi-scope reads: Meta/TikTok `insights_query_batch_overview`, Google `google_ads_insights_overview_batch`.
 - Query aggregated data first.
 - For one Meta product/account scope, use `insights_query_overview`; for several scopes, call `insights_query_batch_overview` once instead of client-side fanout.

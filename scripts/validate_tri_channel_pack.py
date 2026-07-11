@@ -228,7 +228,11 @@ def main() -> None:
     assert_forbidden_terms_absent("repository docs", repo_text, FORBIDDEN_REPO_TERMS)
 
     readme = read("README.md")
-    assert_terms("README", readme, ["AdsAgent tri-channel", "Meta", "Google", "TikTok"])
+    assert_terms(
+        "README",
+        readme,
+        ["AdsAgent tri-channel", "Meta", "Google", "TikTok", "mcp_fanout_detected"],
+    )
     stale_readme_terms = ["five skills", "five directories"]
     readme_lower = readme.lower()
     stale_matches = [term for term in stale_readme_terms if term in readme_lower]

@@ -2,7 +2,7 @@
 name: adsagent-router
 description: Use when the user mentions AdsAgent, Meta/Facebook, Google Ads, TikTok, hosted MCP setup, product or campaign performance, AppsFlyer, copy/recreate, Retry-After, 429/503, stale sessions, or operator review.
 argument-hint: "<AdsAgent request>"
-version: 0.6.2
+version: 0.7.0
 ---
 
 # AdsAgent Router
@@ -33,9 +33,10 @@ Ask; never guess:
 When no platform or scope is named:
 
 1. Read setup status.
-2. Discover Meta products, Google Ads enabled non-manager customers, or TikTok advertisers.
-3. Report a bounded count/list and ask which scope and date range to inspect.
-4. Route one scope to its single overview tool or multiple scopes to the platform server-side batch tool.
+2. Inspect `setup_get_status.capabilities`; capability truth overrides guessed cross-platform parity.
+3. Discover Meta products, Google Ads enabled non-manager customers, or TikTok advertisers.
+4. Report a bounded count/list and ask which scope and date range to inspect.
+5. Route one scope to its single overview tool or multiple scopes to the platform server-side batch tool.
 
 Never use hardcoded account/product names or carry Meta fields into Google/TikTok.
 
@@ -48,3 +49,5 @@ Never use hardcoded account/product names or carry Meta fields into Google/TikTo
 - Return full tables through an artifact workflow.
 - On `mcp_fanout_detected`, stop the loop and use the platform batch tool.
 - Consequential writes require prepare, sanitized summary, explicit approval, then confirm.
+- Meta decisions use `insights_query_consistent(require_fresh)` only when advertised; recovery uses `operations_get_context`.
+- Google stays read-only and TikTok keeps native semantics until their capabilities advertise parity. Never copy unsupported tool names across servers.

@@ -46,6 +46,23 @@ One concise answer.
 - Use export or async workflows for large tables.
 - Poll queued work to terminal, then summarize the artifact in Markdown; do not paste full CSV into chat.
 
+## Freshness And Verification
+
+Report the server's exact evidence kind:
+
+| Field | Meaning |
+| --- | --- |
+| `freshness_kind=age_only` | Pull age only; not mutation coverage. |
+| `source_watermark` | Requested account/date windows were covered by a qualifying pull. |
+| `metrics_observed_after_mutation` | Metrics source is later than the accepted `mutation_ref`. |
+| `config_verified_live` | Delivery configuration was read live from the platform. |
+
+For Meta decisions, use `insights_query_consistent(consistency=require_fresh)` only when `setup_get_status.capabilities` advertises it. Stop on `verification_pending`, `data_not_fresh`, unknown launch date, or `complete=false`.
+
+After an approved Meta confirm, keep `mutation_ref` and verify with `after_mutation_ref`. Recover through `operations_get_context`; never retry an uncertain write. Poll queued work with `tasks_get_status(task_ref=...)`.
+
+Google Ads `as_of` is read-only ledger observation time. TikTok age-only freshness or immediate write success is not mutation verification.
+
 ## Resource Rules
 
 - Start narrow: yesterday or the user-supplied date window.

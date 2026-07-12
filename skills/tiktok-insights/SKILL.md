@@ -2,7 +2,7 @@
 name: tiktok-insights
 description: Use when the user asks AdsAgent TikTok MCP questions about TikTok advertisers, tenants, TT accounts, campaign/ad group/ad performance, spend, conversions, CPA, ROAS, impressions, clicks, or multi-advertiser TikTok summaries.
 argument-hint: "<TikTok advertiser, date range, grouping>"
-version: 0.6.2
+version: 0.7.0
 ---
 
 # TikTok Insights Through AdsAgent
@@ -16,6 +16,10 @@ Use this skill for TikTok Ads performance reads through the AdsAgent TikTok host
 3. Choose the specific TikTok advertiser or tenant scope returned by the server.
 4. If the user names an advertiser, verify it against the discovered TikTok scopes before querying.
 5. Keep the advertiser, date range, and grouping visible in the final answer.
+
+## Freshness And Write Boundary
+
+TikTok stored-data freshness is age-only. It does not advertise require_fresh or Meta-style mutation receipts. An immediate write success is not mutation verification. Keep native task IDs until TikTok capabilities advertise direct `task_ref` polling.
 
 ## Query Pattern
 

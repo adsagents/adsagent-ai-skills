@@ -2,7 +2,7 @@
 
 Private skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta, Google Ads, and TikTok.
 
-Current contract version: `0.6.2`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.0`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -14,6 +14,8 @@ The operating model is B2B and resource-aware:
 - do not read raw rows in normal agent conversations,
 - summarize before expanding,
 - preserve server stability by respecting AdsAgent MCP retry and concurrency contracts.
+
+Version 0.7.0 adds capability-driven consistency. Agents inspect `setup_get_status.capabilities` before optional workflows: ordinary Meta reports keep single/batch overview, decisions use `insights_query_consistent(require_fresh)` when advertised, accepted writes return `mutation_ref`, and interrupted work recovers with `operations_get_context`. `freshness_kind=age_only` remains pull age, not mutation coverage. Google Ads stays a read-only ledger with `as_of`; TikTok keeps age-only/native write semantics until its server advertises parity.
 
 ## What This Is
 
@@ -203,6 +205,7 @@ TikTok: https://tiktok.adsagent.md/mcp
 - Report server-computed totals from the response; do not sum currently visible rows.
 - Trust totals only when `meta.complete=true`; missing scopes are unknown, never zero.
 - Poll queued tasks to `terminal=true` and return the artifact link instead of raw CSV.
+- Poll queued work directly with `tasks_get_status(task_ref=...)` when the server advertises direct task refs.
 - Avoid raw-row reads in normal user conversations.
 - Use Markdown tables for numbers.
 - Confirm before ad creation or modification.

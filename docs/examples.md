@@ -9,7 +9,7 @@ Install or refresh AdsAgent MCP using the prompt I copied from Settings -> MCP A
 ```
 
 ```text
-Check whether adsagent-ai-skills is installed at v0.6.2 or newer. If it is older, update the user-scope plugin; if it is duplicated in local and user scope, keep user scope and remove local scope. Then tell me to start a fresh Claude Code session.
+Check whether adsagent-ai-skills is installed at v0.7.0 or newer. If it is older, update the user-scope plugin; if it is duplicated in local and user scope, keep user scope and remove local scope. Then tell me to start a fresh Claude Code session.
 ```
 
 ```text
@@ -32,6 +32,14 @@ Show campaign-level spend, revenue, CPA, and ROAS for yesterday. If the result i
 ```
 
 ```text
+Before making a Meta budget decision, check setup_get_status.capabilities. If require_fresh is advertised, use insights_query_consistent(require_fresh). Stop on verification_pending, data_not_fresh, unknown launch date, or incomplete results.
+```
+
+```text
+After I approve this Meta delivery change, keep the returned mutation_ref, verify with after_mutation_ref, and use operations_get_context if the session is interrupted. Do not repeat an uncertain write.
+```
+
+```text
 Compare yesterday's spend and CPA for these three product_refs. Use one batch overview request, require meta.complete=true, and report missing scopes as unknown; do not run one overview request per product.
 ```
 
@@ -51,6 +59,10 @@ Compare these Google Ads customers over the last 7 days using google_ads_insight
 ```
 
 ```text
+Report Google Ads as_of as read-only ledger observation time. Do not claim Meta-style require_fresh or mutation verification.
+```
+
+```text
 For this PMax campaign, summarize asset and campaign performance only after confirming the customer ID is owned by the authenticated user.
 ```
 
@@ -66,6 +78,10 @@ For these TikTok advertisers, use insights_query_batch_overview. Do not run one 
 
 ```text
 If TikTok returns 429 or 503, follow Retry-After and the AdsAgent reliability skill instead of retrying in parallel.
+```
+
+```text
+Label TikTok stored freshness age-only. An immediate write success is not mutation verification; keep native task semantics until TikTok advertises parity.
 ```
 
 ## Meta Copy And Comparison

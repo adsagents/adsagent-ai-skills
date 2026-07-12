@@ -2,7 +2,7 @@
 name: google-ads-insights
 description: Use when the user asks AdsAgent Google Ads MCP questions about Google Ads accounts, MCC, customer IDs, Search, PMax, spend, conversions, CPA, ROAS, campaigns, ad groups, ads, keywords, assets, or multi-account Google performance summaries.
 argument-hint: "<Google Ads customer/account, date range, grouping>"
-version: 0.6.2
+version: 0.7.0
 ---
 
 # Google Ads Insights Through AdsAgent
@@ -16,6 +16,10 @@ Use this skill for Google Ads performance reads through the AdsAgent Google Ads 
 3. Choose an `enabled`, `non-manager` account for normal reads. Do not analyze an MCC manager account as if it were a spend account.
 4. If the user names a customer ID, verify it is one of the discovered accounts before querying.
 5. Keep the date range, customer, and grouping visible in the final answer.
+
+## Freshness Boundary
+
+Google is a read-only ledger. Report its `as_of` timestamp as ledger observation time. It does not advertise require_fresh, mutation receipts, or live config verification; never substitute Meta tool names or claims.
 
 ## Query Pattern
 
@@ -44,28 +48,6 @@ If Google Ads MCP returns `429` with `mcp_fanout_detected`, do not backoff-retry
 
 ## User-Facing Output
 
-Use Markdown tables and concise scope notes:
-
-```markdown
-## Answer
-Customer X spent $123 yesterday.
-
-## Scope
-- Platform: Google Ads
-- Customer:
-- Date:
-- Grouping:
-
-## Results
-| Name | Spend | CPA | ROAS | Conversions |
-| --- | ---: | ---: | ---: | ---: |
-
-## Notes
-- Data freshness:
-- Rows shown vs total:
-- Next safe action:
-```
-
-Do not dump raw JSON, hidden diagnostics, tool schemas, or every returned field.
+Return Markdown with a direct answer, customer/date/grouping, compact metrics table, `as_of`, completeness, and rows shown versus total. Do not dump raw JSON, diagnostics, schemas, or every field.
 
 For explicit full-table/export requests, poll the returned task handle to terminal and return the artifact link instead of raw rows.

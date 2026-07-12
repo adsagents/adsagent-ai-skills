@@ -2,7 +2,7 @@
 name: adsagent-setup
 description: Use when connecting or verifying AdsAgent Meta, Google Ads, or TikTok hosted MCP, refreshing platform authorization, checking readiness, or troubleshooting first-time OAuth setup.
 argument-hint: "<connect AdsAgent, verify setup, refresh MCP>"
-version: 0.6.2
+version: 0.7.0
 ---
 
 # AdsAgent Setup
@@ -32,7 +32,8 @@ Use Meta v2 for new connections. Keep `/mcp` only as the legacy fallback for cli
 2. Reconnect the transport and re-list tools.
 3. Read `adsagent://guide/brief`, then one bounded `adsagent://guide/catalog/<domain>` topic if needed. Never read `adsagent://guide/tools` end-to-end.
 4. Run that server's `setup_get_status` and report the user-facing readiness state, blockers, and next action.
-5. Never infer readiness from screenshots or a valid central token alone.
+5. Inspect `setup_get_status.capabilities`; use optional consistency, live verification, recovery, or direct task refs only when advertised.
+6. Never infer readiness from screenshots or a valid central token alone.
 
 ## Platform Authorization
 

@@ -2,7 +2,7 @@
 name: adsagent-reliability
 description: Use when AdsAgent Meta, Google Ads, or TikTok MCP calls repeat, fan out, return partial data, queue work, exceed result budgets, or fail with stale-session, 429, 503, Retry-After, concurrency, or dependency signals.
 argument-hint: "<retry, backoff, concurrency, MCP stability>"
-version: 0.6.2
+version: 0.7.0
 ---
 
 # AdsAgent Reliability
@@ -12,6 +12,7 @@ Use this for every non-trivial AdsAgent MCP session. Keep calls narrow, batch mu
 ## Query Plan
 
 Ask for missing product/account/advertiser/customer and date scope. Do not silently broaden.
+Read `setup_get_status.capabilities` before using optional consistency or recovery tools.
 
 | Platform | One scope | Multiple scopes |
 | --- | --- | --- |
@@ -21,7 +22,7 @@ Ask for missing product/account/advertiser/customer and date scope. Do not silen
 
 Never launch one overview request per scope. Use the server-side batch tool. Trust totals only when `meta.complete=true`; missing scopes are unknown, never zero. Follow `meta.has_more` instead of inferring completion from item count.
 
-For queued work, poll `task_ref` until `terminal=true`. Return the artifact metadata/link, never raw CSV or oversized rows.
+For queued work, call `tasks_get_status(task_ref=...)` until `terminal=true`. Return the artifact metadata/link, never raw CSV or oversized rows.
 
 ## Client Limits
 
@@ -29,6 +30,7 @@ For queued work, poll `task_ref` until `terminal=true`. Return the artifact meta
 - Cache initialize and tool discovery per transport.
 - Never parallel-retry or rotate tokens to bypass a customer cap.
 - Retry only reads/idempotent operations. Never automatically retry confirm or another consequential write.
+- If a Meta write outcome is uncertain, use `operations_get` or `operations_get_context`; do not repeat the write.
 - Parse backoff from the HTTP header, top-level `data`, and JSON-RPC `error.data`. Use [retry-parser.md](retry-parser.md).
 
 ## Recovery Matrix

@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.6.2"
+VERSION = "0.7.0"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -35,6 +35,13 @@ REQUIRED_REPO_TERMS = [
     "meta.complete=true",
     "missing scopes",
     "artifact",
+    "setup_get_status.capabilities",
+    "insights_query_consistent",
+    "freshness_kind=age_only",
+    "mutation_ref",
+    "config_verified_live",
+    "operations_get_context",
+    "task_ref",
 ]
 
 FORBIDDEN_REPO_TERMS = [
@@ -50,6 +57,24 @@ ROUTER_TERMS = [
     "TikTok / advertiser / TT",
     "429 / 503 / Retry-After / concurrency / stale session",
     "setup / connect / OAuth / MCP token",
+    "setup_get_status.capabilities",
+    "capability",
+]
+
+META_TERMS = [
+    "insights_query_overview",
+    "insights_query_batch_overview",
+    "insights_query_consistent",
+    "consistency=require_fresh",
+    "freshness_kind=age_only",
+    "not mutation coverage",
+    "verification_pending",
+    "data_not_fresh",
+    "mutation_ref",
+    "after_mutation_ref",
+    "config_verified_live",
+    "operations_get_context",
+    "tasks_get_status(task_ref",
 ]
 
 GOOGLE_TERMS = [
@@ -63,6 +88,9 @@ GOOGLE_TERMS = [
     "summary/total",
     "mcp_concurrency_limited",
     "Retry-After + jitter",
+    "read-only ledger",
+    "as_of",
+    "does not advertise require_fresh",
 ]
 
 TIKTOK_TERMS = [
@@ -76,6 +104,10 @@ TIKTOK_TERMS = [
     "429",
     "503",
     "Retry-After",
+    "age-only",
+    "immediate write",
+    "not mutation verification",
+    "does not advertise require_fresh",
 ]
 
 
@@ -163,6 +195,7 @@ def main() -> None:
             )
 
     assert_terms("adsagent-router", read("skills/adsagent-router/SKILL.md"), ROUTER_TERMS)
+    assert_terms("meta-insights", read("skills/meta-insights/SKILL.md"), META_TERMS)
     assert_terms("google-ads-insights", read("skills/google-ads-insights/SKILL.md"), GOOGLE_TERMS)
     assert_terms("tiktok-insights", read("skills/tiktok-insights/SKILL.md"), TIKTOK_TERMS)
 
@@ -197,6 +230,9 @@ def main() -> None:
             "error.data",
             "meta.complete=true",
             "artifact",
+            "task_ref",
+            "tasks_get_status",
+            "operations_get_context",
         ],
     )
 
@@ -240,6 +276,21 @@ def main() -> None:
         fail(f"README has stale skill-count wording: {', '.join(stale_matches)}")
     if readme.count("Meta") > 3 and "Google" not in readme and "TikTok" not in readme:
         fail("README still reads as Meta scoped only")
+
+    output_contract = read("docs/output-contract.md")
+    assert_terms(
+        "output contract",
+        output_contract,
+        [
+            "freshness_kind",
+            "age_only",
+            "mutation_ref",
+            "config_verified_live",
+            "verification_pending",
+            "data_not_fresh",
+            "task_ref",
+        ],
+    )
 
     print("PASS: tri-channel skill pack contract satisfied")
 

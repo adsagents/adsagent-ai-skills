@@ -42,6 +42,8 @@ Agents are useful, but they can also:
 - Confuse historical task state with live platform state.
 - Reuse Meta tool names or payload fields on Google Ads or TikTok.
 - Fan out one overview call per Google customer or TikTok advertiser instead of using server-side batch.
+- Treat age-only freshness or an immediate write response as mutation verification.
+- Copy Meta consistency/recovery tool names onto Google Ads or TikTok before those servers advertise them.
 - Pull raw rows when a cleaned aggregate would answer the question.
 - Paste JSON or CSV into chat instead of producing an operator-readable summary.
 
@@ -54,6 +56,8 @@ For B2B operators, the correct behavior is not "fetch everything and reason late
 3. Read cleaned or aggregated AdsAgent outputs.
 4. Expand only when the first answer proves more detail is needed.
 5. Return Markdown with scope, metrics, caveats, and next action.
+
+Agents must inspect `setup_get_status.capabilities` before optional consistency or recovery paths. Missing capability means use the existing platform-native workflow and label its evidence truthfully; it does not authorize guessing parity.
 
 Raw-row reads are not a user-facing agent workflow. Forensic/debug cases should become an operator handoff, not a chat dump.
 

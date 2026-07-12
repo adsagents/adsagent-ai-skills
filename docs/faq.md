@@ -28,11 +28,15 @@ Only after explicit user confirmation. The agent should show a sanitized approva
 
 ## Does one install cover Google Ads and TikTok?
 
-Yes. v0.6.2 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and overview tools.
+Yes. v0.7.0 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and overview tools.
 
 ## Should agents use the same overview tool for every platform?
 
 No. Meta and TikTok use `insights_query_overview` for one scope and `insights_query_batch_overview` for multiple scopes. Google Ads uses `google_ads_insights_overview_query` for one scope and `google_ads_insights_overview_batch` for multiple scopes.
+
+## Does fresh mean the same thing on every platform?
+
+No. Agents must inspect `setup_get_status.capabilities`. Meta can advertise source-watermark and mutation-aware reads. Google Ads currently reports read-only ledger `as_of`. TikTok currently reports age-only stored freshness. Age-only or immediate write success is not mutation verification.
 
 ## What should agent answers look like?
 

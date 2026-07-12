@@ -1,8 +1,6 @@
 ---
 name: adsagent-reliability
 description: Use when AdsAgent Meta, Google Ads, or TikTok MCP calls repeat, fan out, return partial data, queue work, exceed result budgets, or fail with stale-session, 429, 503, Retry-After, concurrency, or dependency signals.
-argument-hint: "<retry, backoff, concurrency, MCP stability>"
-version: 0.7.0
 ---
 
 # AdsAgent Reliability
@@ -30,7 +28,8 @@ For queued work, call `tasks_get_status(task_ref=...)` until `terminal=true`. Re
 - Cache initialize and tool discovery per transport.
 - Never parallel-retry or rotate tokens to bypass a customer cap.
 - Retry only reads/idempotent operations. Never automatically retry confirm or another consequential write.
-- If a Meta write outcome is uncertain, use `operations_get` or `operations_get_context`; do not repeat the write.
+- After an accepted Meta delivery write, follow the returned read-only `next_action` to `overview_get_live_configs`; retry only while verification is pending.
+- If a Meta write outcome is uncertain, use `operations_get` or `operations_get_context`; do not repeat the write. An Insights mutation watermark does not verify delivery configuration.
 - Parse backoff from the HTTP header, top-level `data`, and JSON-RPC `error.data`. Use [retry-parser.md](retry-parser.md).
 
 ## Recovery Matrix

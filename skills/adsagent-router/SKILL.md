@@ -1,8 +1,6 @@
 ---
 name: adsagent-router
 description: Use when the user mentions AdsAgent, Meta/Facebook, Google Ads, TikTok, hosted MCP setup, product or campaign performance, AppsFlyer, copy/recreate, Retry-After, 429/503, stale sessions, or operator review.
-argument-hint: "<AdsAgent request>"
-version: 0.7.0
 ---
 
 # AdsAgent Router
@@ -49,5 +47,7 @@ Never use hardcoded account/product names or carry Meta fields into Google/TikTo
 - Return full tables through an artifact workflow.
 - On `mcp_fanout_detected`, stop the loop and use the platform batch tool.
 - Consequential writes require prepare, sanitized summary, explicit approval, then confirm.
+- Meta delivery config verification follows the returned `next_action` to `overview_get_live_configs`; never substitute an Insights watermark.
 - Meta decisions use `insights_query_consistent(require_fresh)` only when advertised; recovery uses `operations_get_context`.
+- Use the common envelope only for `agent_method_profile.profile_id=adsagent_agent_methods_v1`; otherwise preserve native output.
 - Google stays read-only and TikTok keeps native semantics until their capabilities advertise parity. Never copy unsupported tool names across servers.

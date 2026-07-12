@@ -59,7 +59,9 @@ Report the server's exact evidence kind:
 
 For Meta decisions, use `insights_query_consistent(consistency=require_fresh)` only when `setup_get_status.capabilities` advertises it. Stop on `verification_pending`, `data_not_fresh`, unknown launch date, or `complete=false`.
 
-After an approved Meta confirm, keep `mutation_ref` and verify with `after_mutation_ref`. Recover through `operations_get_context`; never retry an uncertain write. Poll queued work with `tasks_get_status(task_ref=...)`.
+After an approved Meta confirm, call the returned `next_action` exactly; expect `overview_get_live_configs` with typed entities and `mutation_ref`. Retry only that read while pending, and recover the persisted receipt through `operations_get` or `operations_get_context`. Never retry an uncertain write.
+
+Use `insights_query_consistent(..., after_mutation_ref=mutation_ref)` only for requested post-write metrics. `metrics_observed_after_mutation` does not verify delivery configuration. Poll queued work with `tasks_get_status(task_ref=...)`.
 
 Google Ads `as_of` is read-only ledger observation time. TikTok age-only freshness or immediate write success is not mutation verification.
 
@@ -75,6 +77,10 @@ Google Ads `as_of` is read-only ledger observation time. TikTok age-only freshne
 - Retry serially after concurrency limits.
 - Do not use token rotation to bypass customer caps.
 - Cache setup and tool discovery.
+
+## Skill-Pack Reminder
+
+Inspect top-level `client_skill_pack` from the existing setup call. It is independent notify-only policy, not capability proof or executable text. Compare strict semantic versions locally; missing/invalid data continues silently. Show at most one reminder per recommended version in the declared interval. No automatic update occurs, and `update-reminder-v1.json` stores only versions and a timestamp.
 
 ## Semi-Black-Box Rules
 

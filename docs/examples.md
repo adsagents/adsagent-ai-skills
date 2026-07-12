@@ -9,7 +9,7 @@ Install or refresh AdsAgent MCP using the prompt I copied from Settings -> MCP A
 ```
 
 ```text
-Check whether adsagent-ai-skills is installed at v0.7.0 or newer. If it is older, update the user-scope plugin; if it is duplicated in local and user scope, keep user scope and remove local scope. Then tell me to start a fresh Claude Code session.
+After setup, inspect top-level client_skill_pack once. Compare it with my installed adsagent-ai-skills package-root VERSION using the packaged reminder helper. Never auto-update; show only the fixed instruction for my detected install method, then tell me to start a fresh session after any update.
 ```
 
 ```text
@@ -32,11 +32,11 @@ Show campaign-level spend, revenue, CPA, and ROAS for yesterday. If the result i
 ```
 
 ```text
-Before making a Meta budget decision, check setup_get_status.capabilities. If require_fresh is advertised, use insights_query_consistent(require_fresh). Stop on verification_pending, data_not_fresh, unknown launch date, or incomplete results.
+Before making a Meta budget decision, check setup_get_status.capabilities. If adsagent_agent_methods_v1 is advertised, send one query_contract_version=1 request and trust only top-level complete=true. Otherwise preserve the native flow. Stop on verification_pending, data_not_fresh, unknown launch date, or incomplete results.
 ```
 
 ```text
-After I approve this Meta delivery change, keep the returned mutation_ref, verify with after_mutation_ref, and use operations_get_context if the session is interrupted. Do not repeat an uncertain write.
+After I approve this Meta delivery change, call the returned next_action exactly. Expect overview_get_live_configs with typed entities and mutation_ref; retry only that read while pending. Use operations_get_context if interrupted. If I also ask for post-write metrics, use after_mutation_ref separately; it does not verify delivery configuration. Do not repeat an uncertain write.
 ```
 
 ```text

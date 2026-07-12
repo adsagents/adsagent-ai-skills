@@ -1,8 +1,6 @@
 ---
 name: tiktok-insights
 description: Use when the user asks AdsAgent TikTok MCP questions about TikTok advertisers, tenants, TT accounts, campaign/ad group/ad performance, spend, conversions, CPA, ROAS, impressions, clicks, or multi-advertiser TikTok summaries.
-argument-hint: "<TikTok advertiser, date range, grouping>"
-version: 0.7.0
 ---
 
 # TikTok Insights Through AdsAgent

@@ -28,7 +28,11 @@ Only after explicit user confirmation. The agent should show a sanitized approva
 
 ## Does one install cover Google Ads and TikTok?
 
-Yes. v0.7.0 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and overview tools.
+Yes. v0.7.1 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and overview tools.
+
+## Will the skill pack update itself?
+
+No. `client_skill_pack` is notify-only policy. The local helper compares strict semantic versions and suppresses the same reminder for 24 hours; it never receives raw setup data and never executes an update. The agent shows one fixed instruction for Claude Code, a Codex Git checkout, or a manual install, then requires a fresh session after an update.
 
 ## Should agents use the same overview tool for every platform?
 

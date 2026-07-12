@@ -2,7 +2,7 @@
 
 Private skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta, Google Ads, and TikTok.
 
-Current contract version: `0.7.0`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.1`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -15,7 +15,9 @@ The operating model is B2B and resource-aware:
 - summarize before expanding,
 - preserve server stability by respecting AdsAgent MCP retry and concurrency contracts.
 
-Version 0.7.0 adds capability-driven consistency. Agents inspect `setup_get_status.capabilities` before optional workflows: ordinary Meta reports keep single/batch overview, decisions use `insights_query_consistent(require_fresh)` when advertised, accepted writes return `mutation_ref`, and interrupted work recovers with `operations_get_context`. `freshness_kind=age_only` remains pull age, not mutation coverage. Google Ads stays a read-only ledger with `as_of`; TikTok keeps age-only/native write semantics until its server advertises parity.
+Version 0.7.1 adds a deterministic, notify-only skill-pack reminder and the capability-gated Meta `adsagent_agent_methods_v1` workflow. Agents reuse top-level `client_skill_pack` from `setup_get_status`; they never run a separate version poll or automatic update. Google Ads stays a read-only ledger with `as_of`; TikTok keeps age-only/native semantics until each server advertises parity.
+
+The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 
 ## What This Is
 
@@ -162,7 +164,9 @@ git clone git@github.com:adsagents/adsagent-ai-skills.git ~/.codex/skills/adsage
 ```
 
 (or copy the directories under `skills/` into your project-level skills
-folder, e.g. `.codex/skills/`). Update later with `git pull`. Skill names and
+folder, e.g. `.codex/skills/`). A Git checkout updates with
+`git -C ~/.codex/skills/adsagent-ai-skills pull --ff-only`; manually copied
+installs must repeat their original install method. Skill names and
 trigger descriptions are client-neutral; invoke them by skill name in
 whatever syntax your client uses. Start a fresh session after installing or
 updating, same as Claude Code.

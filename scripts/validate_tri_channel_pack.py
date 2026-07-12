@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.0"
+VERSION = "0.7.1"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -40,8 +40,18 @@ REQUIRED_REPO_TERMS = [
     "freshness_kind=age_only",
     "mutation_ref",
     "config_verified_live",
+    "overview_get_live_configs",
+    "next_action",
+    "does not verify delivery configuration",
     "operations_get_context",
     "task_ref",
+    "client_skill_pack",
+    "notify_only",
+    "No automatic update",
+    "update-reminder-v1.json",
+    "top-level complete=true",
+    "query_contract_version=1",
+    "adsagent_agent_methods_v1",
 ]
 
 FORBIDDEN_REPO_TERMS = [
@@ -73,6 +83,10 @@ META_TERMS = [
     "mutation_ref",
     "after_mutation_ref",
     "config_verified_live",
+    "overview_get_live_configs",
+    "next_action",
+    "post-write metrics",
+    "does not verify delivery configuration",
     "operations_get_context",
     "tasks_get_status(task_ref",
 ]
@@ -134,9 +148,15 @@ def parse_skill_frontmatter(path: Path) -> dict[str, str]:
             continue
         key, value = line.split(":", 1)
         data[key.strip()] = value.strip().strip('"')
-    for key in ("name", "description", "version"):
+    for key in ("name", "description"):
         if not data.get(key):
             fail(f"{path.relative_to(ROOT)} missing frontmatter field {key}")
+    unexpected = sorted(set(data) - {"name", "description"})
+    if unexpected:
+        fail(
+            f"{path.relative_to(ROOT)} has unsupported frontmatter fields: "
+            f"{', '.join(unexpected)}"
+        )
     if len(frontmatter.encode("utf-8")) > 1024:
         fail(f"{path.relative_to(ROOT)} frontmatter exceeds 1024 bytes")
     if re.fullmatch(r"[a-z0-9-]+", data["name"]) is None:
@@ -173,6 +193,10 @@ def main() -> None:
     if not marketplace_plugins or marketplace_plugins[0].get("version") != VERSION:
         fail("marketplace plugin version mismatch")
 
+    reminder_helper = ROOT / "scripts" / "update_reminder.py"
+    if not reminder_helper.exists():
+        fail("missing scripts/update_reminder.py")
+
     listed_skills = {Path(entry).name for entry in plugin.get("skills", [])}
     missing_listed = sorted(REQUIRED_SKILLS - listed_skills)
     if missing_listed:
@@ -185,8 +209,6 @@ def main() -> None:
         frontmatter = parse_skill_frontmatter(path)
         if frontmatter["name"] != skill:
             fail(f"{path.relative_to(ROOT)} name is {frontmatter['name']}, expected {skill}")
-        if frontmatter["version"] != VERSION:
-            fail(f"{path.relative_to(ROOT)} version is {frontmatter['version']}, expected {VERSION}")
         word_count = len(path.read_text(encoding="utf-8").split())
         if word_count > MAX_SKILL_WORDS:
             fail(
@@ -286,6 +308,8 @@ def main() -> None:
             "age_only",
             "mutation_ref",
             "config_verified_live",
+            "overview_get_live_configs",
+            "next_action",
             "verification_pending",
             "data_not_fresh",
             "task_ref",

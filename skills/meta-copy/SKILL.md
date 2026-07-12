@@ -1,8 +1,6 @@
 ---
 name: meta-copy
 description: Use when the user asks AdsAgent to copy, duplicate, clone, recreate, compare, or prepare Meta ads, campaigns, ad sets, partnership ads, carousels, budgets, targeting, or live delivery changes.
-argument-hint: "<source ad/campaign/adset, target account, copy goal>"
-version: 0.7.0
 ---
 
 # Meta Copy And Comparison
@@ -31,7 +29,7 @@ For both copy paths, ask deep versus fresh:
 5. Call confirm only after explicit user approval. Preserve the exact single-use confirm token; never retype it.
 6. Poll queued creation with `tasks_get_status(task_ref=...)` until `terminal=true`.
 
-For status/budget/bid delivery changes, keep the confirmed `mutation_ref` and verify it with `insights_query_consistent(require_fresh, after_mutation_ref=mutation_ref)` when capabilities advertise consistency. If interrupted, recover with `operations_get_context`; never repeat an uncertain write.
+For status/budget/bid changes, call the confirmed response's `next_action` exactly; expect `overview_get_live_configs` with typed entities and `mutation_ref`. Retry only that read while pending. Use `insights_query_consistent(require_fresh, after_mutation_ref=mutation_ref)` only for requested post-write metrics; it does not verify delivery configuration. If interrupted, recover with `operations_get` or `operations_get_context`; never repeat an uncertain write.
 
 Never automatically retry confirm, creation, budget, status, bid, or targeting writes.
 

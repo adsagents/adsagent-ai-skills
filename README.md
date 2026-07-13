@@ -1,6 +1,6 @@
 # AdsAgent Tri-Channel AI Skills
 
-Private skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta, Google Ads, and TikTok.
+Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta, Google Ads, and TikTok.
 
 Current contract version: `0.7.2`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
@@ -21,10 +21,10 @@ The local helper `scripts/update_reminder.py` compares strict semantic versions 
 
 ## What This Is
 
-- A private, semi-black-box skill pack for AdsAgent tri-channel users.
+- A public, semi-black-box skill pack for AdsAgent tri-channel users.
 - A behavior guide for Claude Code, Cursor, Grok-style agents, and other MCP-aware clients.
 - A reliability and safety layer that tells agents when to retry, when to wait, and when to stop.
-- A private GitHub staging repo for AdsAgent demos, Product Hunt copy, and user onboarding context.
+- A versioned GitHub distribution for AdsAgent user onboarding and agent behavior guidance.
 - A data-minimization contract for AI agents that should not scan AdsAgent like a raw database.
 
 ## What This Is Not
@@ -119,7 +119,7 @@ More examples are in [docs/examples.md](docs/examples.md).
 
 This repo is designed to be installed as a skill/plugin bundle in clients that support GitHub-hosted skills. The exact command depends on the client.
 
-For Claude Code-style plugin flows after publishing to GitHub:
+For Claude Code plugin flows:
 
 ```bash
 claude plugin marketplace add adsagents/adsagent-ai-skills
@@ -151,25 +151,40 @@ package to avoid duplicate skill names:
 claude plugin uninstall --scope user adsagent-meta-ai-skills@adsagent-meta-ai-skills
 ```
 
-### Codex CLI and other Agent-Skills-compatible clients
+### Codex CLI
+
+Current Codex CLI versions can install the same marketplace directly:
+
+```bash
+codex plugin marketplace add adsagents/adsagent-ai-skills
+codex plugin add adsagent-ai-skills@adsagent-ai-skills
+```
+
+Refresh a Codex marketplace install with:
+
+```bash
+codex plugin marketplace upgrade adsagent-ai-skills
+```
+
+Start a fresh Codex session after installing or upgrading.
+
+### Git fallback and other Agent-Skills-compatible clients
 
 The skills in `skills/` use the standard Agent Skills layout
 (`skills/<name>/SKILL.md` with YAML frontmatter), so any client that consumes
 that format (Codex CLI, Copilot CLI, Gemini CLI, etc.) can use them without a
-Claude Code plugin flow. Install by cloning into your client's skills
-directory — for Codex CLI:
+plugin marketplace. Install by cloning into the client's skills directory:
 
 ```bash
-git clone git@github.com:adsagents/adsagent-ai-skills.git ~/.codex/skills/adsagent-ai-skills
+git clone https://github.com/adsagents/adsagent-ai-skills.git ~/.codex/skills/adsagent-ai-skills
 ```
 
 (or copy the directories under `skills/` into your project-level skills
 folder, e.g. `.codex/skills/`). A Git checkout updates with
 `git -C ~/.codex/skills/adsagent-ai-skills pull --ff-only`; manually copied
 installs must repeat their original install method. Skill names and
-trigger descriptions are client-neutral; invoke them by skill name in
-whatever syntax your client uses. Start a fresh session after installing or
-updating, same as Claude Code.
+trigger descriptions are client-neutral; invoke them by skill name in the
+client's syntax. Start a fresh session after installing or updating.
 
 For Codex CLI installs that still point at the legacy directory, install the
 new package into `~/.codex/skills/adsagent-ai-skills` and remove the old
@@ -210,6 +225,8 @@ TikTok: https://tiktok.adsagent.md/mcp
 - Trust totals only when `meta.complete=true`; missing scopes are unknown, never zero.
 - Poll queued tasks to `terminal=true` and return the artifact link instead of raw CSV.
 - Poll queued work directly with `tasks_get_status(task_ref=...)` when the server advertises direct task refs.
+- QuickCreate confirm tokens are single-use and expire after 15 minutes. Check `expires_at`; after `confirm_token_invalid`, prepare again, show the new summary, and obtain fresh explicit approval.
+- Poll Meta creation tasks with `tasks_get_status(task_ref=..., response_mode=compact)`. On `no_create_permission`, direct the user to `/dashboard/assets/fb-users`; never change customer permissions or replay the failed creation automatically.
 - Avoid raw-row reads in normal user conversations.
 - Use Markdown tables for numbers.
 - Confirm before ad creation or modification.

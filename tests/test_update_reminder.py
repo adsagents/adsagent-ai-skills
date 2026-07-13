@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import importlib.util
+import io
 import json
 import os
 import stat
-import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest import mock
@@ -174,28 +175,30 @@ class UpdateReminderTests(unittest.TestCase):
         )
 
     def test_cli_accepts_only_scalar_policy_fields(self) -> None:
-        proc = subprocess.run(
-            [
-                sys.executable,
-                str(HELPER_PATH),
-                "--installed-version",
-                "0.7.0",
-                "--recommended-version",
-                "0.7.1",
-                "--minimum-safe-version",
-                "0.7.0",
-                "--check-interval-hours",
-                "24",
-                "--raw-setup-json",
-                "{}",
-            ],
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-        )
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        argv = [
+            str(HELPER_PATH),
+            "--installed-version",
+            "0.7.0",
+            "--recommended-version",
+            "0.7.1",
+            "--minimum-safe-version",
+            "0.7.0",
+            "--check-interval-hours",
+            "24",
+            "--raw-setup-json",
+            "{}",
+        ]
+        with mock.patch.object(sys, "argv", argv), redirect_stdout(stdout), redirect_stderr(
+            stderr
+        ), self.assertRaises(SystemExit) as raised:
+            self.helper.main()
 
-        self.assertEqual(proc.returncode, 2)
-        self.assertNotIn("{}", proc.stdout)
+        self.assertEqual(raised.exception.code, 2)
+        self.assertEqual(stdout.getvalue(), "")
+        self.assertNotIn("{}", stderr.getvalue())
+        self.assertIn("unsupported argument", stderr.getvalue())
 
     def test_skill_contains_fixed_local_update_instructions(self) -> None:
         setup = (ROOT / "skills" / "adsagent-setup" / "SKILL.md").read_text(
@@ -207,6 +210,10 @@ class UpdateReminderTests(unittest.TestCase):
         )
         self.assertIn(
             "git -C ~/.codex/skills/adsagent-ai-skills pull --ff-only",
+            setup,
+        )
+        self.assertIn(
+            "codex plugin marketplace upgrade adsagent-ai-skills",
             setup,
         )
         self.assertIn("No automatic update", setup)

@@ -66,6 +66,14 @@ Use `insights_query_consistent(..., after_mutation_ref=mutation_ref)` only for r
 
 Google Ads `as_of` is read-only ledger observation time and its current profile accepts only `consistency=cached`. TikTok may advertise `require_fresh`, task refs, since-launch reads, and mutation receipts independently; age-only freshness or immediate write success is not mutation verification. Use TikTok prepare/confirm/recovery tools only when their names and `mutation_receipts=true` are advertised.
 
+## Meta Creation Confirmation
+
+- QuickCreate confirm tokens are tenant-scoped, single-use, and expire after 15 minutes. Check `expires_at` before asking the server to confirm.
+- On `confirm_token_invalid`, never retry the old confirm. Prepare again, show the fresh sanitized approval summary, and obtain fresh explicit approval.
+- A successful asynchronous confirm returns a public `task_ref`. Poll it with `tasks_get_status(task_ref=..., response_mode=compact)` until `terminal=true`; never discover a replacement by guessing from task history.
+- Compact terminal output preserves the safe `no_create_permission` code. Direct the user to `/dashboard/assets/fb-users` to enable Create on an active eligible connection, then prepare again.
+- Never enable or modify customer permissions automatically, and never replay a failed or uncertain mutation.
+
 ## Resource Rules
 
 - Start narrow: yesterday or the user-supplied date window.

@@ -100,6 +100,10 @@ Prepare a copy of this winning ad into the target account with 5 adsets and a $5
 ```
 
 ```text
+For QuickCreate, check expires_at and confirm the single-use token within 15 minutes only after I approve the displayed summary. If confirm_token_invalid is returned, prepare again, show the fresh summary, and ask me again. Poll the returned task_ref with response_mode=compact. On no_create_permission, send me to /dashboard/assets/fb-users; never enable or modify customer permissions automatically.
+```
+
+```text
 Find the latest successful copy task for this ad, then compare the creation snapshot with current Meta state.
 ```
 

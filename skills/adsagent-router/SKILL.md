@@ -14,6 +14,7 @@ Pick the platform skill and the narrowest safe workflow. Do not analyze heavily 
 - TikTok / advertiser / TT: `tiktok-insights`.
 - 429 / 503 / Retry-After / concurrency / stale session: `adsagent-reliability` before retrying.
 - setup / connect / OAuth / MCP token: `adsagent-setup`.
+- scheduled task / automation / cron / reminder: `agent-scheduled-tasks` before creating or changing the schedule.
 
 New Meta connections use `https://adsagent.md/mcp/v2`; `/mcp` is the legacy fallback.
 

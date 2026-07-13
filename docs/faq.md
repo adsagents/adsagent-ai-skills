@@ -30,7 +30,11 @@ QuickCreate confirm tokens are single-use and expire after 15 minutes. The agent
 
 ## Does one install cover Google Ads and TikTok?
 
-Yes. v0.7.3 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and capability-gated profile adapters.
+Yes. v0.7.4 is an AdsAgent tri-channel skill pack. It includes Meta skills, `google-ads-insights`, `tiktok-insights`, and the platform-neutral `agent-scheduled-tasks` guidance. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and capability-gated profile adapters.
+
+## Can the skill create a scheduled task?
+
+It can teach an Agent to use the scheduler that its client or workflow platform provides. It classifies reminder-only and executable jobs, chooses a bounded cadence, creates or updates once, reads the saved state back, runs the same entrypoint once when supported, and reports the available execution evidence. AdsAgent does not host cron, and a saved reminder is never reported as proof that the task executed.
 
 ## Will the skill pack update itself?
 

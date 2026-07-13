@@ -1,37 +1,40 @@
 ---
 name: meta-copy
-description: Use when the user asks AdsAgent to copy, duplicate, clone, recreate, compare, or prepare Meta ads, campaigns, ad sets, partnership ads, carousels, budgets, targeting, or live delivery changes.
+description: Use when the user asks AdsAgent to copy, clone, recreate, compare, or prepare Meta ads, campaigns, ad sets, partnership ads, carousels, budgets, targeting, or delivery changes.
 ---
 
 # Meta Copy And Comparison
 
-Use public handles and sanitized approval summaries. Never reconstruct hidden payloads or validation internals.
+Use public handles and sanitized summaries. Never reconstruct hidden payloads.
 
 ## Route Before Preparing
 
 Ask at every fork; never guess:
 
 - One source ad -> `copy_ad_quick_copy`.
-- Campaign or ad set -> `copy_ad_clone_structure`; preserve the 1:1 tree and each ad's own creative.
+- Campaign or ad set -> `copy_ad_clone_structure`; preserve its 1:1 tree and creatives.
 - Repeat a past creation -> `campaigns_recreate_from_task` with `task_ref` from `tasks_list_create_history`.
 
 For both copy paths, ask deep versus fresh:
 
-- Deep reuses each source page post and preserves engagement. Dead posts are disclosed and skipped, never substituted.
-- Fresh uploads each distinct material into new creatives. Nothing is skipped; engagement does not carry.
+- Deep reuses source page posts and engagement. Disclose and skip dead posts; never substitute.
+- Fresh uploads distinct materials. Nothing is skipped; engagement does not carry.
 
 ## Safe Flow
 
 1. Resolve source level/account and target account.
-2. Confirm structure, budget, countries, start time, copy mode, and public library selections.
-3. Prepare through AdsAgent.
+2. Confirm structure, budget, countries, start, copy mode, and library selections.
+3. Prepare through AdsAgent and inspect `expires_at`. QuickCreate confirm tokens are single-use and expire after 15 minutes.
 4. Show only `approval_request.summary`, including warnings and live current -> requested values.
-5. Call confirm only after explicit user approval. Preserve the exact single-use confirm token; never retype it.
-6. Poll queued creation with `tasks_get_status(task_ref=...)` until `terminal=true`.
+5. Call confirm only after explicit user approval and before `expires_at`. Preserve the exact token; never retype it.
+6. On `confirm_token_invalid`, do not retry confirm. Prepare again, show the fresh summary, and obtain fresh explicit approval; never inherit approval from the expired draft.
+7. A successful asynchronous confirm returns `task_ref`. Poll with `tasks_get_status(task_ref=..., response_mode=compact)` until `terminal=true`; do not search task history for a replacement handle.
 
-For status/budget/bid changes, call the confirmed response's `next_action` exactly; expect `overview_get_live_configs` with typed entities and `mutation_ref`. Retry only that read while pending. Use `insights_query_consistent(require_fresh, after_mutation_ref=mutation_ref)` only for requested post-write metrics; it does not verify delivery configuration. If interrupted, recover with `operations_get` or `operations_get_context`; never repeat an uncertain write.
+For status/budget/bid changes, follow `next_action` to `overview_get_live_configs` with typed entities and `mutation_ref`; retry only that read while pending. Use `insights_query_consistent(require_fresh, after_mutation_ref=mutation_ref)` only for post-write metrics; it does not verify delivery configuration. Recover interruptions with `operations_get` or `operations_get_context`; never repeat uncertain writes.
 
 Never automatically retry confirm, creation, budget, status, bid, or targeting writes.
+
+On terminal `no_create_permission`, tell the user to open `/dashboard/assets/fb-users`, enable Create on an active eligible connection, and then prepare again. Never enable or modify customer permissions automatically, and never replay the failed task.
 
 ## QuickCreate Sources
 
@@ -41,11 +44,11 @@ Choose exactly one:
 - Partnership ads: `partnership_rows`.
 - Carousel ads: `creative_source.mode="carousel"` with `carousel_groups`.
 
-Each carousel group becomes one ad. Use its `ad_name`/`name`, provide 2-10 image creatives in intended card order, do not mix IDs and names within a group, and do not use video cards in carousel v1.
+Each group becomes one ad. Use its `ad_name`/`name`, provide 2-10 ordered images, never mix IDs and names, and exclude video in carousel v1.
 
 ## Comparison
 
-Task history is creation-time intent, not proof of current Meta state. For live-edit questions, compare the sanitized creation snapshot with a current AdsAgent platform snapshot.
+Task history is creation intent, not current Meta proof. Compare its sanitized snapshot with a current AdsAgent snapshot.
 
 Return Markdown:
 

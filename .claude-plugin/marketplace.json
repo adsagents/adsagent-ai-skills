@@ -4,7 +4,7 @@
     "name": "AdsAgent"
   },
   "metadata": {
-    "description": "Private AdsAgent tri-channel AI skill pack for Meta, Google Ads, and TikTok hosted HTTP MCP operation.",
+    "description": "AdsAgent tri-channel AI skill pack for Meta, Google Ads, and TikTok hosted HTTP MCP operation.",
     "version": "0.7.2"
   },
   "plugins": [

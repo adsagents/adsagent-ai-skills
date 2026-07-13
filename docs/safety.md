@@ -4,7 +4,7 @@ AdsAgent is intentionally operated as a semi-black-box MCP product across Meta, 
 
 The agent-facing contract should help users succeed without exposing the internal implementation details that make the system easy to clone, probe, or misuse.
 
-## Safe To Publish Later
+## Public Contract
 
 The skill pack may describe:
 
@@ -14,10 +14,12 @@ The skill pack may describe:
 - Platform-specific routing across Meta, Google Ads, and TikTok hosted MCP.
 - Retry, backoff, and concurrency expectations.
 - Confirmation requirements before write actions.
+- Single-use, expiring confirmation and public task-reference behavior.
+- Safe, fixed remediation paths such as `/dashboard/assets/fb-users`.
 - Operator-review stop rules.
 - High-level troubleshooting language.
 
-## Keep Private
+## Remains Private
 
 The skill pack should not disclose:
 
@@ -80,3 +82,5 @@ The server must still enforce:
 - Dedicated read-heavy lanes for insights.
 
 Never rely on docs alone to protect the backend.
+
+Agents never enable or modify customer permissions automatically. Permission changes remain an explicit human action in the AdsAgent dashboard.

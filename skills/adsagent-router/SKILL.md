@@ -47,6 +47,8 @@ Never use hardcoded account/product names or carry Meta fields into Google/TikTo
 - Return full tables through an artifact workflow.
 - On `mcp_fanout_detected`, stop the loop and use the platform batch tool.
 - Consequential writes require prepare, sanitized summary, explicit approval, then confirm.
+- QuickCreate confirm tokens are single-use for 15 minutes. On `confirm_token_invalid`, prepare again and obtain fresh approval; never retry the old confirm.
+- Poll creation using its returned `task_ref`. On `no_create_permission`, direct the user to `/dashboard/assets/fb-users`; never change customer permissions automatically.
 - Meta delivery config verification follows the returned `next_action` to `overview_get_live_configs`; never substitute an Insights watermark.
 - Meta decisions use `insights_query_consistent(require_fresh)` only when advertised; recovery uses `operations_get_context`.
 - Use the common envelope only for `agent_method_profile.profile_id=adsagent_agent_methods_v1`; otherwise preserve native output.

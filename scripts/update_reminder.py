@@ -220,7 +220,10 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--recommended-version", required=True)
     parser.add_argument("--minimum-safe-version", required=True)
     parser.add_argument("--check-interval-hours", required=True, type=int)
-    return parser.parse_args()
+    args, unknown = parser.parse_known_args()
+    if unknown:
+        parser.error("unsupported argument")
+    return args
 
 
 def main() -> int:

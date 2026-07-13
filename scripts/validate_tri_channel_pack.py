@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import ast
 import json
 import re
 import sys
@@ -52,6 +53,14 @@ REQUIRED_REPO_TERMS = [
     "top-level complete=true",
     "query_contract_version=1",
     "adsagent_agent_methods_v1",
+    "15 minutes",
+    "single-use",
+    "expires_at",
+    "confirm_token_invalid",
+    "no_create_permission",
+    "/dashboard/assets/fb-users",
+    "response_mode=compact",
+    "Never enable or modify customer permissions automatically",
 ]
 
 FORBIDDEN_REPO_TERMS = [
@@ -195,6 +204,76 @@ def assert_forbidden_terms_absent(label: str, text: str, terms: list[str]) -> No
         fail(f"{label} has forbidden single-channel wording: {', '.join(matches)}")
 
 
+def validate_retry_parser_reference(source: str) -> None:
+    """Validate the documented parser structurally without executing Markdown."""
+    try:
+        tree = ast.parse(source)
+    except SyntaxError as exc:
+        fail(f"retry-parser.md has invalid Python: {exc.msg}")
+
+    if len(tree.body) != 1 or not isinstance(tree.body[0], ast.FunctionDef):
+        fail("retry-parser.md must contain exactly one function")
+    function = tree.body[0]
+    if function.name != "retry_after_seconds" or function.decorator_list:
+        fail("retry-parser.md has an unexpected function definition")
+    if [arg.arg for arg in function.args.args] != ["payload", "headers"]:
+        fail("retry-parser.md has an unexpected function signature")
+
+    named_calls = {
+        node.func.id
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+    }
+    if not named_calls <= {"float", "isinstance", "str"}:
+        fail("retry-parser.md calls an unexpected function")
+
+    attribute_calls = {
+        node.func.attr
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+    }
+    if not attribute_calls <= {"get", "items", "lower"}:
+        fail("retry-parser.md calls an unexpected method")
+    forbidden_nodes = (
+        ast.AsyncFunctionDef,
+        ast.Await,
+        ast.ClassDef,
+        ast.Global,
+        ast.Import,
+        ast.ImportFrom,
+        ast.Lambda,
+        ast.Nonlocal,
+        ast.With,
+        ast.Yield,
+        ast.YieldFrom,
+    )
+    if any(isinstance(node, forbidden_nodes) for node in ast.walk(tree)):
+        fail("retry-parser.md contains a forbidden construct")
+
+    string_literals = {
+        node.value
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Constant) and isinstance(node.value, str)
+    }
+    required_literals = {
+        "data",
+        "error",
+        "retry-after",
+        "retry_after",
+        "retry_after_seconds",
+    }
+    if not required_literals <= string_literals:
+        fail("retry-parser.md is missing a required response field")
+
+    if not any(
+        isinstance(node, ast.Return)
+        and isinstance(node.value, ast.Constant)
+        and node.value.value is None
+        for node in ast.walk(function)
+    ):
+        fail("retry-parser.md must return None when no delay is available")
+
+
 def main() -> None:
     version = read("VERSION").strip()
     if version != VERSION:
@@ -283,20 +362,8 @@ def main() -> None:
     try:
         code = retry_reference.split("```python\n", 1)[1].split("\n```", 1)[0]
     except IndexError:
-        fail("retry-parser.md missing executable Python block")
-    namespace: dict[str, object] = {}
-    exec(code, namespace)
-    parser = namespace.get("retry_after_seconds")
-    if not callable(parser):
-        fail("retry-parser.md does not define retry_after_seconds")
-    cases = [
-        ({}, {"Retry-After": "7"}, 7.0),
-        ({"data": {"retry_after": 3}}, {}, 3.0),
-        ({"error": {"data": {"retry_after_seconds": "2.5"}}}, {}, 2.5),
-    ]
-    for payload, headers, expected in cases:
-        if parser(payload, headers) != expected:
-            fail(f"retry parser failed case expected={expected}")
+        fail("retry-parser.md missing Python block")
+    validate_retry_parser_reference(code)
 
     repo_text = "\n".join(
         path.read_text(encoding="utf-8")
@@ -319,6 +386,14 @@ def main() -> None:
         fail(f"README has stale skill-count wording: {', '.join(stale_matches)}")
     if readme.count("Meta") > 3 and "Google" not in readme and "TikTok" not in readme:
         fail("README still reads as Meta scoped only")
+    for stale_term in (
+        "private skill pack",
+        "private github staging repo",
+        "safe to publish later",
+        "git@github.com:adsagents/adsagent-ai-skills.git",
+    ):
+        if stale_term in readme_lower:
+            fail(f"README contains stale public-release wording: {stale_term}")
 
     output_contract = read("docs/output-contract.md")
     assert_terms(

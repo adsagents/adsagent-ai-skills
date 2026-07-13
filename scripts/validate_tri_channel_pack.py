@@ -10,7 +10,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.1"
+VERSION = "0.7.2"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -93,6 +93,12 @@ META_TERMS = [
 
 GOOGLE_TERMS = [
     "setup_get_status",
+    "agent_method_profile.profile_id=adsagent_agent_methods_v1",
+    "insights_query_consistent",
+    "query_contract_version=1",
+    "consistency=cached",
+    "max_scopes",
+    "top-level `complete=true`",
     "google_ads_accounts_list",
     "enabled",
     "non-manager",
@@ -109,6 +115,18 @@ GOOGLE_TERMS = [
 
 TIKTOK_TERMS = [
     "setup_get_status",
+    "agent_method_profile.profile_id=adsagent_agent_methods_v1",
+    "insights_query_consistent",
+    "query_contract_version=1",
+    "insights_query_contract.consistency_modes",
+    "date_range_mode=since_launch",
+    "top-level `complete=true`",
+    "next_action",
+    "task_ref",
+    "mutation_receipts=true",
+    "delivery_prepare_tool",
+    "delivery_confirm_tool",
+    "operation_get_tool",
     "tenant",
     "advertiser",
     "insights_query_overview",
@@ -119,9 +137,8 @@ TIKTOK_TERMS = [
     "503",
     "Retry-After",
     "age-only",
-    "immediate write",
-    "not mutation verification",
-    "does not advertise require_fresh",
+    "immediate write success is not mutation verification",
+    "config_verified_live",
 ]
 
 
@@ -247,6 +264,10 @@ def main() -> None:
             "503 dependency unavailable",
             "429 concurrency",
             "server-side batch",
+            "agent_method_profile.profile_id=adsagent_agent_methods_v1",
+            "insights_query_consistent",
+            "query_contract_version=1",
+            "top-level `complete=true`",
             "google_ads_insights_overview_batch",
             "insights_query_batch_overview",
             "error.data",

@@ -5,62 +5,42 @@ description: Use when the user asks AdsAgent TikTok MCP questions about TikTok a
 
 # TikTok Insights Through AdsAgent
 
-Use this skill for TikTok Ads performance reads through the AdsAgent TikTok hosted MCP. Do not map Meta product fields or Google Ads customer fields onto TikTok requests.
+Use TikTok tenant, advertiser, and metric fields only.
 
 ## First Steps
 
 1. Run `setup_get_status` before analysis.
-2. Use TikTok MCP's own tenant and advertiser discovery tools. Do not assume Meta product names, Facebook pages, or Google customer IDs exist on TikTok.
-3. Choose the specific TikTok advertiser or tenant scope returned by the server.
-4. If the user names an advertiser, verify it against the discovered TikTok scopes before querying.
-5. Keep the advertiser, date range, and grouping visible in the final answer.
+2. Inspect `setup_get_status.capabilities.agent_method_profile` and `insights_query_contract`.
+3. Discover TikTok tenant and advertiser scopes; never assume Meta or Google identifiers.
+4. Verify the requested advertiser, then report advertiser/date/grouping.
 
 ## Freshness And Write Boundary
 
-TikTok stored-data freshness is age-only. It does not advertise require_fresh or Meta-style mutation receipts. An immediate write success is not mutation verification. Keep native task IDs until TikTok capabilities advertise direct `task_ref` polling.
+Capabilities are independently gated. Use `require_fresh`, `since_launch`, direct `task_ref`, or receipts only when advertised. Report evidence exactly: age-only data or immediate write success is not mutation verification, and TikTok receipts do not imply Meta verification.
 
 ## Query Pattern
 
-- Single scope: use `insights_query_overview`.
-- Multiple scopes: use `insights_query_batch_overview`.
-- Do not run one request per advertiser, one account at a time, as client-side fan-out.
-- If the server returns `mcp_fanout_detected`, stop the advertiser loop and rerun current plus pending scopes through `insights_query_batch_overview`, chunked by the server hint when present.
-- Use the server summary/total values. Do not manually sum visible rows and call that complete.
-- Trust a scope only when the response marks it complete. Treat missing scopes as unknown, never zero.
-- If a scope has many campaigns, ad groups, or ads, preserve the scope payload and report server totals separately from visible rows.
+- When `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call its advertised `consistent_query_tool` once with root `query_contract_version=1` and exactly one `scope` or one ordered `scopes` batch up to advertised `max_scopes`.
+- Use `consistency=require_fresh` only when `insights_query_contract.consistency_modes` advertises it. Use `date_range_mode=since_launch` only when profile `since_launch=true` and the grouping supports it.
+- Trust top-level `complete=true`, ordered result contracts, and server summary/total; missing scopes are unknown, never zero.
+- Follow `next_action` using the advertised task tool, exact `task_ref`, and `poll_after_ms`; stop at `terminal=true` and never resubmit pending work.
+- Without the profile, use `insights_query_overview` for one scope and `insights_query_batch_overview` for multiple scopes.
+- Do not create client-side fan-out by advertiser.
+- If the server returns `mcp_fanout_detected`, stop the loop and combine current plus pending scopes through profile `insights_query_consistent` when advertised, otherwise `insights_query_batch_overview`.
+- Never sum visible rows; distinguish them from server totals.
+
+## Write Recovery
+
+Only with profile `mutation_receipts=true` and all tool names: use `delivery_prepare_tool`, confirm once with `delivery_confirm_tool`, and recover through `operation_get_tool`. Never replay or claim `config_verified_live` unless returned.
 
 ## Retry And Backoff
 
-- For `429` with `mcp_concurrency_limited`, read and honor `Retry-After`, add jitter, then retry serially within a small budget.
-- For `429` with `mcp_fanout_detected`, do not retry the same single-scope request; switch to `insights_query_batch_overview`.
-- For `503`, treat it as dependency unavailable and follow `/adsagent-reliability`.
-- Prefer `insights_query_batch_overview` before parallel reads when the user asks for multiple TikTok advertisers or scopes.
-- Parse backoff from the HTTP header, top-level `data`, or JSON-RPC `error.data`; never regex human message text.
+- For `429` `mcp_concurrency_limited`, honor `Retry-After` plus jitter and retry serially.
+- For `429` with `mcp_fanout_detected`, do not retry the same single-scope request; switch to profile `scopes` or `insights_query_batch_overview`.
+- For `503`, follow `/adsagent-reliability` as dependency unavailable.
+- Prefer one profile `scopes` request or `insights_query_batch_overview` before parallel reads.
+- Parse backoff from headers, top-level `data`, or JSON-RPC `error.data`; never regex messages.
 
 ## User-Facing Output
 
-Use Markdown tables and concise scope notes:
-
-```markdown
-## Answer
-Advertiser X spent $123 yesterday.
-
-## Scope
-- Platform: TikTok
-- Advertiser:
-- Date:
-- Grouping:
-
-## Results
-| Name | Spend | CPA | ROAS | Conversions |
-| --- | ---: | ---: | ---: | ---: |
-
-## Notes
-- Data freshness:
-- Rows shown vs total:
-- Next safe action:
-```
-
-Do not dump raw JSON, hidden diagnostics, complete tool catalogs, or platform payload schemas.
-
-For explicit full-table/export requests, poll the returned task handle to terminal and return the artifact link instead of raw rows.
+Return Markdown with a direct answer, scope, compact metrics table, freshness, completeness, and next safe action. Never dump raw JSON, diagnostics, catalogs, schemas, or rows. For explicit full exports, poll the task to terminal and return its artifact link.

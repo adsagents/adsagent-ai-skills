@@ -2,7 +2,7 @@
 
 Private skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta, Google Ads, and TikTok.
 
-Current contract version: `0.7.1`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.2`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -15,7 +15,7 @@ The operating model is B2B and resource-aware:
 - summarize before expanding,
 - preserve server stability by respecting AdsAgent MCP retry and concurrency contracts.
 
-Version 0.7.1 adds a deterministic, notify-only skill-pack reminder and the capability-gated Meta `adsagent_agent_methods_v1` workflow. Agents reuse top-level `client_skill_pack` from `setup_get_status`; they never run a separate version poll or automatic update. Google Ads stays a read-only ledger with `as_of`; TikTok keeps age-only/native semantics until each server advertises parity.
+Version 0.7.2 extends the capability-gated `adsagent_agent_methods_v1` workflow across Meta, Google Ads, and TikTok. Agents reuse top-level `client_skill_pack` from `setup_get_status`; they never run a separate version poll or automatic update. The shared profile standardizes routing and the compact response envelope, while each server's advertised freshness, task, write, and recovery capabilities remain authoritative.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 
@@ -102,11 +102,11 @@ Use AdsAgent to list my connected Meta products, Google Ads customers, or TikTok
 ```
 
 ```text
-For Google Ads, use google_ads_accounts_list, pick an enabled non-manager customer, and summarize yesterday's campaign spend.
+For Google Ads, inspect agent_method_profile, pick an enabled non-manager customer, and use one cached insights_query_consistent request when the profile is advertised.
 ```
 
 ```text
-For TikTok, use insights_query_batch_overview for these advertisers and report server summary/total instead of summing visible rows.
+For TikTok, inspect agent_method_profile and use one insights_query_consistent scopes request when advertised; otherwise use the native batch overview fallback.
 ```
 
 ```text
@@ -203,9 +203,9 @@ TikTok: https://tiktok.adsagent.md/mcp
 - Parse `Retry-After` from the HTTP header, top-level `data`, or JSON-RPC `error.data`.
 - Honor `mcp_concurrency_limited` with wait plus jitter.
 - Honor `mcp_fanout_detected` by switching to the platform batch overview tool instead of retrying the blocked single-scope request.
-- Use server-side batch tools for multi-scope reads: Meta/TikTok `insights_query_batch_overview`, Google `google_ads_insights_overview_batch`.
-- Query aggregated data first.
-- For one Meta product/account scope, use `insights_query_overview`; for several scopes, call `insights_query_batch_overview` once instead of client-side fanout.
+- When `agent_method_profile.profile_id=adsagent_agent_methods_v1`, use one `insights_query_consistent` request with `scope` or ordered `scopes` for all three platforms.
+- Without that profile, use native server-side batch tools for multi-scope reads: Meta/TikTok `insights_query_batch_overview`, Google `google_ads_insights_overview_batch`.
+- Query aggregated data first and never infer cross-platform capability parity from a shared tool name.
 - Report server-computed totals from the response; do not sum currently visible rows.
 - Trust totals only when `meta.complete=true`; missing scopes are unknown, never zero.
 - Poll queued tasks to `terminal=true` and return the artifact link instead of raw CSV.

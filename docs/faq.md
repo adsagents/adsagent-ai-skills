@@ -28,7 +28,7 @@ Only after explicit user confirmation. The agent should show a sanitized approva
 
 ## Does one install cover Google Ads and TikTok?
 
-Yes. v0.7.1 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and overview tools.
+Yes. v0.7.2 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and capability-gated profile adapters.
 
 ## Will the skill pack update itself?
 
@@ -36,11 +36,11 @@ No. `client_skill_pack` is notify-only policy. The local helper compares strict 
 
 ## Should agents use the same overview tool for every platform?
 
-No. Meta and TikTok use `insights_query_overview` for one scope and `insights_query_batch_overview` for multiple scopes. Google Ads uses `google_ads_insights_overview_query` for one scope and `google_ads_insights_overview_batch` for multiple scopes.
+When `setup_get_status.capabilities.agent_method_profile.profile_id=adsagent_agent_methods_v1`, all three platforms prefer `insights_query_consistent` with exactly one `scope` or one ordered `scopes` batch. Without that profile, Meta and TikTok fall back to `insights_query_overview` / `insights_query_batch_overview`; Google Ads falls back to `google_ads_insights_overview_query` / `google_ads_insights_overview_batch`.
 
 ## Does fresh mean the same thing on every platform?
 
-No. Agents must inspect `setup_get_status.capabilities`. Meta can advertise source-watermark and mutation-aware reads. Google Ads currently reports read-only ledger `as_of`. TikTok currently reports age-only stored freshness. Age-only or immediate write success is not mutation verification.
+No. Agents must inspect `setup_get_status.capabilities`. Meta can advertise source-watermark and mutation-aware reads. Google Ads currently reports read-only ledger `as_of` and cached consistency only. TikTok may advertise refresh tasks, since-launch reads, and mutation receipts independently. A shared profile or immediate write success is not proof of unsupported freshness or delivery verification.
 
 ## What should agent answers look like?
 

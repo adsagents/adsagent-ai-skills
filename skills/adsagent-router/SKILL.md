@@ -34,7 +34,7 @@ When no platform or scope is named:
 2. Inspect `setup_get_status.capabilities`; capability truth overrides guessed cross-platform parity.
 3. Discover Meta products, Google Ads enabled non-manager customers, or TikTok advertisers.
 4. Report a bounded count/list and ask which scope and date range to inspect.
-5. Route one scope to its single overview tool or multiple scopes to the platform server-side batch tool.
+5. When `agent_method_profile.profile_id=adsagent_agent_methods_v1`, route one or many scopes through its advertised `consistent_query_tool` with root `query_contract_version=1`; otherwise use native single/batch tools.
 
 Never use hardcoded account/product names or carry Meta fields into Google/TikTok.
 
@@ -50,4 +50,4 @@ Never use hardcoded account/product names or carry Meta fields into Google/TikTo
 - Meta delivery config verification follows the returned `next_action` to `overview_get_live_configs`; never substitute an Insights watermark.
 - Meta decisions use `insights_query_consistent(require_fresh)` only when advertised; recovery uses `operations_get_context`.
 - Use the common envelope only for `agent_method_profile.profile_id=adsagent_agent_methods_v1`; otherwise preserve native output.
-- Google stays read-only and TikTok keeps native semantics until their capabilities advertise parity. Never copy unsupported tool names across servers.
+- Google remains a cached read-only ledger. TikTok freshness, task refs, since-launch reads, and mutation receipts remain capability-gated. A shared profile does not imply cross-platform evidence parity, so never copy unsupported behavior across servers.

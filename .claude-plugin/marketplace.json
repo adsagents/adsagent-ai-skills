@@ -1,20 +1,24 @@
 {
   "name": "adsagent-ai-skills",
   "owner": {
-    "name": "AdsAgent"
+    "name": "adsagents LLC",
+    "email": "support@adsagent.md",
+    "url": "https://adsagent.md"
   },
   "metadata": {
     "description": "AdsAgent tri-channel AI skill pack for Meta, Google Ads, and TikTok hosted HTTP MCP operation.",
-    "version": "0.7.2"
+    "version": "0.7.3"
   },
   "plugins": [
     {
       "name": "adsagent-ai-skills",
       "source": "./",
       "description": "Semi-black-box AdsAgent tri-channel skill pack for Meta, Google Ads, and TikTok with cleaned reads, Retry-After discipline, and safer ad workflows.",
-      "version": "0.7.2",
+      "version": "0.7.3",
       "author": {
-        "name": "AdsAgent"
+        "name": "adsagents LLC",
+        "email": "support@adsagent.md",
+        "url": "https://adsagent.md"
       },
       "category": "advertising",
       "tags": [

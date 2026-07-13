@@ -1,9 +1,11 @@
 {
   "name": "adsagent-ai-skills",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Semi-black-box AdsAgent tri-channel skill pack for Meta, Google Ads, and TikTok hosted MCP with bounded aggregated reads and safer ad operations.",
   "author": {
-    "name": "AdsAgent"
+    "name": "adsagents LLC",
+    "email": "support@adsagent.md",
+    "url": "https://adsagent.md"
   },
   "homepage": "https://adsagent.md",
   "repository": "https://github.com/adsagents/adsagent-ai-skills",

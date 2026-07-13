@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.2"
+VERSION = "0.7.3"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -61,6 +61,8 @@ REQUIRED_REPO_TERMS = [
     "/dashboard/assets/fb-users",
     "response_mode=compact",
     "Never enable or modify customer permissions automatically",
+    "support@adsagent.md",
+    "https://github.com/adsagents/adsagent-ai-skills",
 ]
 
 FORBIDDEN_REPO_TERMS = [
@@ -292,6 +294,8 @@ def main() -> None:
     reminder_helper = ROOT / "scripts" / "update_reminder.py"
     if not reminder_helper.exists():
         fail("missing scripts/update_reminder.py")
+    if not (ROOT / "NOTICE.md").exists():
+        fail("missing NOTICE.md")
 
     listed_skills = {Path(entry).name for entry in plugin.get("skills", [])}
     missing_listed = sorted(REQUIRED_SKILLS - listed_skills)

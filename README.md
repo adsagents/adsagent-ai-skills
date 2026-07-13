@@ -2,7 +2,12 @@
 
 Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta, Google Ads, and TikTok.
 
-Current contract version: `0.7.2`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+**Official distribution:** [github.com/adsagents/adsagent-ai-skills](https://github.com/adsagents/adsagent-ai-skills)
+
+**Website:** [adsagent.md](https://adsagent.md)
+**Support:** [support@adsagent.md](mailto:support@adsagent.md)
+
+Current contract version: `0.7.3`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -15,7 +20,7 @@ The operating model is B2B and resource-aware:
 - summarize before expanding,
 - preserve server stability by respecting AdsAgent MCP retry and concurrency contracts.
 
-Version 0.7.2 extends the capability-gated `adsagent_agent_methods_v1` workflow across Meta, Google Ads, and TikTok. Agents reuse top-level `client_skill_pack` from `setup_get_status`; they never run a separate version poll or automatic update. The shared profile standardizes routing and the compact response envelope, while each server's advertised freshness, task, write, and recovery capabilities remain authoritative.
+Version 0.7.3 keeps the capability-gated `adsagent_agent_methods_v1` workflow across Meta, Google Ads, and TikTok and adds the official publisher and restricted-use notice. Agents reuse top-level `client_skill_pack` from `setup_get_status`; they never run a separate version poll or automatic update. Each server's advertised freshness, task, write, and recovery capabilities remain authoritative.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 
@@ -94,6 +99,12 @@ This repository intentionally documents outcomes and agent behavior, not the com
 - Prefer grouped summaries and cleaned breakdowns over raw rows.
 
 The external agent contract is: ask clear questions, respect limits, confirm before writes, and use dashboard-provided onboarding.
+
+## Official Source And Rights
+
+This repository contains only the client-readable behavior pack. AdsAgent server source, credentials, schemas, routing logic, and operational diagnostics are not distributed here.
+
+The package is proprietary and all rights are reserved by adsagents LLC. Public GitHub hosting allows people to view and fork the repository under GitHub's Terms of Service, but a fork or local copy does not grant any additional intellectual-property license. No permission is granted to redistribute, mirror, sell, sublicense, publish modified versions, create derivative works, train a competing product from the pack, or represent a fork as official. See [LICENSE.md](LICENSE.md) and [NOTICE.md](NOTICE.md).
 
 ## Example Prompts
 
@@ -234,7 +245,9 @@ TikTok: https://tiktok.adsagent.md/mcp
 
 ## Links
 
-- Product: https://adsagent.md
+- Official website: https://adsagent.md
+- Official repository: https://github.com/adsagents/adsagent-ai-skills
+- Support: support@adsagent.md
 - Public onboarding path: https://adsagent.md/docs/mcp-onboarding
 
 ## License

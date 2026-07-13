@@ -10,6 +10,9 @@ Do not open public issues containing:
 - database rows
 - hidden validation messages
 
-For security issues, contact the AdsAgent operator through the official AdsAgent support channel.
+For security issues, email `support@adsagent.md`. Do not include credentials in the first message.
+
+Official website: https://adsagent.md
+Official repository: https://github.com/adsagents/adsagent-ai-skills
 
 This repository does not contain the AdsAgent MCP server implementation or internal schemas.

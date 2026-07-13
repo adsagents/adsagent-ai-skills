@@ -30,7 +30,7 @@ QuickCreate confirm tokens are single-use and expire after 15 minutes. The agent
 
 ## Does one install cover Google Ads and TikTok?
 
-Yes. v0.7.2 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and capability-gated profile adapters.
+Yes. v0.7.3 is an AdsAgent tri-channel skill pack. It includes Meta skills plus `google-ads-insights` and `tiktok-insights`. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and capability-gated profile adapters.
 
 ## Will the skill pack update itself?
 

@@ -103,6 +103,34 @@ class PublicReleaseContractTests(unittest.TestCase):
 
         self.assertIn("All rights reserved", license_text)
 
+    def test_official_identity_and_restricted_use_notice_are_present(self) -> None:
+        public_text = "\n".join(
+            self._read(path)
+            for path in (
+                "README.md",
+                "SECURITY.md",
+                "LICENSE.md",
+                "NOTICE.md",
+                ".claude-plugin/plugin.json",
+                ".claude-plugin/marketplace.json",
+            )
+        )
+
+        for term in (
+            "https://adsagent.md",
+            "support@adsagent.md",
+            "https://github.com/adsagents/adsagent-ai-skills",
+            "adsagents LLC",
+            "Proprietary",
+            "redistribute",
+            "mirror",
+            "derivative works",
+            "competing product",
+            "does not grant any additional intellectual-property license",
+        ):
+            self.assertIn(term, public_text)
+        self.assertNotIn("published as private product documentation", public_text)
+
 
 if __name__ == "__main__":
     unittest.main()

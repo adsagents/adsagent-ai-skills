@@ -35,13 +35,14 @@ One concise answer.
 - Prefer cleaned and aggregated AdsAgent reads.
 - Report server-computed totals from the response. Do not sum currently visible rows; row pages can be capped or paginated.
 - Trust totals only when `meta.complete=true`; follow `meta.has_more` and treat missing scopes as unknown, never zero.
-- For one Meta or TikTok product/account/advertiser scope, use `insights_query_overview`; for several explicit Meta or TikTok scopes, call `insights_query_batch_overview` once.
-- For one Google Ads customer scope, use `google_ads_insights_overview_query`; for several explicit Google Ads scopes, call `google_ads_insights_overview_batch` once.
+- When `setup_get_status.capabilities.agent_method_profile.profile_id=adsagent_agent_methods_v1`, use one `insights_query_consistent` call with root `query_contract_version=1` and exactly one `scope` or one ordered `scopes` batch up to advertised `max_scopes`.
+- In profile mode, preserve result order and trust only top-level `complete=true` plus every result's `status` and `query_contract`; shared tool names do not imply shared freshness or write evidence.
+- Without the profile, use `insights_query_overview` / `insights_query_batch_overview` for Meta or TikTok and `google_ads_insights_overview_query` / `google_ads_insights_overview_batch` for Google Ads.
 - Do not read raw rows for normal business questions.
 - If forensic raw inspection is required, hand it to the AdsAgent operator instead of turning raw rows into a chat answer.
 - Do not query every account, product, and day unless the user explicitly asks for a broad export.
 - Expand one dimension at a time.
-- For multi-scope overview requests, prefer server-side batch tools: Meta/TikTok `insights_query_batch_overview`, Google `google_ads_insights_overview_batch`.
+- For multi-scope requests, prefer one profile `scopes` request; otherwise use the platform native server-side batch tool.
 - Use server `summary/total` fields and distinguish them from visible rows.
 - Use export or async workflows for large tables.
 - Poll queued work to terminal, then summarize the artifact in Markdown; do not paste full CSV into chat.
@@ -63,7 +64,7 @@ After an approved Meta confirm, call the returned `next_action` exactly; expect 
 
 Use `insights_query_consistent(..., after_mutation_ref=mutation_ref)` only for requested post-write metrics. `metrics_observed_after_mutation` does not verify delivery configuration. Poll queued work with `tasks_get_status(task_ref=...)`.
 
-Google Ads `as_of` is read-only ledger observation time. TikTok age-only freshness or immediate write success is not mutation verification.
+Google Ads `as_of` is read-only ledger observation time and its current profile accepts only `consistency=cached`. TikTok may advertise `require_fresh`, task refs, since-launch reads, and mutation receipts independently; age-only freshness or immediate write success is not mutation verification. Use TikTok prepare/confirm/recovery tools only when their names and `mutation_receipts=true` are advertised.
 
 ## Resource Rules
 

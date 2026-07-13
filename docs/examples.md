@@ -51,11 +51,11 @@ Use the cleaned product-scoped MMP summary. Do not use per-ad funnel visualizati
 ## Google Ads Insights
 
 ```text
-Use AdsAgent Google Ads MCP. Run setup_get_status, then google_ads_accounts_list. Pick an enabled non-manager customer and show yesterday's campaign spend, conversions, CPA, and ROAS.
+Use AdsAgent Google Ads MCP. Run setup_get_status, inspect agent_method_profile, then google_ads_accounts_list. Pick an enabled non-manager customer. When the profile is advertised, use one query_contract_version=1 insights_query_consistent request with consistency=cached; otherwise use the native overview fallback.
 ```
 
 ```text
-Compare these Google Ads customers over the last 7 days using google_ads_insights_overview_batch. Do not fan out one request per customer. Use server summary/total instead of summing visible rows.
+Compare these Google Ads customers over the last 7 days. Prefer one insights_query_consistent scopes request when adsagent_agent_methods_v1 is advertised; otherwise use google_ads_insights_overview_batch. Do not fan out one request per customer or sum visible rows.
 ```
 
 ```text
@@ -73,7 +73,7 @@ Use AdsAgent TikTok MCP. Run setup_get_status, discover my TikTok advertisers, t
 ```
 
 ```text
-For these TikTok advertisers, use insights_query_batch_overview. Do not run one request per advertiser. Report spend, conversions, CPA, ROAS, rows shown, and server total.
+For these TikTok advertisers, inspect agent_method_profile. Prefer one query_contract_version=1 insights_query_consistent scopes request when advertised; otherwise use insights_query_batch_overview. Preserve result order and report server totals and completeness.
 ```
 
 ```text
@@ -81,7 +81,11 @@ If TikTok returns 429 or 503, follow Retry-After and the AdsAgent reliability sk
 ```
 
 ```text
-Label TikTok stored freshness age-only. An immediate write success is not mutation verification; keep native task semantics until TikTok advertises parity.
+Use TikTok require_fresh, since_launch, task_ref polling, and delivery receipts only when each capability is advertised. An age-only result or immediate write success is not mutation verification, and a TikTok receipt is not Meta config_verified_live evidence.
+```
+
+```text
+If TikTok advertises mutation_receipts=true plus delivery prepare, confirm, and operation-get tools, prepare first, confirm once after approval, and recover uncertain outcomes with operation-get. Never replay the write.
 ```
 
 ## Meta Copy And Comparison

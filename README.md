@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.3`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.4`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -20,7 +20,7 @@ The operating model is B2B and resource-aware:
 - summarize before expanding,
 - preserve server stability by respecting AdsAgent MCP retry and concurrency contracts.
 
-Version 0.7.3 keeps the capability-gated `adsagent_agent_methods_v1` workflow across Meta, Google Ads, and TikTok and adds the official publisher and restricted-use notice. Agents reuse top-level `client_skill_pack` from `setup_get_status`; they never run a separate version poll or automatic update. Each server's advertised freshness, task, write, and recovery capabilities remain authoritative.
+Version 0.7.4 adds `agent-scheduled-tasks`, which teaches agents to distinguish reminder-only jobs from auditable execution, create deterministic schedules, read them back, run them once, and report execution proof honestly. It does not add an AdsAgent-hosted scheduler or bypass platform capabilities. Agents reuse top-level `client_skill_pack` from `setup_get_status`; they never run a separate version poll or automatic update.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 
@@ -55,6 +55,7 @@ Use that copied prompt to install or refresh the hosted HTTP MCP connection. Thi
 | `adsagent-router` | Route AdsAgent requests to setup, reliability, insights, or copy workflows. |
 | `adsagent-setup` | Connect through the AdsAgent dashboard install prompt and verify Meta, Google Ads, or TikTok readiness. |
 | `adsagent-reliability` | Respect retry, backoff, session refresh, and concurrency limits. |
+| `agent-scheduled-tasks` | Design, create, verify, update, pause, and delete agent-owned scheduled tasks without confusing reminders with execution proof. |
 | `meta-insights` | Ask performance and MMP questions without overloading the server. |
 | `meta-copy` | Copy or compare Meta ads with confirmation and operator-review safety. |
 | `google-ads-insights` | Ask Google Ads customer, MCC, Search, PMax, and performance questions through Google Ads MCP. |

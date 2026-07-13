@@ -11,12 +11,13 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.3"
+VERSION = "0.7.4"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
     "adsagent-setup",
     "adsagent-reliability",
+    "agent-scheduled-tasks",
     "meta-insights",
     "meta-copy",
     "google-ads-insights",
@@ -78,8 +79,30 @@ ROUTER_TERMS = [
     "TikTok / advertiser / TT",
     "429 / 503 / Retry-After / concurrency / stale session",
     "setup / connect / OAuth / MCP token",
+    "scheduled task / automation / cron / reminder",
     "setup_get_status.capabilities",
     "capability",
+]
+
+SCHEDULED_TASK_TERMS = [
+    "reminder_or_heartbeat",
+    "auditable_execution",
+    "consequential_execution",
+    "scheduler_kind=heartbeat",
+    "execution_history_available=false",
+    "Creation is not execution proof",
+    "IANA timezone",
+    "destination",
+    "run-now",
+    "read back",
+    "run ID",
+    "terminal status",
+    "append-only run log",
+    "setup_get_status.capabilities",
+    "complete=true",
+    "mutation_ref",
+    "operations_get",
+    "Never auto-enable permissions",
 ]
 
 META_TERMS = [
@@ -317,6 +340,11 @@ def main() -> None:
             )
 
     assert_terms("adsagent-router", read("skills/adsagent-router/SKILL.md"), ROUTER_TERMS)
+    assert_terms(
+        "agent-scheduled-tasks",
+        read("skills/agent-scheduled-tasks/SKILL.md"),
+        SCHEDULED_TASK_TERMS,
+    )
     assert_terms("meta-insights", read("skills/meta-insights/SKILL.md"), META_TERMS)
     assert_terms("google-ads-insights", read("skills/google-ads-insights/SKILL.md"), GOOGLE_TERMS)
     assert_terms("tiktok-insights", read("skills/tiktok-insights/SKILL.md"), TIKTOK_TERMS)

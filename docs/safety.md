@@ -48,6 +48,8 @@ Agents are useful, but they can also:
 - Copy Meta consistency/recovery tool names onto Google Ads or TikTok before those servers advertise them.
 - Pull raw rows when a cleaned aggregate would answer the question.
 - Paste JSON or CSV into chat instead of producing an operator-readable summary.
+- Treat a saved reminder or heartbeat as proof that an auditable task executed.
+- Claim success without scheduler run evidence and downstream task or receipt evidence.
 
 ## B2B Data Discipline
 
@@ -84,3 +86,5 @@ The server must still enforce:
 Never rely on docs alone to protect the backend.
 
 Agents never enable or modify customer permissions automatically. Permission changes remain an explicit human action in the AdsAgent dashboard.
+
+Agent-owned schedules remain owned by the Agent platform. The skill pack teaches safe configuration and verification; it does not host cron, wake an Agent, or turn reminder-only jobs into execution guarantees.

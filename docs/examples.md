@@ -113,6 +113,16 @@ Find the latest successful copy task for this ad, then compare the creation snap
 When using AdsAgent, first decide the smallest data scope needed: date, entity, grouping, and row budget. Use aggregated/cleaned reads first. Return Markdown only.
 ```
 
+## Agent Scheduled Tasks
+
+```text
+Create a daily 09:30 reminder in Asia/Kuala_Lumpur in this existing thread. Treat it as reminder-only, read the saved schedule back, and do not claim it executed until the scheduler exposes a run record.
+```
+
+```text
+Create a daily AdsAgent monitoring task for this product_ref. Use a versioned rule, server-side batch, complete coverage, bounded retry, and an append-only run log. Read the schedule back and run the same entrypoint once now. Do not change delivery unless the hosted MCP advertises every required prepare, confirm, receipt, and read-back capability.
+```
+
 ## Failure Handling
 
 ```text

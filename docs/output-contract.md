@@ -37,6 +37,8 @@ One concise answer.
 - Trust totals only when `meta.complete=true`; follow `meta.has_more` and treat missing scopes as unknown, never zero.
 - When `setup_get_status.capabilities.agent_method_profile.profile_id=adsagent_agent_methods_v1`, use one `insights_query_consistent` call with root `query_contract_version=1` and exactly one `scope` or one ordered `scopes` batch up to advertised `max_scopes`.
 - In profile mode, preserve result order and trust only top-level `complete=true` plus every result's `status` and `query_contract`; shared tool names do not imply shared freshness or write evidence.
+- For a queued Meta consistency read, poll `tasks_get_status(response_mode=compact)`. Consume the terminal `result` directly only when task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; never rerun page 1.
+- For later pages keep all filters unchanged and increment only `page`. Set `min_as_of` to the task `result.meta.source_observed_at`, or for an immediate complete response use `result.query_contract.coverage.source_observed_at`; with multiple scopes use the earliest first-page anchor.
 - Without the profile, use `insights_query_overview` / `insights_query_batch_overview` for Meta or TikTok and `google_ads_insights_overview_query` / `google_ads_insights_overview_batch` for Google Ads.
 - Do not read raw rows for normal business questions.
 - If forensic raw inspection is required, hand it to the AdsAgent operator instead of turning raw rows into a chat answer.

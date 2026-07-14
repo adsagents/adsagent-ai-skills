@@ -52,6 +52,7 @@ Never use hardcoded account/product names or carry Meta fields into Google/TikTo
 - Poll creation using its returned `task_ref`. On `no_create_permission`, direct the user to `/dashboard/assets/fb-users`; never change customer permissions automatically.
 - Meta delivery config verification follows the returned `next_action` to `overview_get_live_configs`; never substitute an Insights watermark.
 - Meta decisions use `insights_query_consistent(require_fresh)` only when advertised; recovery uses `operations_get_context`.
+- For a completed Meta consistency refresh, consume its terminal result; never rerun page 1. Pin later pages to the source anchor with `min_as_of`.
 - Use the common envelope only for `agent_method_profile.profile_id=adsagent_agent_methods_v1`; otherwise preserve native output.
 - When an error includes `support_ref`, preserve it verbatim and show it for unresolved/operator-review handoff. It is not authorization; never invent, modify, enumerate, or replace it with raw tokens, request bodies, or logs.
 - Google remains a cached read-only ledger. TikTok freshness, task refs, since-launch reads, and mutation receipts remain capability-gated. A shared profile does not imply cross-platform evidence parity, so never copy unsupported behavior across servers.

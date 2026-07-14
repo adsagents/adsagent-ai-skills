@@ -77,7 +77,9 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
             "campaign_name",
             "do not prefetch or fan out Campaigns",
             "preserve each `ad_id`",
-            "has_more=false",
+            "data.meta.has_more=true",
+            "min_as_of",
+            "result.meta.source_observed_at",
             "aggregate or deduplicate Ad names in the client",
             "scope_unavailable",
             "tenant/token",
@@ -88,6 +90,25 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
             self.assertIn(term, text)
         self.assertIn("Never enlarge or parallelize pages", text)
         self.assertNotIn("dedupe_by=name", text)
+
+    def test_meta_completed_refresh_uses_terminal_result_without_page_one_requery(self) -> None:
+        text = "\n".join(
+            self._read(path)
+            for path in (
+                "skills/meta-insights/SKILL.md",
+                "skills/adsagent-reliability/SKILL.md",
+                "docs/output-contract.md",
+            )
+        )
+        for term in (
+            "tasks_get_status(response_mode=compact)",
+            "result.status=complete",
+            "result.meta.complete=true",
+            "never rerun page 1",
+            "result.meta.source_observed_at",
+            "min_as_of",
+        ):
+            self.assertIn(term, text)
 
     def test_error_handoff_uses_only_opaque_support_ref(self) -> None:
         text = "\n".join(

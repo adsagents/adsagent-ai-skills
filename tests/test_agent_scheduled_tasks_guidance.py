@@ -77,11 +77,12 @@ class AgentScheduledTasksGuidanceTests(unittest.TestCase):
     def test_release_version_is_consistent(self) -> None:
         plugin = json.loads(self._read(".claude-plugin/plugin.json"))
         marketplace = json.loads(self._read(".claude-plugin/marketplace.json"))
+        expected = "0.7.10"
 
-        self.assertEqual("0.7.9", self._read("VERSION").strip())
-        self.assertEqual("0.7.9", plugin["version"])
-        self.assertEqual("0.7.9", marketplace["metadata"]["version"])
-        self.assertEqual("0.7.9", marketplace["plugins"][0]["version"])
+        self.assertEqual(expected, self._read("VERSION").strip())
+        self.assertEqual(expected, plugin["version"])
+        self.assertEqual(expected, marketplace["metadata"]["version"])
+        self.assertEqual(expected, marketplace["plugins"][0]["version"])
 
 
 if __name__ == "__main__":

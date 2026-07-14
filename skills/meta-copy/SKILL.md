@@ -7,60 +7,45 @@ description: Use when the user asks AdsAgent to copy, clone, recreate, compare, 
 
 Use public handles and sanitized summaries. Never reconstruct hidden payloads.
 
-## Route Before Preparing
+## Route
 
-Ask at every fork; never guess:
+- One source Ad -> `copy_ad_quick_copy`.
+- Campaign or AdSet -> `copy_ad_clone_structure`.
+- Repeat a past creation -> `campaigns_recreate_from_task` with a `task_ref` from `tasks_list_create_history`.
 
-- One source ad -> `copy_ad_quick_copy`.
-- Campaign or ad set -> `copy_ad_clone_structure`; preserve its 1:1 tree and creatives.
-- Repeat a past creation -> `campaigns_recreate_from_task` with `task_ref` from `tasks_list_create_history`.
+Ask deep versus fresh. Deep reuses posts and engagement; disclose dead posts. Fresh uploads distinct materials. Partnership/boosted sources require `copy_mode="deep"`. On `partnership_fresh_copy_unsupported`, stop before approval. Show `source_creative_type`, `post_linkage`, and warnings; do not auto-retry. Never switch modes or probe accounts silently.
 
-Ask deep versus fresh:
+## Group Several Source Ads
 
-- Deep reuses source page posts and engagement. Disclose and skip dead posts; never substitute.
-- Fresh uploads distinct materials. Nothing is skipped; engagement does not carry.
+1. Finish the bounded Insights read. Preserve every `ad_id`, paginate serially, and deduplicate only exact Ad names after all requested pages are complete.
+2. Show the language/geography grouping and apply only explicit rules.
+3. Remember: `ad_num` duplicates one source Ad; it never combines source IDs.
+4. For each target Campaign/geography, prepare one seed with `mode="clone_all"`. Freeze settings in its approval.
+5. After the approved seed is terminal, obtain its target AdSet ID and prepare remaining distinct Ads with `mode="new_ads"`. Do not pass geography to `new_ads`; the target AdSet owns targeting.
+6. Show remaining summaries as one bounded second approval set. Confirm exact approved drafts and poll `task_ref` values serially.
 
-Partnership/boosted sources require `copy_mode="deep"`. On `partnership_fresh_copy_unsupported`, stop before approval; never switch silently. Show `source_creative_type`, `post_linkage`, and warnings. Meta validates cross-account eligibility; rejection is terminal, so do not auto-retry or probe accounts.
+Use `countries_override` for explicit includes. Use `worldwide_override=true` with `excluded_countries_override` for worldwide-minus-country targeting. Compare returned `geo_targeting_override` with the request before approval.
+
+If the user references settings but omits its Campaign, AdSet, or template reference, stop before preparing. Ask for one concrete reference; never invent objective, budget, bid, app/pixel, placements, compliance, or naming settings.
 
 ## Safe Flow
 
 1. Resolve source level/account and target account.
-2. Confirm structure, budget, countries, start, copy mode, and library selections.
-3. Prepare through AdsAgent and inspect `expires_at`. QuickCreate confirm tokens are single-use and expire after 15 minutes.
-4. Show only `approval_request.summary`, including warnings and live current -> requested values.
-5. Call confirm only after explicit user approval and before `expires_at`. Preserve the exact token; never retype it.
-6. On `confirm_token_invalid`, do not retry confirm. Prepare again, show the fresh summary, and obtain fresh explicit approval; never inherit approval from the expired draft.
-7. A successful asynchronous confirm returns `task_ref`. Poll with `tasks_get_status(task_ref=..., response_mode=compact)` until `terminal=true`; do not search task history for a replacement handle.
+2. Confirm structure, budget, geography, start, and copy mode.
+3. Prepare and inspect `expires_at`. Confirm tokens are single-use and expire after 15 minutes.
+4. Show only `approval_request.summary` and warnings.
+5. Confirm only after explicit approval. Preserve the exact token.
+6. On `confirm_token_invalid`, prepare again, show the new summary, and obtain new approval.
+7. Poll successful asynchronous work with `tasks_get_status(task_ref=..., response_mode=compact)` until `terminal=true`.
 
-For status/budget/bid changes, follow `next_action` to `overview_get_live_configs` with typed entities and `mutation_ref`; retry only that read while pending. Use `insights_query_consistent(require_fresh, after_mutation_ref=mutation_ref)` only for post-write metrics; it does not verify delivery configuration. Recover interruptions with `operations_get` or `operations_get_context`; never repeat uncertain writes.
+For delivery changes, follow `next_action` to `overview_get_live_configs` with `mutation_ref`. `insights_query_consistent(require_fresh, after_mutation_ref=mutation_ref)` proves metrics freshness, not configuration. Recover with `operations_get`; never repeat uncertain writes.
 
-Never automatically retry confirm, creation, budget, status, bid, or targeting writes.
+Never auto-retry confirm, creation, budget, status, bid, or targeting writes. On terminal `no_create_permission`, direct the user to `/dashboard/assets/fb-users`; never enable or modify customer permissions automatically.
 
-On terminal `no_create_permission`, tell the user to open `/dashboard/assets/fb-users`, enable Create on an active eligible connection, and then prepare again. Never enable or modify customer permissions automatically, and never replay the failed task.
+## QuickCreate And Comparison
 
-## QuickCreate Sources
+Choose one source: normal creatives, `partnership_rows`, or carousel groups. A carousel is one Ad with 2-10 ordered images; never mix IDs and names or use video in v1.
 
-Choose exactly one:
+Task history is creation intent, not live Meta proof. Compare its sanitized snapshot with current AdsAgent state in a Markdown table covering targeting, budget, status, naming, structure, and creative mode.
 
-- Normal creative ads: `creative_names` or creative source mode.
-- Partnership ads: `partnership_rows`.
-- Carousel ads: `creative_source.mode="carousel"` with `carousel_groups`.
-
-Each group becomes one ad. Use its `ad_name`/`name`, provide 2-10 ordered images, never mix IDs and names, and exclude video in carousel v1.
-
-## Comparison
-
-Task history is creation intent, not current Meta proof. Compare its sanitized snapshot with a current AdsAgent snapshot.
-
-Return Markdown:
-
-| Field | Creation snapshot | Live Meta state | Impact |
-| --- | --- | --- | --- |
-
-Cover targeting, budget, status, naming, structure, and user-visible creative mode. State missing fields and data sources.
-
-## Stop Rule
-
-On `operator_review_required` or another redacted business-rule rejection, stop. Do not probe alternate fields. Hand off public IDs, requested structure, timestamp, and exact public error to the AdsAgent operator.
-
-Do not paste raw task logs, Meta payloads, tokens, or hidden diagnostics.
+On `operator_review_required`, stop. Hand off public IDs, requested structure, timestamp, exact public error, and any `support_ref`. Never paste raw logs, payloads, tokens, or hidden diagnostics.

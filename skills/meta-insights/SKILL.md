@@ -23,9 +23,9 @@ Report server `summary`/`totals`; never sum visible pages. Trust native totals o
 - Product ranking -> `products_list`, already sorted by recent spend.
 - `mcp_fanout_detected` -> stop the single-scope loop and batch current plus pending scopes; do not retry the blocked call.
 
-For candidate selection keep `page_size<=50`; pass `search`, `spend_gt`, and `dedupe_by=name`. Do not enlarge the page or fetch all pages to filter client-side.
+For candidate filtering keep `page_size<=50`; pass `search` and `spend_gt`. For Ads constrained by a Campaign-name substring, use `group_by=ad`, request `campaign_id` and `campaign_name` in `fields`, and retain only rows whose returned Campaign name matches; cross-level `search` narrows the same read, so do not prefetch or fan out Campaigns. When the user explicitly asks for every matching Ad, preserve each `ad_id` and advance `page` serially with identical filters until `has_more=false`; aggregate or deduplicate Ad names in the client. Never enlarge or parallelize pages.
 
-On `adsagent_query_invalid`, correct the named public field and retry once. For an unavailable scope, ask for a connected `products_list` choice; never broaden.
+On `adsagent_query_invalid`, correct the named public field and retry once. On `scope_unavailable`, ask for a connected `products_list` choice; never broaden scope or modify customer permissions.
 
 In profile mode trust totals only when top-level `complete=true`. Poll distinct `task_ref` values serially with `tasks_get_status(response_mode=compact)`; rerun the identical query only after `completed`, and stop on `partial_completed`, `failed`, or `cancelled`. Without the profile, preserve native single/batch output and trust only `meta.complete=true`.
 

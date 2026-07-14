@@ -67,18 +67,25 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
         self.assertIn("config_verified_live", text)
         self.assertIn("cached read-only ledger", text)
 
-    def test_meta_candidate_selection_is_server_side_and_bounded(self) -> None:
+    def test_meta_candidate_filtering_is_bounded_and_exhaustive_reads_are_serial(self) -> None:
         text = self._read("skills/meta-insights/SKILL.md")
         for term in (
             "page_size<=50",
             "search",
             "spend_gt",
-            "dedupe_by=name",
+            "campaign_id",
+            "campaign_name",
+            "do not prefetch or fan out Campaigns",
+            "preserve each `ad_id`",
+            "has_more=false",
+            "aggregate or deduplicate Ad names in the client",
+            "scope_unavailable",
             "adsagent_query_invalid",
             "products_list",
         ):
             self.assertIn(term, text)
-        self.assertIn("Do not enlarge the page", text)
+        self.assertIn("Never enlarge or parallelize pages", text)
+        self.assertNotIn("dedupe_by=name", text)
 
 
 if __name__ == "__main__":

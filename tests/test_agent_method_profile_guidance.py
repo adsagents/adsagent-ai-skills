@@ -71,16 +71,29 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
         text = self._read("skills/meta-insights/SKILL.md")
         for term in (
             "page_size<=50",
+            "allowlisted `filters`",
+            "All conditions are AND",
             "search",
             "spend_gt",
             "campaign_id",
             "campaign_name",
-            "do not prefetch or fan out Campaigns",
+            "Do not prefetch or fan out parents",
             "preserve each `ad_id`",
             "data.meta.has_more=true",
             "min_as_of",
             "result.meta.source_observed_at",
-            "aggregate or deduplicate Ad names in the client",
+            "Exact Ad-name deduplication",
+            "language classification",
+            "business grouping",
+            "configured_status",
+            "effective_status",
+            "DISAPPROVED",
+            "PENDING_REVIEW",
+            "daily_budget",
+            "lifetime_budget",
+            "billing_event",
+            "conversion_event",
+            "insights_export_csv",
             "scope_unavailable",
             "tenant/token",
             "not a Meta create-permission verdict",
@@ -89,6 +102,35 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
         ):
             self.assertIn(term, text)
         self.assertIn("Never enlarge or parallelize pages", text)
+        self.assertNotIn("dedupe_by=name", text)
+
+    def test_meta_filter_guidance_keeps_business_logic_client_side(self) -> None:
+        text = "\n".join(
+            self._read(path)
+            for path in (
+                "skills/meta-insights/SKILL.md",
+                "docs/examples.md",
+                "docs/output-contract.md",
+            )
+        )
+        for term in (
+            "contains",
+            "prefix",
+            "gte",
+            "lte",
+            "configured_status",
+            "effective_status",
+            "ad_account_id",
+            "adset_id",
+            "ad_id",
+            "objective",
+            "optimization_goal",
+            "pixel_id",
+            "app_id",
+            "grouped `insights_export_csv`",
+        ):
+            self.assertIn(term, text)
+        self.assertIn("do not use `dedupe_by` in new workflows", text)
         self.assertNotIn("dedupe_by=name", text)
 
     def test_meta_completed_refresh_uses_terminal_result_without_page_one_requery(self) -> None:

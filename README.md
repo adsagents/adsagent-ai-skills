@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.10`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.11`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -33,6 +33,8 @@ Version 0.7.8 teaches agents to preserve an opaque MCP `support_ref` for unresol
 Version 0.7.9 makes completed Meta consistency tasks terminal evidence: agents consume the bounded task result directly instead of querying page 1 again, and later pages use a fixed source watermark through `min_as_of` so a long read stays on one snapshot.
 
 Version 0.7.10 adds safe grouped Meta copy guidance: one seed per target Campaign, remaining distinct Ads appended only after the target AdSet exists, explicit country or worldwide-minus-country targeting frozen in approvals, and a hard stop when the requested settings reference is missing.
+
+Version 0.7.11 adds bounded Meta structured filtering across hierarchy names and IDs, performance metrics, configured/effective delivery status, budgets, objectives, events, Pixel, and App metadata. Conditions are server-side AND filters; exact Ad-name deduplication, language classification, and business grouping remain client responsibilities, while large exhaustive results use a grouped export artifact.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 

@@ -5,11 +5,11 @@ description: Use when AdsAgent Meta, Google Ads, or TikTok MCP calls repeat, fan
 
 # AdsAgent Reliability
 
-Use narrow calls, server-side batch work, and structured fields.
+Use narrow calls and server-side batch work.
 
 ## Query Plan
 
-Read `setup_get_status.capabilities`; never broaden scope. With `agent_method_profile.profile_id=adsagent_agent_methods_v1`, use one `insights_query_consistent` request with root `query_contract_version=1` and bounded `scope` or ordered `scopes`.
+Read `setup_get_status.capabilities`; never broaden scope. With `agent_method_profile.profile_id=adsagent_agent_methods_v1`, use one `insights_query_consistent` request with root `query_contract_version=1` and bounded `scope` or `scopes`.
 
 Without that profile, use the native fallback:
 
@@ -19,9 +19,11 @@ Without that profile, use the native fallback:
 | TikTok | `insights_query_overview` | `insights_query_batch_overview` |
 | Google Ads | `google_ads_insights_overview_query` | `google_ads_insights_overview_batch` |
 
-Never launch one overview per scope. Trust top-level `complete=true` in profile mode and `meta.complete=true` in native mode. Missing scopes are unknown; follow `meta.has_more`.
+Never launch one overview per scope. Trust top-level `complete=true` in profile mode and `meta.complete=true` natively. Missing scopes are unknown; follow `meta.has_more`.
 
-For queued work, follow `next_action` and `poll_after_ms`; use the advertised task tool, normally `tasks_get_status(task_ref=..., response_mode=compact)`, until terminal. For a Meta consistency refresh, consume the bounded task `result` directly only when task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; never rerun page 1. Stop on a missing/incomplete result. Pin a later page's `min_as_of` to the task `result.meta.source_observed_at`, or to the immediate response's `result.query_contract.coverage.source_observed_at`; use the earliest first-page anchor for multiple scopes. Return artifact links, never raw rows.
+For Meta selection, combine allowlisted structured `filters`; all conditions are AND. Never fan out by Campaign/Ad. On `adsagent_query_invalid`, correct the public field once; never probe hidden fields.
+
+For queued work, follow `next_action`/`poll_after_ms` and poll `tasks_get_status(task_ref=..., response_mode=compact)`. Consume Meta task `result` only when task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; never rerun page 1. Stop otherwise. Pin later `min_as_of` to `result.meta.source_observed_at` or immediate `result.query_contract.coverage.source_observed_at`; use the earliest multi-scope anchor. Return artifact links, never rows.
 
 ## Client Limits
 
@@ -50,4 +52,4 @@ If retries exhaust, report the category. Never enable or modify customer permiss
 
 Return Markdown with answer, scope, compact metrics, completeness, and next action. Never expose raw JSON/CSV, stack traces, bearer tokens, internal IDs, task logs, or diagnostics.
 
-On `operator_review_required`, stop probing and ask the AdsAgent operator to inspect internal diagnostics. If the error includes `support_ref`, preserve and show that exact value; it is a non-authoritative lookup handle, so never modify, enumerate, or replace it with a token, raw request, or log.
+On `operator_review_required`, stop probing. Preserve `support_ref` verbatim for operator handoff; it is not authorization, so never replace it with a token, raw request, or log.

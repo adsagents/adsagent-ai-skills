@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.6`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.7`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -25,6 +25,8 @@ Version 0.7.4 adds `agent-scheduled-tasks`, which teaches agents to distinguish 
 Version 0.7.5 makes Meta partnership-copy behavior explicit: partnership and boosted-post ads use deep copy, unsupported fresh mode stops before approval, and cross-account eligibility failures are never retried automatically.
 
 Version 0.7.6 keeps Meta candidate selection server-side with bounded pages, spend thresholds, deterministic name deduplication, and self-correctable public query validation.
+
+Version 0.7.7 keeps Meta filtering server-side while making exhaustive Ad reads lossless: agents retain every `ad_id`, paginate serially with an unchanged filter, and aggregate duplicate Ad names only after all requested pages arrive.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 

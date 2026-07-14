@@ -78,10 +78,10 @@ class AgentScheduledTasksGuidanceTests(unittest.TestCase):
         plugin = json.loads(self._read(".claude-plugin/plugin.json"))
         marketplace = json.loads(self._read(".claude-plugin/marketplace.json"))
 
-        self.assertEqual("0.7.6", self._read("VERSION").strip())
-        self.assertEqual("0.7.6", plugin["version"])
-        self.assertEqual("0.7.6", marketplace["metadata"]["version"])
-        self.assertEqual("0.7.6", marketplace["plugins"][0]["version"])
+        self.assertEqual("0.7.7", self._read("VERSION").strip())
+        self.assertEqual("0.7.7", plugin["version"])
+        self.assertEqual("0.7.7", marketplace["metadata"]["version"])
+        self.assertEqual("0.7.7", marketplace["plugins"][0]["version"])
 
 
 if __name__ == "__main__":

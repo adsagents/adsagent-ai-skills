@@ -21,7 +21,7 @@ Without that profile, use the native fallback:
 
 Never launch one overview per scope. Trust top-level `complete=true` in profile mode and `meta.complete=true` in native mode. Missing scopes are unknown; follow `meta.has_more`.
 
-For queued work, follow `next_action` and `poll_after_ms`; use the advertised task tool, normally `tasks_get_status(task_ref=..., response_mode=compact)`, until terminal. Return the artifact link, never raw rows.
+For queued work, follow `next_action` and `poll_after_ms`; use the advertised task tool, normally `tasks_get_status(task_ref=..., response_mode=compact)`, until terminal. For a Meta consistency refresh, consume the bounded task `result` directly only when task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; never rerun page 1. Stop on a missing/incomplete result. Pin a later page's `min_as_of` to the task `result.meta.source_observed_at`, or to the immediate response's `result.query_contract.coverage.source_observed_at`; use the earliest first-page anchor for multiple scopes. Return artifact links, never raw rows.
 
 ## Client Limits
 

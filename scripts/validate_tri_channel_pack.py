@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.8"
+VERSION = "0.7.9"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -68,7 +68,10 @@ REQUIRED_REPO_TERMS = [
     "campaign_name",
     "do not prefetch or fan out Campaigns",
     "preserve each `ad_id`",
-    "has_more=false",
+    "data.meta.has_more=true",
+    "result.meta.source_observed_at",
+    "result.query_contract.coverage.source_observed_at",
+    "never rerun page 1",
     "aggregate or deduplicate Ad names in the client",
     "scope_unavailable",
     "support_ref",
@@ -144,7 +147,10 @@ META_TERMS = [
     "campaign_name",
     "do not prefetch or fan out Campaigns",
     "preserve each `ad_id`",
-    "has_more=false",
+    "data.meta.has_more=true",
+    "result.meta.source_observed_at",
+    "result.query_contract.coverage.source_observed_at",
+    "never rerun page 1",
     "aggregate or deduplicate Ad names in the client",
     "scope_unavailable",
     "tenant/token",

@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.4"
+VERSION = "0.7.5"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -173,6 +173,14 @@ TIKTOK_TERMS = [
     "age-only",
     "immediate write success is not mutation verification",
     "config_verified_live",
+]
+
+META_COPY_TERMS = [
+    'copy_mode="deep"',
+    "partnership_fresh_copy_unsupported",
+    "source_creative_type",
+    "post_linkage",
+    "do not auto-retry",
 ]
 
 
@@ -346,6 +354,7 @@ def main() -> None:
         SCHEDULED_TASK_TERMS,
     )
     assert_terms("meta-insights", read("skills/meta-insights/SKILL.md"), META_TERMS)
+    assert_terms("meta-copy", read("skills/meta-copy/SKILL.md"), META_COPY_TERMS)
     assert_terms("google-ads-insights", read("skills/google-ads-insights/SKILL.md"), GOOGLE_TERMS)
     assert_terms("tiktok-insights", read("skills/tiktok-insights/SKILL.md"), TIKTOK_TERMS)
 

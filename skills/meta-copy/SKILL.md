@@ -15,10 +15,12 @@ Ask at every fork; never guess:
 - Campaign or ad set -> `copy_ad_clone_structure`; preserve its 1:1 tree and creatives.
 - Repeat a past creation -> `campaigns_recreate_from_task` with `task_ref` from `tasks_list_create_history`.
 
-For both copy paths, ask deep versus fresh:
+Ask deep versus fresh:
 
 - Deep reuses source page posts and engagement. Disclose and skip dead posts; never substitute.
 - Fresh uploads distinct materials. Nothing is skipped; engagement does not carry.
+
+Partnership/boosted sources require `copy_mode="deep"`. On `partnership_fresh_copy_unsupported`, stop before approval; never switch silently. Show `source_creative_type`, `post_linkage`, and warnings. Meta validates cross-account eligibility; rejection is terminal, so do not auto-retry or probe accounts.
 
 ## Safe Flow
 

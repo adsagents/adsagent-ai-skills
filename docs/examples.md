@@ -48,6 +48,10 @@ Compare yesterday's spend and CPA for these three product_refs. Use one batch ov
 ```
 
 ```text
+Find every Ad whose Campaign name contains "partnership" and spend is greater than 200 in this product for the last 7 days. Use group_by=ad and one server-side AND filters plan. Return full account, Campaign, AdSet, and Ad IDs/names plus configured_status, effective_status, daily_budget, lifetime_budget, objective, optimization_goal, billing_event, conversion_event, pixel_id, and app_id. Keep page_size<=50 and paginate serially on one source anchor. Preserve every ad_id; after retrieval, deduplicate exact ad_name values and classify language in the client. If the complete table is large, use grouped insights_export_csv with the identical filters and return its artifact.
+```
+
+```text
 For this product, tell me today's AppsFlyer paid count and revenue. Keep Meta ad metrics and MMP metrics separate.
 Use the cleaned product-scoped MMP summary. Do not use per-ad funnel visualization for aggregate totals.
 ```

@@ -5,7 +5,7 @@ description: Use when the user mentions AdsAgent, Meta/Facebook, Google Ads, Tik
 
 # AdsAgent Router
 
-Pick the platform skill and the narrowest safe workflow. Do not analyze heavily here.
+Pick the platform skill and narrowest safe workflow.
 
 ## Route Map
 
@@ -20,7 +20,7 @@ New Meta connections use `https://adsagent.md/mcp/v2`; `/mcp` is the legacy fall
 
 ## Copy Routing
 
-Ask; never guess:
+Never guess:
 
 - One ad -> `copy_ad_quick_copy`.
 - Campaign/ad set -> `copy_ad_clone_structure`.
@@ -29,15 +29,15 @@ Ask; never guess:
 
 ## First Test
 
-When no platform or scope is named:
+When scope is missing:
 
 1. Read setup status.
 2. Inspect `setup_get_status.capabilities`; capability truth overrides guessed cross-platform parity.
-3. Discover Meta products, Google Ads enabled non-manager customers, or TikTok advertisers.
-4. Report a bounded count/list and ask which scope and date range to inspect.
+3. Discover platform accounts.
+4. Ask which scope and dates to inspect.
 5. When `agent_method_profile.profile_id=adsagent_agent_methods_v1`, route one or many scopes through its advertised `consistent_query_tool` with root `query_contract_version=1`; otherwise use native single/batch tools.
 
-Never use hardcoded account/product names or carry Meta fields into Google/TikTok.
+Never hardcode scope or carry Meta fields into Google/TikTok.
 
 ## Shared Rules
 
@@ -52,6 +52,7 @@ Never use hardcoded account/product names or carry Meta fields into Google/TikTo
 - Poll creation using its returned `task_ref`. On `no_create_permission`, direct the user to `/dashboard/assets/fb-users`; never change customer permissions automatically.
 - Meta delivery config verification follows the returned `next_action` to `overview_get_live_configs`; never substitute an Insights watermark.
 - Meta decisions use `insights_query_consistent(require_fresh)` only when advertised; recovery uses `operations_get_context`.
+- Meta candidate reads use one allowlisted AND `filters` plan; keep full hierarchy IDs, and leave exact name deduplication, language classification, and business grouping to the client.
 - For a completed Meta consistency refresh, consume its terminal result; never rerun page 1. Pin later pages to the source anchor with `min_as_of`.
 - Use the common envelope only for `agent_method_profile.profile_id=adsagent_agent_methods_v1`; otherwise preserve native output.
 - When an error includes `support_ref`, preserve it verbatim and show it for unresolved/operator-review handoff. It is not authorization; never invent, modify, enumerate, or replace it with raw tokens, request bodies, or logs.

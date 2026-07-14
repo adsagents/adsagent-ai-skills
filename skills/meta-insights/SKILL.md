@@ -5,44 +5,54 @@ description: Use when the user asks AdsAgent about Meta product/account/campaign
 
 # Meta Insights Through AdsAgent
 
-Use bounded aggregate reads and public handles. Do not expose raw rows, internal IDs, schemas, or diagnostics.
+Use bounded aggregate reads and public handles. Never expose raw rows, schemas, or diagnostics.
 
 ## Scope First
 
-Run `setup_get_status`, then `products_list` when scope is missing. Ask for one product/account and explicit dates; never choose all accounts or dates silently. Read `adsagent://guide/brief` and only the needed catalog topic.
+Run `setup_get_status`, then `products_list` when scope is missing. Ask for explicit scope and dates. Read only the needed guide topic.
 
 ## Totals And Completeness
 
-Report server `summary`/`totals`; never sum visible pages. Trust native totals only with `meta.complete=true`, follow `meta.has_more`, and treat missing scopes as unknown. Preserve effective statuses such as `DISAPPROVED`, `PENDING_REVIEW`, and `IN_PROCESS`.
+Report server `summary`/`totals`; never sum pages. Trust native totals only with `meta.complete=true`, follow `meta.has_more`, and treat missing scopes as unknown.
 
 ## Query Routing
 
-- Ordinary report, one explicit scope -> `insights_query_overview`.
-- Ordinary report, multiple scopes -> one `insights_query_batch_overview` call.
-- Profile decision read -> only for `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call `insights_query_consistent` once with root `query_contract_version=1`, `consistency=require_fresh`, and one scope or at most 20 ordered scopes.
-- Product ranking -> `products_list`, already sorted by recent spend.
-- `mcp_fanout_detected` -> stop the single-scope loop and batch current plus pending scopes; do not retry the blocked call.
+- One scope -> `insights_query_overview`; multiple scopes -> one `insights_query_batch_overview`.
+- With `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call `insights_query_consistent` once using root `query_contract_version=1`, `consistency=require_fresh`, and one scope or up to 20 ordered scopes.
+- `mcp_fanout_detected` -> stop the loop, batch current plus pending scopes, and do not retry the blocked call.
 
-For candidate filtering use `page_size<=50`, `search`, and `spend_gt`. For Ads constrained by a Campaign-name substring, use `group_by=ad`, request `campaign_id` and `campaign_name` in `fields`, and retain only rows whose returned Campaign name matches; cross-level `search` narrows the same read, so do not prefetch or fan out Campaigns. For every matching Ad, preserve each `ad_id` and advance `page` serially while `data.meta.has_more=true`. Keep every filter unchanged. Pin `min_as_of` to the completed task `result.meta.source_observed_at`, or for an immediate complete response use `result.query_contract.coverage.source_observed_at`; for multiple scopes use the earliest first-page anchor; aggregate or deduplicate Ad names in the client. Never enlarge or parallelize pages.
+## Structured Candidate Filtering
 
-On `adsagent_query_invalid`, correct the named public field and retry once. On `scope_unavailable`, ask for a `products_list` choice linked to the current MCP tenant/token. This is not a Meta create-permission verdict; never broaden scope or modify customer permissions.
+For `insights_query_consistent`, use `page_size<=50` and allowlisted `filters`. All conditions are AND; each has only `field`, `op`, and `value`.
 
-In profile mode trust totals only when top-level `complete=true`. Poll distinct `task_ref` values serially with `tasks_get_status(response_mode=compact)`. When terminal, consume the bounded task `result` directly only if task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; never rerun page 1. Stop on a missing/incomplete result or `partial_completed`, `failed`, or `cancelled`. Without the profile, preserve native single/batch output and trust only `meta.complete=true`.
+- Text `contains`/`prefix`/`eq`: applicable hierarchy IDs/names, `pixel_id`, `app_id`.
+- Number `gt`/`gte`/`lt`/`lte`/`eq`: metrics, `daily_budget`, `lifetime_budget`, `bid_amount`.
+- Enum `eq`/`in`: statuses, `objective`, `optimization_goal`, `billing_event`, `conversion_event`, budget/bid/product/currency fields.
 
-`freshness_kind=age_only` means pull age and is not mutation coverage. `source_watermark`, `metrics_observed_after_mutation`, and `config_verified_live` are separate proofs. Do not make a decision on `verification_pending`, `data_not_fresh`, unknown launch date, or `complete=false`.
+`configured_status` is `ACTIVE`/`PAUSED`; `effective_status` is Meta's actual outcome, including `DISAPPROVED`, `PENDING_REVIEW`, and parent-paused. Legacy `status` aliases `effective_status`.
+
+With `group_by=ad`, preserve `ad_account_id`, `ad_account_name`, `campaign_id`, `campaign_name`, `adset_id`, `adset_name`, `ad_id`, and `ad_name`. Do not prefetch or fan out parents. Legacy `search` and `spend_gt` remain compatible, but do not use `dedupe_by` in new workflows. Exact Ad-name deduplication, language classification, and business grouping are client-side.
+
+For all matches, preserve each `ad_id`; advance `page` serially while `data.meta.has_more=true`. Keep filters unchanged. Pin `min_as_of` to task `result.meta.source_observed_at` or immediate `result.query_contract.coverage.source_observed_at`; use the earliest multi-scope anchor. Never enlarge or parallelize pages. For large exhaustive output, call grouped `insights_export_csv` with identical filters and consume the artifact.
+
+On `adsagent_query_invalid`, correct the named public field once. On `scope_unavailable`, choose via `products_list` for the current tenant/token. It is not a Meta create-permission verdict; never alter permissions.
+
+In profile mode trust only top-level `complete=true`. Poll distinct `task_ref` values serially with `tasks_get_status(task_ref=..., response_mode=compact)`. Consume a terminal result only when task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; never rerun page 1. Stop otherwise.
+
+`freshness_kind=age_only` is not mutation coverage. Do not decide on `verification_pending`, `data_not_fresh`, unknown launch date, or incomplete data.
 
 ## Write Verification And Recovery
 
-After approval and confirm, follow `next_action` to `overview_get_live_configs`; `config_verified_live` proves configuration. `insights_query_consistent(..., after_mutation_ref=mutation_ref)` is for post-write metrics and does not verify delivery configuration. Recover with `operations_get` or `operations_get_context`; never repeat writes.
+After confirm, follow `next_action` to `overview_get_live_configs`; `config_verified_live` proves configuration. `after_mutation_ref=mutation_ref` is for post-write metrics and does not verify delivery configuration. Recover with `operations_get_context`; never repeat writes.
 
 ## MMP
 
-Keep Meta and MMP distinct. Pass `channel_pid`; report partial channels and server-split windows.
+Keep Meta and MMP distinct; report partial channels.
 
 ## Export
 
-Export only when asked. Poll `tasks_get_status(task_ref=...)` to terminal; return the artifact, never raw CSV.
+Poll export `tasks_get_status(task_ref=...)` to terminal; return the artifact, never raw CSV.
 
 ## Output
 
-Return Markdown with Answer, Scope, a compact metric table, completeness/freshness, and Notes. Do not return only counts or volunteer optimization advice.
+Return concise Markdown with scope, metrics, completeness, and limits.

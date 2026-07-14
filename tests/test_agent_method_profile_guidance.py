@@ -80,12 +80,32 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
             "has_more=false",
             "aggregate or deduplicate Ad names in the client",
             "scope_unavailable",
+            "tenant/token",
+            "not a Meta create-permission verdict",
             "adsagent_query_invalid",
             "products_list",
         ):
             self.assertIn(term, text)
         self.assertIn("Never enlarge or parallelize pages", text)
         self.assertNotIn("dedupe_by=name", text)
+
+    def test_error_handoff_uses_only_opaque_support_ref(self) -> None:
+        text = "\n".join(
+            self._read(path)
+            for path in (
+                "skills/adsagent-router/SKILL.md",
+                "skills/adsagent-reliability/SKILL.md",
+                "docs/output-contract.md",
+                "docs/faq.md",
+            )
+        )
+        for term in (
+            "support_ref",
+            "not authorization",
+            "verbatim",
+            "raw request",
+        ):
+            self.assertIn(term, text)
 
 
 if __name__ == "__main__":

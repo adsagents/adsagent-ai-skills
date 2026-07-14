@@ -25,7 +25,7 @@ Report server `summary`/`totals`; never sum visible pages. Trust native totals o
 
 For candidate filtering keep `page_size<=50`; pass `search` and `spend_gt`. For Ads constrained by a Campaign-name substring, use `group_by=ad`, request `campaign_id` and `campaign_name` in `fields`, and retain only rows whose returned Campaign name matches; cross-level `search` narrows the same read, so do not prefetch or fan out Campaigns. When the user explicitly asks for every matching Ad, preserve each `ad_id` and advance `page` serially with identical filters until `has_more=false`; aggregate or deduplicate Ad names in the client. Never enlarge or parallelize pages.
 
-On `adsagent_query_invalid`, correct the named public field and retry once. On `scope_unavailable`, ask for a connected `products_list` choice; never broaden scope or modify customer permissions.
+On `adsagent_query_invalid`, correct the named public field and retry once. On `scope_unavailable`, ask for a `products_list` choice linked to the current MCP tenant/token. This is not a Meta create-permission verdict; never broaden scope or modify customer permissions.
 
 In profile mode trust totals only when top-level `complete=true`. Poll distinct `task_ref` values serially with `tasks_get_status(response_mode=compact)`; rerun the identical query only after `completed`, and stop on `partial_completed`, `failed`, or `cancelled`. Without the profile, preserve native single/batch output and trust only `meta.complete=true`.
 

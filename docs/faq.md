@@ -20,7 +20,7 @@ Authenticated agents can read the live AdsAgent MCP guide after connecting to Me
 
 Operator-review means the public MCP response is intentionally redacted. Retrying with guessed fields teaches the agent the wrong behavior and can create silent-failure loops.
 
-The correct action is to hand the request to the AdsAgent operator with public IDs, requested structure, timestamp, and the public error.
+The correct action is to hand the request to the AdsAgent operator with the public error and its exact `support_ref` when returned. The ref is an opaque lookup handle, not authorization; do not send bearer tokens, raw request bodies, task logs, or hidden diagnostics.
 
 ## Can the agent create ads?
 
@@ -30,7 +30,7 @@ QuickCreate confirm tokens are single-use and expire after 15 minutes. The agent
 
 ## Does one install cover Google Ads and TikTok?
 
-Yes. v0.7.7 is an AdsAgent tri-channel skill pack. It includes Meta skills, `google-ads-insights`, `tiktok-insights`, and the platform-neutral `agent-scheduled-tasks` guidance. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and capability-gated profile adapters.
+Yes. v0.7.8 is an AdsAgent tri-channel skill pack. It includes Meta skills, `google-ads-insights`, `tiktok-insights`, and the platform-neutral `agent-scheduled-tasks` guidance. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and capability-gated profile adapters.
 
 ## Can the skill create a scheduled task?
 

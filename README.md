@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.7`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.8`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -27,6 +27,8 @@ Version 0.7.5 makes Meta partnership-copy behavior explicit: partnership and boo
 Version 0.7.6 keeps Meta candidate selection server-side with bounded pages, spend thresholds, deterministic name deduplication, and self-correctable public query validation.
 
 Version 0.7.7 keeps Meta filtering server-side while making exhaustive Ad reads lossless: agents retain every `ad_id`, paginate serially with an unchanged filter, and aggregate duplicate Ad names only after all requested pages arrive.
+
+Version 0.7.8 teaches agents to preserve an opaque MCP `support_ref` for unresolved error handoff without exposing tokens or raw payloads. It also makes clear that Meta `scope_unavailable` means the account is outside the current MCP tenant/token scope, not that Meta creation permission is missing.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 
@@ -249,6 +251,7 @@ TikTok: https://tiktok.adsagent.md/mcp
 - Use Markdown tables for numbers.
 - Confirm before ad creation or modification.
 - Stop on operator-review errors.
+- When an error includes `support_ref`, preserve and show it verbatim for support. It is not authorization; never invent, modify, enumerate, or replace it with tokens, request bodies, or logs.
 
 ## Links
 

@@ -98,6 +98,7 @@ Inspect top-level `client_skill_pack` from the existing setup call. It is indepe
 - Do not infer hidden fields from redacted errors.
 - Do not print raw task logs or internal diagnostics.
 - Stop on operator-review and hand off to the AdsAgent operator.
+- Preserve any returned `support_ref` verbatim in that handoff. It is an opaque lookup handle, not authorization; never replace it with a token, raw request body, or log.
 
 ## Comparison Rules
 

@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.7"
+VERSION = "0.7.8"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -71,6 +71,10 @@ REQUIRED_REPO_TERMS = [
     "has_more=false",
     "aggregate or deduplicate Ad names in the client",
     "scope_unavailable",
+    "support_ref",
+    "not authorization",
+    "tenant/token",
+    "not a Meta create-permission verdict",
     "Never enable or modify customer permissions automatically",
     "support@adsagent.md",
     "https://github.com/adsagents/adsagent-ai-skills",
@@ -143,6 +147,8 @@ META_TERMS = [
     "has_more=false",
     "aggregate or deduplicate Ad names in the client",
     "scope_unavailable",
+    "tenant/token",
+    "not a Meta create-permission verdict",
 ]
 
 GOOGLE_TERMS = [

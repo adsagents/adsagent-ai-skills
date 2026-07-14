@@ -9,19 +9,11 @@ Use bounded aggregate reads and public handles. Do not expose raw rows, internal
 
 ## Scope First
 
-1. Run `setup_get_status`; inspect `setup_get_status.capabilities`, then run `products_list` when no product/account is selected.
-2. Report a bounded product count; ask for one product/account plus `date_from` and `date_to`.
-3. Read `adsagent://guide/brief`; use one catalog topic only when needed.
-
-Do not silently select all accounts or a default date range.
+Run `setup_get_status`, then `products_list` when scope is missing. Ask for one product/account and explicit dates; never choose all accounts or dates silently. Read `adsagent://guide/brief` and only the needed catalog topic.
 
 ## Totals And Completeness
 
-Report server totals verbatim: `summary` from `insights_query_overview` and `totals` from `insights_read_breakdowns`. Never sum visible rows; rows may be paginated and same-name campaigns are common. Reference campaigns by ID.
-
-Trust results only when `meta.complete=true`. Follow `meta.has_more`; do not infer completion from item count. In batch results, missing scopes are unknown, never zero.
-
-Report effective Meta statuses verbatim, including `DISAPPROVED`, `PENDING_REVIEW`, and `IN_PROCESS`.
+Report server `summary`/`totals`; never sum visible pages. Trust native totals only with `meta.complete=true`, follow `meta.has_more`, and treat missing scopes as unknown. Preserve effective statuses such as `DISAPPROVED`, `PENDING_REVIEW`, and `IN_PROCESS`.
 
 ## Query Routing
 
@@ -31,41 +23,26 @@ Report effective Meta statuses verbatim, including `DISAPPROVED`, `PENDING_REVIE
 - Product ranking -> `products_list`, already sorted by recent spend.
 - `mcp_fanout_detected` -> stop the single-scope loop and batch current plus pending scopes; do not retry the blocked call.
 
+For candidate selection keep `page_size<=50`; pass `search`, `spend_gt`, and `dedupe_by=name`. Do not enlarge the page or fetch all pages to filter client-side.
+
+On `adsagent_query_invalid`, correct the named public field and retry once. For an unavailable scope, ask for a connected `products_list` choice; never broaden.
+
 In profile mode trust totals only when top-level `complete=true`. Poll distinct `task_ref` values serially with `tasks_get_status(response_mode=compact)`; rerun the identical query only after `completed`, and stop on `partial_completed`, `failed`, or `cancelled`. Without the profile, preserve native single/batch output and trust only `meta.complete=true`.
 
 `freshness_kind=age_only` means pull age and is not mutation coverage. `source_watermark`, `metrics_observed_after_mutation`, and `config_verified_live` are separate proofs. Do not make a decision on `verification_pending`, `data_not_fresh`, unknown launch date, or `complete=false`.
 
 ## Write Verification And Recovery
 
-After approved confirm, call returned `next_action`: expect `overview_get_live_configs` with typed entities and `mutation_ref`. Retry only that read while pending; `config_verified_live` proves configuration. Use `insights_query_consistent(..., after_mutation_ref=mutation_ref)` only for post-write metrics; `metrics_observed_after_mutation` does not verify delivery configuration. Never repeat the write.
-
-Recover one receipt with `operations_get`, or an interrupted workflow with `operations_get_context(product_ref=...)`.
+After approval and confirm, follow `next_action` to `overview_get_live_configs`; `config_verified_live` proves configuration. `insights_query_consistent(..., after_mutation_ref=mutation_ref)` is for post-write metrics and does not verify delivery configuration. Recover with `operations_get` or `operations_get_context`; never repeat writes.
 
 ## MMP
 
-Keep Meta and MMP metrics distinct. Pass `channel_pid`. Use `all` only for a requested cross-channel view. If `status=partial` or `complete=false`, report failed channels; the smaller total is incomplete. Long supported windows are split server-side.
+Keep Meta and MMP distinct. Pass `channel_pid`; report partial channels and server-split windows.
 
 ## Export
 
-Use export only when explicitly requested. If queued, poll with `tasks_get_status(task_ref=...)` until `terminal=true`; return artifact metadata/link, never raw CSV.
+Export only when asked. Poll `tasks_get_status(task_ref=...)` to terminal; return the artifact, never raw CSV.
 
 ## Output
 
-```markdown
-## Answer
-Direct answer with server total.
-
-## Scope
-- Product/account:
-- Date/grouping/channel:
-- Complete/fresh:
-
-## Results
-| Name | Spend | CPA | ROAS | Conversions | Status |
-| --- | ---: | ---: | ---: | ---: | --- |
-
-## Notes
-- Missing scopes/channels or artifact link:
-```
-
-Do not return only item counts when metrics exist. Do not volunteer optimization advice unless requested.
+Return Markdown with Answer, Scope, a compact metric table, completeness/freshness, and Notes. Do not return only counts or volunteer optimization advice.

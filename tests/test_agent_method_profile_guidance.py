@@ -67,6 +67,19 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
         self.assertIn("config_verified_live", text)
         self.assertIn("cached read-only ledger", text)
 
+    def test_meta_candidate_selection_is_server_side_and_bounded(self) -> None:
+        text = self._read("skills/meta-insights/SKILL.md")
+        for term in (
+            "page_size<=50",
+            "search",
+            "spend_gt",
+            "dedupe_by=name",
+            "adsagent_query_invalid",
+            "products_list",
+        ):
+            self.assertIn(term, text)
+        self.assertIn("Do not enlarge the page", text)
+
 
 if __name__ == "__main__":
     unittest.main()

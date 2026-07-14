@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.5"
+VERSION = "0.7.6"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -61,6 +61,10 @@ REQUIRED_REPO_TERMS = [
     "no_create_permission",
     "/dashboard/assets/fb-users",
     "response_mode=compact",
+    "adsagent_query_invalid",
+    "page_size<=50",
+    "spend_gt",
+    "dedupe_by=name",
     "Never enable or modify customer permissions automatically",
     "support@adsagent.md",
     "https://github.com/adsagents/adsagent-ai-skills",
@@ -123,6 +127,10 @@ META_TERMS = [
     "does not verify delivery configuration",
     "operations_get_context",
     "tasks_get_status(task_ref",
+    "adsagent_query_invalid",
+    "page_size<=50",
+    "spend_gt",
+    "dedupe_by=name",
 ]
 
 GOOGLE_TERMS = [

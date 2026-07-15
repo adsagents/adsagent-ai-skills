@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.14"
+VERSION = "0.7.15"
 
 REQUIRED_SKILLS = {
     "adsagent-router",

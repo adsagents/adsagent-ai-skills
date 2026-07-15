@@ -5,16 +5,16 @@ description: Use when the user mentions AdsAgent, Meta/Facebook, Google Ads, Tik
 
 # AdsAgent Router
 
-Pick the platform skill and narrowest safe workflow.
+Pick the narrowest safe skill.
 
 ## Route Map
 
-- Meta / Facebook / FB / Page / pixel / campaign copy: `meta-insights` for reads; `meta-copy` for copy, recreate, compare, or write preparation.
+- Meta / Facebook / FB / Page / pixel / campaign copy: `meta-insights` for reads; `meta-copy` for copy/prepare.
 - Google Ads / MCC / customer / search / PMax: `google-ads-insights`.
 - TikTok / advertiser / TT: `tiktok-insights`.
 - 429 / 503 / Retry-After / concurrency / stale session: `adsagent-reliability` before retrying.
 - setup / connect / OAuth / MCP token: `adsagent-setup`.
-- scheduled task / automation / cron / reminder: `agent-scheduled-tasks` before creating or changing the schedule.
+- scheduled task / automation / cron / reminder: `agent-scheduled-tasks`.
 
 New Meta connections use `https://adsagent.md/mcp/v2`; `/mcp` is the legacy fallback.
 
@@ -23,6 +23,7 @@ New Meta connections use `https://adsagent.md/mcp/v2`; `/mcp` is the legacy fall
 Never guess:
 
 - One ad -> `copy_ad_quick_copy`.
+- Multiple distinct source Ads regrouped into one destination tree -> `copy_ad_quick_copy` with `grouped_plan`.
 - Campaign/ad set -> `copy_ad_clone_structure`.
 - Repeat prior creation -> `campaigns_recreate_from_task`.
 - Then ask deep-post reuse versus fresh creative upload.

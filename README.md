@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.11`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.12`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -35,6 +35,8 @@ Version 0.7.9 makes completed Meta consistency tasks terminal evidence: agents c
 Version 0.7.10 adds safe grouped Meta copy guidance: one seed per target Campaign, remaining distinct Ads appended only after the target AdSet exists, explicit country or worldwide-minus-country targeting frozen in approvals, and a hard stop when the requested settings reference is missing.
 
 Version 0.7.11 adds bounded Meta structured filtering across hierarchy names and IDs, performance metrics, configured/effective delivery status, budgets, objectives, events, Pixel, and App metadata. Conditions are server-side AND filters; exact Ad-name deduplication, language classification, and business grouping remain client responsibilities, while large exhaustive results use a grouped export artifact.
+
+Version 0.7.12 routes multiple distinct Meta source Ads through one server-owned `grouped_plan` prepare. Agents verify the explicit settings-source order, geography, budget, bid, and paused-by-default structure in one approval, then consume the returned single-use confirmation token exactly once. Existing single-Ad, structure-clone, and recreate workflows remain compatible.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 
@@ -137,6 +139,10 @@ For TikTok, inspect agent_method_profile and use one insights_query_consistent s
 
 ```text
 Prepare a copy of this winning Meta ad into the target account, but ask me for confirmation before creating anything.
+```
+
+```text
+Group these distinct Meta Ads by language into the requested Campaign and AdSet layout. Prepare one grouped_plan, show every settings_source_ad_id and geography override, and wait for my approval before confirming once.
 ```
 
 More examples are in [docs/examples.md](docs/examples.md).
@@ -256,6 +262,7 @@ TikTok: https://tiktok.adsagent.md/mcp
 - Avoid raw-row reads in normal user conversations.
 - Use Markdown tables for numbers.
 - Confirm before ad creation or modification.
+- Use `grouped_plan` for multiple distinct source Ads; never emulate it through a client-side series of copy mutations.
 - Stop on operator-review errors.
 - When an error includes `support_ref`, preserve and show it verbatim for support. It is not authorization; never invent, modify, enumerate, or replace it with tokens, request bodies, or logs.
 

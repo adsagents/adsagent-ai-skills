@@ -108,6 +108,10 @@ Prepare a copy of this winning ad into the target account with 5 adsets and a $5
 ```
 
 ```text
+After the bounded Ad read is complete, preserve each source ad_id and ad_account_id, deduplicate exact Ad names, and group the remaining Ads by my explicit language rules. For multiple distinct source Ads, use one copy_ad_quick_copy grouped_plan prepare. Show the paused-by-default structure, every settings_source_ad_id, budget, bid, and geo_targeting_override. Do not confirm until I explicitly approve; then use the returned token once and poll its task_ref to terminal.
+```
+
+```text
 For QuickCreate, check expires_at and confirm the single-use token within 15 minutes only after I approve the displayed summary. If confirm_token_invalid is returned, prepare again, show the fresh summary, and ask me again. Poll the returned task_ref with response_mode=compact. On no_create_permission, send me to /dashboard/assets/fb-users; never enable or modify customer permissions automatically.
 ```
 

@@ -5,47 +5,52 @@ description: Use when the user asks AdsAgent to copy, clone, recreate, compare, 
 
 # Meta Copy And Comparison
 
-Use sanitized public summaries; never reconstruct hidden payloads.
+Use public summaries and the live schema. Never reconstruct hidden payloads.
 
 ## Route
 
-- One source Ad -> `copy_ad_quick_copy`.
-- Campaign or AdSet -> `copy_ad_clone_structure`.
-- Repeat creation -> `campaigns_recreate_from_task` with a history `task_ref`.
+- One source Ad: `copy_ad_quick_copy` single mode.
+- Several distinct source Ads in one destination tree: grouped mode.
+- Campaign or AdSet: `copy_ad_clone_structure`.
+- Repeat prior creation: `campaigns_recreate_from_task` with `task_ref`.
+- New template launch: `campaigns_quick_create`.
 
-Ask deep versus fresh. Deep reuses posts/engagement; fresh uploads materials. Partnership/boosted sources require `copy_mode="deep"`. On `partnership_fresh_copy_unsupported`, stop before approval. Show `source_creative_type`, `post_linkage`, and warnings; do not auto-retry or switch modes silently.
+Ask deep versus fresh. Deep reuses posts/engagement; fresh uploads materials. Partnership/boosted sources require `copy_mode="deep"`; stop on `partnership_fresh_copy_unsupported`.
 
-## Group Several Source Ads
+Show `source_creative_type` and `post_linkage`; do not auto-retry. Grouped approvals are paused-by-default and return one `cgb_confirm_*` token.
 
-1. Finish bounded Insights pages serially. Preserve every `ad_id`; deduplicate only exact Ad names after completion.
-2. Preserve each source `ad_account_id`; apply only explicit language/geography rules.
-3. `ad_num` duplicates one source Ad. For multiple distinct source Ads, call `copy_ad_quick_copy` once with `grouped_plan`; use its live schema for a 1-1-N, 1-N-1, or custom tree. Never emulate it client-side.
-4. Order sources deliberately: the first Ad of the first AdSet seeds Campaign settings, and the first Ad of each AdSet seeds that AdSet. Verify every returned `settings_source_ad_id` before approval.
-5. Show one paused-by-default approval summary covering source/target accounts, counts, budget, bid, geography, and settings sources. After approval, pass returned `cgb_confirm_*` token unchanged to `copy_ad_quick_copy_confirm` exactly once.
-6. If live schema lacks `grouped_plan`, reconnect, re-list tools, and read `adsagent://guide/brief`. Do not fall back to a client-built multi-stage copy.
+## Creation Contract V2
 
-Use `countries_override` for explicit includes. Use `worldwide_override=true` with `excluded_countries_override` for worldwide-minus-country targeting. Compare returned `geo_targeting_override` with the request before approval.
+Reconnect and re-list tools, then read `adsagent://guide/creation-contract` when creating. Set `creation_contract_version=2`. New requests emit canonical fields only.
+
+Single-copy tool arguments:
+
+```json
+{"request":{"creation_contract_version":2,"request_mode":"single","source_ad_id":"<ad>","source_ad_account_id":"<source>","target_ad_account_id":"<target>","campaign_count":1,"adset_count":1,"ads_per_adset":1,"copy_mode":"deep","target_campaign_name":"<optional>"}}
+```
+
+Grouped-copy tool arguments:
+
+```json
+{"request":{"creation_contract_version":2,"request_mode":"grouped","grouped_plan":{"source_ad_account_id":"<source>","target_ad_account_id":"<target>","copy_mode":"deep","campaigns":[{"name":"<campaign>","adsets":[{"name":"<optional adset>","ads":[{"source_ad_id":"<ad>","name":"<optional target ad>"}]}]}],"campaign_status":"PAUSED","adset_status":"PAUSED","ad_status":"PAUSED"}}}
+```
+
+`name` is path-local. Do not transplant flattened Insights `campaign_name`, `adset_name`, or `ad_name`. Read-to-write mappings come from the creation-contract resource. Known legacy names are accepted only at their documented object path; conflicting canonical and legacy values are invalid.
+
+QuickCreate uses typed `execution.budget`, `execution.bid`, `execution.statuses`, `destination`, and one `creative_source`. Web uses `destination.web_url`; app uses `app_id`, `store_url`, and/or `deep_link`. Never substitute Meta raw `application_id`, `object_store_url`, or `app_link`.
+
+## Grouped Copy
+
+Finish bounded Insights pages serially, preserve every `ad_id`, and deduplicate only exact Ad names. `ad_num` duplicates one source Ad; multiple distinct source Ads use `grouped_plan` for 1-1-N, 1-N-1, or custom layouts. Do not fall back to a client-built multi-stage copy.
+
+Order sources deliberately: the first Ad of the first AdSet seeds Campaign settings; the first Ad of each AdSet seeds that AdSet. Show one paused-by-default approval summary and verify every `settings_source_ad_id`, account, count, budget, bid, status, and geography. Compare returned `geo_targeting_override`. After approval, pass the `cgb_confirm_*` token unchanged to `copy_ad_quick_copy_confirm`. Use `countries_override`, or `worldwide_override=true` plus `excluded_countries_override`.
 
 If the user references settings but omits its Campaign, AdSet, or template reference, stop before preparing. Ask for one concrete reference; never invent objective, budget, bid, app/pixel, placements, compliance, or naming settings.
 
-## Safe Flow
+## Recovery And Approval
 
-1. Resolve source level/account and target account.
-2. Confirm structure, budget, geography, start, and copy mode.
-3. Prepare and inspect `expires_at`. Confirm tokens, including grouped-copy tokens, are single-use and expire after 15 minutes.
-4. Show only `approval_request.summary` and warnings.
-5. Confirm only after explicit approval. Preserve the exact token.
-6. On `confirm_token_invalid`, prepare again, show the new summary, and obtain new approval.
-7. Poll successful asynchronous work with `tasks_get_status(task_ref=..., response_mode=compact)` until `terminal=true`.
+On `adsagent_request_incomplete` with public `invalid_fields`, correct only those advertised prepare fields and rerun the same prepare once. This creates no Meta object. Never reuse a confirm token. If correction fails again, the rule is redacted, or `operator_review_required` appears, stop and preserve the exact `support_ref` for AdsAgent support. Never send raw payloads, logs, or tokens.
 
-For delivery changes, follow `next_action` to `overview_get_live_configs` with `mutation_ref`. `insights_query_consistent(require_fresh, after_mutation_ref=mutation_ref)` proves metrics freshness, not configuration. Recover with `operations_get`; never repeat uncertain writes.
+Show `approval_request.summary` and warnings. Confirm exactly once only after explicit approval, then poll `tasks_get_status(task_ref=..., response_mode=compact)` to `terminal=true`. Never auto-retry confirm, creation, budget, status, bid, or targeting writes. On `no_create_permission`, direct the user to `/dashboard/assets/fb-users`; never change customer permissions.
 
-Never auto-retry confirm, creation, budget, status, bid, or targeting writes. On terminal `no_create_permission`, direct the user to `/dashboard/assets/fb-users`; never enable or modify customer permissions automatically.
-
-## QuickCreate And Comparison
-
-Choose normal creatives, `partnership_rows`, or carousel groups. A carousel is one Ad with 2-10 ordered images; never mix IDs and names or use video in v1.
-
-Task history is intent, not live proof. Compare its sanitized snapshot with current AdsAgent state in a Markdown table covering targeting, budget, status, naming, structure, and creative mode.
-
-On `operator_review_required`, stop. Hand off public IDs, requested structure, timestamp, exact public error, and any `support_ref`. Never paste raw logs, payloads, tokens, or hidden diagnostics.
+For post-write configuration, follow `next_action` to `overview_get_live_configs` with `mutation_ref`. Insights freshness proves metrics, not delivery configuration. Recover uncertain operations with `operations_get`; never repeat the write.

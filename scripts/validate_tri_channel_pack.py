@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.13"
+VERSION = "0.7.14"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -92,6 +92,12 @@ REQUIRED_REPO_TERMS = [
     "retry the identical bounded read once",
     "Never enable or modify customer permissions automatically",
     "grouped_plan",
+    "creation_contract_version=2",
+    "request_mode",
+    "adsagent://guide/creation-contract",
+    "adsagent_request_incomplete",
+    "invalid_fields",
+    "rerun the same prepare once",
     "settings_source_ad_id",
     "cgb_confirm_*",
     "support@adsagent.md",
@@ -248,6 +254,10 @@ META_COPY_TERMS = [
     "post_linkage",
     "do not auto-retry",
     "grouped_plan",
+    "creation_contract_version=2",
+    "adsagent_request_incomplete",
+    "invalid_fields",
+    "source_ad_id",
     "settings_source_ad_id",
     "cgb_confirm_*",
     "paused-by-default",

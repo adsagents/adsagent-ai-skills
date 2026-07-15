@@ -35,7 +35,7 @@ With `group_by=ad`, preserve `ad_account_id`, `ad_account_name`, `campaign_id`, 
 
 For all matches, preserve each `ad_id`; advance `page` serially while `data.meta.has_more=true`. Keep filters unchanged. Pin `min_as_of` to task `result.meta.source_observed_at` or immediate `result.query_contract.coverage.source_observed_at`; use the earliest multi-scope anchor. Never enlarge or parallelize pages. For large exhaustive output, call grouped `insights_export_csv` with identical filters and consume the artifact.
 
-On `adsagent_query_invalid`, correct the named public field once. On `scope_unavailable`, choose via `products_list` for the current tenant/token. It is not a Meta create-permission verdict; never alter permissions.
+On `adsagent_query_invalid`, correct the named public field once. On `scope_unavailable`, do not infer another workspace/token or Meta permission from that signal alone. Run `setup_get_status` and matching discovery (`products_list` for a product or `accounts_list_linked_accounts` for an account) once. If the same scope remains listed, retry the identical bounded read once; if it persists, stop and preserve `support_ref` for operator review. Never broaden scope or alter customer permissions.
 
 In profile mode trust only top-level `complete=true`. Poll distinct `task_ref` values serially with `tasks_get_status(task_ref=..., response_mode=compact)`. Consume a terminal result only when task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; never rerun page 1. Stop otherwise.
 

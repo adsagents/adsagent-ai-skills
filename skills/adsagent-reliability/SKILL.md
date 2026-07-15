@@ -44,7 +44,7 @@ For queued work, follow `next_action`/`poll_after_ms` and poll `tasks_get_status
 | 503 `dependency_unavailable` | Treat as 503 dependency unavailable; honor `Retry-After` plus jitter and retry one read within budget. |
 | 410 `confirm_token_invalid` | Do not retry; re-prepare, show the fresh summary, and obtain approval. |
 | `no_create_permission` | Send the user to `/dashboard/assets/fb-users`, then prepare again. |
-| `scope_unavailable` | Stop and select a product/account linked to the current MCP tenant/token. This is not a Meta create-permission verdict; do not alter customer permissions. |
+| `scope_unavailable` | Do not infer another workspace/token or Meta permission from this signal alone. Run setup and matching discovery once; retry the identical bounded read once only if the same scope remains listed, then preserve `support_ref` for operator review. Never broaden scope or alter customer permissions. |
 
 If retries exhaust, report the category. Never enable or modify customer permissions automatically.
 

@@ -110,7 +110,7 @@ Prepare a copy of this winning ad into the target account with 5 adsets and a $5
 ```text
 After the bounded Ad read is complete, preserve each source ad_id and ad_account_id, deduplicate exact Ad names, and group the remaining Ads by my explicit language rules. For multiple distinct source Ads, use one copy_ad_quick_copy grouped_plan prepare. Show the paused-by-default structure, every settings_source_ad_id, budget, bid, and geo_targeting_override. Do not confirm until I explicitly approve; then use the returned token once and poll its task_ref to terminal.
 
-For that grouped prepare, use creation_contract_version=2 and request_mode=grouped. Each destination Campaign uses campaigns[].name; each optional AdSet name uses adsets[].name; each source selector uses ads[].source_ad_id; optional target Ad names use ads[].name. If prepare returns adsagent_request_incomplete with invalid_fields, correct only those public fields and retry prepare once, never confirm automatically.
+For that grouped prepare, use creation_contract_version=3 and request_mode=grouped. Each destination Campaign uses campaigns[].campaign_name; each optional AdSet name uses adsets[].adset_name; each source selector uses ads[].source_ad_id; optional target Ad names use ads[].ad_name. Read adsagent://guide/name-contract and never emit bare name for a new request. If prepare returns adsagent_request_incomplete with invalid_fields, correct only those public fields and retry prepare once, never confirm automatically.
 ```
 
 ```text

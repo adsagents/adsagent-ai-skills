@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.12`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.13`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -28,7 +28,7 @@ Version 0.7.6 keeps Meta candidate selection server-side with bounded pages, spe
 
 Version 0.7.7 keeps Meta filtering server-side while making exhaustive Ad reads lossless: agents retain every `ad_id`, paginate serially with an unchanged filter, and aggregate duplicate Ad names only after all requested pages arrive.
 
-Version 0.7.8 teaches agents to preserve an opaque MCP `support_ref` for unresolved error handoff without exposing tokens or raw payloads. It also makes clear that Meta `scope_unavailable` means the account is outside the current MCP tenant/token scope, not that Meta creation permission is missing.
+Version 0.7.8 teaches agents to preserve an opaque MCP `support_ref` for unresolved error handoff without exposing tokens or raw payloads. It also separates Meta `scope_unavailable` from Meta creation permission.
 
 Version 0.7.9 makes completed Meta consistency tasks terminal evidence: agents consume the bounded task result directly instead of querying page 1 again, and later pages use a fixed source watermark through `min_as_of` so a long read stays on one snapshot.
 
@@ -37,6 +37,8 @@ Version 0.7.10 adds safe grouped Meta copy guidance: one seed per target Campaig
 Version 0.7.11 adds bounded Meta structured filtering across hierarchy names and IDs, performance metrics, configured/effective delivery status, budgets, objectives, events, Pixel, and App metadata. Conditions are server-side AND filters; exact Ad-name deduplication, language classification, and business grouping remain client responsibilities, while large exhaustive results use a grouped export artifact.
 
 Version 0.7.12 routes multiple distinct Meta source Ads through one server-owned `grouped_plan` prepare. Agents verify the explicit settings-source order, geography, budget, bid, and paused-by-default structure in one approval, then consume the returned single-use confirmation token exactly once. Existing single-Ad, structure-clone, and recreate workflows remain compatible.
+
+Version 0.7.13 corrects Meta scope recovery: `scope_unavailable` alone does not prove another workspace/token. Agents run bounded setup and matching discovery once, retry the identical read once only when the scope remains listed, then preserve `support_ref` for operator review without changing customer permissions.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 

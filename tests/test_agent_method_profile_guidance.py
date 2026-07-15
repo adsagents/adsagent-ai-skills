@@ -95,8 +95,10 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
             "conversion_event",
             "insights_export_csv",
             "scope_unavailable",
-            "tenant/token",
-            "not a Meta create-permission verdict",
+            "do not infer another workspace/token",
+            "accounts_list_linked_accounts",
+            "retry the identical bounded read once",
+            "preserve `support_ref` for operator review",
             "adsagent_query_invalid",
             "products_list",
         ):

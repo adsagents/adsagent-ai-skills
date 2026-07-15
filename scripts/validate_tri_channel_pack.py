@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.12"
+VERSION = "0.7.13"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -88,8 +88,8 @@ REQUIRED_REPO_TERMS = [
     "scope_unavailable",
     "support_ref",
     "not authorization",
-    "tenant/token",
-    "not a Meta create-permission verdict",
+    "do not infer another workspace/token",
+    "retry the identical bounded read once",
     "Never enable or modify customer permissions automatically",
     "grouped_plan",
     "settings_source_ad_id",
@@ -187,8 +187,8 @@ META_TERMS = [
     "app_id",
     "insights_export_csv",
     "scope_unavailable",
-    "tenant/token",
-    "not a Meta create-permission verdict",
+    "do not infer another workspace/token",
+    "retry the identical bounded read once",
 ]
 
 GOOGLE_TERMS = [

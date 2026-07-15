@@ -5,24 +5,24 @@ description: Use when the user asks AdsAgent to copy, clone, recreate, compare, 
 
 # Meta Copy And Comparison
 
-Use public handles and sanitized summaries. Never reconstruct hidden payloads.
+Use sanitized public summaries; never reconstruct hidden payloads.
 
 ## Route
 
 - One source Ad -> `copy_ad_quick_copy`.
 - Campaign or AdSet -> `copy_ad_clone_structure`.
-- Repeat a past creation -> `campaigns_recreate_from_task` with a `task_ref` from `tasks_list_create_history`.
+- Repeat creation -> `campaigns_recreate_from_task` with a history `task_ref`.
 
-Ask deep versus fresh. Deep reuses posts and engagement; disclose dead posts. Fresh uploads distinct materials. Partnership/boosted sources require `copy_mode="deep"`. On `partnership_fresh_copy_unsupported`, stop before approval. Show `source_creative_type`, `post_linkage`, and warnings; do not auto-retry. Never switch modes or probe accounts silently.
+Ask deep versus fresh. Deep reuses posts/engagement; fresh uploads materials. Partnership/boosted sources require `copy_mode="deep"`. On `partnership_fresh_copy_unsupported`, stop before approval. Show `source_creative_type`, `post_linkage`, and warnings; do not auto-retry or switch modes silently.
 
 ## Group Several Source Ads
 
-1. Finish the bounded Insights read. Preserve every `ad_id`, paginate serially, and deduplicate only exact Ad names after all requested pages are complete.
-2. Show the language/geography grouping and apply only explicit rules.
-3. Remember: `ad_num` duplicates one source Ad; it never combines source IDs.
-4. For each target Campaign/geography, prepare one seed with `mode="clone_all"`. Freeze settings in its approval.
-5. After the approved seed is terminal, obtain its target AdSet ID and prepare remaining distinct Ads with `mode="new_ads"`. Do not pass geography to `new_ads`; the target AdSet owns targeting.
-6. Show remaining summaries as one bounded second approval set. Confirm exact approved drafts and poll `task_ref` values serially.
+1. Finish bounded Insights pages serially. Preserve every `ad_id`; deduplicate only exact Ad names after completion.
+2. Preserve each source `ad_account_id`; apply only explicit language/geography rules.
+3. `ad_num` duplicates one source Ad. For multiple distinct source Ads, call `copy_ad_quick_copy` once with `grouped_plan`; use its live schema for a 1-1-N, 1-N-1, or custom tree. Never emulate it client-side.
+4. Order sources deliberately: the first Ad of the first AdSet seeds Campaign settings, and the first Ad of each AdSet seeds that AdSet. Verify every returned `settings_source_ad_id` before approval.
+5. Show one paused-by-default approval summary covering source/target accounts, counts, budget, bid, geography, and settings sources. After approval, pass returned `cgb_confirm_*` token unchanged to `copy_ad_quick_copy_confirm` exactly once.
+6. If live schema lacks `grouped_plan`, reconnect, re-list tools, and read `adsagent://guide/brief`. Do not fall back to a client-built multi-stage copy.
 
 Use `countries_override` for explicit includes. Use `worldwide_override=true` with `excluded_countries_override` for worldwide-minus-country targeting. Compare returned `geo_targeting_override` with the request before approval.
 
@@ -32,7 +32,7 @@ If the user references settings but omits its Campaign, AdSet, or template refer
 
 1. Resolve source level/account and target account.
 2. Confirm structure, budget, geography, start, and copy mode.
-3. Prepare and inspect `expires_at`. Confirm tokens are single-use and expire after 15 minutes.
+3. Prepare and inspect `expires_at`. Confirm tokens, including grouped-copy tokens, are single-use and expire after 15 minutes.
 4. Show only `approval_request.summary` and warnings.
 5. Confirm only after explicit approval. Preserve the exact token.
 6. On `confirm_token_invalid`, prepare again, show the new summary, and obtain new approval.
@@ -44,8 +44,8 @@ Never auto-retry confirm, creation, budget, status, bid, or targeting writes. On
 
 ## QuickCreate And Comparison
 
-Choose one source: normal creatives, `partnership_rows`, or carousel groups. A carousel is one Ad with 2-10 ordered images; never mix IDs and names or use video in v1.
+Choose normal creatives, `partnership_rows`, or carousel groups. A carousel is one Ad with 2-10 ordered images; never mix IDs and names or use video in v1.
 
-Task history is creation intent, not live Meta proof. Compare its sanitized snapshot with current AdsAgent state in a Markdown table covering targeting, budget, status, naming, structure, and creative mode.
+Task history is intent, not live proof. Compare its sanitized snapshot with current AdsAgent state in a Markdown table covering targeting, budget, status, naming, structure, and creative mode.
 
 On `operator_review_required`, stop. Hand off public IDs, requested structure, timestamp, exact public error, and any `support_ref`. Never paste raw logs, payloads, tokens, or hidden diagnostics.

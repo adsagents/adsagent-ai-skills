@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.11"
+VERSION = "0.7.12"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -91,6 +91,9 @@ REQUIRED_REPO_TERMS = [
     "tenant/token",
     "not a Meta create-permission verdict",
     "Never enable or modify customer permissions automatically",
+    "grouped_plan",
+    "settings_source_ad_id",
+    "cgb_confirm_*",
     "support@adsagent.md",
     "https://github.com/adsagents/adsagent-ai-skills",
 ]
@@ -111,6 +114,8 @@ ROUTER_TERMS = [
     "scheduled task / automation / cron / reminder",
     "setup_get_status.capabilities",
     "capability",
+    "Multiple distinct source Ads",
+    "grouped_plan",
 ]
 
 SCHEDULED_TASK_TERMS = [
@@ -242,6 +247,10 @@ META_COPY_TERMS = [
     "source_creative_type",
     "post_linkage",
     "do not auto-retry",
+    "grouped_plan",
+    "settings_source_ad_id",
+    "cgb_confirm_*",
+    "paused-by-default",
 ]
 
 

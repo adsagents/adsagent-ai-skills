@@ -77,7 +77,7 @@ class AgentScheduledTasksGuidanceTests(unittest.TestCase):
     def test_release_version_is_consistent(self) -> None:
         plugin = json.loads(self._read(".claude-plugin/plugin.json"))
         marketplace = json.loads(self._read(".claude-plugin/marketplace.json"))
-        expected = "0.7.11"
+        expected = "0.7.12"
 
         self.assertEqual(expected, self._read("VERSION").strip())
         self.assertEqual(expected, plugin["version"])

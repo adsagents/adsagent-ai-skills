@@ -75,6 +75,7 @@ Google Ads `as_of` is read-only ledger observation time and its current profile 
 ## Meta Creation Confirmation
 
 - QuickCreate confirm tokens are tenant-scoped, single-use, and expire after 15 minutes. Check `expires_at` before asking the server to confirm.
+- Multiple distinct source Ads use one server-owned `grouped_plan` prepare. The approval must expose each `settings_source_ad_id`, geography override, budget/bid summary, and paused-by-default destination structure before one explicit confirmation.
 - On `confirm_token_invalid`, never retry the old confirm. Prepare again, show the fresh sanitized approval summary, and obtain fresh explicit approval.
 - A successful asynchronous confirm returns a public `task_ref`. Poll it with `tasks_get_status(task_ref=..., response_mode=compact)` until `terminal=true`; never discover a replacement by guessing from task history.
 - Compact terminal output preserves the safe `no_create_permission` code. Direct the user to `/dashboard/assets/fb-users` to enable Create on an active eligible connection, then prepare again.

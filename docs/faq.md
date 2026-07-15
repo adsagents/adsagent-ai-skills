@@ -22,6 +22,8 @@ Operator-review means the public MCP response is intentionally redacted. Retryin
 
 The correct action is to hand the request to the AdsAgent operator with the public error and its exact `support_ref` when returned. The ref is an opaque lookup handle, not authorization; do not send bearer tokens, raw request bodies, task logs, or hidden diagnostics.
 
+For `adsagent_request_incomplete` with public `invalid_fields`, the agent may first correct those advertised fields and rerun the prepare tool once. Prepare does not write to Meta. A second failure, an unknown redacted rule, or `operator_review_required` is handed off with the exact `support_ref`; confirm/write is never retried automatically.
+
 ## Can the agent create ads?
 
 Only after explicit user confirmation. The agent should show a sanitized approval summary first and wait for the user's approval.

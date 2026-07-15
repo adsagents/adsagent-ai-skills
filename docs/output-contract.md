@@ -76,6 +76,7 @@ Google Ads `as_of` is read-only ledger observation time and its current profile 
 
 - QuickCreate confirm tokens are tenant-scoped, single-use, and expire after 15 minutes. Check `expires_at` before asking the server to confirm.
 - Multiple distinct source Ads use one server-owned `grouped_plan` prepare. The approval must expose each `settings_source_ad_id`, geography override, budget/bid summary, and paused-by-default destination structure before one explicit confirmation.
+- Meta creation clients set `creation_contract_version=2`, use explicit single/grouped mode, and read `adsagent://guide/creation-contract` for canonical examples and read-to-write mappings. Legacy aliases are path-scoped compatibility only.
 - On `confirm_token_invalid`, never retry the old confirm. Prepare again, show the fresh sanitized approval summary, and obtain fresh explicit approval.
 - A successful asynchronous confirm returns a public `task_ref`. Poll it with `tasks_get_status(task_ref=..., response_mode=compact)` until `terminal=true`; never discover a replacement by guessing from task history.
 - Compact terminal output preserves the safe `no_create_permission` code. Direct the user to `/dashboard/assets/fb-users` to enable Create on an active eligible connection, then prepare again.
@@ -106,6 +107,7 @@ Inspect top-level `client_skill_pack` from the existing setup call. It is indepe
 - Do not print raw task logs or internal diagnostics.
 - Stop on operator-review and hand off to the AdsAgent operator.
 - Preserve any returned `support_ref` verbatim in that handoff. It is an opaque lookup handle, not authorization; never replace it with a token, raw request body, or log.
+- On `adsagent_request_incomplete` with public `invalid_fields`, correct only those advertised prepare fields and rerun prepare once. A second failure is handed off with `support_ref`; confirm/write is never retried automatically.
 
 ## Comparison Rules
 

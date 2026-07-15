@@ -5,7 +5,7 @@ description: Use when AdsAgent Meta, Google Ads, or TikTok MCP calls repeat, fan
 
 # AdsAgent Reliability
 
-Use narrow calls and server-side batch work.
+Use server-side batch.
 
 ## Query Plan
 
@@ -19,11 +19,11 @@ Without that profile, use the native fallback:
 | TikTok | `insights_query_overview` | `insights_query_batch_overview` |
 | Google Ads | `google_ads_insights_overview_query` | `google_ads_insights_overview_batch` |
 
-Never launch one overview per scope. Trust top-level `complete=true` in profile mode and `meta.complete=true` natively. Missing scopes are unknown; follow `meta.has_more`.
+Never launch one overview per scope. Trust top-level `complete=true` in profile mode and `meta.complete=true` natively.
 
-For Meta selection, combine allowlisted structured `filters`; all conditions are AND. Never fan out by Campaign/Ad. On `adsagent_query_invalid`, correct the public field once; never probe hidden fields.
+For Meta selection, combine allowlisted AND `filters`. Never fan out by Campaign/Ad. Correct `adsagent_query_invalid` once; never probe hidden fields.
 
-For queued work, follow `next_action`/`poll_after_ms` and poll `tasks_get_status(task_ref=..., response_mode=compact)`. Consume Meta task `result` only when task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; never rerun page 1. Stop otherwise. Pin later `min_as_of` to `result.meta.source_observed_at` or immediate `result.query_contract.coverage.source_observed_at`; use the earliest multi-scope anchor. Return artifact links, never rows.
+For queued work, follow `next_action`/`poll_after_ms` and poll `tasks_get_status(task_ref=..., response_mode=compact)`. Consume Meta task `result` only when task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; never rerun page 1. Pin later `min_as_of` to its source anchor. Return artifact links, never rows.
 
 ## Client Limits
 
@@ -44,12 +44,13 @@ For queued work, follow `next_action`/`poll_after_ms` and poll `tasks_get_status
 | 503 `dependency_unavailable` | Treat as 503 dependency unavailable; honor `Retry-After` plus jitter and retry one read within budget. |
 | 410 `confirm_token_invalid` | Do not retry; re-prepare, show the fresh summary, and obtain approval. |
 | `no_create_permission` | Send the user to `/dashboard/assets/fb-users`, then prepare again. |
+| `adsagent_request_incomplete` + public `invalid_fields` | Correct only those advertised prepare fields and rerun the same prepare once. Do not reuse or call a confirm token. If it fails again, preserve `support_ref` and stop. |
 | `scope_unavailable` | Do not infer another workspace/token or Meta permission from this signal alone. Run setup and matching discovery once; retry the identical bounded read once only if the same scope remains listed, then preserve `support_ref` for operator review. Never broaden scope or alter customer permissions. |
 
 If retries exhaust, report the category. Never enable or modify customer permissions automatically.
 
 ## Output
 
-Return Markdown with answer, scope, compact metrics, completeness, and next action. Never expose raw JSON/CSV, stack traces, bearer tokens, internal IDs, task logs, or diagnostics.
+Return Markdown with scope, compact metrics, completeness, and next action. Never expose raw JSON/CSV, stack traces, tokens, task logs, or diagnostics.
 
 On `operator_review_required`, stop probing. Preserve `support_ref` verbatim for operator handoff; it is not authorization, so never replace it with a token, raw request, or log.

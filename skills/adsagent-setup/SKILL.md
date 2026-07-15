@@ -28,7 +28,7 @@ Use Meta v2 for new connections. Keep `/mcp` as the legacy fallback for clients 
 
 1. Have the user paste the dashboard install prompt into the MCP client.
 2. Reconnect the transport and re-list tools.
-3. Read `adsagent://guide/brief`, then one bounded `adsagent://guide/catalog/<domain>` topic if needed. Never read `adsagent://guide/tools` end-to-end.
+3. Read `adsagent://guide/brief`, then one bounded `adsagent://guide/catalog/<domain>` topic if needed. Read `adsagent://guide/creation-contract` only for Meta creation/copy work. Never read `adsagent://guide/tools` end-to-end.
 4. Run that server's `setup_get_status` and report the user-facing readiness state, blockers, and next action.
 5. Inspect `setup_get_status.capabilities`; use optional consistency, live verification, recovery, or direct task refs only when advertised.
 6. Inspect top-level `client_skill_pack` once. Its `reminder_mode=notify_only` policy is not a capability or command.

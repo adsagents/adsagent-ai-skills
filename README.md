@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.14`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.15`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -41,6 +41,8 @@ Version 0.7.12 routes multiple distinct Meta source Ads through one server-owned
 Version 0.7.13 corrects Meta scope recovery: `scope_unavailable` alone does not prove another workspace/token. Agents run bounded setup and matching discovery once, retry the identical read once only when the scope remains listed, then preserve `support_ref` for operator review without changing customer permissions.
 
 Version 0.7.14 aligns Meta creation with the hosted v2 contract: canonical single/grouped copy examples, path-scoped legacy compatibility, typed QuickCreate launch fields, and one safe prepare-only correction for public `invalid_fields`. Confirm/write calls remain approval-gated and are never retried automatically.
+
+Version 0.7.15 aligns the Hosted onboarding prompt with that Meta v2 creation contract: read the bounded creation resource, use canonical single/grouped fields, correct public `invalid_fields` on prepare at most once, preserve `support_ref` on repeat failure, and poll the returned `task_ref`.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 

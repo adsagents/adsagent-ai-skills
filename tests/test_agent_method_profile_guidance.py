@@ -67,6 +67,34 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
         self.assertIn("config_verified_live", text)
         self.assertIn("cached read-only ledger", text)
 
+    def test_google_and_tiktok_recovery_matches_hosted_contract(self) -> None:
+        google = self._read("skills/google-ads-insights/SKILL.md")
+        tiktok = self._read("skills/tiktok-insights/SKILL.md")
+        reliability = self._read("skills/adsagent-reliability/SKILL.md")
+
+        for term in (
+            "snapshot_expired",
+            "restart at page 1",
+            "same customer, dates, grouping, filters, and order",
+        ):
+            self.assertIn(term, google)
+        for term in (
+            "dependency_unavailable",
+            "no `task_ref`",
+            "retry the identical bounded read once",
+            "source_anchor",
+            "result.source_snapshot",
+            "never rerun page 1",
+        ):
+            self.assertIn(term, tiktok)
+        for term in (
+            "structured tool error",
+            "identical bounded read once",
+            "snapshot_expired",
+            "Do not reuse the continuation",
+        ):
+            self.assertIn(term, reliability)
+
     def test_meta_candidate_filtering_is_bounded_and_exhaustive_reads_are_serial(self) -> None:
         text = self._read("skills/meta-insights/SKILL.md")
         for term in (

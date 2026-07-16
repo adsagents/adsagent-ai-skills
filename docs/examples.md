@@ -89,6 +89,14 @@ If TikTok returns 429 or 503, follow Retry-After and the AdsAgent reliability sk
 ```
 
 ```text
+If TikTok returns structured dependency_unavailable without task_ref, honor retry_after_seconds and retry the identical bounded read once. If it returns task_ref, poll only that task. At terminal completion consume the result directly only when source_anchor equals result.source_snapshot; never rerun page 1.
+```
+
+```text
+If a Google Ads continuation returns snapshot_expired, restart at page 1 with the same customer, dates, grouping, filters, and order. Do not reuse the continuation or fan out.
+```
+
+```text
 Use TikTok require_fresh, since_launch, task_ref polling, and delivery receipts only when each capability is advertised. An age-only result or immediate write success is not mutation verification, and a TikTok receipt is not Meta config_verified_live evidence.
 ```
 

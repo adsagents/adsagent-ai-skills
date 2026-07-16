@@ -21,7 +21,7 @@ Show `source_creative_type` and `post_linkage`; do not auto-retry. Grouped appro
 
 ## Creation Contract V3
 
-Reconnect and re-list tools, then read `adsagent://guide/creation-contract` and `adsagent://guide/name-contract` when creating. Set `creation_contract_version=3`. New requests emit explicit role names only.
+Re-list tools. For creation, read `adsagent://guide/creation-contract` and `adsagent://guide/name-contract`; for delivery changes, read `adsagent://guide/metadata-contract`. Set `creation_contract_version=3`; emit role-specific names.
 
 Single-copy tool arguments:
 
@@ -52,5 +52,7 @@ If the user references settings but omits its Campaign, AdSet, or template refer
 On `adsagent_request_incomplete` with public `invalid_fields`, correct only those advertised prepare fields and rerun the same prepare once. This creates no Meta object. Never reuse a confirm token. If correction fails again, the rule is redacted, or `operator_review_required` appears, stop and preserve the exact `support_ref` for AdsAgent support. Never send raw payloads, logs, or tokens.
 
 Show `approval_request.summary` and warnings. Confirm exactly once only after explicit approval, then poll `tasks_get_status(task_ref=..., response_mode=compact)` to `terminal=true`. Never auto-retry confirm, creation, budget, status, bid, or targeting writes. On `no_create_permission`, direct the user to `/dashboard/assets/fb-users`; never change customer permissions.
+
+Status mutations use `target_configured_status=ACTIVE|PAUSED`; optional CAS uses `current_configured_status`. Never pass `effective_status` or lifecycle states. Legacy aliases are compatibility-only.
 
 For post-write configuration, follow `next_action` to `overview_get_live_configs` with `mutation_ref`. Insights freshness proves metrics, not delivery configuration. Recover uncertain operations with `operations_get`; never repeat the write.

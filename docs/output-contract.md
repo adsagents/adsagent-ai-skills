@@ -42,7 +42,8 @@ One concise answer.
 - Meta structured `filters` are allowlisted and combined with AND. Use text operators for hierarchy IDs/names, numeric comparisons for metrics/budgets/bids, and enum equality/membership for statuses, objectives, and events. Never probe hidden fields.
 - Preserve full hierarchy IDs on Ad reads. Exact Ad-name deduplication, language classification, and business grouping are client responsibilities; do not use `dedupe_by` in new workflows.
 - Interpret `configured_status` as configured `ACTIVE`/`PAUSED`, `effective_status` as Meta's actual delivery/review outcome such as `DISAPPROVED` or `PENDING_REVIEW`, and legacy `status` as an alias of `effective_status`.
-- Without the profile, use `insights_query_overview` / `insights_query_batch_overview` for Meta or TikTok and `google_ads_insights_overview_query` / `google_ads_insights_overview_batch` for Google Ads.
+- Read `adsagent://guide/metadata-contract` for delivery metadata. Money fields use returned account `currency` in major units; `budget_level` is `campaign|adset`; `bid_strategy` and `optimization_goal` are canonical lower-case; `objective` and `billing_event` are Meta-native uppercase; `conversion_event` stays separate and lower-case. Tool-local task, batch, notification, and connection `status` values are not delivery status.
+- Without the profile, use `insights_query_overview` / `insights_query_batch_overview` with `metadata_contract_version=1` for Meta; preserve each other channel's native request contract.
 - Do not read raw rows for normal business questions.
 - If forensic raw inspection is required, hand it to the AdsAgent operator instead of turning raw rows into a chat answer.
 - Do not query every account, product, and day unless the user explicitly asks for a broad export.
@@ -81,6 +82,7 @@ Google Ads `as_of` is read-only ledger observation time and its current profile 
 - A successful asynchronous confirm returns a public `task_ref`. Poll it with `tasks_get_status(task_ref=..., response_mode=compact)` until `terminal=true`; never discover a replacement by guessing from task history.
 - Compact terminal output preserves the safe `no_create_permission` code. Direct the user to `/dashboard/assets/fb-users` to enable Create on an active eligible connection, then prepare again.
 - Never enable or modify customer permissions automatically, and never replay a failed or uncertain mutation.
+- Status writes use `target_configured_status=ACTIVE|PAUSED` and optional `current_configured_status`; never send `effective_status` or a task lifecycle state as a mutation target.
 
 ## Resource Rules
 

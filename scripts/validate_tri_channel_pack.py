@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.16"
+VERSION = "0.7.17"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -78,6 +78,12 @@ REQUIRED_REPO_TERMS = [
     "language classification",
     "configured_status",
     "effective_status",
+    "adsagent://guide/metadata-contract",
+    "metadata_contract_version=1",
+    "target_configured_status",
+    "money_unit",
+    "budget_level",
+    "bid_strategy",
     "DISAPPROVED",
     "PENDING_REVIEW",
     "daily_budget",
@@ -182,6 +188,10 @@ META_TERMS = [
     "business grouping",
     "configured_status",
     "effective_status",
+    "adsagent://guide/metadata-contract",
+    "money_unit=major",
+    "budget_level",
+    "bid_strategy",
     "DISAPPROVED",
     "PENDING_REVIEW",
     "daily_budget",
@@ -265,6 +275,9 @@ META_COPY_TERMS = [
     "settings_source_ad_id",
     "cgb_confirm_*",
     "paused-by-default",
+    "adsagent://guide/metadata-contract",
+    "target_configured_status",
+    "current_configured_status",
 ]
 
 

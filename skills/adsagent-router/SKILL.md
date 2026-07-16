@@ -46,6 +46,7 @@ When scope is missing:
 - On `mcp_fanout_detected`, stop the loop and use the platform batch tool.
 - Consequential writes require prepare, sanitized summary, explicit approval, then confirm.
 - Meta creation uses `creation_contract_version=3`; read `adsagent://guide/creation-contract` and `adsagent://guide/name-contract`, then emit only explicit role fields.
+- Meta metadata: read `adsagent://guide/metadata-contract`; status writes use `target_configured_status`.
 - On `adsagent_request_incomplete` with public `invalid_fields`, correct those fields and rerun prepare once. Never reuse or automatically retry confirm; after a second failure preserve `support_ref` and stop.
 - QuickCreate tokens are single-use for 15 minutes. On `confirm_token_invalid`, prepare again; never retry old confirm.
 - Poll returned `task_ref`. On `no_create_permission`, use `/dashboard/assets/fb-users`; never change permissions.

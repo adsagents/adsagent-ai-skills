@@ -37,7 +37,7 @@ One concise answer.
 - Trust totals only when `meta.complete=true`; follow `meta.has_more` and treat missing scopes as unknown, never zero.
 - When `setup_get_status.capabilities.agent_method_profile.profile_id=adsagent_agent_methods_v1`, use one `insights_query_consistent` call with root `query_contract_version=1` and exactly one `scope` or one ordered `scopes` batch up to advertised `max_scopes`.
 - In profile mode, preserve result order and trust only top-level `complete=true` plus every result's `status` and `query_contract`; shared tool names do not imply shared freshness or write evidence.
-- For a queued Meta consistency read, poll `tasks_get_status(response_mode=compact)`. Consume the terminal `result` directly only when task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; never rerun page 1.
+- For queued consistency reads, poll the advertised task tool with `response_mode=compact`; Meta uses `tasks_get_status(response_mode=compact)`. Consume the bounded terminal `result` directly when task/result completion and platform source-anchor checks pass; never rerun page 1. TikTok requires `source_anchor == result.source_snapshot`.
 - For later pages keep all filters unchanged and increment only `page`. Set `min_as_of` to the task `result.meta.source_observed_at`, or for an immediate complete response use `result.query_contract.coverage.source_observed_at`; with multiple scopes use the earliest first-page anchor.
 - Meta structured `filters` are allowlisted and combined with AND. Use text operators for hierarchy IDs/names, numeric comparisons for metrics/budgets/bids, and enum equality/membership for statuses, objectives, and events. Never probe hidden fields.
 - Preserve full hierarchy IDs on Ad reads. Exact Ad-name deduplication, language classification, and business grouping are client responsibilities; do not use `dedupe_by` in new workflows.
@@ -93,6 +93,8 @@ Google Ads `as_of` is read-only ledger observation time and its current profile 
 - Honor `mcp_concurrency_limited` as a 429 concurrency signal.
 - Honor `mcp_fanout_detected` as a batch-routing signal; do not retry the blocked single-scope overview request.
 - Treat 503 dependency unavailable separately from 429 concurrency.
+- A structured `dependency_unavailable` can arrive inside a successful MCP transport response. With no `task_ref`, honor structured `retry_after_seconds`/`Retry-After` and retry the identical bounded read once; never poll or invent a task. With a `task_ref`, poll only that task.
+- On `snapshot_expired`, restart at page 1 with unchanged scope, dates, filters, grouping, and order. Never reuse the continuation or fan out.
 - Retry serially after concurrency limits.
 - Do not use token rotation to bypass customer caps.
 - Cache setup and tool discovery.

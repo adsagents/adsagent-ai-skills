@@ -23,7 +23,7 @@ Google is a read-only ledger. Report `as_of` as observation time. It accepts onl
 
 - When `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call its advertised `consistent_query_tool` once with root `query_contract_version=1`, `consistency=cached`, and exactly one `scope` or one ordered `scopes` batch up to advertised `max_scopes`.
 - Trust top-level `complete=true`, ordered result contracts, and server `summary/total`; missing scopes are unknown, never zero.
-- Follow returned `next_action` only; poll its task tool with exact `task_ref` and `poll_after_ms`. Never invent a refresh task.
+- Follow returned `next_action` only; poll its task tool with exact `task_ref` and `poll_after_ms`. Consume a completed bounded terminal `result` directly; never rerun page 1 or invent a refresh task.
 - Without the profile, use `google_ads_insights_overview_query` for one scope and `google_ads_insights_overview_batch` for multiple scopes.
 - Do not create client-side fan-out by customer or date.
 - If the server returns `mcp_fanout_detected`, stop the loop and combine current plus pending scopes through profile `insights_query_consistent` when advertised, otherwise `google_ads_insights_overview_batch`.
@@ -41,6 +41,8 @@ If Google Ads MCP returns `429` with `mcp_concurrency_limited`:
 Parse backoff from the header, top-level `data`, or JSON-RPC `error.data`; never regex messages.
 
 Treat `503` as dependency unavailable, not as a concurrency cap. Follow `/adsagent-reliability` for retry boundaries.
+
+On `snapshot_expired`, restart at page 1 with the same customer, dates, grouping, filters, and order. Do not reuse the continuation, broaden scope, or fan out.
 
 If Google Ads MCP returns `429` with `mcp_fanout_detected`, do not backoff-retry the same call. Switch to the profile batch shape or native batch overview tool.
 

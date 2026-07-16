@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.17"
+VERSION = "0.7.18"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -93,6 +93,10 @@ REQUIRED_REPO_TERMS = [
     "insights_export_csv",
     "scope_unavailable",
     "support_ref",
+    "snapshot_expired",
+    "source_anchor",
+    "result.source_snapshot",
+    "retry_after_seconds",
     "not authorization",
     "do not infer another workspace/token",
     "retry the identical bounded read once",
@@ -228,6 +232,8 @@ GOOGLE_TERMS = [
     "read-only ledger",
     "as_of",
     "does not advertise require_fresh",
+    "snapshot_expired",
+    "restart at page 1",
 ]
 
 TIKTOK_TERMS = [
@@ -256,6 +262,11 @@ TIKTOK_TERMS = [
     "age-only",
     "immediate write success is not mutation verification",
     "config_verified_live",
+    "dependency_unavailable",
+    "retry_after_seconds",
+    "source_anchor",
+    "result.source_snapshot",
+    "never rerun page 1",
 ]
 
 META_COPY_TERMS = [
@@ -493,6 +504,9 @@ def main() -> None:
             "task_ref",
             "tasks_get_status",
             "operations_get_context",
+            "snapshot_expired",
+            "retry_after_seconds",
+            "identical bounded read once",
         ],
     )
 

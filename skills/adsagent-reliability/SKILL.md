@@ -30,7 +30,7 @@ For queued work, follow advertised `next_action`/`poll_after_ms`; Meta uses `tas
 - Keep 4-6 calls in flight; cache discovery.
 - Never parallel-retry, rotate tokens around caps, or auto-retry confirm.
 - Retry only reads/idempotent operations.
-- After Meta writes, follow `next_action` to `overview_get_live_configs`; for uncertainty use `operations_get` or `operations_get_context`, never repeat the write.
+- After Meta writes, follow `next_action` to `overview_get_live_configs`; for task-write uncertainty use `operations_get_context(task_ref=...)`, never replay the write.
 - TikTok writes require advertised tools and `mutation_receipts=true`.
 - Parse backoff from headers, top-level `data`, and JSON-RPC `error.data`; see [retry-parser.md](retry-parser.md).
 

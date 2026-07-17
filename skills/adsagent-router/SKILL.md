@@ -51,9 +51,9 @@ When scope is missing:
 - QuickCreate tokens are single-use for 15 minutes. On `confirm_token_invalid`, prepare again; never retry old confirm.
 - Poll returned `task_ref`. On `no_create_permission`, use `/dashboard/assets/fb-users`; never change permissions.
 - Meta delivery config verification follows the returned `next_action` to `overview_get_live_configs`; never substitute an Insights watermark.
-- Meta decisions use `insights_query_consistent(require_fresh)` only when advertised; recovery uses `operations_get_context`.
-- Meta candidate reads use one allowlisted AND `filters` plan; keep hierarchy IDs. Name deduplication and grouping stay client-side.
-- For a completed Meta consistency refresh, consume its terminal result; never rerun page 1. Pin later pages to the source anchor with `min_as_of`.
+- Meta decisions use `insights_query_consistent(require_fresh)` only when advertised; uncertain task writes use `operations_get_context` and are never replayed.
+- Meta candidate reads use one allowlisted AND plan; keep hierarchy IDs; deduplicate and group client-side.
+- Continue Meta page 2 and later with the unchanged complete cached contract and first-page `min_as_of`; never rerun page 1.
 - Use the common envelope only for `agent_method_profile.profile_id=adsagent_agent_methods_v1`; otherwise preserve native output.
 - When an error includes `support_ref`, preserve it verbatim and show it for unresolved/operator-review handoff. It is not authorization; never invent, modify, enumerate, or replace it with raw tokens, request bodies, or logs.
-- Google is a cached read-only ledger. TikTok freshness, tasks, since-launch reads, and receipts are capability-gated. A shared profile does not imply cross-platform evidence parity.
+- Google is a cached read-only ledger. TikTok freshness, tasks, since-launch reads, and receipts are capability-gated; shared profiles do not imply evidence parity.

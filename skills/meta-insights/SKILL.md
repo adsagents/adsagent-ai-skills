@@ -5,7 +5,7 @@ description: Use when the user asks AdsAgent about Meta product/account/campaign
 
 # Meta Insights Through AdsAgent
 
-Use bounded aggregates and public handles. Never expose raw rows, schemas, or diagnostics.
+Use bounded aggregates and public handles. Never expose rows, schemas, or diagnostics.
 
 ## Scope And Routing
 
@@ -29,7 +29,7 @@ Money uses returned account currency and `money_unit=major`. `budget_level` is `
 
 With `group_by=ad`, preserve `ad_account_id`, `ad_account_name`, `campaign_id`, `campaign_name`, `adset_id`, `adset_name`, `ad_id`, and `ad_name`. Do not prefetch or fan out parents. Legacy `search` and `spend_gt` remain compatible; do not use `dedupe_by`. Exact Ad-name deduplication, language classification, and business grouping remain client-side.
 
-For all matches, preserve each `ad_id`; advance pages serially while `data.meta.has_more=true`, keeping filters unchanged. Pin `min_as_of` to task `result.meta.source_observed_at` or immediate `result.query_contract.coverage.source_observed_at`; use the earliest multi-scope anchor. Never enlarge or parallelize pages. Large exhaustive output uses grouped `insights_export_csv` with identical filters.
+For matches, preserve each `ad_id`; advance pages serially while `data.meta.has_more=true`. Page 1 must be complete. For page 2 and later, keep `consistency=cached`, `query_contract_version=1`, `require_complete_range=true`, scope, dates, timezone, grouping, filters, sorting, and `page_size` unchanged; increment only `page` and pin `min_as_of` to task `result.meta.source_observed_at` or immediate `result.query_contract.coverage.source_observed_at`. Use the earliest multi-scope anchor. Never rerun page 1 or switch to `require_fresh`. Never enlarge or parallelize pages. On `pagination_anchor_unavailable`, stop and preserve `support_ref`; do not broaden, refresh, or treat it as a permission error. Large output uses grouped `insights_export_csv` with identical filters.
 
 On `adsagent_query_invalid`, correct the public field once. On `scope_unavailable`, do not infer another workspace/token or Meta permission. Run setup and matching discovery (`products_list` or `accounts_list_linked_accounts`) once; if still listed, retry the identical bounded read once. If it persists, stop and preserve `support_ref` for operator review. Never broaden scope or alter permissions.
 

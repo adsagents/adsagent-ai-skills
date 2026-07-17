@@ -55,4 +55,4 @@ Show `approval_request.summary` and warnings. Confirm exactly once only after ex
 
 Status mutations use `target_configured_status=ACTIVE|PAUSED`; optional CAS uses `current_configured_status`. Never pass `effective_status` or lifecycle states. Legacy aliases are compatibility-only.
 
-For post-write configuration, follow `next_action` to `overview_get_live_configs` with `mutation_ref`. Insights freshness proves metrics, not delivery configuration. Recover uncertain operations with `operations_get`; never repeat the write.
+For post-write configuration, follow `next_action` to `overview_get_live_configs` with `mutation_ref`. Insights freshness proves metrics, not delivery configuration. Recover task writes through `operations_get_context`; never replay them.

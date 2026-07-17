@@ -38,7 +38,7 @@ One concise answer.
 - When `setup_get_status.capabilities.agent_method_profile.profile_id=adsagent_agent_methods_v1`, use one `insights_query_consistent` call with root `query_contract_version=1` and exactly one `scope` or one ordered `scopes` batch up to advertised `max_scopes`.
 - In profile mode, preserve result order and trust only top-level `complete=true` plus every result's `status` and `query_contract`; shared tool names do not imply shared freshness or write evidence.
 - For queued consistency reads, poll the advertised task tool with `response_mode=compact`; Meta uses `tasks_get_status(response_mode=compact)`. Consume the bounded terminal `result` directly when task/result completion and platform source-anchor checks pass; never rerun page 1. TikTok requires `source_anchor == result.source_snapshot`.
-- For later pages keep all filters unchanged and increment only `page`. Set `min_as_of` to the task `result.meta.source_observed_at`, or for an immediate complete response use `result.query_contract.coverage.source_observed_at`; with multiple scopes use the earliest first-page anchor.
+- Page 1 must be complete. For page 2 and later keep `consistency=cached`, `query_contract_version=1`, `require_complete_range=true`, scope, date window, timezone, grouping, filters, sorting, and page size unchanged; increment only `page`. Set `min_as_of` to task `result.meta.source_observed_at`, or for an immediate complete response use `result.query_contract.coverage.source_observed_at`; with multiple scopes use the earliest first-page anchor. On `pagination_anchor_unavailable`, stop without refreshing or rerunning page 1.
 - Meta structured `filters` are allowlisted and combined with AND. Use text operators for hierarchy IDs/names, numeric comparisons for metrics/budgets/bids, and enum equality/membership for statuses, objectives, and events. Never probe hidden fields.
 - Preserve full hierarchy IDs on Ad reads. Exact Ad-name deduplication, language classification, and business grouping are client responsibilities; do not use `dedupe_by` in new workflows.
 - Interpret `configured_status` as configured `ACTIVE`/`PAUSED`, `effective_status` as Meta's actual delivery/review outcome such as `DISAPPROVED` or `PENDING_REVIEW`, and legacy `status` as an alias of `effective_status`.
@@ -67,7 +67,9 @@ Report the server's exact evidence kind:
 
 For Meta decisions, use `insights_query_consistent(consistency=require_fresh)` only when `setup_get_status.capabilities` advertises it. Stop on `verification_pending`, `data_not_fresh`, unknown launch date, or `complete=false`.
 
-After an approved Meta confirm, call the returned `next_action` exactly; expect `overview_get_live_configs` with typed entities and `mutation_ref`. Retry only that read while pending, and recover the persisted receipt through `operations_get` or `operations_get_context`. Never retry an uncertain write.
+After an approved Meta confirm, call the returned `next_action` exactly; expect `overview_get_live_configs` with typed entities and `mutation_ref`. Retry only that read while pending. For task writes, recover the persisted receipt through `operations_get_context(task_ref=...)`; never replay an uncertain write.
+
+Write recovery is typed: `meta_write_rejected` permits only a corrected fresh task and fresh approval; `meta_write_verification_pending` requires context recovery and a stop; `verified_created` supplies recovered IDs; `verified_not_created` permits a fresh task and fresh approval; `verification_ambiguous` requires operator review. None of these states authorizes replaying the original task or confirmation token.
 
 Use `insights_query_consistent(..., after_mutation_ref=mutation_ref)` only for requested post-write metrics. `metrics_observed_after_mutation` does not verify delivery configuration. Poll queued work with `tasks_get_status(task_ref=...)`.
 

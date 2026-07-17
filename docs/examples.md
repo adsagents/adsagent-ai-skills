@@ -40,7 +40,15 @@ If a Meta require_fresh read queues work, poll tasks_get_status with response_mo
 ```
 
 ```text
+For an exhaustive Meta result, require a complete first page. Continue page 2 and later serially with consistency=cached, query_contract_version=1, require_complete_range=true, the identical scope/window/timezone/grouping/filters/sort/page_size, and the first-page min_as_of anchor. Never rerun page 1 or start a refresh during continuation.
+```
+
+```text
 After I approve this Meta delivery change, call the returned next_action exactly. Expect overview_get_live_configs with typed entities and mutation_ref; retry only that read while pending. Use operations_get_context if interrupted. If I also ask for post-write metrics, use after_mutation_ref separately; it does not verify delivery configuration. Do not repeat an uncertain write.
+```
+
+```text
+If a Meta task write returns meta_write_verification_pending, call operations_get_context with that task_ref and do not retry. Use recovered IDs on verified_created. Only prepare a fresh task and request fresh approval after meta_write_rejected or verified_not_created. Stop for operator review on verification_ambiguous.
 ```
 
 ```text

@@ -17,7 +17,7 @@ Use Google Ads fields and tools only.
 
 ## Freshness Boundary
 
-Google is a read-only ledger. Report `as_of` as observation time. It accepts only `consistency=cached`; it does not advertise require_fresh, mutation receipts, since-launch, product refresh, or live config verification. Shared tool names add no capability.
+Google is a read-only ledger; report `as_of` as observation time. Its public profile accepts only `consistency=cached` and does not advertise require_fresh, mutation receipts, since-launch, product refresh, public mutation tools, or live config verification. Internal receipt handling does not add a public MCP write capability.
 
 ## Query Pattern
 
@@ -27,6 +27,7 @@ Google is a read-only ledger. Report `as_of` as observation time. It accepts onl
 - Without the profile, use `google_ads_insights_overview_query` for one scope and `google_ads_insights_overview_batch` for multiple scopes.
 - Do not create client-side fan-out by customer or date.
 - If the server returns `mcp_fanout_detected`, stop the loop and combine current plus pending scopes through profile `insights_query_consistent` when advertised, otherwise `google_ads_insights_overview_batch`.
+- For later pages, use the opaque continuation only through its advertised path. Keep customer, login-customer route, dates, grouping, filters, order, page size, and source snapshot unchanged. Never add Meta `min_as_of`.
 - Never sum visible rows; distinguish rows shown from totals.
 
 ## Retry And Backoff
@@ -42,7 +43,7 @@ Parse backoff from the header, top-level `data`, or JSON-RPC `error.data`; never
 
 Treat `503` as dependency unavailable, not as a concurrency cap. Follow `/adsagent-reliability` for retry boundaries.
 
-On `snapshot_expired`, restart at page 1 with the same customer, dates, grouping, filters, and order. Do not reuse the continuation, broaden scope, or fan out.
+On `snapshot_expired` or continuation replay rejection, restart at page 1 with the same customer, dates, grouping, filters, and order, plus the original login-customer route and page size. Do not reuse the continuation, broaden scope, or fan out.
 
 If Google Ads MCP returns `429` with `mcp_fanout_detected`, do not backoff-retry the same call. Switch to the profile batch shape or native batch overview tool.
 

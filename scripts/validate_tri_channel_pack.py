@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.19"
+VERSION = "0.7.20"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -96,6 +96,10 @@ REQUIRED_REPO_TERMS = [
     "snapshot_expired",
     "source_anchor",
     "result.source_snapshot",
+    "opaque continuation",
+    "single-use continuation",
+    "login-customer route",
+    "Never send Meta `min_as_of` to Google or TikTok",
     "retry_after_seconds",
     "not authorization",
     "do not infer another workspace/token",
@@ -234,6 +238,11 @@ GOOGLE_TERMS = [
     "does not advertise require_fresh",
     "snapshot_expired",
     "restart at page 1",
+    "opaque continuation",
+    "login-customer route",
+    "page size",
+    "Never add Meta `min_as_of`",
+    "does not add a public MCP write capability",
 ]
 
 TIKTOK_TERMS = [
@@ -267,6 +276,11 @@ TIKTOK_TERMS = [
     "source_anchor",
     "result.source_snapshot",
     "never rerun page 1",
+    "opaque continuation",
+    "single-use",
+    "authorization route",
+    "page size",
+    "Never add Meta `min_as_of`",
 ]
 
 META_COPY_TERMS = [
@@ -505,6 +519,8 @@ def main() -> None:
             "tasks_get_status",
             "operations_get_context",
             "snapshot_expired",
+            "opaque continuation",
+            "Never move Meta `min_as_of` into Google or TikTok requests",
             "retry_after_seconds",
             "identical bounded read once",
         ],

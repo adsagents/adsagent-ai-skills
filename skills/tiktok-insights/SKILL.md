@@ -16,7 +16,7 @@ Use TikTok tenant, advertiser, and metric fields only.
 
 ## Freshness And Write Boundary
 
-Capabilities are independently gated. Use `require_fresh`, `since_launch`, direct `task_ref`, or receipts only when advertised. Report evidence exactly: age-only data or immediate write success is not mutation verification, and TikTok receipts do not imply Meta verification.
+Use `require_fresh`, `since_launch`, direct `task_ref`, or receipts only when advertised. Remember: age-only data or immediate write success is not mutation verification; TikTok receipts do not imply Meta verification.
 
 ## Query Pattern
 
@@ -27,11 +27,13 @@ Capabilities are independently gated. Use `require_fresh`, `since_launch`, direc
 - Without the profile, use `insights_query_overview` for one scope and `insights_query_batch_overview` for multiple scopes.
 - Do not create client-side fan-out by advertiser.
 - If the server returns `mcp_fanout_detected`, stop the loop and combine current plus pending scopes through profile `insights_query_consistent` when advertised, otherwise `insights_query_batch_overview`.
+- For later pages, use the opaque continuation only through its advertised path. Keep tenant, advertiser, authorization route, dates, grouping, filters, order, page size, and source snapshot unchanged. Never add Meta `min_as_of`.
+- Treat it as single-use. On replay rejection or `snapshot_expired`, restart identical page 1 serially; never parallelize pages.
 - Never sum visible rows; distinguish them from server totals.
 
 ## Write Recovery
 
-Only with profile `mutation_receipts=true` and all tool names: use `delivery_prepare_tool`, confirm once with `delivery_confirm_tool`, and recover through `operation_get_tool`. Never replay or claim `config_verified_live` unless returned.
+Only with `mutation_receipts=true` and all tool names: use `delivery_prepare_tool`, confirm once with `delivery_confirm_tool`, then recover through `operation_get_tool` on the exact original tenant, advertiser, and authorization route. Never replay, name-match uncertainty, switch credentials, or claim `config_verified_live` unless returned.
 
 ## Retry And Backoff
 

@@ -101,7 +101,7 @@ If TikTok returns structured dependency_unavailable without task_ref, honor retr
 ```
 
 ```text
-If a Google Ads continuation returns snapshot_expired, restart at page 1 with the same customer, dates, grouping, filters, and order. Do not reuse the continuation or fan out.
+For TikTok page 2 and later, use the returned opaque single-use continuation with the unchanged tenant, advertiser, authorization route, dates, grouping, filters, order, page size, and source snapshot. Never add Meta min_as_of. If the continuation is replayed or expires, restart the identical page 1 serially.
 ```
 
 ```text
@@ -110,6 +110,16 @@ Use TikTok require_fresh, since_launch, task_ref polling, and delivery receipts 
 
 ```text
 If TikTok advertises mutation_receipts=true plus delivery prepare, confirm, and operation-get tools, prepare first, confirm once after approval, and recover uncertain outcomes with operation-get. Never replay the write.
+```
+
+## Google Ads Insights
+
+```text
+For Google Ads page 2 and later, use the returned opaque continuation with the unchanged customer, login-customer route, dates, grouping, filters, order, page size, and source snapshot. Never add Meta min_as_of. On snapshot_expired or replay rejection, restart the identical page 1 serially.
+```
+
+```text
+Treat the current Google Ads Hosted MCP profile as a read-only ledger. Internal receipt handling does not expose public mutation tools; do not invent prepare, confirm, operation-get, or config verification calls when setup_get_status does not advertise them.
 ```
 
 ## Meta Copy And Comparison

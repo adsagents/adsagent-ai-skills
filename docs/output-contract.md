@@ -38,7 +38,8 @@ One concise answer.
 - When `setup_get_status.capabilities.agent_method_profile.profile_id=adsagent_agent_methods_v1`, use one `insights_query_consistent` call with root `query_contract_version=1` and exactly one `scope` or one ordered `scopes` batch up to advertised `max_scopes`.
 - In profile mode, preserve result order and trust only top-level `complete=true` plus every result's `status` and `query_contract`; shared tool names do not imply shared freshness or write evidence.
 - For queued consistency reads, poll the advertised task tool with `response_mode=compact`; Meta uses `tasks_get_status(response_mode=compact)`. Consume the bounded terminal `result` directly when task/result completion and platform source-anchor checks pass; never rerun page 1. TikTok requires `source_anchor == result.source_snapshot`.
-- Page 1 must be complete. For page 2 and later keep `consistency=cached`, `query_contract_version=1`, `require_complete_range=true`, scope, date window, timezone, grouping, filters, sorting, and page size unchanged; increment only `page`. Set `min_as_of` to task `result.meta.source_observed_at`, or for an immediate complete response use `result.query_contract.coverage.source_observed_at`; with multiple scopes use the earliest first-page anchor. On `pagination_anchor_unavailable`, stop without refreshing or rerunning page 1.
+- A paginated page 1 must be complete. Meta page 2 and later keep `consistency=cached`, `query_contract_version=1`, `require_complete_range=true`, scope, date window, timezone, grouping, filters, sorting, and page size unchanged; increment only `page`. Set `min_as_of` to task `result.meta.source_observed_at`, or for an immediate complete response use `result.query_contract.coverage.source_observed_at`; with multiple scopes use the earliest first-page anchor. On `pagination_anchor_unavailable`, stop without refreshing or rerunning page 1.
+- Google and TikTok later pages use only their returned opaque continuation through the advertised continuation path. Preserve the exact original platform route, scope, dates, grouping, filters, order, page size, and source snapshot. TikTok continuations are single-use. Never send Meta `min_as_of` to Google or TikTok, and never parallelize pages from one snapshot.
 - Meta structured `filters` are allowlisted and combined with AND. Use text operators for hierarchy IDs/names, numeric comparisons for metrics/budgets/bids, and enum equality/membership for statuses, objectives, and events. Never probe hidden fields.
 - Preserve full hierarchy IDs on Ad reads. Exact Ad-name deduplication, language classification, and business grouping are client responsibilities; do not use `dedupe_by` in new workflows.
 - Interpret `configured_status` as configured `ACTIVE`/`PAUSED`, `effective_status` as Meta's actual delivery/review outcome such as `DISAPPROVED` or `PENDING_REVIEW`, and legacy `status` as an alias of `effective_status`.
@@ -73,7 +74,7 @@ Write recovery is typed: `meta_write_rejected` permits only a corrected fresh ta
 
 Use `insights_query_consistent(..., after_mutation_ref=mutation_ref)` only for requested post-write metrics. `metrics_observed_after_mutation` does not verify delivery configuration. Poll queued work with `tasks_get_status(task_ref=...)`.
 
-Google Ads `as_of` is read-only ledger observation time and its current profile accepts only `consistency=cached`. TikTok may advertise `require_fresh`, task refs, since-launch reads, and mutation receipts independently; age-only freshness or immediate write success is not mutation verification. Use TikTok prepare/confirm/recovery tools only when their names and `mutation_receipts=true` are advertised.
+Google Ads `as_of` is read-only ledger observation time and its current public profile accepts only `consistency=cached`; internal receipt handling does not expose public mutation tools. TikTok may advertise `require_fresh`, task refs, since-launch reads, and mutation receipts independently; age-only freshness or immediate write success is not mutation verification. Use TikTok prepare/confirm/recovery tools only when their names and `mutation_receipts=true` are advertised, and recover on the exact original tenant, advertiser, and authorization route without replay.
 
 ## Meta Creation Confirmation
 
@@ -96,7 +97,7 @@ Google Ads `as_of` is read-only ledger observation time and its current profile 
 - Honor `mcp_fanout_detected` as a batch-routing signal; do not retry the blocked single-scope overview request.
 - Treat 503 dependency unavailable separately from 429 concurrency.
 - A structured `dependency_unavailable` can arrive inside a successful MCP transport response. With no `task_ref`, honor structured `retry_after_seconds`/`Retry-After` and retry the identical bounded read once; never poll or invent a task. With a `task_ref`, poll only that task.
-- On `snapshot_expired`, restart at page 1 with unchanged scope, dates, filters, grouping, and order. Never reuse the continuation or fan out.
+- On `snapshot_expired` or continuation replay rejection, restart at page 1 with unchanged platform route, scope, dates, filters, grouping, order, and page size. Never reuse the continuation or fan out.
 - Retry serially after concurrency limits.
 - Do not use token rotation to bypass customer caps.
 - Cache setup and tool discovery.

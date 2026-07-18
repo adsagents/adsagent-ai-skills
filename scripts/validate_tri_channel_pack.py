@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.20"
+VERSION = "0.7.21"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -117,6 +117,8 @@ REQUIRED_REPO_TERMS = [
     "cgb_confirm_*",
     "support@adsagent.md",
     "https://github.com/adsagents/adsagent-ai-skills",
+    "result.failures.items",
+    "failures.unclassified_count",
 ]
 
 FORBIDDEN_REPO_TERMS = [

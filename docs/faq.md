@@ -30,6 +30,8 @@ Only after explicit user confirmation. The agent should show a sanitized approva
 
 QuickCreate confirm tokens are single-use and expire after 15 minutes. The agent checks `expires_at`; on `confirm_token_invalid`, it prepares again, shows the fresh summary, and asks for approval again. It polls the returned `task_ref` with `response_mode=compact`. If the task returns `no_create_permission`, the user must open `/dashboard/assets/fb-users` and enable Create on an active eligible connection. Never enable or modify customer permissions automatically.
 
+When a terminal create/copy task contains `result.failures.items`, the agent reports those bounded public reasons and next actions instead of a generic failure. It never exposes raw Meta errors or retries the unchanged write. Unknown items remain operator-review only.
+
 ## Does one install cover Google Ads and TikTok?
 
 Yes. v0.7.9 is an AdsAgent tri-channel skill pack. It includes Meta skills, `google-ads-insights`, `tiktok-insights`, and the platform-neutral `agent-scheduled-tasks` guidance. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and capability-gated profile adapters.

@@ -54,6 +54,7 @@ One concise answer.
 - Use export or async workflows for large tables.
 - For a large exhaustive Meta result, call grouped `insights_export_csv` with the same filters and consume the artifact.
 - Poll queued work to terminal, then summarize the artifact in Markdown; do not paste full CSV into chat.
+- Terminal `insights_export` results retain `result.artifact` in compact and standard task polls. Send its opaque short-lived `download_url` byte-for-byte to HTTP GET. Never redact, rebuild, decode, truncate, or substitute any segment. When `artifact_status=expired` or the URL is absent, request a new explicit export rather than reconstructing a provider URL.
 
 ## Freshness And Verification
 

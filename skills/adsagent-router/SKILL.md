@@ -42,7 +42,7 @@ When scope is missing:
 - Use public handles and Markdown.
 - Never read raw rows for normal questions or fan out across scopes/days.
 - Trust totals only when `meta.complete=true`; missing scopes are unknown, never zero.
-- Return full tables through an artifact workflow.
+- Route exports through the channel skill's artifact workflow.
 - On `mcp_fanout_detected`, stop the loop and use the platform batch tool.
 - Consequential writes require prepare, sanitized summary, explicit approval, then confirm.
 - Meta creation uses `creation_contract_version=3`; read `adsagent://guide/creation-contract` and `adsagent://guide/name-contract`, then emit only explicit role fields.

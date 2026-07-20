@@ -9,7 +9,7 @@ Use bounded aggregates and public handles. Never expose rows, schemas, or diagno
 
 ## Scope And Routing
 
-When scope is missing, run `setup_get_status`, then `products_list`; ask for scope and dates.
+Missing scope: run `setup_get_status`, then `products_list`; ask for scope and dates.
 
 - One scope: `insights_query_overview`; multiple scopes: one `insights_query_batch_overview`. Native reads pass `metadata_contract_version=1`.
 - With `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call `insights_query_consistent` once with root `query_contract_version=1`, `consistency=require_fresh`, and one scope or up to 20 ordered scopes.
@@ -23,7 +23,7 @@ For `insights_query_consistent`, use `page_size<=50` and allowlisted `filters`. 
 - Number `gt`/`gte`/`lt`/`lte`/`eq`: metrics, `daily_budget`, `lifetime_budget`, `bid_amount`.
 - Enum `eq`/`in`: statuses, `objective`, `optimization_goal`, `billing_event`, `conversion_event`, budget/bid/product/currency fields.
 
-Read `adsagent://guide/metadata-contract` once per guide version. `configured_status` is `ACTIVE`/`PAUSED`; `effective_status` is Meta's outcome, including `DISAPPROVED`, `PENDING_REVIEW`, and parent-paused. Legacy `status` aliases `effective_status`; task/batch/notification/connection status is not delivery status.
+Read `adsagent://guide/metadata-contract` once per guide version. `configured_status` is `ACTIVE`/`PAUSED`; `effective_status` includes `DISAPPROVED`, `PENDING_REVIEW`, and parent-paused. Legacy `status` aliases `effective_status`.
 
 Money uses returned account currency and `money_unit=major`. `budget_level` is `campaign|adset`; `bid_strategy` and `optimization_goal` are canonical lower-case. `objective` and `billing_event` are Meta-native uppercase; `conversion_event` is separate lower-case metadata.
 
@@ -31,7 +31,7 @@ With `group_by=ad`, preserve `ad_account_id`, `ad_account_name`, `campaign_id`, 
 
 For matches, preserve each `ad_id`; advance pages serially while `data.meta.has_more=true`. Page 1 must be complete. For page 2 and later, keep `consistency=cached`, `query_contract_version=1`, `require_complete_range=true`, scope, dates, timezone, grouping, filters, sorting, and `page_size` unchanged; increment only `page` and pin `min_as_of` to task `result.meta.source_observed_at` or immediate `result.query_contract.coverage.source_observed_at`. Use the earliest multi-scope anchor. Never rerun page 1 or switch to `require_fresh`. Never enlarge or parallelize pages. On `pagination_anchor_unavailable`, stop and preserve `support_ref`; do not broaden, refresh, or treat it as a permission error. Large output uses grouped `insights_export_csv` with identical filters.
 
-On `adsagent_query_invalid`, correct the public field once. On `scope_unavailable`, do not infer another workspace/token or Meta permission. Run setup and matching discovery (`products_list` or `accounts_list_linked_accounts`) once; if still listed, retry the identical bounded read once. If it persists, stop and preserve `support_ref` for operator review. Never broaden scope or alter permissions.
+On `adsagent_query_invalid`, correct the public field once. On `scope_unavailable`, do not infer another workspace/token or Meta permission. Run setup and matching discovery (`products_list`/`accounts_list_linked_accounts`) once; if still listed, retry the identical bounded read once. Then preserve `support_ref` for operator review. Never broaden scope or alter permissions.
 
 ## Completeness And Freshness
 
@@ -43,6 +43,6 @@ Poll distinct `task_ref` values serially with `tasks_get_status(task_ref=..., re
 
 ## Verification And Output
 
-After confirm, follow `next_action` to `overview_get_live_configs`; `config_verified_live` proves configuration. Stored Insights is ledger evidence. `after_mutation_ref=mutation_ref` covers post-write metrics and does not verify delivery configuration. Recover with `operations_get_context`; never repeat writes.
+After confirm, follow `next_action` to `overview_get_live_configs`; `config_verified_live` proves configuration. `after_mutation_ref=mutation_ref` covers post-write metrics and does not verify delivery configuration. Recover with `operations_get_context`; never repeat writes.
 
-Keep Meta and MMP distinct. Poll exports to terminal and return the artifact, never raw CSV. Return concise Markdown with scope, metrics, completeness, and limits.
+Keep Meta and MMP distinct. Poll exports with `tasks_get_status(..., response_mode=compact)` to terminal. Read `result.artifact`; HTTP GET `download_url` byte-for-byte. Never redact, rebuild, decode, truncate, or substitute it. `artifact_status=expired` or an absent URL requires a new explicit export. Return the link, never raw CSV. Output concise Markdown.

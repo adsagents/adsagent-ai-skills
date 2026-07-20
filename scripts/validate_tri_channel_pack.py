@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.21"
+VERSION = "0.7.22"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -91,6 +91,11 @@ REQUIRED_REPO_TERMS = [
     "billing_event",
     "conversion_event",
     "insights_export_csv",
+    "result.artifact",
+    "download_url",
+    "byte-for-byte",
+    "Never redact",
+    "artifact_status=expired",
     "scope_unavailable",
     "support_ref",
     "snapshot_expired",
@@ -213,6 +218,11 @@ META_TERMS = [
     "pixel_id",
     "app_id",
     "insights_export_csv",
+    "result.artifact",
+    "download_url",
+    "byte-for-byte",
+    "Never redact",
+    "artifact_status=expired",
     "scope_unavailable",
     "do not infer another workspace/token",
     "retry the identical bounded read once",
@@ -517,6 +527,9 @@ def main() -> None:
             "error.data",
             "meta.complete=true",
             "artifact",
+            "result.artifact",
+            "download_url",
+            "byte-for-byte",
             "task_ref",
             "tasks_get_status",
             "operations_get_context",

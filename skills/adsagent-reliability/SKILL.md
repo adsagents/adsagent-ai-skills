@@ -9,7 +9,7 @@ Use server-side batch.
 
 ## Query Plan
 
-Read `setup_get_status.capabilities`; never broaden scope. With `agent_method_profile.profile_id=adsagent_agent_methods_v1`, send one `insights_query_consistent` with root `query_contract_version=1` and bounded `scope` or `scopes`.
+Read `setup_get_status.capabilities`. With `agent_method_profile.profile_id=adsagent_agent_methods_v1`, use one `insights_query_consistent` with root `query_contract_version=1`.
 
 Native fallback:
 
@@ -21,18 +21,18 @@ Native fallback:
 
 Never fan out. Trust top-level `complete=true` in profile mode or `meta.complete=true` natively.
 
-For Meta, combine AND `filters`; never fan out by Campaign/Ad. Correct `adsagent_query_invalid` once.
+For Meta, combine AND `filters`; correct `adsagent_query_invalid` once.
 
-Poll through advertised `next_action`; Meta uses `tasks_get_status(task_ref=..., response_mode=compact)`. At `terminal=true`, consume `result`; never rerun page 1. Report create/copy `result.failures.items`; never retry unchanged writes. Stop on `failures.unclassified_count>0` or `operator_review_required=true`.
+Poll advertised `next_action`; Meta uses `tasks_get_status(task_ref=..., response_mode=compact)`. At `terminal=true`, consume `result`; never rerun page 1. Report `result.failures.items`; stop on unclassified or operator-review failures.
 
-For a terminal export, HTTP GET `result.artifact.download_url` byte-for-byte. Never redact, rebuild, decode, truncate, or substitute it. `artifact_status=expired` or no URL requires a new explicit export.
+For terminal export, HTTP GET `result.artifact.download_url` byte-for-byte. Never rewrite it. `artifact_status=expired` requires a new export.
 
-Pagination is platform-specific: Meta keeps page/`min_as_of`; Google/TikTok preserve opaque continuation, route, shape, size, and snapshot. Never move Meta `min_as_of` into Google or TikTok requests or parallelize pages.
+Pagination is platform-specific. Meta keeps page/`min_as_of`; Google/TikTok preserve opaque continuation and snapshot. Never move Meta `min_as_of` into Google or TikTok requests.
 
 ## Client Limits
 
 - Cache discovery; keep 4-6 calls.
-- Never parallel-retry, rotate tokens around caps, or retry confirm.
+- Never parallel-retry or rotate tokens around caps. Never replay a confirm token.
 - Retry only reads/idempotent operations.
 - After Meta writes, follow `next_action` to `overview_get_live_configs`; recover with `operations_get_context(task_ref=...)`, never replay.
 - TikTok writes require advertised tools and `mutation_receipts=true`; recover on the original authorization route.
@@ -48,14 +48,15 @@ Pagination is platform-specific: Meta keeps page/`min_as_of`; Google/TikTok pres
 | 503 dependency unavailable structured tool error | Without `task_ref`, honor `retry_after_seconds`/`Retry-After` and retry the identical bounded read once. Otherwise poll only that task. |
 | `snapshot_expired` / replayed continuation | Restart page 1 with the same route, scope, dates, filters, grouping, order, and size. Do not reuse the continuation or broaden. |
 | 410 `confirm_token_invalid` | Do not retry; re-prepare, show the fresh summary, and obtain approval. |
+| `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, `operator_review_required=false` | Honor `retry_after_seconds`. Preserve `completed_mutations`, receipts, and `support_refs`; put this item in `not_sent_mutations`, later items in `remaining_mutations`, and set `safe_resume_from`. Re-prepare the exact same entity/value with fresh approval; never reuse confirm. |
 | `no_create_permission` | Send the user to `/dashboard/assets/fb-users`, then prepare again. |
 | `adsagent_request_incomplete` + `invalid_fields` | Correct public fields and prepare once. On repeat, preserve `support_ref`; never reuse confirm. |
 | `scope_unavailable` | Do not infer workspace/token or Meta permissions. Run discovery once; retry only if still listed. Preserve `support_ref`; never alter permissions. |
 
-If retries fail, report the category. Never modify customer permissions.
+If retries fail, report the category. Sent or uncertain writes use operation recovery, never replay. Never modify permissions.
 
 ## Output
 
-Return Markdown with scope, metrics, completeness, and next action. Never expose raw data, traces, tokens, or diagnostics.
+Return Markdown with scope, metrics, completeness, and next action. Never expose tokens or diagnostics.
 
 On `operator_review_required`, stop. Preserve `support_ref`; it is not authorization and never replaces a token, request, or log.

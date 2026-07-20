@@ -51,6 +51,8 @@ On `adsagent_request_incomplete`, correct advertised `invalid_fields` and rerun 
 
 Show `approval_request.summary`/warnings. Confirm once after explicit approval, then poll `tasks_get_status(task_ref=..., response_mode=compact)` to `terminal=true`. Never auto-retry writes. On `no_create_permission`, direct the user to `/dashboard/assets/fb-users`; never change permissions.
 
+On `mcp_meta_quota_deferred`, recover only with `request_sent=false`, `safe_to_retry=true`, and `operator_review_required=false`: honor `retry_after_seconds`, preserve prior receipts, and re-prepare the same entity/value with fresh approval. Never reuse confirm. Sent or uncertain writes use recovery.
+
 At terminal create/copy, report `result.failures.items` using public `ad_name`, `code`, `message`, and `next_action`; never expose a raw Meta error or retry the unchanged write. Corrected work requires fresh approval. On `failures.unclassified_count>0` or `operator_review_required=true`, report known items, stop, and preserve the task/support reference.
 
 Status mutations use `target_configured_status=ACTIVE|PAUSED`; optional CAS uses `current_configured_status`. Never pass `effective_status` or lifecycle states. Legacy aliases are compatibility-only.

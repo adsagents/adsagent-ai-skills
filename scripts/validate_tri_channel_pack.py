@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.22"
+VERSION = "0.7.23"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -124,6 +124,15 @@ REQUIRED_REPO_TERMS = [
     "https://github.com/adsagents/adsagent-ai-skills",
     "result.failures.items",
     "failures.unclassified_count",
+    "mcp_meta_quota_deferred",
+    "request_sent=false",
+    "safe_to_retry=true",
+    "operator_review_required=false",
+    "completed_mutations",
+    "not_sent_mutations",
+    "remaining_mutations",
+    "safe_resume_from",
+    "support_refs",
 ]
 
 FORBIDDEN_REPO_TERMS = [
@@ -315,6 +324,10 @@ META_COPY_TERMS = [
     "adsagent://guide/metadata-contract",
     "target_configured_status",
     "current_configured_status",
+    "mcp_meta_quota_deferred",
+    "request_sent=false",
+    "safe_to_retry=true",
+    "operator_review_required=false",
 ]
 
 
@@ -538,6 +551,15 @@ def main() -> None:
             "Never move Meta `min_as_of` into Google or TikTok requests",
             "retry_after_seconds",
             "identical bounded read once",
+            "mcp_meta_quota_deferred",
+            "request_sent=false",
+            "safe_to_retry=true",
+            "operator_review_required=false",
+            "completed_mutations",
+            "not_sent_mutations",
+            "remaining_mutations",
+            "safe_resume_from",
+            "support_refs",
         ],
     )
 

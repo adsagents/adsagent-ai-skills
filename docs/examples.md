@@ -49,6 +49,8 @@ After I approve this Meta delivery change, call the returned next_action exactly
 
 ```text
 If a Meta task write returns meta_write_verification_pending, call operations_get_context with that task_ref and do not retry. Use recovered IDs on verified_created. Only prepare a fresh task and request fresh approval after meta_write_rejected or verified_not_created. Stop for operator review on verification_ambiguous.
+
+If a Meta confirm returns `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, and `operator_review_required=false`, the write was not sent. Honor `retry_after_seconds`, preserve prior receipts and batch progress, then re-prepare only that same entity/value and request fresh approval. Never reuse the confirm token. Any sent or uncertain result follows operation recovery instead.
 ```
 
 ```text

@@ -10,7 +10,7 @@ description: Use when the user mentions AdsAgent, Meta/Facebook, Google Ads, Tik
 - Meta / Facebook / FB / Page / pixel / campaign copy: `meta-insights` for reads; `meta-copy` for copy/prepare.
 - Google Ads / MCC / customer / search / PMax: `google-ads-insights`.
 - TikTok / advertiser / TT: `tiktok-insights`.
-- 429 / 503 / Retry-After / concurrency / stale session: `adsagent-reliability` before retrying.
+- 429 / 503 / Retry-After / concurrency / stale session / `mcp_meta_quota_deferred`: `adsagent-reliability` before recovery.
 - setup / connect / OAuth / MCP token: `adsagent-setup`.
 - scheduled task / automation / cron / reminder: `agent-scheduled-tasks`.
 
@@ -47,7 +47,7 @@ When scope is missing:
 - Consequential writes require prepare, sanitized summary, explicit approval, then confirm.
 - Meta creation uses `creation_contract_version=3`; read `adsagent://guide/creation-contract` and `adsagent://guide/name-contract`, then emit only explicit role fields.
 - Meta metadata: read `adsagent://guide/metadata-contract`; status writes use `target_configured_status`.
-- On `adsagent_request_incomplete` with public `invalid_fields`, correct those fields and rerun prepare once. Never reuse or automatically retry confirm; after a second failure preserve `support_ref` and stop.
+- On `adsagent_request_incomplete` with public `invalid_fields`, correct prepare once. Never replay confirm; strict pre-send quota defer re-prepares the same mutation only. Otherwise preserve `support_ref` and stop.
 - QuickCreate tokens are single-use for 15 minutes. On `confirm_token_invalid`, prepare again; never retry old confirm.
 - Poll returned `task_ref`. On `no_create_permission`, use `/dashboard/assets/fb-users`; never change permissions.
 - Meta delivery config verification follows the returned `next_action` to `overview_get_live_configs`; never substitute an Insights watermark.

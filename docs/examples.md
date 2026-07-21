@@ -48,7 +48,9 @@ After I approve this Meta delivery change, call the returned next_action exactly
 ```
 
 ```text
-If a Meta task write returns meta_write_verification_pending, call operations_get_context with that task_ref and do not retry. Use recovered IDs on verified_created. Only prepare a fresh task and request fresh approval after meta_write_rejected or verified_not_created. Stop for operator review on verification_ambiguous.
+If a Meta task write returns meta_write_verification_pending, call operations_get_context with that task_ref and do not retry. Use recovered IDs on verified_created. For every failed Ad, follow automatic_retry_allowed, manual_new_task_allowed, and operator_review_required. Only manual_new_task_allowed=true permits a newly prepared task with fresh approval; never reuse the original task or confirm token. Stop for operator review on verification_ambiguous.
+
+When AdsAgent returns partial success from a bulk Ad create, preserve all acknowledged Ads and report each failed ad_name. Server chunking is configurable and defensive, not evidence of a fixed Meta limit; never recreate successful Ads when preparing only eligible failed items.
 
 If a Meta confirm returns `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, and `operator_review_required=false`, the write was not sent. Honor `retry_after_seconds`, preserve prior receipts and batch progress, then re-prepare only that same entity/value and request fresh approval. Never reuse the confirm token. Any sent or uncertain result follows operation recovery instead.
 ```

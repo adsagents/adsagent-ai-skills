@@ -71,7 +71,9 @@ For Meta decisions, use `insights_query_consistent(consistency=require_fresh)` o
 
 After an approved Meta confirm, call the returned `next_action` exactly; expect `overview_get_live_configs` with typed entities and `mutation_ref`. Retry only that read while pending. For task writes, recover the persisted receipt through `operations_get_context(task_ref=...)`; never replay an uncertain write.
 
-Write recovery is typed: `meta_write_rejected` permits only a corrected fresh task and fresh approval; `meta_write_verification_pending` requires context recovery and a stop; `verified_created` supplies recovered IDs; `verified_not_created` permits a fresh task and fresh approval; `verification_ambiguous` requires operator review. None of these states authorizes replaying the original task or confirmation token.
+Write recovery is receipt-driven and typed. Follow each failure item's `automatic_retry_allowed`, `manual_new_task_allowed`, and `operator_review_required`; only `manual_new_task_allowed=true` permits a newly prepared task with fresh approval. Pending or ambiguous writes require context recovery and a stop; `verified_created` supplies recovered IDs. No state authorizes replaying the original task or confirmation token.
+
+Bulk Meta Ad writes may be split into configurable sequential AdsAgent chunks. This is a defensive reliability policy, not evidence of a fixed Meta limit. Successful objects and receipts remain authoritative when a later chunk fails.
 
 `mcp_meta_quota_deferred` is a narrower pre-send contract. Recover only when `request_sent=false`, `safe_to_retry=true`, and `operator_review_required=false`: honor `retry_after_seconds`, preserve `completed_mutations`, receipts, and `support_refs`, classify the current item under `not_sent_mutations`, keep later work under `remaining_mutations`, and set `safe_resume_from`. Re-prepare the exact same entity/value with fresh approval; never reuse the old confirm token. A sent or uncertain write remains operation-recovery only.
 

@@ -30,6 +30,8 @@ Only after explicit user confirmation. The agent should show a sanitized approva
 
 QuickCreate confirm tokens are single-use and expire after 15 minutes. The agent checks `expires_at`; on `confirm_token_invalid`, it prepares again, shows the fresh summary, and asks for approval again. It polls the returned `task_ref` with `response_mode=compact`. If the task returns `no_create_permission`, the user must open `/dashboard/assets/fb-users` and enable Create on an active eligible connection. Never enable or modify customer permissions automatically.
 
+For QuickCreate Append, use only `append_mode=append-campaign` with `target_campaign_id`, or `append_mode=append-adset` with `target_adset_id`. Append-adset uses execution counts 1/1, creates Ads only, and inherits the existing parent budget. `append_mode=existing`, `existing_campaign_id`, `existing_adset_id`, and `product_ref` are not QuickCreate fields. A bounded prepare correction always requires a new summary and fresh explicit approval; it never authorizes auto-confirm.
+
 When a terminal create/copy task contains `result.failures.items`, the agent reports those bounded public reasons and next actions instead of a generic failure. It never exposes raw Meta errors or retries the unchanged write. Unknown items remain operator-review only.
 
 ## Does one install cover Google Ads and TikTok?

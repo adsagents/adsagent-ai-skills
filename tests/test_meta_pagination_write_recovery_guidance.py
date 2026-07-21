@@ -49,7 +49,7 @@ def test_meta_write_recovery_guidance_distinguishes_safe_terminal_states():
 
 
 def test_release_version_is_current():
-    assert _read("VERSION").strip() == "0.7.22"
-    assert '"version": "0.7.22"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.22"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.22`" in _read("README.md")
+    assert _read("VERSION").strip() == "0.7.24"
+    assert '"version": "0.7.24"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.24"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.24`" in _read("README.md")

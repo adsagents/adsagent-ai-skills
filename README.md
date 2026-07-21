@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.23`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.24`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -59,6 +59,8 @@ Version 0.7.21 makes terminal Meta create/copy failures actionable without expos
 Version 0.7.22 makes Meta export delivery lossless across MCP clients. Terminal `insights_export` polls retain `result.artifact`; agents send its opaque short-lived `download_url` byte-for-byte to HTTP GET and never redact, rebuild, decode, truncate, or substitute it. Expired or missing links require a newly requested export.
 
 Version 0.7.23 distinguishes local pre-send Meta quota admission from uncertain writes. Agents recover only from the strict `mcp_meta_quota_deferred` contract, preserve completed batch receipts, wait for `retry_after_seconds`, and re-prepare the exact same entity/value with fresh approval. They never reuse a confirm token or replay a sent/uncertain write.
+
+Version 0.7.24 publishes the canonical Meta QuickCreate Append contract. Agents use `append_mode=append-campaign` with `target_campaign_id`, or `append_mode=append-adset` with `target_adset_id`; append-adset creates only Ads and inherits the existing parent budget. Unsupported legacy fields receive bounded `invalid_fields`, which may be corrected on prepare once before a new summary and fresh explicit approval.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 

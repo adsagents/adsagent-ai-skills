@@ -119,6 +119,7 @@ Inspect top-level `client_skill_pack` from the existing setup call. It is indepe
 - Stop on operator-review and hand off to the AdsAgent operator.
 - Preserve any returned `support_ref` verbatim in that handoff. It is an opaque lookup handle, not authorization; never replace it with a token, raw request body, or log.
 - On `adsagent_request_incomplete` with public `invalid_fields`, correct only those advertised prepare fields and rerun prepare once. A second failure is handed off with `support_ref`; confirm/write is never retried automatically.
+- QuickCreate Append uses exactly `append_mode=append-campaign` plus `target_campaign_id`, or `append_mode=append-adset` plus `target_adset_id`. Append-adset reports execution counts 1/1, creates Ads only, and inherits the existing parent budget. Never send `append_mode=existing`, `existing_campaign_id`, `existing_adset_id`, or `product_ref`. A corrected prepare produces a new summary and requires fresh explicit approval.
 
 ## Comparison Rules
 

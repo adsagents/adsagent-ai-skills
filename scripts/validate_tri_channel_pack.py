@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.23"
+VERSION = "0.7.24"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -117,7 +117,7 @@ REQUIRED_REPO_TERMS = [
     "adsagent://guide/name-contract",
     "adsagent_request_incomplete",
     "invalid_fields",
-    "rerun the same prepare once",
+    "rerun prepare once",
     "settings_source_ad_id",
     "cgb_confirm_*",
     "support@adsagent.md",
@@ -133,6 +133,15 @@ REQUIRED_REPO_TERMS = [
     "remaining_mutations",
     "safe_resume_from",
     "support_refs",
+    "append_mode=append-campaign",
+    "target_campaign_id",
+    "append_mode=append-adset",
+    "target_adset_id",
+    "append_mode=existing",
+    "existing_campaign_id",
+    "existing_adset_id",
+    "inherits the existing parent budget",
+    "fresh explicit approval",
 ]
 
 FORBIDDEN_REPO_TERMS = [
@@ -328,6 +337,16 @@ META_COPY_TERMS = [
     "request_sent=false",
     "safe_to_retry=true",
     "operator_review_required=false",
+    "append_mode=append-campaign",
+    "target_campaign_id",
+    "append_mode=append-adset",
+    "target_adset_id",
+    "append_mode=existing",
+    "existing_campaign_id",
+    "existing_adset_id",
+    "product_ref",
+    "inherits the existing parent budget",
+    "fresh explicit approval",
 ]
 
 

@@ -143,6 +143,8 @@ For that grouped prepare, use creation_contract_version=3 and request_mode=group
 
 ```text
 For QuickCreate, check expires_at and confirm the single-use token within 15 minutes only after I approve the displayed summary. If confirm_token_invalid is returned, prepare again, show the fresh summary, and ask me again. Poll the returned task_ref with response_mode=compact. On no_create_permission, send me to /dashboard/assets/fb-users; never enable or modify customer permissions automatically.
+
+Append new AdSets and Ads to an existing Campaign with `append_mode=append-campaign` and `target_campaign_id`. Append Ads to an existing AdSet with `append_mode=append-adset`, `target_adset_id`, `execution.campaign_count=1`, and `execution.adset_count=1`; this creates no Campaign or AdSet and inherits the existing parent budget. Never send `append_mode=existing`, `existing_campaign_id`, `existing_adset_id`, or `product_ref` to QuickCreate. If prepare returns bounded `invalid_fields`, correct only those fields once, show the new summary, and obtain fresh explicit approval before confirm.
 ```
 
 ```text

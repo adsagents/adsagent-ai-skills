@@ -15,8 +15,11 @@ def test_tiktok_skill_documents_readiness_and_native_append_contract() -> None:
 
     for term in (
         "readiness.create_eligible=true",
-        "readiness.status=verification_pending",
-        "creatives_confirm_upload",
+        "readiness.reason_code",
+        "readiness.retryable",
+        "readiness.next_action",
+        "creatives_reconcile",
+        "1..20",
         "campaigns_quick_create",
         "append_mode=append-campaign",
         "target_campaign_id",
@@ -28,6 +31,9 @@ def test_tiktok_skill_documents_readiness_and_native_append_contract() -> None:
         assert term in text
 
     assert "Never supply both target IDs" in text
+    assert "never client-side fan out" in text
+    assert "upload_failed" in text
+    assert "new explicit upload" in text
     assert "use Meta `append-adset`" in text
     assert "explicit approval" in text
     assert "Confirm once" in text
@@ -43,3 +49,7 @@ def test_public_surfaces_keep_tiktok_and_meta_append_names_distinct() -> None:
     assert "target_adgroup_id" in router
     assert "TikTok uses a separate native append contract" in faq
     assert "Append-adgroup creates one Ad only" in output
+    assert "creatives_reconcile" in faq
+    assert "creatives_reconcile" in output
+    assert "creatives_confirm_upload" not in faq
+    assert "creatives_confirm_upload" not in output

@@ -32,6 +32,8 @@ QuickCreate confirm tokens are single-use and expire after 15 minutes. The agent
 
 For QuickCreate Append, use only `append_mode=append-campaign` with `target_campaign_id`, or `append_mode=append-adset` with `target_adset_id`. Append-adset uses execution counts 1/1, creates Ads only, and inherits the existing parent budget. `append_mode=existing`, `existing_campaign_id`, `existing_adset_id`, and `product_ref` are not QuickCreate fields. A bounded prepare correction always requires a new summary and fresh explicit approval; it never authorizes auto-confirm.
 
+TikTok uses a separate native append contract: `append-campaign` with only `target_campaign_id`, or `append-adgroup` with only `target_adgroup_id`. A local `creative_id` is eligible only when its readiness says so; `verification_pending` must go through one explicit `creatives_confirm_upload`. Never translate TikTok ad groups to Meta `append-adset`, mix target IDs, auto-confirm, or replay an uncertain write.
+
 When a terminal create/copy task contains `result.failures.items`, the agent reports those bounded public reasons and next actions instead of a generic failure. It never exposes raw Meta errors or retries the unchanged write. Unknown items remain operator-review only.
 
 ## Does one install cover Google Ads and TikTok?

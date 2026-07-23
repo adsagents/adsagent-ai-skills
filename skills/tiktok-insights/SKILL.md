@@ -1,49 +1,50 @@
 ---
 name: tiktok-insights
-description: Use when the user asks AdsAgent TikTok MCP questions about TikTok advertisers, tenants, TT accounts, campaign/ad group/ad performance, spend, conversions, CPA, ROAS, impressions, clicks, or multi-advertiser TikTok summaries.
+description: Use when the user asks AdsAgent TikTok questions about advertisers, insights, creative readiness, Quick Create, or appending to an existing campaign or ad group.
 ---
 
-# TikTok Insights Through AdsAgent
+# TikTok Through AdsAgent
 
-Use TikTok tenant, advertiser, and metric fields only.
+Keep TikTok tenant, advertiser, hierarchy, and metric semantics.
 
-## First Steps
+## Start
 
-1. Run `setup_get_status` before analysis.
-2. Inspect `setup_get_status.capabilities.agent_method_profile` and `insights_query_contract`.
-3. Discover TikTok tenant and advertiser scopes; never assume Meta or Google identifiers.
-4. Verify the requested advertiser, then report advertiser/date/grouping.
+1. Run `setup_get_status`.
+2. Inspect `agent_method_profile` and `insights_query_contract`.
+3. Discover the tenant and advertiser; never assume Meta or Google identifiers.
 
-## Freshness And Write Boundary
+## Insights
 
-Use `require_fresh`, `since_launch`, direct `task_ref`, or receipts only when advertised. Remember: age-only data or immediate write success is not mutation verification; TikTok receipts do not imply Meta verification.
+- With `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call `insights_query_consistent` once with root `query_contract_version=1` and exactly one `scope` or ordered `scopes` batch up to advertised `max_scopes`.
+- Use `require_fresh` only when `insights_query_contract.consistency_modes` advertises it; use `date_range_mode=since_launch` only when supported.
+- Trust top-level `complete=true` and server summary/total; never sum visible rows. Missing scopes are unknown, never zero.
+- Follow `next_action` with the exact `task_ref` and `poll_after_ms`; never resubmit pending work. At terminal completion consume the bounded result only when `source_anchor` matches `result.source_snapshot`; never rerun page 1.
+- Without the profile, use `insights_query_overview` for one scope and `insights_query_batch_overview` for many. Never client fan-out.
+- On `mcp_fanout_detected`, combine scopes through the profile or batch tool.
+- Later pages use the opaque continuation through its advertised path. Preserve tenant, advertiser, authorization route, dates, grouping, filters, order, page size, and source snapshot. It is single-use. Never add Meta `min_as_of`. On replay rejection or `snapshot_expired`, restart identical page 1 serially.
+- Data may be age-only; immediate write success is not mutation verification. Never claim `config_verified_live` unless returned.
 
-## Query Pattern
+## Creative And Append
 
-- When `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call its advertised `consistent_query_tool` once with root `query_contract_version=1` and exactly one `scope` or one ordered `scopes` batch up to advertised `max_scopes`.
-- Use `consistency=require_fresh` only when `insights_query_contract.consistency_modes` advertises it. Use `date_range_mode=since_launch` only when profile `since_launch=true` and the grouping supports it.
-- Trust top-level `complete=true`, ordered result contracts, and server summary/total; missing scopes are unknown, never zero.
-- Follow `next_action` using the advertised task tool, exact `task_ref`, and `poll_after_ms`; never resubmit pending work. At `terminal=true`, consume the bounded `result` directly only when completed and its `source_anchor` matches `result.source_snapshot`; never rerun page 1.
-- Without the profile, use `insights_query_overview` for one scope and `insights_query_batch_overview` for multiple scopes.
-- Do not create client-side fan-out by advertiser.
-- If the server returns `mcp_fanout_detected`, stop the loop and combine current plus pending scopes through profile `insights_query_consistent` when advertised, otherwise `insights_query_batch_overview`.
-- For later pages, use the opaque continuation only through its advertised path. Keep tenant, advertiser, authorization route, dates, grouping, filters, order, page size, and source snapshot unchanged. Never add Meta `min_as_of`.
-- Treat it as single-use. On replay rejection or `snapshot_expired`, restart identical page 1 serially; never parallelize pages.
-- Never sum visible rows; distinguish them from server totals.
+- Read `creatives_list` or `creatives_get`. Use local `creative_id` only when `readiness.create_eligible=true`.
+- For `readiness.status=verification_pending`, call `creatives_confirm_upload` once. Stop on failure; never auto-retry.
+- Give `campaigns_quick_create` one creative source: verified local `creative_id`, or hosted-schema provider fields. Local media syncs only after explicit confirm.
+- `append_mode=append-campaign` plus only `target_campaign_id` creates one ad group and ad; omit `campaign_params`.
+- `append_mode=append-adgroup` plus only `target_adgroup_id` creates one ad; omit campaign and ad-group params.
+- Never supply both target IDs, guess by name, use Meta `append-adset`, or replace a prepared target.
+- Show the sanitized parents, inherited settings, creative count, ad name, and expiry. Obtain explicit approval. Confirm once, then poll the returned task/receipt.
+- For uncertainty, call `operations_get` on the exact original route. Never replay or name-match.
+- After a Hosted schema release, reconnect the MCP transport before trusting cached tool descriptions.
 
-## Write Recovery
+## Other Writes
 
-Only with `mutation_receipts=true` and all tool names: use `delivery_prepare_tool`, confirm once with `delivery_confirm_tool`, then recover through `operation_get_tool` on the exact original tenant, advertiser, and authorization route. Never replay, name-match uncertainty, switch credentials, or claim `config_verified_live` unless returned.
+Only with `mutation_receipts=true` and advertised names: call `delivery_prepare_tool`, obtain approval, call `delivery_confirm_tool` once, then recover with `operation_get_tool` on the original route. Never switch credentials.
 
-## Retry And Backoff
+## Retry
 
-- For `429` `mcp_concurrency_limited`, honor `Retry-After` plus jitter and retry serially.
-- For `429` with `mcp_fanout_detected`, do not retry the same single-scope request; switch to profile `scopes` or `insights_query_batch_overview`.
-- For structured `dependency_unavailable` with no `task_ref`, honor `retry_after_seconds`/`Retry-After` and retry the identical bounded read once. Do not poll, fan out, or invent a task. With a `task_ref`, poll only that task.
-- For HTTP `503`, follow `/adsagent-reliability` as dependency unavailable.
-- Prefer one profile `scopes` request or `insights_query_batch_overview` before parallel reads.
-- Parse backoff from headers, top-level `data`, or JSON-RPC `error.data`; never regex messages.
+- For `429` `mcp_concurrency_limited`, honor `Retry-After` plus jitter.
+- For fan-out 429, switch to profile scopes or batch; do not repeat the single-scope loop.
+- For `dependency_unavailable` with no `task_ref`, honor `retry_after_seconds`/`Retry-After` and retry the identical bounded read once. With a task, poll only it.
+- Treat HTTP `503` as dependency unavailable. Parse structured fields, never message text.
 
-## User-Facing Output
-
-Return Markdown with a direct answer, scope, compact metrics table, freshness, completeness, and next safe action. Never dump raw JSON, diagnostics, catalogs, schemas, or rows. For explicit full exports, poll the task to terminal and return its artifact link.
+Answer in Markdown with scope, compact metrics, freshness, completeness, and next safe action. Never dump raw JSON. Return artifact links only for requested exports.

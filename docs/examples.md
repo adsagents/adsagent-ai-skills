@@ -114,6 +114,8 @@ Use TikTok require_fresh, since_launch, task_ref polling, and delivery receipts 
 
 ```text
 If TikTok advertises mutation_receipts=true plus delivery prepare, confirm, and operation-get tools, prepare first, confirm once after approval, and recover uncertain outcomes with operation-get. Never replay the write.
+
+Before TikTok Quick Create, inspect the selected local creative's readiness. If it is verification_pending, call creatives_confirm_upload once; continue only when readiness.create_eligible=true. To append one ad group and ad, use append_mode=append-campaign with only target_campaign_id. To append one ad, use append_mode=append-adgroup with only target_adgroup_id. Show the resolved parents and inherited settings, obtain explicit approval, confirm once, and recover uncertainty through operations_get on the original route.
 ```
 
 ## Google Ads Insights

@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.25`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.26`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -64,6 +64,8 @@ Version 0.7.24 publishes the canonical Meta QuickCreate Append contract. Agents 
 
 Version 0.7.25 makes partial Meta Ad-create recovery receipt-driven. Agents report each bounded failed Ad and follow its returned retry flags, preserve already-created Ads, and prepare a new task only when `manual_new_task_allowed=true`. AdsAgent may split bulk Ad writes into configurable sequential chunks as a defensive reliability policy; the chunk size is not evidence of a fixed Meta platform limit.
 
+Version 0.7.26 adds TikTok-native Quick Create append guidance. Agents reconcile `verification_pending` local creatives through `creatives_confirm_upload`, use only create-eligible tenant-owned `creative_id` values, and distinguish `append-campaign` from `append-adgroup`. Every append remains prepare-first, explicitly confirmed once, and receipt-recovered on the exact original route.
+
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 
 ## What This Is
@@ -101,7 +103,7 @@ Use that copied prompt to install or refresh the hosted HTTP MCP connection. Thi
 | `meta-insights` | Ask performance and MMP questions without overloading the server. |
 | `meta-copy` | Copy or compare Meta ads with confirmation and operator-review safety. |
 | `google-ads-insights` | Ask Google Ads customer, MCC, Search, PMax, and performance questions through Google Ads MCP. |
-| `tiktok-insights` | Ask TikTok advertiser, tenant, campaign, ad group, and ad performance questions through TikTok MCP. |
+| `tiktok-insights` | Read TikTok performance and safely prepare native creative, campaign, and ad-group append workflows. |
 
 ## Agent Output Contract
 

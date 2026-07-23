@@ -1,6 +1,6 @@
 ---
 name: adsagent-router
-description: Use when the user mentions AdsAgent, Meta/Facebook, Google Ads, TikTok, hosted MCP setup, product or campaign performance, AppsFlyer, copy/recreate, Retry-After, 429/503, stale sessions, or operator review.
+description: Use when the user mentions AdsAgent, Meta, Google Ads, TikTok, MCP setup, performance, copy/append, Retry-After, stale sessions, or operator review.
 ---
 
 # AdsAgent Router
@@ -9,12 +9,10 @@ description: Use when the user mentions AdsAgent, Meta/Facebook, Google Ads, Tik
 
 - Meta / Facebook / FB / Page / pixel / campaign copy: `meta-insights` for reads; `meta-copy` for copy/prepare.
 - Google Ads / MCC / customer / search / PMax: `google-ads-insights`.
-- TikTok / advertiser / TT: `tiktok-insights`.
+- TikTok / advertiser / TT / append to an existing TikTok campaign or ad group: `tiktok-insights`.
 - 429 / 503 / Retry-After / concurrency / stale session / `mcp_meta_quota_deferred`: `adsagent-reliability` before recovery.
 - setup / connect / OAuth / MCP token: `adsagent-setup`.
 - scheduled task / automation / cron / reminder: `agent-scheduled-tasks`.
-
-Meta defaults to `https://adsagent.md/mcp/v2`; `/mcp` is legacy fallback.
 
 ## Copy Routing
 
@@ -38,9 +36,8 @@ When scope is missing:
 
 ## Shared Rules
 
-- Hosted HTTP MCP is authoritative.
-- Use public handles and Markdown.
-- Never read raw rows for normal questions or fan out across scopes/days.
+- Hosted MCP is authoritative. Use handles.
+- Never read raw rows for questions or fan out across scopes/days.
 - Trust totals only when `meta.complete=true`; missing scopes are unknown, never zero.
 - Route exports through the channel skill's artifact workflow.
 - On `mcp_fanout_detected`, stop the loop and use the platform batch tool.
@@ -49,7 +46,7 @@ When scope is missing:
 - Meta metadata: read `adsagent://guide/metadata-contract`; status writes use `target_configured_status`.
 - On `adsagent_request_incomplete` with public `invalid_fields`, correct prepare once. Never replay confirm; strict pre-send quota defer re-prepares the same mutation only. Otherwise preserve `support_ref` and stop.
 - QuickCreate tokens are single-use for 15 minutes. On `confirm_token_invalid`, prepare again; never retry old confirm.
-- Poll returned `task_ref`. On `no_create_permission`, use `/dashboard/assets/fb-users`; never change permissions.
+- Poll `task_ref`. On `no_create_permission`, use `/dashboard/assets/fb-users`; never change permissions.
 - Meta delivery config verification follows the returned `next_action` to `overview_get_live_configs`; never substitute an Insights watermark.
 - Meta decisions use `insights_query_consistent(require_fresh)` only when advertised; uncertain task writes use `operations_get_context` and are never replayed.
 - Meta candidate reads use one allowlisted AND plan; keep hierarchy IDs; deduplicate and group client-side.
@@ -57,3 +54,4 @@ When scope is missing:
 - Use the common envelope only for `agent_method_profile.profile_id=adsagent_agent_methods_v1`; otherwise preserve native output.
 - When an error includes `support_ref`, preserve it verbatim and show it for unresolved/operator-review handoff. It is not authorization; never invent, modify, enumerate, or replace it with raw tokens, request bodies, or logs.
 - Google is a cached read-only ledger. TikTok freshness, tasks, since-launch reads, and receipts are capability-gated; shared profiles do not imply evidence parity.
+- TikTok append uses native `append-campaign` / `append-adgroup` and `target_adgroup_id`; never translate it to Meta `append-adset`.

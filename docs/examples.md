@@ -52,7 +52,7 @@ If a Meta task write returns meta_write_verification_pending, call operations_ge
 
 When AdsAgent returns partial success from a bulk Ad create, preserve all acknowledged Ads and report each failed ad_name. Server chunking is configurable and defensive, not evidence of a fixed Meta limit; never recreate successful Ads when preparing only eligible failed items.
 
-If a Meta confirm returns `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, and `operator_review_required=false`, the write was not sent. Honor `retry_after_seconds`, preserve prior receipts and batch progress, then re-prepare only that same entity/value and request fresh approval. Never reuse the confirm token. Any sent or uncertain result follows operation recovery instead.
+If a Meta confirm returns `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, and `operator_review_required=false`, the write was not sent. Stop the whole mutation loop immediately and do not confirm later items during the blocked window. Preserve prior receipts, mark only the current item not sent, keep later items remaining, honor the largest `retry_after_seconds` plus jitter, then re-prepare only the unchanged remainder and request one fresh consolidated approval. Never repeat completed work or reuse the confirm token. Any sent or uncertain result follows operation recovery instead.
 ```
 
 ```text

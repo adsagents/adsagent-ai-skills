@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.28`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.29`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -69,6 +69,8 @@ Version 0.7.26 added TikTok-native Quick Create append guidance and the original
 Version 0.7.27 adds a plan-level circuit breaker for strict pre-send Meta quota admission. On the first qualifying `mcp_meta_quota_deferred`, agents stop all later confirms, preserve completed/current/remaining partitions, wait for the largest `retry_after_seconds` plus jitter, and re-prepare only the unchanged remainder under one fresh consolidated approval. They never reuse a confirm token or replay completed, sent, or uncertain work.
 
 Version 0.7.28 adds TikTok creative readiness recovery. Agents inspect the server's normalized readiness reason, retryability, supported formats, eligibility, and next action; reconcile 1..20 tenant-owned pending or historical verification rows in one bounded server call; never fan out per creative; and treat terminal upload failure as requiring the returned remediation before Quick Create or append.
+
+Version 0.7.29 aligns TikTok Quick Create task receipts. Agents poll the returned opaque `ttask_*`, keep the internal `task_id` as legacy compatibility only, recover historical UUIDs that were mislabeled as `task_ref`, consume bounded terminal created-object and failure receipts, and never replay an uncertain or failed write.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 

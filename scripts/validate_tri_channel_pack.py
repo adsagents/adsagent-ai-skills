@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.27"
+VERSION = "0.7.28"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -313,7 +313,12 @@ TIKTOK_TERMS = [
     "Never add Meta `min_as_of`",
     "readiness.create_eligible=true",
     "verification_pending",
-    "creatives_confirm_upload",
+    "creatives_reconcile",
+    "1..20",
+    "never client-side fan out",
+    "readiness.reason_code",
+    "readiness.retryable",
+    "readiness.next_action",
     "campaigns_quick_create",
     "append_mode=append-campaign",
     "target_campaign_id",

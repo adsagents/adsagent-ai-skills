@@ -47,7 +47,7 @@ If the user omits its Campaign, AdSet, or template reference, stop before prepar
 
 On `adsagent_request_incomplete`, correct `invalid_fields` on prepare once. On repeat or `operator_review_required`, stop with `support_ref`. Confirm only after explicit approval, then poll `tasks_get_status(task_ref=..., response_mode=compact)`. On `no_create_permission`, direct the user to `/dashboard/assets/fb-users`; never change permissions.
 
-For `mcp_meta_quota_deferred`, recover only with `request_sent=false`, `safe_to_retry=true`, and `operator_review_required=false`; wait, then re-prepare with fresh approval. Never reuse confirm. Sent or uncertain writes use `operations_get_context`; never replay.
+On the first strict `mcp_meta_quota_deferred`, STOP before later confirms and follow [meta-quota-plan.md](../adsagent-reliability/meta-quota-plan.md). Strict means `request_sent=false`, `safe_to_retry=true`, `operator_review_required=false`. Never reuse confirm or replay sent/uncertain writes; use `operations_get_context`.
 
 Report terminal `result.failures.items` fields `ad_name`, `code`, `message`, `automatic_retry_allowed`, `manual_new_task_allowed`, `operator_review_required`, and `next_action`. Never expose a raw Meta error, retry the unchanged write, or reuse its confirm token. Only `manual_new_task_allowed=true` permits a newly prepared task containing failed items with fresh approval; pending or ambiguous writes stay in `operations_get_context` recovery. Stop on `failures.unclassified_count>0`.
 

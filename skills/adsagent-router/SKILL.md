@@ -44,7 +44,7 @@ When scope is missing:
 - Consequential writes require prepare, sanitized summary, explicit approval, then confirm.
 - Meta creation uses `creation_contract_version=3`; read `adsagent://guide/creation-contract` and `adsagent://guide/name-contract`, then emit only explicit role fields.
 - Meta metadata: read `adsagent://guide/metadata-contract`; status writes use `target_configured_status`.
-- On `adsagent_request_incomplete` with public `invalid_fields`, correct prepare once. Never replay confirm; strict pre-send quota defer re-prepares the same mutation only. Otherwise preserve `support_ref` and stop.
+- On public `invalid_fields`, correct prepare once. Never replay confirm. A strict pre-send quota defer stops the plan before later confirms; follow `adsagent-reliability`.
 - QuickCreate tokens are single-use for 15 minutes. On `confirm_token_invalid`, prepare again; never retry old confirm.
 - Poll `task_ref`. On `no_create_permission`, use `/dashboard/assets/fb-users`; never change permissions.
 - Meta delivery config verification follows the returned `next_action` to `overview_get_live_configs`; never substitute an Insights watermark.

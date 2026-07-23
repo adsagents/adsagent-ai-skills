@@ -49,7 +49,7 @@ Meta keeps page/`min_as_of`; Google/TikTok keep opaque continuation and snapshot
 | 503 dependency unavailable structured tool error | Without `task_ref`, honor `retry_after_seconds` and retry the identical bounded read once; otherwise poll that task. |
 | `snapshot_expired` / replayed continuation | Restart page 1 unchanged. Do not reuse the continuation or broaden. |
 | 410 `confirm_token_invalid` | Do not retry; re-prepare, show the fresh summary, and obtain approval. |
-| `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, `operator_review_required=false` | Honor backoff. Preserve `completed_mutations`, receipts, `support_refs`, `not_sent_mutations`, `remaining_mutations`, and `safe_resume_from`; re-prepare the same value with fresh approval. |
+| `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, `operator_review_required=false` | STOP before later confirms; preserve `completed_mutations`/`not_sent_mutations`/`remaining_mutations`/`safe_resume_from`/`support_refs`; wait; re-prepare unchanged remainder; fresh approval. See [meta-quota-plan.md](meta-quota-plan.md). |
 | `no_create_permission` | Send the user to `/dashboard/assets/fb-users`, then prepare again. |
 | `adsagent_request_incomplete` + `invalid_fields` | Correct public fields and prepare once; on repeat preserve `support_ref`. |
 | `scope_unavailable` | Do not infer permissions. Discover once; retry only if still listed. Never alter permissions. |

@@ -26,6 +26,11 @@ def test_tiktok_skill_documents_readiness_and_native_append_contract() -> None:
         "append_mode=append-adgroup",
         "target_adgroup_id",
         "operations_get",
+        "operation_ref",
+        "call_to_action_configured",
+        "creative_info.image_info[].web_uri",
+        "CAROUSEL_ADS",
+        "failed_proven",
         "reconnect the MCP transport",
     ):
         assert term in text
@@ -38,6 +43,10 @@ def test_tiktok_skill_documents_readiness_and_native_append_contract() -> None:
     assert "explicit approval" in text
     assert "Confirm once" in text
     assert "Never replay" in text
+    assert "Use `task_ref` only for `tasks_get_status`" in text
+    assert "Use canonical `operation_ref` only for `operations_get`" in text
+    assert "Do not send a CDN image URL" in text
+    assert "invent provider CTA, music, or identity IDs" in text
 
 
 def test_public_surfaces_keep_tiktok_and_meta_append_names_distinct() -> None:
@@ -53,3 +62,31 @@ def test_public_surfaces_keep_tiktok_and_meta_append_names_distinct() -> None:
     assert "creatives_reconcile" in output
     assert "creatives_confirm_upload" not in faq
     assert "creatives_confirm_upload" not in output
+
+
+def test_tiktok_smart_plus_append_and_receipt_contract_is_consistent() -> None:
+    text = "\n".join(
+        _read(path)
+        for path in (
+            "README.md",
+            "skills/tiktok-insights/SKILL.md",
+            "docs/faq.md",
+            "docs/examples.md",
+            "docs/output-contract.md",
+        )
+    )
+
+    for term in (
+        "operation_ref",
+        "task_ref",
+        "failed_proven",
+        "fresh approval",
+        "Smart+ image",
+        "advertiser ownership",
+        "image-family",
+    ):
+        assert term in text
+
+    assert "operations_get(operation_ref=...)" in text
+    assert "tasks_get_status(task_ref=..." in text
+    assert "name-match" in text

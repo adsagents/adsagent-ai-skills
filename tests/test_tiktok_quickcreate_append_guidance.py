@@ -90,3 +90,71 @@ def test_tiktok_smart_plus_append_and_receipt_contract_is_consistent() -> None:
     assert "operations_get(operation_ref=...)" in text
     assert "tasks_get_status(task_ref=..." in text
     assert "name-match" in text
+
+
+def test_tiktok_management_reuse_optimization_and_mmp_are_capability_driven() -> None:
+    skill = _read("skills/tiktok-insights/SKILL.md")
+    public_text = "\n".join(
+        _read(path)
+        for path in (
+            "README.md",
+            "docs/faq.md",
+            "docs/examples.md",
+            "docs/output-contract.md",
+        )
+    )
+
+    for term in (
+        "overview_get_live_configs",
+        "copy_ad_quick_copy",
+        "copy_ad_clone_structure",
+        "campaigns_recreate_from_task",
+        "optimization_evaluate",
+        "optimization_prepare_action",
+        "notifications_list",
+        "mmp_insights_get_product_event_today",
+        "mmp_insights_query_product_event_summary",
+        "mmp_product_aggregate_reads.available=true",
+        "channel_pid=tiktokglobal_int",
+        "support_report_error",
+        "support_get_report_status",
+        "creatives_abandon_upload",
+    ):
+        assert term in skill
+
+    assert "1..20 grouped items" in skill
+    assert "same-advertiser" in skill
+    assert "disabled initial delivery" in skill
+    assert "decimal advertiser-currency major units" in skill
+    assert "native `ad_group` scoped" in skill
+    assert "never auto-confirm" in skill
+    assert "in-app only" in skill
+    assert "adapter source field" in skill
+    assert "Never include prompts" in skill
+
+    for term in (
+        "receipt-backed delivery, budget, bid",
+        "copy/clone/recreate",
+        "complete-evidence optimization recommendations",
+        "manual support reporting",
+        "TikTok-channel product MMP aggregates",
+    ):
+        assert term in public_text
+
+
+def test_tiktok_router_covers_new_capability_families() -> None:
+    router = _read("skills/adsagent-router/SKILL.md")
+
+    for term in (
+        "copy",
+        "clone",
+        "recreate",
+        "delivery",
+        "budget",
+        "bid",
+        "optimization",
+        "support",
+        "TikTok MMP",
+        "`tiktok-insights`",
+    ):
+        assert term in router

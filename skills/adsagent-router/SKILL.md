@@ -9,7 +9,7 @@ description: Use when the user mentions AdsAgent, Meta, Google Ads, TikTok, MCP 
 
 - Meta / Facebook / FB / Page / pixel / campaign copy: `meta-insights` for reads; `meta-copy` for copy/prepare.
 - Google Ads / MCC / customer / search / PMax: `google-ads-insights`.
-- TikTok / advertiser / TT / append to an existing TikTok campaign or ad group: `tiktok-insights`.
+- TikTok / advertiser / TT / append to an existing TikTok campaign or ad group / copy/clone/recreate/delivery/budget/bid/optimization/support / TikTok MMP: `tiktok-insights`.
 - 429 / 503 / Retry-After / concurrency / stale session / `mcp_meta_quota_deferred`: `adsagent-reliability` before recovery.
 - setup / connect / OAuth / MCP token: `adsagent-setup`.
 - notification / webhook / email / Feishu / Telegram: `adsagent-notifications`.
@@ -25,7 +25,7 @@ Never guess:
 - Repeat prior creation -> `campaigns_recreate_from_task`.
 - Ask deep versus fresh.
 
-## First Test
+## Test
 
 When scope is missing:
 
@@ -35,9 +35,9 @@ When scope is missing:
 4. Ask for scope and dates.
 5. When `agent_method_profile.profile_id=adsagent_agent_methods_v1`, route one or many scopes through its advertised `consistent_query_tool` with root `query_contract_version=1`; otherwise use native single/batch tools.
 
-## Shared Rules
+## Rules
 
-- Hosted MCP is authoritative. Use handles.
+- Hosted MCP is authoritative.
 - Never read raw rows for questions or fan out across scopes/days.
 - Trust totals only when `meta.complete=true`; missing scopes are unknown, never zero.
 - On `mcp_fanout_detected`, stop the loop and use the platform batch tool.

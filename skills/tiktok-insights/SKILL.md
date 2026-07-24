@@ -1,50 +1,39 @@
 ---
 name: tiktok-insights
-description: Use when handling TikTok advertisers, insights, creative readiness, Quick Create, or append workflows.
+description: Use when handling TikTok insights, creatives, create/append, management, copy, optimization, support, or MMP.
 ---
 
 # TikTok Through AdsAgent
 
-## Start
+## Start And Read
 
-Run `setup_get_status`, inspect capabilities, then discover the tenant and advertiser.
+- Run `setup_get_status`; inspect capability names before advertiser discovery.
+- With `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call `insights_query_consistent` once with `query_contract_version=1` and one `scope` or ordered `scopes`. Otherwise use `insights_query_overview` or `insights_query_batch_overview`; never client-side fan out.
+- Use `date_range_mode=since_launch` or `require_fresh` only when listed by `insights_query_contract.consistency_modes`. Trust top-level `complete=true` and server summary/total; missing scopes are unknown.
+- Poll returned `task_ref`; consume terminal `source_anchor`/`result.source_snapshot` directly and never rerun page 1.
+- The opaque continuation is single-use. Preserve tenant, advertiser, authorization route, dates, grouping, filters, order, page size, and source snapshot. Never add Meta `min_as_of`. On `snapshot_expired` or replay rejection, restart identical page 1 serially.
+- On 503 `dependency_unavailable` with no `task_ref`, honor `retry_after_seconds`/Retry-After and retry the identical bounded read once. For 429 fan-out, use one batch; immediate write success is not mutation verification or `config_verified_live`; age-only data is limited.
 
-## Insights
+## Creative And Create
 
-- With `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call `insights_query_consistent` once with `query_contract_version=1` and one `scope` or ordered `scopes`.
-- Use `require_fresh` and `date_range_mode=since_launch` only when advertised by `insights_query_contract.consistency_modes`.
-- Trust top-level `complete=true` and server summary/total; never sum rows. Missing scopes are unknown.
-- Follow `next_action`, `task_ref`, and `poll_after_ms`; never resubmit. Consume matching `source_anchor`/`result.source_snapshot`; never rerun page 1.
-- Without it, use `insights_query_overview` for one scope and `insights_query_batch_overview` for many. Never client fan-out.
-- On `mcp_fanout_detected`, combine scopes through profile or batch.
-- The opaque continuation is single-use; preserve tenant, advertiser, authorization route, dates, grouping, filters, order, page size, and source snapshot. Never add Meta `min_as_of`. Replay rejection or `snapshot_expired` restarts identical page 1 serially.
-- Data may be age-only; immediate write success is not mutation verification. Claim `config_verified_live` only when returned.
+- Use local `creative_id` only with `readiness.create_eligible=true`; inspect `readiness.reason_code`, `readiness.retryable`, and `readiness.next_action`.
+- Send 1..20 requested `verification_pending` IDs once to `creatives_reconcile`. `upload_failed` needs returned remediation and a new explicit upload. Use advertised `creatives_abandon_upload` to remove a cancelled pending attempt, not provider media.
+- Give `campaigns_quick_create` one source. `append_mode=append-campaign` plus `target_campaign_id` creates ad group/ad; `append_mode=append-adgroup` plus `target_adgroup_id` creates ad only.
+- For Smart+ image, the server verifies ownership and maps `creative_info.image_info[].web_uri`. Do not send a CDN image URL, synthesize `CAROUSEL_ADS`, or invent provider CTA, music, or identity IDs.
+- Never supply both target IDs, guess names, use Meta `append-adset`, or replace prepared parents. Show sanitized parents, settings, count, expiry, and `call_to_action_configured`; get explicit approval. Confirm once.
+- Use `task_ref` only for `tasks_get_status`. Use canonical `operation_ref` only for `operations_get` on the original route. `failed_proven` needs corrected input, new prepare, and fresh approval. Never replay; reconnect the MCP transport after Hosted schema release.
 
-## Creative And Append
+## Receipt Workflows
 
-- Read `creatives_list` or `creatives_get`; use local `creative_id` only when `readiness.create_eligible=true`.
-- Inspect `readiness.reason_code`, `readiness.retryable`, formats, and `readiness.next_action`; legacy status is insufficient.
-- For `verification_pending` or historical verification with `next_action=creatives_reconcile`, send 1..20 tenant-owned IDs once; never client-side fan out.
-- `upload_failed` is terminal; follow remediation, including a new explicit upload. Reconcile only when instructed.
-- Give `campaigns_quick_create` one source: eligible local `creative_id` or hosted-schema provider fields.
-- `append_mode=append-campaign` + `target_campaign_id` creates ad group/ad; `append_mode=append-adgroup` + `target_adgroup_id` creates ad only. Omit parent params.
-- For an eligible local Smart+ image creative, pass `creative_id` and intended overrides. The server verifies advertiser ownership, maps its image ID to `creative_info.image_info[].web_uri`, and inherits image-family CTA, music, text, and landing defaults. Do not send a CDN image URL, synthesize `CAROUSEL_ADS`, or invent provider CTA, music, or identity IDs.
-- Never supply both target IDs, guess names, use Meta `append-adset`, or replace prepared targets.
-- Show sanitized parents, settings, count, name, expiry, and `call_to_action_configured`; IDs stay opaque. Get explicit approval. Confirm once.
-- Poll opaque `ttask_*` via `tasks_get_status(task_ref=..., response_mode=compact)`. `task_id` is legacy. For a mislabeled UUID, pass it once and use the corrected ref.
-- Consume terminal `results.created_objects` and `results.failures`. Empty objects plus `failed_proven` means none acknowledged. Preserve `support_ref`; correct the input through a new prepare and fresh approval. Never replay.
-- Use `task_ref` only for `tasks_get_status`. Use canonical `operation_ref` only for `operations_get` on the original route; never pass task IDs, replay, or name-match.
-- After a Hosted schema release, reconnect the MCP transport before trusting cached descriptions.
+- Require `mutation_receipts=true` and exact advertised names: `delivery_prepare_tool`, `delivery_confirm_tool`, `operation_get_tool`, budget/bid, copy/clone/recreate prepares and confirms.
+- Read `overview_get_live_configs`; keep configured/effective/operation status, budget, bid, currency, receipt, and metrics distinct. TikTok money is decimal advertiser-currency major units; bid is native `ad_group` scoped.
+- `copy_ad_quick_copy`, `copy_ad_clone_structure`, and `campaigns_recreate_from_task` are same-advertiser only. One approval/task covers 1..20 grouped items with item receipts and disabled initial delivery. Reject cross-advertiser transfer, failed/partial/foreign sources, name matching, and uncertain replay.
+- Every write is prepare, sanitized review, explicit approval, confirm once, then exact-route recovery.
 
-## Other Writes
+## Optimization, MMP, Support
 
-Only with `mutation_receipts=true`: use advertised `delivery_prepare_tool`, `delivery_confirm_tool`, and `operation_get_tool` on the original route.
-
-## Retry
-
-- For `429` `mcp_concurrency_limited`, honor `Retry-After` plus jitter.
-- For fan-out 429, switch to profile scopes/batch; do not repeat single-scope calls.
-- On `dependency_unavailable` with no `task_ref`, honor `retry_after_seconds`/`Retry-After` and retry the identical bounded read once; otherwise poll it.
-- Treat HTTP `503` as dependency unavailable. Parse structured fields, never message text.
+- With `agent_method_profile.optimization.available=true`, `optimization_evaluate` creates complete-evidence recommendations, not mutations. Read `notifications_list`; `optimization_prepare_action` starts a new approved management flow; never auto-confirm; notifications are in-app only.
+- With `mmp_product_aggregate_reads.available=true`, use one `mmp_insights_get_product_event_today` or `mmp_insights_query_product_event_summary`. The server fixes `channel_pid=tiktokglobal_int`; never fan out. AppsFlyer `adset` is an adapter source field for native `ad_group`.
+- When `support_reporting.mode=manual_only`, call `support_report_error` only on explicit intent with an existing `support_ref`; poll `support_get_report_status`. Never include prompts, tokens, advertiser IDs, bodies, provider responses, descriptions, or logs.
 
 Return compact evidence and the next safe action, never raw JSON.

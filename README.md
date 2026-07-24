@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.33`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.34`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -79,6 +79,8 @@ Version 0.7.31 adds controlled notification integration guidance. Agents can ins
 Version 0.7.32 clarifies that credential-taking notification integration tools are operator-scoped. Agents use them only when advertised; OAuth Safe Mode keeps them hidden, and agents never solicit integration credentials in chat when the tools are absent.
 
 Version 0.7.33 publishes the notification monitoring contract. Agents distinguish six event-driven Meta Ads Webhook fields from eight cached asset-health checks, report default recharge/token/cooldown thresholds, use the runtime capability map as truth, and never present Webhooks as continuous spend reporting or an Insights replacement.
+
+Version 0.7.34 aligns TikTok's capability-gated management and reuse workflows. Agents use receipt-backed delivery, budget, bid, same-advertiser copy/clone/recreate, complete-evidence optimization recommendations, in-app notifications, manual support reporting, upload abandonment, and TikTok-channel product MMP aggregates only when Hosted setup advertises them. Every write remains prepare/review/explicit-confirm with exact-route recovery; uncertain operations are never replayed.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 

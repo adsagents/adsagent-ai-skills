@@ -11,11 +11,12 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.30"
+VERSION = "0.7.31"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
     "adsagent-setup",
+    "adsagent-notifications",
     "adsagent-reliability",
     "agent-scheduled-tasks",
     "meta-insights",
@@ -158,6 +159,7 @@ ROUTER_TERMS = [
     "429 / 503 / Retry-After / concurrency / stale session",
     "setup / connect / OAuth / MCP token",
     "scheduled task / automation / cron / reminder",
+    "notification / webhook / email / Feishu / Telegram",
     "setup_get_status.capabilities",
     "capability",
     "Multiple distinct source Ads",
@@ -553,6 +555,30 @@ def main() -> None:
             "connections_create_intent(channel=",
             "central-auth identity",
             "Do not use email fallback",
+        ],
+    )
+
+    notifications = read("skills/adsagent-notifications/SKILL.md")
+    assert_terms(
+        "adsagent-notifications",
+        notifications,
+        [
+            "notifications_integrations_list",
+            "notifications_integration_prepare",
+            "notifications_integration_confirm",
+            "tasks_get_status(task_ref)",
+            "explicit user approval",
+            "test_channel",
+            "one real external message",
+            "single-use",
+            "Never replay",
+            "notifications_integrations_list",
+            "invalid_fields",
+            "fresh approval",
+            "support_ref",
+            "Never create, enable, disable, or modify customer FB User permissions",
+            "exact eligible route",
+            "provider acceptance",
         ],
     )
 

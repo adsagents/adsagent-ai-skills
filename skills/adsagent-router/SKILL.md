@@ -1,6 +1,6 @@
 ---
 name: adsagent-router
-description: Use when the user mentions AdsAgent, Meta, Google Ads, TikTok, MCP setup, performance, copy/append, Retry-After, stale sessions, or operator review.
+description: Use when the user mentions AdsAgent, Meta, Google Ads, TikTok, MCP setup, notifications, performance, copy/append, Retry-After, stale sessions, or operator review.
 ---
 
 # AdsAgent Router
@@ -12,6 +12,7 @@ description: Use when the user mentions AdsAgent, Meta, Google Ads, TikTok, MCP 
 - TikTok / advertiser / TT / append to an existing TikTok campaign or ad group: `tiktok-insights`.
 - 429 / 503 / Retry-After / concurrency / stale session / `mcp_meta_quota_deferred`: `adsagent-reliability` before recovery.
 - setup / connect / OAuth / MCP token: `adsagent-setup`.
+- notification / webhook / email / Feishu / Telegram: `adsagent-notifications`.
 - scheduled task / automation / cron / reminder: `agent-scheduled-tasks`.
 
 ## Copy Routing
@@ -39,7 +40,6 @@ When scope is missing:
 - Hosted MCP is authoritative. Use handles.
 - Never read raw rows for questions or fan out across scopes/days.
 - Trust totals only when `meta.complete=true`; missing scopes are unknown, never zero.
-- Route exports through the channel skill's artifact workflow.
 - On `mcp_fanout_detected`, stop the loop and use the platform batch tool.
 - Consequential writes require prepare, sanitized summary, explicit approval, then confirm.
 - Meta creation uses `creation_contract_version=3`; read `adsagent://guide/creation-contract` and `adsagent://guide/name-contract`, then emit only explicit role fields.
@@ -49,7 +49,7 @@ When scope is missing:
 - Poll `task_ref`. On `no_create_permission`, use `/dashboard/assets/fb-users`; never change permissions.
 - Meta delivery config verification follows the returned `next_action` to `overview_get_live_configs`; never substitute an Insights watermark.
 - Meta decisions use `insights_query_consistent(require_fresh)` only when advertised; uncertain task writes use `operations_get_context` and are never replayed.
-- Meta candidate reads use one allowlisted AND plan; keep hierarchy IDs; deduplicate and group client-side.
+- Meta candidate reads use one allowlisted AND plan; keep IDs; deduplicate and group client-side.
 - Continue Meta page 2 and later with the unchanged complete cached contract and first-page `min_as_of`; never rerun page 1.
 - Use the common envelope only for `agent_method_profile.profile_id=adsagent_agent_methods_v1`; otherwise preserve native output.
 - When an error includes `support_ref`, preserve it verbatim and show it for unresolved/operator-review handoff. It is not authorization; never invent, modify, enumerate, or replace it with raw tokens, request bodies, or logs.

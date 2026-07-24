@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import json
 import unittest
 from pathlib import Path
 
@@ -72,6 +73,29 @@ class PublicReleaseContractTests(unittest.TestCase):
             imported_roots.isdisjoint(
                 {"httpx", "requests", "socket", "subprocess", "urllib"}
             )
+        )
+
+    def test_release_manifest_is_bounded_and_matches_public_identity(self) -> None:
+        manifest = json.loads(self._read("release-manifest.json"))
+        version = self._read("VERSION").strip()
+
+        self.assertEqual(
+            manifest,
+            {
+                "schema_version": 1,
+                "package": "adsagent-ai-skills",
+                "repository": "adsagents/adsagent-ai-skills",
+                "version": version,
+                "tag": f"v{version}",
+                "release_url": (
+                    "https://github.com/adsagents/adsagent-ai-skills/releases/tag/"
+                    f"v{version}"
+                ),
+            },
+        )
+        self.assertLess(
+            len(json.dumps(manifest, separators=(",", ":")).encode("utf-8")),
+            512,
         )
 
     def test_quickcreate_confirmation_and_permission_contract_is_documented(self) -> None:

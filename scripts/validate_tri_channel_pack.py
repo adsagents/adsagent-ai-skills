@@ -505,6 +505,21 @@ def main() -> None:
     if not marketplace_plugins or marketplace_plugins[0].get("version") != VERSION:
         fail("marketplace plugin version mismatch")
 
+    release_manifest = json.loads(read("release-manifest.json"))
+    expected_release_manifest = {
+        "schema_version": 1,
+        "package": "adsagent-ai-skills",
+        "repository": "adsagents/adsagent-ai-skills",
+        "version": VERSION,
+        "tag": f"v{VERSION}",
+        "release_url": (
+            "https://github.com/adsagents/adsagent-ai-skills/releases/tag/"
+            f"v{VERSION}"
+        ),
+    }
+    if release_manifest != expected_release_manifest:
+        fail("release-manifest.json does not match the public release identity")
+
     reminder_helper = ROOT / "scripts" / "update_reminder.py"
     if not reminder_helper.exists():
         fail("missing scripts/update_reminder.py")

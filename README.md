@@ -82,6 +82,8 @@ Version 0.7.33 publishes the notification monitoring contract. Agents distinguis
 
 Version 0.7.34 aligns TikTok's capability-gated management and reuse workflows. Agents use receipt-backed delivery, budget, bid, same-advertiser copy/clone/recreate, complete-evidence optimization recommendations, in-app notifications, manual support reporting, upload abandonment, and TikTok-channel product MMP aggregates only when Hosted setup advertises them. Every write remains prepare/review/explicit-confirm with exact-route recovery; uncertain operations are never replayed.
 
+Version 0.7.34 also publishes a machine-readable release manifest used by all three Hosted MCP services. Meta, Google Ads, and TikTok can refresh the recommended client version from the same immutable tagged release without adding a GitHub request to customer MCP calls; invalid, untagged, or downgraded manifests are ignored.
+
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 
 ## What This Is

@@ -39,9 +39,40 @@ def test_notification_changes_are_prepare_confirm_and_never_replayed():
         assert term in guidance
 
 
+def test_notification_capability_and_source_boundaries_are_explicit():
+    guidance = _read("skills/adsagent-notifications/SKILL.md")
+
+    for term in (
+        "monitoring_capabilities",
+        "effective_status",
+        "ad_recommendations",
+        "with_issues_ad_objects",
+        "creative_fatigue",
+        "in_process_ad_objects",
+        "subscriptions",
+        "ad_account_status",
+        "ad_account_recharge",
+        "page_unpublished",
+        "page_ads_restricted",
+        "page_no_advertise_access",
+        "fb_user_abnormal",
+        "fb_user_disabled",
+        "fb_user_token_expiring",
+        "remaining spend cap <= 50",
+        "<= 10 percent",
+        "<= 7 days",
+        "3600-second cooldown",
+        "Webhooks do not replace Insights pulls",
+        "Webhooks do not continuously stream spend or balance metrics",
+        "cached asset-health monitoring",
+        "live-read",
+    ):
+        assert term in guidance
+
+
 def test_notification_release_surfaces_are_consistently_versioned():
-    assert _read("VERSION").strip() == "0.7.32"
-    assert '"version": "0.7.32"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.32"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.32`" in _read("README.md")
-    assert 'VERSION = "0.7.32"' in _read("scripts/validate_tri_channel_pack.py")
+    assert _read("VERSION").strip() == "0.7.33"
+    assert '"version": "0.7.33"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.33"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.33`" in _read("README.md")
+    assert 'VERSION = "0.7.33"' in _read("scripts/validate_tri_channel_pack.py")

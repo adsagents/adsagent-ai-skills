@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.32`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.33`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -77,6 +77,8 @@ Version 0.7.30 closes the TikTok Smart+ image-append contract. Agents use `task_
 Version 0.7.31 adds controlled notification integration guidance. Agents can inspect masked email, Feishu, Telegram, and Meta Ads Webhooks state, then use prepare, sanitized review, explicit approval, and single-use confirm. Test notifications send exactly one real message only after approval; uncertain Meta subscription results are reconciled by read, never by replay.
 
 Version 0.7.32 clarifies that credential-taking notification integration tools are operator-scoped. Agents use them only when advertised; OAuth Safe Mode keeps them hidden, and agents never solicit integration credentials in chat when the tools are absent.
+
+Version 0.7.33 publishes the notification monitoring contract. Agents distinguish six event-driven Meta Ads Webhook fields from eight cached asset-health checks, report default recharge/token/cooldown thresholds, use the runtime capability map as truth, and never present Webhooks as continuous spend reporting or an Insights replacement.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 

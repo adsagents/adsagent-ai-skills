@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.31"
+VERSION = "0.7.32"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -564,6 +564,9 @@ def main() -> None:
         notifications,
         [
             "notifications_integrations_list",
+            "operator-scoped",
+            "OAuth Safe Mode",
+            "do not solicit credentials in chat",
             "notifications_integration_prepare",
             "notifications_integration_confirm",
             "tasks_get_status(task_ref)",

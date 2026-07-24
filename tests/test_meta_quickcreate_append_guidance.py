@@ -50,7 +50,7 @@ def test_append_adset_guidance_is_ads_only_and_never_auto_confirms():
 
 
 def test_release_version_is_0726():
-    assert _read("VERSION").strip() == "0.7.31"
-    assert '"version": "0.7.31"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.31"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.31`" in _read("README.md")
+    assert _read("VERSION").strip() == "0.7.32"
+    assert '"version": "0.7.32"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.32"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.32`" in _read("README.md")

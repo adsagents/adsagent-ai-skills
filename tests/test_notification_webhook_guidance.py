@@ -15,6 +15,10 @@ def test_notification_skill_is_routed_and_packaged():
     assert "notification / webhook / email / Feishu / Telegram" in router
     assert "`adsagent-notifications`" in router
     assert '"./skills/adsagent-notifications"' in plugin
+    guidance = _read("skills/adsagent-notifications/SKILL.md")
+    assert "operator-scoped" in guidance
+    assert "OAuth Safe Mode" in guidance
+    assert "do not solicit credentials in chat" in guidance
 
 
 def test_notification_changes_are_prepare_confirm_and_never_replayed():
@@ -36,8 +40,8 @@ def test_notification_changes_are_prepare_confirm_and_never_replayed():
 
 
 def test_notification_release_surfaces_are_consistently_versioned():
-    assert _read("VERSION").strip() == "0.7.31"
-    assert '"version": "0.7.31"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.31"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.31`" in _read("README.md")
-    assert 'VERSION = "0.7.31"' in _read("scripts/validate_tri_channel_pack.py")
+    assert _read("VERSION").strip() == "0.7.32"
+    assert '"version": "0.7.32"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.32"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.32`" in _read("README.md")
+    assert 'VERSION = "0.7.32"' in _read("scripts/validate_tri_channel_pack.py")

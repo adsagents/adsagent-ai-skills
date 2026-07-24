@@ -37,8 +37,8 @@ def test_meta_batch_write_guidance_is_receipt_driven_and_never_replays():
 
 
 def test_meta_batch_write_release_surfaces_are_consistently_versioned():
-    assert _read("VERSION").strip() == "0.7.30"
-    assert '"version": "0.7.30"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.30"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.30`" in _read("README.md")
-    assert 'VERSION = "0.7.30"' in _read("scripts/validate_tri_channel_pack.py")
+    assert _read("VERSION").strip() == "0.7.31"
+    assert '"version": "0.7.31"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.31"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.31`" in _read("README.md")
+    assert 'VERSION = "0.7.31"' in _read("scripts/validate_tri_channel_pack.py")

@@ -5,7 +5,7 @@ description: Use when viewing or configuring AdsAgent email, Feishu, Telegram, o
 
 # AdsAgent Notifications
 
-Use only the hosted Meta MCP notification integration tools. Never ask for or expose internal database IDs.
+Use only advertised operator-scoped hosted Meta MCP notification integration tools. OAuth Safe Mode does not expose credential-taking integration tools. If these tools are absent, do not solicit credentials in chat; direct the user to the dashboard/operator MCP setup. Never ask for or expose internal database IDs.
 
 ## Inspect
 

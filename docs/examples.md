@@ -36,6 +36,10 @@ Before making a Meta budget decision, check setup_get_status.capabilities. If ad
 ```
 
 ```text
+Before changing a Meta budget, inspect capabilities.delivery_mutations. If denied, follow permission_action and wait for the user; never change permissions. After reconnect, use overview_update_adset_budget plus overview_update_confirm for ABO, or overview_update_campaign_budget plus overview_update_campaign_budget_confirm for CBO. Never substitute budget levels.
+```
+
+```text
 If a Meta require_fresh read queues work, poll tasks_get_status with response_mode=compact. On a complete terminal result, use that result directly and never rerun page 1. For later pages preserve every filter and pin min_as_of to the first-page source_observed_at; use the earliest source anchor for multiple scopes.
 ```
 

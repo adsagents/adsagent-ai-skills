@@ -87,4 +87,6 @@ Never rely on docs alone to protect the backend.
 
 Agents never enable or modify customer permissions automatically. Permission changes remain an explicit human action in the AdsAgent dashboard.
 
+For Meta delivery changes, `setup_get_status.capabilities.delivery_mutations` is authoritative. When denied, follow its `permission_action`; after the user explicitly enables dashboard-token access or reauthorizes OAuth with `mcp.optimize.write`, reconnect and re-list tools. ABO uses `overview_update_adset_budget` with `overview_update_confirm`; CBO uses `overview_update_campaign_budget` with `overview_update_campaign_budget_confirm`. Never substitute budget levels.
+
 Agent-owned schedules remain owned by the Agent platform. The skill pack teaches safe configuration and verification; it does not host cron, wake an Agent, or turn reminder-only jobs into execution guarantees.

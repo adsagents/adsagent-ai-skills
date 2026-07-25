@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.34`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.35`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -83,6 +83,8 @@ Version 0.7.33 publishes the notification monitoring contract. Agents distinguis
 Version 0.7.34 aligns TikTok's capability-gated management and reuse workflows. Agents use receipt-backed delivery, budget, bid, same-advertiser copy/clone/recreate, complete-evidence optimization recommendations, in-app notifications, manual support reporting, upload abandonment, and TikTok-channel product MMP aggregates only when Hosted setup advertises them. Every write remains prepare/review/explicit-confirm with exact-route recovery; uncertain operations are never replayed.
 
 Version 0.7.34 also publishes a machine-readable release manifest used by all three Hosted MCP services. Meta, Google Ads, and TikTok can refresh the recommended client version from the same immutable tagged release without adding a GitHub request to customer MCP calls; invalid, untagged, or downgraded manifests are ignored.
+
+Version 0.7.35 restores explicit Meta delivery-management discovery. Agents inspect `capabilities.delivery_mutations`, stop for the advertised human permission action when access is disabled, reconnect after access changes, and use distinct confirmation-gated ABO AdSet and CBO Campaign budget paths without substituting budget levels.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 

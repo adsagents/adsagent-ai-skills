@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.34"
+VERSION = "0.7.35"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -143,6 +143,13 @@ REQUIRED_REPO_TERMS = [
     "existing_adset_id",
     "inherits the existing parent budget",
     "fresh explicit approval",
+    "capabilities.delivery_mutations",
+    "permission_action",
+    "mcp.optimize.write",
+    "/dashboard/settings#mcp-access",
+    "overview_update_adset_budget",
+    "overview_update_campaign_budget",
+    "Never substitute",
 ]
 
 FORBIDDEN_REPO_TERMS = [
@@ -364,6 +371,13 @@ META_COPY_TERMS = [
     "product_ref",
     "inherits the existing parent budget",
     "fresh explicit approval",
+    "capabilities.delivery_mutations",
+    "permission_action",
+    "overview_update_adset_budget",
+    "overview_update_confirm",
+    "overview_update_campaign_budget",
+    "overview_update_campaign_budget_confirm",
+    "Never substitute",
 ]
 
 

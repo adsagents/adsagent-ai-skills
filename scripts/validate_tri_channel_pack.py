@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.35"
+VERSION = "0.7.36"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -150,6 +150,18 @@ REQUIRED_REPO_TERMS = [
     "overview_update_adset_budget",
     "overview_update_campaign_budget",
     "Never substitute",
+    "destination.type=web|app",
+    "created_from=<inclusive>",
+    "created_to=<exclusive>",
+    "result.create_reconciliation",
+    "reconciled=true",
+    "creative_results",
+    "selection_key",
+    "selection_keys",
+    "approved_task_payload",
+    "live_verified=false",
+    "operations_get_context(response_mode=compact)",
+    "recovered_by_url_fallback",
 ]
 
 FORBIDDEN_REPO_TERMS = [
@@ -378,6 +390,16 @@ META_COPY_TERMS = [
     "overview_update_campaign_budget",
     "overview_update_campaign_budget_confirm",
     "Never substitute",
+    "destination.type=web|app",
+    "creatives_list(created_from=<inclusive>, created_to=<exclusive>)",
+    "result.create_reconciliation",
+    "reconciled=true",
+    "creative_results",
+    "selection_key",
+    "selection_keys",
+    "approved_task_payload",
+    "live_verified=false",
+    "recovered_by_url_fallback",
 ]
 
 

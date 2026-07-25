@@ -5,9 +5,9 @@ description: Use when AdsAgent MCP repeats, fans out, queues, returns partial da
 
 # AdsAgent Reliability
 
-Use server-side batch.
-
 ## Query Plan
+
+Use server-side batch.
 
 Read `setup_get_status.capabilities`. For `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call one root `query_contract_version=1` `insights_query_consistent`.
 
@@ -19,24 +19,21 @@ Native fallback:
 | TikTok | `insights_query_overview` | `insights_query_batch_overview` |
 | Google Ads | `google_ads_insights_overview_query` | `google_ads_insights_overview_batch` |
 
-Never fan out. Trust top-level `complete=true` in profile mode; otherwise trust `meta.complete=true`.
+Never fan out. Trust top-level `complete=true` in profile mode; otherwise trust `meta.complete=true`. For Meta, combine AND `filters`; correct `adsagent_query_invalid` once.
 
-For Meta, combine AND `filters`; correct `adsagent_query_invalid` once.
+Poll advertised `next_action`; Meta uses `tasks_get_status(task_ref=..., response_mode=compact)`. At `terminal=true`, consume `result`; never rerun page 1. For create/copy, require `result.create_reconciliation.reconciled=true` before claiming complete accounting. Map `creative_results` to created IDs, then report `result.failures.items`, obey retry/review flags, and stop on unclassified failures.
 
-Poll advertised `next_action`; Meta uses `tasks_get_status(task_ref=..., response_mode=compact)`. At `terminal=true`, consume `result`; never rerun page 1. Report `result.failures.items`, obey `automatic_retry_allowed`, `manual_new_task_allowed`, and `operator_review_required`, and stop on unclassified failures.
-
-For terminal export, GET `result.artifact.download_url` byte-for-byte. Never rewrite it. `artifact_status=expired` requires a new export.
-
-Meta keeps page/`min_as_of`; Google/TikTok keep opaque continuation and snapshot. Never move Meta `min_as_of` into Google or TikTok requests.
+For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact_status=expired` requires export. Keep opaque continuation. Never move Meta `min_as_of` into Google or TikTok requests.
 
 ## Client Limits
 
-- Cache discovery; keep 4-6 calls.
-- Retry only reads/idempotent operations; never parallel-retry, rotate tokens, or replay confirm.
+- Retry only reads/idempotent operations; never parallel-retry or replay confirm.
 - After Meta writes, follow `next_action` to `overview_get_live_configs`; recover via `operations_get_context(task_ref=...)`.
 - Bulk Meta Ad writes may use configurable sequential chunks, not evidence of a fixed Meta limit. Preserve acknowledged objects; `manual_new_task_allowed=true` requires a fresh task and approval.
+- `operations_get_context(response_mode=compact)` returns receipt totals, create reconciliation, and anomalous receipts. Use `standard` only when every receipt is required.
+- A failed auxiliary `adimages` receipt marked `workflow_status=recovered_by_url_fallback` is compensated, has no final-Ad impact, and never authorizes retry or a new task.
 - `meta_write_rejected` or `verified_not_created` is eligible only when flags permit. Reuse `verified_created`; keep `meta_write_verification_pending` or `verification_ambiguous` in `operations_get_context`, never replay.
-- TikTok writes require advertised tools and `mutation_receipts=true`; recover on the original authorization route.
+- TikTok writes require advertised tools and `mutation_receipts=true`; recover on the original route.
 - Parse backoff from headers, `data`, and `error.data`; see [retry-parser.md](retry-parser.md).
 
 ## Recovery Matrix
@@ -54,10 +51,4 @@ Meta keeps page/`min_as_of`; Google/TikTok keep opaque continuation and snapshot
 | `adsagent_request_incomplete` + `invalid_fields` | Correct public fields and prepare once; on repeat preserve `support_ref`. |
 | `scope_unavailable` | Do not infer permissions. Discover once; retry only if still listed. Never alter permissions. |
 
-If retries fail, report the category. Sent/uncertain writes use operation recovery, never replay or modify permissions.
-
-## Output
-
-Return Markdown with scope, metrics, completeness, and next action. Never expose tokens or diagnostics.
-
-On `operator_review_required`, stop. Preserve `support_ref`; it is not authorization and never replaces a token, request, or log.
+If retries fail, report the category. Sent/uncertain writes use operation recovery. On `operator_review_required`, stop and preserve `support_ref`; it is not authorization.

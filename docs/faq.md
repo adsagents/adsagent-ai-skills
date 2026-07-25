@@ -36,7 +36,7 @@ TikTok uses a separate native append contract: `append-campaign` with only `targ
 
 TikTok may independently advertise receipt-backed delivery, budget, bid, copy, structural clone, recreate, optimization, support reporting, and product MMP aggregate capabilities. Use only the exact returned tool names. Copy/clone/recreate stays within one advertiser and authorization route; management money stays in decimal advertiser-currency units; optimization remains recommendation-only until a separate approved management confirm; MMP aggregate reads are fixed to the TikTok AppsFlyer channel and never client-fanned out.
 
-When a terminal create/copy task contains `result.failures.items`, the agent reports those bounded public reasons and next actions instead of a generic failure. It never exposes raw Meta errors or retries the unchanged write. Unknown items remain operator-review only.
+For every terminal create/copy task, the agent first checks `result.create_reconciliation.reconciled`. It uses `creative_results` to map each Ad name and available creative selection key to its created Ad ID. A failed auxiliary image upload marked `recovered_by_url_fallback` was compensated and never authorizes a retry or new task. Remaining `result.failures.items` are reported with their bounded next actions; unknown items remain operator-review only.
 
 ## Does one install cover Google Ads and TikTok?
 

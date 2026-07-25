@@ -53,6 +53,7 @@ One concise answer.
 - Use server `summary/total` fields and distinguish them from visible rows.
 - Use export or async workflows for large tables.
 - For a large exhaustive Meta result, call grouped `insights_export_csv` with the same filters and consume the artifact.
+- For one recent creative upload window, call `creatives_list` with timezone-aware `created_from` (inclusive) and `created_to` (exclusive). Omit both bounds for the whole library.
 - Poll queued work to terminal, then summarize the artifact in Markdown; do not paste full CSV into chat.
 - Terminal `insights_export` results retain `result.artifact` in compact and standard task polls. Send its opaque short-lived `download_url` byte-for-byte to HTTP GET. Never redact, rebuild, decode, truncate, or substitute any segment. When `artifact_status=expired` or the URL is absent, request a new explicit export rather than reconstructing a provider URL.
 
@@ -88,6 +89,8 @@ Google Ads `as_of` is read-only ledger observation time and its current public p
 - Meta creation clients set `creation_contract_version=3`, use explicit single/grouped mode, and read `adsagent://guide/creation-contract` plus `adsagent://guide/name-contract` for canonical examples and role-specific names. Legacy aliases are exact-path compatibility only.
 - On `confirm_token_invalid`, never retry the old confirm. Prepare again, show the fresh sanitized approval summary, and obtain fresh explicit approval.
 - A successful asynchronous confirm returns a public `task_ref`. Poll it with `tasks_get_status(task_ref=..., response_mode=compact)` until `terminal=true`; never discover a replacement by guessing from task history.
+- First inspect `result.create_reconciliation`. Require `reconciled=true` before claiming every requested object is accounted for, and use `creative_results` to map `ad_name` plus available `selection_key`/`selection_keys` to `ad_id`. `configuration.source=approved_task_payload` with `live_verified=false` is execution input, not live Meta configuration.
+- `operations_get_context(response_mode=compact)` returns receipt totals, reconciliation, and anomalous receipts. Use `standard` only when every receipt is required. An auxiliary `adimages` failure marked `workflow_status=recovered_by_url_fallback` is compensated and never authorizes retry or a new task.
 - For a terminal create/copy task, report every bounded `result.failures.items` entry using its public `ad_name`, `code`, `message`, and `next_action`. Raw Meta errors remain private. Never retry the unchanged write; any corrected retry requires a newly prepared task and fresh approval. When `failures.unclassified_count>0` or `operator_review_required=true`, report known items, stop, and preserve the task/support reference.
 - Compact terminal output preserves the safe `no_create_permission` code. Direct the user to `/dashboard/assets/fb-users` to enable Create on an active eligible connection, then prepare again.
 - Never enable or modify customer permissions automatically, and never replay a failed or uncertain mutation.

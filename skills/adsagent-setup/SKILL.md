@@ -26,8 +26,8 @@ Use Meta v2 for new connections. Keep `/mcp` as the legacy fallback for clients 
 
 ## Setup Flow
 
-1. Have the user paste the dashboard install prompt into the MCP client.
-2. Reconnect and re-list tools.
+1. Use dashboard install prompt.
+2. Reconnect and re-list tools. When `mcp.guide_version` changes, repeat this step before using cached schemas.
 3. Read `adsagent://guide/brief`, then one bounded `adsagent://guide/catalog/<domain>` topic if needed. Read `adsagent://guide/creation-contract` only for Meta creation/copy work. Never read `adsagent://guide/tools` end-to-end.
 4. Run `setup_get_status`; report readiness, blockers, and next action.
 5. Inspect `setup_get_status.capabilities`; use optional consistency, delivery mutation, verification, or recovery only when advertised.

@@ -5,13 +5,17 @@ description: Use when reading or analyzing Meta Ads performance, delivery metada
 
 # Meta Insights Through AdsAgent
 
-1. Resolve one product/account scope and date range with public handles.
-2. Inspect `setup_get_status.capabilities` and choose one advertised aggregate
-   query. Use one server-side batch for multiple scopes; never fan out.
-3. Require complete evidence before totals, filtering, pagination, or a
+1. Classify the request as product health or performance reporting.
+2. For product health, call `products_list`, select one public `product_ref`,
+   then call `products_get_health`. This path does not require a date range or
+   an Insights query.
+3. For performance, resolve one product/account scope and date range, inspect
+   `setup_get_status.capabilities`, and choose one advertised aggregate query.
+   Use one server-side batch for multiple scopes; never fan out.
+4. Require complete evidence before totals, filtering, pagination, or a
    decision. Missing scopes stay unknown.
-4. Preserve opaque task and continuation contracts exactly.
-5. Return concise Markdown or the server artifact; never expose raw rows,
+5. Preserve opaque task and continuation contracts exactly.
+6. Return concise Markdown or the server artifact; never expose raw rows,
    schemas, diagnostics, or internal errors.
 
 Read [query-contract.md](query-contract.md) only when the request needs

@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 from tests.contract_reader import read_contract
@@ -21,6 +22,8 @@ def test_meta_product_health_contract_is_progressively_disclosed():
         "products_get_health",
         "products_list",
         "product_ref",
+        "does not require a date range",
+        "an Insights query",
         "assets_list_pages",
         "connection_health",
         "account_health",
@@ -73,3 +76,7 @@ def test_meta_product_health_release_is_consistently_versioned():
     assert f'VERSION = "{expected}"' in _read(
         "scripts/validate_tri_channel_pack.py"
     )
+    release = json.loads(_read("release-manifest.json"))
+    assert release["version"] == expected
+    assert release["tag"] == f"v{expected}"
+    assert release["release_url"].endswith(f"/releases/tag/v{expected}")

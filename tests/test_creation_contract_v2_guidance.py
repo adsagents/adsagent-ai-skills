@@ -1,13 +1,15 @@
 from pathlib import Path
 import unittest
 
+from tests.contract_reader import read_contract
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class CreationContractV3GuidanceTests(unittest.TestCase):
     def test_meta_copy_contains_canonical_wrapped_examples(self) -> None:
-        text = (ROOT / "skills/meta-copy/SKILL.md").read_text(encoding="utf-8")
+        text = read_contract(ROOT, "skills/meta-copy/SKILL.md")
         for term in (
             '"creation_contract_version":3',
             '"request_mode":"single"',
@@ -31,7 +33,7 @@ class CreationContractV3GuidanceTests(unittest.TestCase):
 
     def test_recovery_is_prepare_only_and_bounded_to_one_correction(self) -> None:
         corpus = "\n".join(
-            (ROOT / path).read_text(encoding="utf-8")
+            read_contract(ROOT, path)
             for path in (
                 "skills/meta-copy/SKILL.md",
                 "skills/adsagent-reliability/SKILL.md",
@@ -45,7 +47,7 @@ class CreationContractV3GuidanceTests(unittest.TestCase):
         self.assertIn("support_ref", corpus)
 
     def test_public_pack_does_not_expose_meta_adapter_raw_fields_as_inputs(self) -> None:
-        text = (ROOT / "skills/meta-copy/SKILL.md").read_text(encoding="utf-8")
+        text = read_contract(ROOT, "skills/meta-copy/SKILL.md")
         self.assertIn("Never substitute Meta raw", text)
         self.assertNotIn('"application_id":', text)
         self.assertNotIn('"object_store_url":', text)

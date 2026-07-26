@@ -3,13 +3,15 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from tests.contract_reader import read_contract
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class AgentMethodProfileGuidanceTests(unittest.TestCase):
     def _read(self, relative_path: str) -> str:
-        return (ROOT / relative_path).read_text(encoding="utf-8")
+        return read_contract(ROOT, relative_path)
 
     def test_all_platform_guidance_prefers_profile_when_advertised(self) -> None:
         paths = (

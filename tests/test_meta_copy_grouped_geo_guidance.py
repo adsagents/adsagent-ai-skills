@@ -3,13 +3,15 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from tests.contract_reader import read_contract
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class MetaCopyGroupedGeoGuidanceTests(unittest.TestCase):
     def test_grouped_copy_is_one_server_owned_prepare(self) -> None:
-        text = (ROOT / "skills/meta-copy/SKILL.md").read_text(encoding="utf-8")
+        text = read_contract(ROOT, "skills/meta-copy/SKILL.md")
 
         for term in (
             "deduplicate only exact Ad names",
@@ -34,7 +36,7 @@ class MetaCopyGroupedGeoGuidanceTests(unittest.TestCase):
         self.assertNotIn('mode="new_ads"', text)
 
     def test_router_distinguishes_single_grouped_structure_and_recreate(self) -> None:
-        text = (ROOT / "skills/adsagent-router/SKILL.md").read_text(encoding="utf-8")
+        text = read_contract(ROOT, "skills/adsagent-router/SKILL.md")
 
         for term in (
             "One ad -> `copy_ad_quick_copy`",
@@ -46,7 +48,7 @@ class MetaCopyGroupedGeoGuidanceTests(unittest.TestCase):
             self.assertIn(term, text)
 
     def test_missing_settings_reference_stops_before_prepare(self) -> None:
-        text = (ROOT / "skills/meta-copy/SKILL.md").read_text(encoding="utf-8")
+        text = read_contract(ROOT, "skills/meta-copy/SKILL.md")
 
         for term in (
             "omits its Campaign, AdSet, or template reference",

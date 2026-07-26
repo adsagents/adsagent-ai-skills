@@ -3,23 +3,25 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from tests.contract_reader import read_contract
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class CrossPlatformSnapshotRecoveryGuidanceTests(unittest.TestCase):
     def _read(self, relative_path: str) -> str:
-        return (ROOT / relative_path).read_text(encoding="utf-8")
+        return read_contract(ROOT, relative_path)
 
     def test_release_version_is_consistent(self) -> None:
-        self.assertEqual(self._read("VERSION").strip(), "0.7.36")
+        self.assertEqual(self._read("VERSION").strip(), "0.7.37")
         for path in (
             "README.md",
             ".claude-plugin/plugin.json",
             ".claude-plugin/marketplace.json",
             "scripts/validate_tri_channel_pack.py",
         ):
-            self.assertIn("0.7.36", self._read(path), path)
+            self.assertIn("0.7.37", self._read(path), path)
 
     def test_google_keeps_platform_route_and_read_only_capability_truth(self) -> None:
         text = self._read("skills/google-ads-insights/SKILL.md")

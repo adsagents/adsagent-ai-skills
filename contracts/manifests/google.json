@@ -1,0 +1,1411 @@
+{
+  "access_counts": {
+    "read": 26,
+    "write": 56
+  },
+  "digest_algorithm": "sha256",
+  "guide_version": "2026-07-25.1",
+  "manifest_fingerprint": "d4e23ccad6c7caf91265b0e649fa67f14da0bccb6f69972871fdab846ca750a5",
+  "manifest_version": 1,
+  "phase_counts": {
+    "confirm": 24,
+    "direct": 8,
+    "prepare": 24,
+    "read": 26
+  },
+  "platform": "google",
+  "profile": "full",
+  "schema_fingerprint": "dce0655a85fe7479e6b7bcee47d9d12573489de3719d8f5c3dfa4709647e22c0",
+  "server_version": "phase-d1.2026-05-29",
+  "source": "hosted_mcp_registry",
+  "tool_count": 82,
+  "tools": [
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "78849bc9c2ac2ac480d492d3ad66e4c0df85207eb335c48da210dfdda3609509",
+      "domain": "accounts",
+      "effect": "none",
+      "name": "google_ads_accounts_list",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "4d75d2277e1d4a8d2e22596e358ee9cba130e1f4c76572dd1c2cbeb5f724ca18",
+      "schema_property_count": 1,
+      "schema_required_count": 0
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "64a1157d065f8c69a59847b97a12790169924d0ea8736929c74046c205216a1e",
+      "domain": "ad_group",
+      "effect": "provider_mutation",
+      "name": "google_ads_ad_group_create_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "6c998d1eb9bae8ab81101710df9da733d3b8688ac248c6f2f8af3831e012fe73",
+      "domain": "ad_group",
+      "effect": "draft_only",
+      "name": "google_ads_ad_group_create_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "e17915ea7600b711babcb9d2c064b0a726619cf99f7476e5b9da1ba7f8e75693",
+      "schema_property_count": 5,
+      "schema_required_count": 3
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "19ee01fdde7304a4a0ee8cdf289040f1298b20f6bb23da142691254d4de6364b",
+      "domain": "analysis_families",
+      "effect": "none",
+      "name": "google_ads_analysis_families_list",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "d746974fa9afd5e951f76f9af38954b0ad7f436f2120dc974da65e5ee39f856f",
+      "schema_property_count": 0,
+      "schema_required_count": 0
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "1a685819f6dfeabfa4b40d95235c0b5d3bf22ec6ccdb55c2900380884f34a44e",
+      "domain": "asset_link",
+      "effect": "provider_mutation",
+      "name": "google_ads_asset_link_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "01ab47ffc16c7f67bcbed616a3f977e75ebc5d7965da1c9bd06695e1e90e5678",
+      "domain": "asset_link",
+      "effect": "draft_only",
+      "name": "google_ads_asset_link_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "0ab4264967844061b293cc9a64308b5e14e17c19326ce53751f535b095dce426",
+      "schema_property_count": 5,
+      "schema_required_count": 4
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "ac4a81d6881923ab32f7295714a25515b027d2bd5ab715a89f1e556e5b682743",
+      "domain": "asset_requirements",
+      "effect": "none",
+      "name": "google_ads_asset_requirements_get",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "447ded8e1b2e411bd21b4183ff439294d8b6e5d11884783c578fd7ed91dc42f0",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "796b2eeaba51cf505b313601189e5d97e1cce320f20a1d7832fdea6764e17979",
+      "domain": "asset_unlink",
+      "effect": "provider_mutation",
+      "name": "google_ads_asset_unlink_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "8431eb185415d2130acdd2510bb45dc1b32c6d7ca94f7fdc3a63be9eb4463f08",
+      "domain": "asset_unlink",
+      "effect": "draft_only",
+      "name": "google_ads_asset_unlink_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "0ab4264967844061b293cc9a64308b5e14e17c19326ce53751f535b095dce426",
+      "schema_property_count": 5,
+      "schema_required_count": 4
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "c30257b0eea39d0f8dec94a8122118fb7dbeaca2b259c74a0bb03f51a7c17d4e",
+      "domain": "asset_upload",
+      "effect": "provider_mutation",
+      "name": "google_ads_asset_upload_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "f90e1b29b72974ba7968811484a52e48582423e2f4af9ecb7a5dadc973ae4159",
+      "schema_property_count": 4,
+      "schema_required_count": 4
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "cec073fd1e92de61bf4f51bbd9d1411d9eb63d8a5caf62376a38536056ae97bb",
+      "domain": "asset_upload",
+      "effect": "draft_only",
+      "name": "google_ads_asset_upload_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "ae43f66dc9aac731c349945bea72847f05bd09367798314c69d718ca1fece7a4",
+      "schema_property_count": 4,
+      "schema_required_count": 4
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "5cd6208f73605354694d7b89628aa608c86d6d5cebb4e64cb9a831c33b7e01ff",
+      "domain": "assets",
+      "effect": "none",
+      "name": "google_ads_assets_list",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "2e298882b69ac104db2cbd194833957ca4a46140d1d1bf4ee97112c1689f9ffe",
+      "schema_property_count": 2,
+      "schema_required_count": 1
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "fbd14d6c9e93aa7b2fa86f561eaaec18dbe5a916ebd8715e5c52e362ae8e8524",
+      "domain": "bidding",
+      "effect": "provider_mutation",
+      "name": "google_ads_bidding_update_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "6a55a27849748cd2d1a1d599383ae1614df81d11a458723f11e9998d3fc89898",
+      "domain": "bidding",
+      "effect": "draft_only",
+      "name": "google_ads_bidding_update_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "bccb881bfdfdea61fbb16b1db62f548c4f9b06add2d695adaac0908119a90324",
+      "schema_property_count": 5,
+      "schema_required_count": 3
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "46fccaf4a2e2d22cf0a15ebe6cd273b3dd80ece0cd06cd7ebd7b42080c4f06fa",
+      "domain": "billing_get_setup",
+      "effect": "none",
+      "name": "google_ads_billing_get_setup",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "ff8a2521c0e3272050ff9c39e470e3e853591107f40c729724766198ae1b2962",
+      "schema_property_count": 2,
+      "schema_required_count": 1
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "95721d26a9779b33f629b7efcb0066c82cad0887d301d4e03ed01758d96047aa",
+      "domain": "budget",
+      "effect": "provider_mutation",
+      "name": "google_ads_budget_update_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "6e0e556ed2cb42c968592e11f2c462428cc4fbfa3fb0d052fcce270c79f8170b",
+      "domain": "budget",
+      "effect": "draft_only",
+      "name": "google_ads_budget_update_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "0c6c993c4a12c801ff8eb04397560a34168bd5f9781ce5576376ee8d741e48fb",
+      "schema_property_count": 3,
+      "schema_required_count": 3
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "1b2e0e1b0b97937961c0be1046caed6b9ad649ee4fcdef43fcf9373558488805",
+      "domain": "campaign",
+      "effect": "provider_mutation",
+      "name": "google_ads_campaign_create_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "48ad60be3449ec45031822dc65f83e3c182adf3789abd2fdcba677434f5b0916",
+      "domain": "campaign",
+      "effect": "draft_only",
+      "name": "google_ads_campaign_create_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "07b27ec0eaf16dce0fd54e5f9542876f82ecedf4b194784ed14cb1577a03ef20",
+      "schema_property_count": 7,
+      "schema_required_count": 4
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "tenant_scope",
+        "owned_connection"
+      ],
+      "description_digest_sha256": "a9435c51e800294cba27af54242369de091ffd8d513dc267825246820687f7a4",
+      "domain": "connection_permissions",
+      "effect": "adsagent_state",
+      "name": "google_ads_connection_permissions_set",
+      "phase": "direct",
+      "required_capability": "mcp.state.write",
+      "schema_digest_sha256": "40b3e842bec8a5b6693e2d685f4b1427e3ab72db1eb6a8a530bff50d12259558",
+      "schema_property_count": 4,
+      "schema_required_count": 1
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "76432e5aee50cd2adb7efad419a62dd29803d738f5ae4fc3a5dc49e322885568",
+      "domain": "connections",
+      "effect": "none",
+      "name": "google_ads_connections_list",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "99334726611ccf58a148b0814696bfa6fe08c1b2d027e946beccf5a74331c9aa",
+      "schema_property_count": 0,
+      "schema_required_count": 0
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "1da35af0acff676740ff51d5ae40298ee4769668418b3c6e9a8381c2b10c0606",
+      "domain": "conversion_action",
+      "effect": "provider_mutation",
+      "name": "google_ads_conversion_action_create_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "14d18ea83877c4ba82eaee2eaade03d4d3515941efa670e2ef9658e8d5a680c4",
+      "domain": "conversion_action",
+      "effect": "draft_only",
+      "name": "google_ads_conversion_action_create_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "a7b3961ddb32d1be70e4cdee706dfb82398c0582086af7274503a7b78c92fb5a",
+      "schema_property_count": 11,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "0414ef98f7f9cc4b7ab9601967a7f53fd18b5659003c968a92771666c8862c83",
+      "domain": "conversion_action",
+      "effect": "provider_mutation",
+      "name": "google_ads_conversion_action_remove_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "f26d723366113397ad05d7d1f4715d90e1deb61293d2be5bd8c423630340f380",
+      "domain": "conversion_action",
+      "effect": "draft_only",
+      "name": "google_ads_conversion_action_remove_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "229c8342e6f6fac2ffd5187c261b85d16397675921d4e2280c39ea523dea230d",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "500a6a33d17ebf6659e6c440754523fc2f3027a88a1dbdbbecabe62eb3c16f03",
+      "domain": "conversion_action",
+      "effect": "provider_mutation",
+      "name": "google_ads_conversion_action_update_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "5bde297b78602607ba1d4a29ce65b1a0e10dae68dd813bcd5b8ab2e52c7a7541",
+      "domain": "conversion_action",
+      "effect": "draft_only",
+      "name": "google_ads_conversion_action_update_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "139af27b739b30bbf6e27292383f872237fcc97ada55584f39c2da67a70ac1bf",
+      "schema_property_count": 13,
+      "schema_required_count": 2
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "221592c68fdff60d366b9c477b657596cedd59f1798ef896da582b92b4302cf6",
+      "domain": "conversion_actions",
+      "effect": "none",
+      "name": "google_ads_conversion_actions_list",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "9a0cc473e8a2a9e277239cba59dd21721f55792f8a18688b12b8548b7ca0d787",
+      "schema_property_count": 2,
+      "schema_required_count": 1
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "eb8948e64037d8e369270d670bdfd7d873984045e666e688fbce6e6618df6faf",
+      "domain": "copy_ad",
+      "effect": "provider_mutation",
+      "name": "google_ads_copy_ad_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "c3f3880f719cb44f9a76961b243d266a7f9adf25fa08b01b85bfaca05e925382",
+      "domain": "copy_ad",
+      "effect": "draft_only",
+      "name": "google_ads_copy_ad_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "0a5a8946a5c63bcbcaa42e318007ea727ee117940f26661faf5c1144bc9d5b41",
+      "schema_property_count": 6,
+      "schema_required_count": 3
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "tenant_scope",
+        "owned_connection"
+      ],
+      "description_digest_sha256": "64a6dbc00235d3de9466bdba3f3fff7cc3d6110c87034edd12ef11a28a816f57",
+      "domain": "customer_route_permissions",
+      "effect": "adsagent_state",
+      "name": "google_ads_customer_route_permissions_set",
+      "phase": "direct",
+      "required_capability": "mcp.state.write",
+      "schema_digest_sha256": "a1dcc98e4fce7b41824b7a743445f384a4403c72b61619f1e41afe1c372608e5",
+      "schema_property_count": 5,
+      "schema_required_count": 2
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "2c9b6ea8e890b5dc5e8864b41b35e55249f98d3785b97a0189723d2c35528db7",
+      "domain": "deep_analysis",
+      "effect": "none",
+      "name": "google_ads_deep_analysis_export",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "f406037aca21be1c151077285c9e88570362c96363f845538a34c6b55f8f8f38",
+      "schema_property_count": 5,
+      "schema_required_count": 4
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "633df310ef5f66e177c4e9b10000b0a61f655acb0a8b853ca77a39d32546334e",
+      "domain": "deep_analysis",
+      "effect": "none",
+      "name": "google_ads_deep_analysis_query",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "183ca3ab63aa5a0fffdfc87ec2b2bb0416e9feb365903cb7c7acb52b36595490",
+      "schema_property_count": 6,
+      "schema_required_count": 4
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "31c4d2693bec060e6f9e90b5ce68036c8b838d08cfc6ef278fa704b463ec083a",
+      "domain": "entity",
+      "effect": "provider_mutation",
+      "name": "google_ads_entity_remove_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "74b24f7069d14ea3cbe56026edbf593a9ea76e7807e3ba44c2d27a440bb396eb",
+      "domain": "entity",
+      "effect": "draft_only",
+      "name": "google_ads_entity_remove_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "2f58c2725acac555ae149272eae7e271ab313a3024fca065b1f0b2113031db62",
+      "schema_property_count": 6,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "05e73a270c98208dab72a9a9dc7c03db4f750a747639622acd4f221a42b2a2bf",
+      "domain": "entity",
+      "effect": "provider_mutation",
+      "name": "google_ads_entity_update_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "e57f0fcb324511484c11461400243bcd849ed4170a06a2448dd7020e778dbe15",
+      "domain": "entity",
+      "effect": "draft_only",
+      "name": "google_ads_entity_update_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "08a370128640bf4c091ad7d2e524d9b5db87e4a1fd4180f4ced1b71ab8b0d17c",
+      "schema_property_count": 12,
+      "schema_required_count": 2
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "364a63883bc59630397ead2d7dd9e3344a936bbe15bc35bfc8df538616829ff2",
+      "domain": "insights_overview",
+      "effect": "none",
+      "name": "google_ads_insights_overview_batch",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "079971803fc71836b5c24984b104c79ad7f90d378e54e6d2e4a097949e030cd8",
+      "schema_property_count": 17,
+      "schema_required_count": 2
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "c8e476dd665c9c4dca59da3ec64cb97ba84905da985c88b3e4334fbc08f6b8c8",
+      "domain": "insights_overview",
+      "effect": "none",
+      "name": "google_ads_insights_overview_query",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "bca93db1d37e606a05594b08b9fe748d6a2631f072f52b5a4a489044ed186b2a",
+      "schema_property_count": 16,
+      "schema_required_count": 0
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "b1c99c58a9219e8505e727b9d943b3dbde5d4c2863923c3d4843c107c2b36e8b",
+      "domain": "insights",
+      "effect": "none",
+      "name": "google_ads_insights_query_daily",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "4a97530d32c29ddcc6088606077adba995d0dc754676623e8afccecf69f0707b",
+      "schema_property_count": 4,
+      "schema_required_count": 1
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "9ef4b3b9e20300dc0f5cef14937cfb473a5d4f0ee7cff7c2af9d38ece855c2e2",
+      "domain": "keyword",
+      "effect": "provider_mutation",
+      "name": "google_ads_keyword_create_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "bf14fb1495b577ed62676e3c440caf90c4f7db0cb67633fe3e8a8049f9456c97",
+      "domain": "keyword",
+      "effect": "draft_only",
+      "name": "google_ads_keyword_create_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "2ee67a7b8ce107e31a0e182c2925d73dffb56dcd0f16496bddef6ea96fc6c0cd",
+      "schema_property_count": 5,
+      "schema_required_count": 3
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "4aec5228a8ba6b645a07eb00df9fce2133716c2fa678c86271a690aa7bae83b9",
+      "domain": "keyword_ideas",
+      "effect": "none",
+      "name": "google_ads_keyword_ideas_generate",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "a4bed3752ff7cb5097bdd28c27fdaf9c3a9c704afd17c983ee9ee60fa2f0341a",
+      "schema_property_count": 7,
+      "schema_required_count": 1
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "a30187b02b4b264c92ce22a7329fe58aa94f90fa9a5813b20babbf03e95e6624",
+      "domain": "mutation_receipt",
+      "effect": "none",
+      "name": "google_ads_mutation_receipt_get",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "f9bc751fc62246142e2dd267ff14d4788f36f9a9559b51cce2d157d1957cbaa8",
+      "domain": "mutation",
+      "effect": "none",
+      "name": "google_ads_mutation_reconcile",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "26c1c01bacd5acd99c44e90d0d91016ca5036a6e2d2043f271a5bfef9e55dc18",
+      "domain": "pmax",
+      "effect": "provider_mutation",
+      "name": "google_ads_pmax_create_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "99021147d4bdd88bdfe3aa68987dcf2e37e555dbdc1a8252f125f6bd7877c6b5",
+      "domain": "pmax",
+      "effect": "draft_only",
+      "name": "google_ads_pmax_create_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "7f5c668df9b02f7b06e2c22baca483d672005d1b264a3440419ff4bbaaf97289",
+      "schema_property_count": 16,
+      "schema_required_count": 14
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "tenant_scope"
+      ],
+      "description_digest_sha256": "3d1698493da436985b40ebb53e104820690ca0efe620f783937d7f6566f68c99",
+      "domain": "product_card",
+      "effect": "adsagent_state",
+      "name": "google_ads_product_card_delete",
+      "phase": "direct",
+      "required_capability": "mcp.state.write",
+      "schema_digest_sha256": "0c6a2722312969bf6c4c1797309d1c90712940525a70701c55cdc6eacf5521fb",
+      "schema_property_count": 1,
+      "schema_required_count": 1
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "tenant_scope"
+      ],
+      "description_digest_sha256": "39b6e47d1673ae2e21c775f608dbc649be988d2ae369250bc692bffb98ee7b7f",
+      "domain": "product_card",
+      "effect": "adsagent_state",
+      "name": "google_ads_product_card_save",
+      "phase": "direct",
+      "required_capability": "mcp.state.write",
+      "schema_digest_sha256": "c5bd457c200cd93314c1cef483276ce5c99c2008e05e8758dd1618cbfb7795ae",
+      "schema_property_count": 6,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "tenant_scope"
+      ],
+      "description_digest_sha256": "a99327ed803b73066b77460e729ad14b4e0501ee6e9b596a8279c5e647418adc",
+      "domain": "product_card",
+      "effect": "adsagent_state",
+      "name": "google_ads_product_card_update",
+      "phase": "direct",
+      "required_capability": "mcp.state.write",
+      "schema_digest_sha256": "f3b8f73c908eded4d786825778ded631e377e8757b44542c831febd91d4e3e36",
+      "schema_property_count": 6,
+      "schema_required_count": 1
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "d800b7dc667b96912e3c9d58b9009f2a2361e18a2396a3ea445ffcfacede3013",
+      "domain": "product_cards",
+      "effect": "none",
+      "name": "google_ads_product_cards_list",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "7ce25e9f6858d0f4c4b47f21ff2bfaaa3d29f7cfa11d10638376e50854900309",
+      "schema_property_count": 3,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "49d6f9003fca262b89babe959e3715387c71b23a5a28f166daecd6d904d0f24b",
+      "domain": "quick",
+      "effect": "provider_mutation",
+      "name": "google_ads_quick_create_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "98cde7f301497413eeb079338a81dd7642d84a57809d9134174df612237f5f5d",
+      "domain": "quick",
+      "effect": "draft_only",
+      "name": "google_ads_quick_create_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "ea5fc821a23a79a12aa39cc912199c46276a887dea4b16f40377158b71a62675",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "f5a0fc304bdb366f54e93ceade3242e57abcf6f00425a42f5d5a78432d765fb5",
+      "domain": "recommendation",
+      "effect": "provider_mutation",
+      "name": "google_ads_recommendation_apply_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "308c8f7b881753ab2585766501de9357e16b4558aa87b2a5d3b0a624f7573548",
+      "domain": "recommendation",
+      "effect": "draft_only",
+      "name": "google_ads_recommendation_apply_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "7e740af3cb974e80e4292d205270d6c92edd180ada02f834a674e5b0664e86d4",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "780f0b22082fc38876185926618ae651a1bbe80be11a270baf70eb4ad2ff7a21",
+      "domain": "recommendation",
+      "effect": "provider_mutation",
+      "name": "google_ads_recommendation_dismiss_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "8954658a47b8e978a4e5653733ab5d238c714fe9bbd88593ce3d48db7b4540a5",
+      "domain": "recommendation",
+      "effect": "draft_only",
+      "name": "google_ads_recommendation_dismiss_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "7e740af3cb974e80e4292d205270d6c92edd180ada02f834a674e5b0664e86d4",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "c708030f27efff2e7313529cd1bf3a8fe6e4c2130edcd70f7f3b641849732324",
+      "domain": "recommendations",
+      "effect": "none",
+      "name": "google_ads_recommendations_list",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "7ed58888e051a53945150168f584cd41917e90d2b4c4aed11308df66b8863709",
+      "schema_property_count": 4,
+      "schema_required_count": 1
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "5ecc68dd7eb6019c81ba0b6fbd6b871ad1c2070c8160e7a4c123ccfecd0e1db9",
+      "domain": "responsive_search_ad",
+      "effect": "provider_mutation",
+      "name": "google_ads_responsive_search_ad_create_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "c2ea81be0c00fb4db4ef7820238c8466e29840faff874cd026e7b837730027dd",
+      "domain": "responsive_search_ad",
+      "effect": "draft_only",
+      "name": "google_ads_responsive_search_ad_create_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "9cca415603cde16b6478a2ae56eac434a97d4a651cfdc54e2adf5e51e69d5fce",
+      "schema_property_count": 5,
+      "schema_required_count": 5
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "1d0d8f1f675984f0722df00cbedba6566a2162645eda32e80c4e04eb89828e92",
+      "domain": "status",
+      "effect": "provider_mutation",
+      "name": "google_ads_status_enable_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "1f7b29bd4082aee3a1ec18fd63e8667faf3dde59b61a99db2c1cbbb25cfe8d26",
+      "domain": "status",
+      "effect": "draft_only",
+      "name": "google_ads_status_enable_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "46536c987a67b0fbe834efe02582cea63e5b10af29c48b7c7eef1fcc75f948be",
+      "schema_property_count": 4,
+      "schema_required_count": 3
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "9da7200db7d8706d5f78eb20c7de80fd5127bb4bdafcf3f716a43c8f42b3e0c2",
+      "domain": "status",
+      "effect": "provider_mutation",
+      "name": "google_ads_status_pause_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "d1fe9e18bf138d2c761797a9653fb06064ad8e5617b13a4de193c9948c22e482",
+      "domain": "status",
+      "effect": "draft_only",
+      "name": "google_ads_status_pause_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "46536c987a67b0fbe834efe02582cea63e5b10af29c48b7c7eef1fcc75f948be",
+      "schema_property_count": 4,
+      "schema_required_count": 3
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "e025d6287401d66d362ada07497d667ddbb6c57ea5d6f7eb803271738289408f",
+      "domain": "task",
+      "effect": "none",
+      "name": "google_ads_task_get",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "2e0ba154ab1986dff9ac046c6652032ec44a81b593ffe08002146f0db52d6211",
+      "schema_property_count": 1,
+      "schema_required_count": 1
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "54adb7873e431a0dd5a15e497c6b6f8807290a2d961f3d24e2a902f0406204fa",
+      "domain": "tasks",
+      "effect": "none",
+      "name": "google_ads_tasks_list",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "58d3bc85abe2874a94ba197105b454afa4938b8a3df75b5c23b3db109484a448",
+      "schema_property_count": 1,
+      "schema_required_count": 0
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "tenant_scope"
+      ],
+      "description_digest_sha256": "d1ed55bca6c89056c059c8b9800e12a55bfdd285ea7a31bea5eadc2a8636d095",
+      "domain": "template",
+      "effect": "adsagent_state",
+      "name": "google_ads_template_delete",
+      "phase": "direct",
+      "required_capability": "mcp.state.write",
+      "schema_digest_sha256": "a6811e88387c6ebfaf34aa7d2d070934dcacb2b3ac8227d526f621d00fd1d3ee",
+      "schema_property_count": 1,
+      "schema_required_count": 1
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "9966dee5c8b1ec083d859ecf85019bb345b339f6fd6209dd6eef71064d5a8ec5",
+      "domain": "template_reverse_engineer",
+      "effect": "none",
+      "name": "google_ads_template_reverse_engineer",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "fa58e93a44f2027fe83d98f8a307cac8ccb4549fbf328b1a6f78948bba90b4c5",
+      "schema_property_count": 4,
+      "schema_required_count": 3
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "tenant_scope"
+      ],
+      "description_digest_sha256": "e6a47a7d6cd28dba77aa171b2cba5e9c06c52da83a071d6301b60659311a3824",
+      "domain": "template",
+      "effect": "adsagent_state",
+      "name": "google_ads_template_save",
+      "phase": "direct",
+      "required_capability": "mcp.state.write",
+      "schema_digest_sha256": "2f6574e1ae8b01b38c5f2b3b66f8cb7e223f46e4f74030268436b316405080a2",
+      "schema_property_count": 3,
+      "schema_required_count": 1
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "tenant_scope"
+      ],
+      "description_digest_sha256": "1a0055d2fc7ce0688a5692c83c1ded9cfcf6ba9555c0c6eac6d48d64cad3629a",
+      "domain": "template",
+      "effect": "adsagent_state",
+      "name": "google_ads_template_update",
+      "phase": "direct",
+      "required_capability": "mcp.state.write",
+      "schema_digest_sha256": "59f6e519aaceddf6eca134fe98cffc8e563498da6a077241be2c8158329ec990",
+      "schema_property_count": 4,
+      "schema_required_count": 2
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "2203763bd2c8b212a2bc601910c21bd67cdc4e259c36af57c0d32752bdeb7fec",
+      "domain": "templates",
+      "effect": "none",
+      "name": "google_ads_templates_list",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "d746974fa9afd5e951f76f9af38954b0ad7f436f2120dc974da65e5ee39f856f",
+      "schema_property_count": 0,
+      "schema_required_count": 0
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "2696a0c2e3d474146bd1fa8d12327d598776937b2df670160188adacd579bbc4",
+      "domain": "video_upload",
+      "effect": "provider_mutation",
+      "name": "google_ads_video_upload_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "31b9ac3f2ba0bf0638c72b23c45f3e18e9c9bc00dcdaa44018fbc14fcbebf5e3",
+      "schema_property_count": 3,
+      "schema_required_count": 3
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "7e1e5911f6060c672c47f7b591bf8b6591f9f385b0104af80f122ae16ed7e604",
+      "domain": "video_upload",
+      "effect": "draft_only",
+      "name": "google_ads_video_upload_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "8ecb26fba350a968d191108aec09c8e750d38b92dedd97e14bc088f42abbc514",
+      "schema_property_count": 6,
+      "schema_required_count": 5
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "c58d5ec5613380b593b14c916e760b93d7c7918db2014a9e7f65ca181bbd8ddc",
+      "domain": "video_upload",
+      "effect": "provider_mutation",
+      "name": "google_ads_video_upload_remove_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "569becdd7d789d2cfdfe795e092b17c3dc6fbe5400e84834f9e026be017c5bc1",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "e06f4df894e49fdc4557d3c016f88995c176049b0c7571e75fc17623e82604f6",
+      "domain": "video_upload",
+      "effect": "draft_only",
+      "name": "google_ads_video_upload_remove_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "801cdd8f67d660bbdaac7029cf25a8e441562fe2fe46cee9ee9550843c59ad2a",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "a3d212314c8334614ad4525151bf2c7ef544edf536c338130b1ae110733a4aa5",
+      "domain": "video_upload",
+      "effect": "none",
+      "name": "google_ads_video_upload_status",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "801cdd8f67d660bbdaac7029cf25a8e441562fe2fe46cee9ee9550843c59ad2a",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "a73a6de494b3bea4cfad46bfaac557c7b57d4a88a3aace2fdb3fabf12d8dac1a",
+      "domain": "video_uploads",
+      "effect": "none",
+      "name": "google_ads_video_uploads_list",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "9a0cc473e8a2a9e277239cba59dd21721f55792f8a18688b12b8548b7ca0d787",
+      "schema_property_count": 2,
+      "schema_required_count": 1
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "26b31877c634e191b5335eade828e681f32321a1b588e0bd396b494e0b5d9f31",
+      "domain": "youtube_asset",
+      "effect": "provider_mutation",
+      "name": "google_ads_youtube_asset_confirm",
+      "phase": "confirm",
+      "required_capability": "mcp.google_ads.confirm",
+      "schema_digest_sha256": "7e45e165645e3f10219bd7f344249978e6d979bc59f15a3b969138a9cabe0675",
+      "schema_property_count": 3,
+      "schema_required_count": 3
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "mcp_authenticated",
+        "per_action_mutation_flag",
+        "writer_allowlist",
+        "owned_customer_write_route"
+      ],
+      "description_digest_sha256": "75480a2dedc7bed4956fc8c62c0c551144c96e06f44fca51667969c84183732e",
+      "domain": "youtube_asset",
+      "effect": "draft_only",
+      "name": "google_ads_youtube_asset_prepare",
+      "phase": "prepare",
+      "required_capability": "mcp.google_ads.prepare",
+      "schema_digest_sha256": "4bf7bfe4dd0f9cac267ab2f6de32ba40ef0e8338e6aaf1f2fedfc8b1d91fae66",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated",
+        "agent_method_profile",
+        "insights_query_contract"
+      ],
+      "description_digest_sha256": "e7b064342c875bfcb3e45337c80256a53b54102a97e651f43533f7d474a72d4a",
+      "domain": "insights_query_consistent",
+      "effect": "none",
+      "name": "insights_query_consistent",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "585ecbb008633aa290e9ca6b4e4290992678e2694b07e506b12c3e2b20c4424e",
+      "schema_property_count": 17,
+      "schema_required_count": 6
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "description_digest_sha256": "2b40477f47d8b813ffbe15e9bbddba697120033b898e6a6d5fa5166ebc2c73ef",
+      "domain": "setup",
+      "effect": "none",
+      "name": "setup_get_status",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "99334726611ccf58a148b0814696bfa6fe08c1b2d027e946beccf5a74331c9aa",
+      "schema_property_count": 0,
+      "schema_required_count": 0
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "mcp_authenticated",
+        "agent_method_profile"
+      ],
+      "description_digest_sha256": "38c93b4a5cb574582d76145f313cdfec242889cbf46674b56fe07981eaf8d549",
+      "domain": "tasks",
+      "effect": "none",
+      "name": "tasks_get_status",
+      "phase": "read",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "46ba719a3c1bbc08f51a08202aac3535b75f51413c7d57e266fb77da825a1af2",
+      "schema_property_count": 2,
+      "schema_required_count": 1
+    }
+  ]
+}

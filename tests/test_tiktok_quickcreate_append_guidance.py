@@ -2,12 +2,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from tests.contract_reader import read_contract
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def _read(path: str) -> str:
-    return (ROOT / path).read_text(encoding="utf-8")
+    return read_contract(ROOT, path)
 
 
 def test_tiktok_skill_documents_readiness_and_native_append_contract() -> None:

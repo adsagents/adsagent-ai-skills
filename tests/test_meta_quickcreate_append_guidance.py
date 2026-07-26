@@ -2,12 +2,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from tests.contract_reader import read_contract
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def _read(path: str) -> str:
-    return (ROOT / path).read_text(encoding="utf-8")
+    return read_contract(ROOT, path)
 
 
 def test_quickcreate_append_contract_is_consistent_on_public_surfaces():
@@ -50,7 +52,7 @@ def test_append_adset_guidance_is_ads_only_and_never_auto_confirms():
 
 
 def test_release_version_is_0726():
-    assert _read("VERSION").strip() == "0.7.36"
-    assert '"version": "0.7.36"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.36"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.36`" in _read("README.md")
+    assert _read("VERSION").strip() == "0.7.37"
+    assert '"version": "0.7.37"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.37"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.37`" in _read("README.md")

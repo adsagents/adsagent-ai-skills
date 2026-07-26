@@ -1,0 +1,35 @@
+{
+  "channels": {
+    "google": {
+      "guide_version": "2026-07-25.1",
+      "manifest_version": 1,
+      "service": "google",
+      "sha256": "4a681fe0dc4b26ead18192d2ecef18c81f5a4995dea6c1e5b43c53287f18a062",
+      "snapshot_path": "contracts/manifests/google.json",
+      "source_path": "docs/mcp/manifests/google-tools.json",
+      "source_revision": "8728e84389158613158dda28c1bfff2105b63a33",
+      "tool_count": 82
+    },
+    "meta": {
+      "guide_version": "2026-07-26.1",
+      "manifest_version": 1,
+      "service": "meta",
+      "sha256": "f85e6faa818b113d6776935a1bc35a52c25d24417da1bf07361863a8cf816328",
+      "snapshot_path": "contracts/manifests/meta.json",
+      "source_path": "docs/mcp/manifests/meta-tools.json",
+      "source_revision": "ce5643b8fe2540fdb2bd0bdb158196470a5d8a43",
+      "tool_count": 109
+    },
+    "tiktok": {
+      "guide_version": "2026-07-26.1",
+      "manifest_version": 1,
+      "service": "tiktok",
+      "sha256": "b4218ce7afcf266a782cb075e3719e7633d0496409ba0bf96249985657251054",
+      "snapshot_path": "contracts/manifests/tiktok.json",
+      "source_path": "docs/mcp/manifests/tiktok-tools.json",
+      "source_revision": "a413fc70ee780803bd64047f83d44ec33c6b2f2a",
+      "tool_count": 90
+    }
+  },
+  "schema_version": 1
+}

@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "channels": {
+    "meta": {
+      "skill_bundles": [
+        "adsagent-setup",
+        "adsagent-reliability",
+        "meta-insights",
+        "meta-copy",
+        "adsagent-notifications"
+      ],
+      "tools": [
+        {"name": "setup_get_status"},
+        {
+          "name": "connections_create_intent",
+          "required_capability": "mcp.read"
+        },
+        {"name": "products_list"},
+        {"name": "accounts_list_linked_accounts"},
+        {"name": "insights_query_overview"},
+        {"name": "insights_query_batch_overview"},
+        {"name": "insights_query_consistent"},
+        {"name": "insights_export_csv"},
+        {"name": "tasks_get_status"},
+        {"name": "operations_get_context"},
+        {"name": "overview_get_live_configs"},
+        {"name": "copy_ad_quick_copy"},
+        {"name": "copy_ad_quick_copy_confirm"},
+        {"name": "copy_ad_clone_structure"},
+        {
+          "name": "campaigns_recreate_from_task",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "campaigns_quick_create",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {"name": "creatives_list"},
+        {
+          "name": "overview_update_adset_budget",
+          "capability_gate": "delivery_mutations",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "overview_update_confirm",
+          "capability_gate": "delivery_mutations",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "overview_update_campaign_budget",
+          "capability_gate": "delivery_mutations",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "overview_update_campaign_budget_confirm",
+          "capability_gate": "delivery_mutations",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "notifications_integrations_list",
+          "capability_gate": "notifications_integrations",
+          "required_capability": "mcp.operator"
+        },
+        {
+          "name": "notifications_integration_prepare",
+          "capability_gate": "notifications_integrations",
+          "required_capability": "mcp.operator"
+        },
+        {
+          "name": "notifications_integration_confirm",
+          "capability_gate": "notifications_integrations",
+          "required_capability": "mcp.operator"
+        },
+        {"name": "notifications_scan"}
+      ]
+    },
+    "google": {
+      "skill_bundles": [
+        "adsagent-setup",
+        "adsagent-reliability",
+        "google-ads-insights"
+      ],
+      "tools": [
+        {"name": "setup_get_status"},
+        {"name": "google_ads_accounts_list"},
+        {"name": "insights_query_consistent"},
+        {"name": "google_ads_insights_overview_query"},
+        {"name": "google_ads_insights_overview_batch"},
+        {"name": "tasks_get_status"}
+      ]
+    },
+    "tiktok": {
+      "skill_bundles": [
+        "adsagent-setup",
+        "adsagent-reliability",
+        "tiktok-insights"
+      ],
+      "tools": [
+        {"name": "setup_get_status"},
+        {"name": "insights_query_consistent"},
+        {"name": "insights_query_overview"},
+        {"name": "insights_query_batch_overview"},
+        {"name": "tasks_get_status"},
+        {"name": "creatives_reconcile"},
+        {"name": "creatives_abandon_upload"},
+        {"name": "campaigns_quick_create"},
+        {"name": "operations_get"},
+        {"name": "overview_get_live_configs"},
+        {"name": "copy_ad_quick_copy"},
+        {"name": "copy_ad_clone_structure"},
+        {"name": "campaigns_recreate_from_task"},
+        {
+          "name": "optimization_evaluate",
+          "capability_gate": "optimization.available"
+        },
+        {
+          "name": "notifications_list",
+          "capability_gate": "optimization.available"
+        },
+        {
+          "name": "optimization_prepare_action",
+          "capability_gate": "optimization.available"
+        },
+        {
+          "name": "mmp_insights_get_product_event_today",
+          "capability_gate": "mmp_product_aggregate_reads.available"
+        },
+        {
+          "name": "mmp_insights_query_product_event_summary",
+          "capability_gate": "mmp_product_aggregate_reads.available"
+        },
+        {
+          "name": "support_report_error",
+          "capability_gate": "support_reporting"
+        },
+        {
+          "name": "support_get_report_status",
+          "capability_gate": "support_reporting"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1 @@
+"""AdsAgent Skill Pack tests."""

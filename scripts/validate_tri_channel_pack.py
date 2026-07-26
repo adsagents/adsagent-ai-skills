@@ -9,9 +9,18 @@ import re
 import sys
 from pathlib import Path
 
+from skill_contract import (
+    SkillContractError,
+    markdown_references,
+    read_skill_bundle,
+)
+from validate_public_tool_manifests import (
+    ManifestValidationError,
+    validate_committed_manifests,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.36"
+VERSION = "0.7.37"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -24,7 +33,8 @@ REQUIRED_SKILLS = {
     "google-ads-insights",
     "tiktok-insights",
 }
-MAX_SKILL_WORDS = 500
+MAX_SKILL_WORDS = 180
+MAX_SKILL_BYTES = 1_600
 
 REQUIRED_REPO_TERMS = [
     "google_ads_insights_overview_batch",
@@ -412,6 +422,14 @@ def read(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
 
 
+def read_bundle(skill_name: str) -> str:
+    try:
+        text, _ = read_skill_bundle(ROOT, skill_name)
+    except SkillContractError as exc:
+        fail(str(exc))
+    return text
+
+
 def parse_skill_frontmatter(path: Path) -> dict[str, str]:
     text = path.read_text(encoding="utf-8")
     if not text.startswith("---\n"):
@@ -580,19 +598,35 @@ def main() -> None:
                 f"{path.relative_to(ROOT)} has {word_count} words; "
                 f"maximum is {MAX_SKILL_WORDS}"
             )
+        if path.stat().st_size > MAX_SKILL_BYTES:
+            fail(
+                f"{path.relative_to(ROOT)} has {path.stat().st_size} bytes; "
+                f"maximum is {MAX_SKILL_BYTES}"
+            )
+        if not markdown_references(path):
+            fail(f"{path.relative_to(ROOT)} has no progressive reference")
+        read_bundle(skill)
 
-    assert_terms("adsagent-router", read("skills/adsagent-router/SKILL.md"), ROUTER_TERMS)
+    assert_terms("adsagent-router", read_bundle("adsagent-router"), ROUTER_TERMS)
     assert_terms(
         "agent-scheduled-tasks",
-        read("skills/agent-scheduled-tasks/SKILL.md"),
+        read_bundle("agent-scheduled-tasks"),
         SCHEDULED_TASK_TERMS,
     )
-    assert_terms("meta-insights", read("skills/meta-insights/SKILL.md"), META_TERMS)
-    assert_terms("meta-copy", read("skills/meta-copy/SKILL.md"), META_COPY_TERMS)
-    assert_terms("google-ads-insights", read("skills/google-ads-insights/SKILL.md"), GOOGLE_TERMS)
-    assert_terms("tiktok-insights", read("skills/tiktok-insights/SKILL.md"), TIKTOK_TERMS)
+    assert_terms("meta-insights", read_bundle("meta-insights"), META_TERMS)
+    assert_terms("meta-copy", read_bundle("meta-copy"), META_COPY_TERMS)
+    assert_terms(
+        "google-ads-insights",
+        read_bundle("google-ads-insights"),
+        GOOGLE_TERMS,
+    )
+    assert_terms(
+        "tiktok-insights",
+        read_bundle("tiktok-insights"),
+        TIKTOK_TERMS,
+    )
 
-    setup = read("skills/adsagent-setup/SKILL.md")
+    setup = read_bundle("adsagent-setup")
     assert_terms(
         "adsagent-setup",
         setup,
@@ -609,7 +643,7 @@ def main() -> None:
         ],
     )
 
-    notifications = read("skills/adsagent-notifications/SKILL.md")
+    notifications = read_bundle("adsagent-notifications")
     assert_terms(
         "adsagent-notifications",
         notifications,
@@ -636,7 +670,7 @@ def main() -> None:
         ],
     )
 
-    reliability = read("skills/adsagent-reliability/SKILL.md")
+    reliability = read_bundle("adsagent-reliability")
     assert_terms(
         "adsagent-reliability",
         reliability,
@@ -685,9 +719,8 @@ def main() -> None:
     validate_retry_parser_reference(code)
 
     repo_text = "\n".join(
-        path.read_text(encoding="utf-8")
-        for path in list((ROOT / "skills").glob("*/SKILL.md"))
-        + [ROOT / "README.md", ROOT / "docs/examples.md", ROOT / "docs/output-contract.md"]
+        [read_bundle(skill) for skill in sorted(REQUIRED_SKILLS)]
+        + [read("README.md"), read("docs/examples.md"), read("docs/output-contract.md")]
     )
     assert_terms("repository docs", repo_text, REQUIRED_REPO_TERMS)
     assert_forbidden_terms_absent("repository docs", repo_text, FORBIDDEN_REPO_TERMS)
@@ -730,6 +763,13 @@ def main() -> None:
             "task_ref",
         ],
     )
+
+    try:
+        manifest_messages = validate_committed_manifests(root=ROOT)
+    except ManifestValidationError as exc:
+        fail(str(exc))
+    for message in manifest_messages:
+        print(message)
 
     print("PASS: tri-channel skill pack contract satisfied")
 

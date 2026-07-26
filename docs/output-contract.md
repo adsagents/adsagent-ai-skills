@@ -1,5 +1,8 @@
 # AdsAgent Agent Output Contract
 
+> Human-facing reference. Agent workflows load the bounded contracts linked
+> from the selected file under `skills/`.
+
 This contract is for AI agents using AdsAgent Meta, Google Ads, and TikTok hosted MCP in B2B operator workflows.
 
 ## Default Answer Format

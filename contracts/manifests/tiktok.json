@@ -49,28 +49,10 @@
         "capabilities.mmp_product_aggregate_reads.available"
       ]
     },
-    "mmp_product_aggregate_reads.available": {
-      "kind": "public_capability_alias",
-      "setup_capability_paths": [
-        "capabilities.mmp_product_aggregate_reads.available"
-      ]
-    },
     "optimization": {
       "kind": "setup_capability",
       "setup_capability_paths": [
         "capabilities.agent_method_profile.optimization.available"
-      ]
-    },
-    "optimization.available": {
-      "kind": "public_capability_alias",
-      "setup_capability_paths": [
-        "capabilities.agent_method_profile.optimization.available"
-      ]
-    },
-    "support_reporting": {
-      "kind": "public_capability_alias",
-      "setup_capability_paths": [
-        "support_reporting"
       ]
     }
   },
@@ -104,7 +86,7 @@
     "optimization_prepare_action"
   ],
   "guide_version": "2026-07-26.1",
-  "manifest_fingerprint": "f3222a558f9bea3d39def2f640dc698b1340572d1c34c24cc5882b84a81aa4d5",
+  "manifest_fingerprint": "440ff03720e11f4c2cb7af41c02f5ee7f2689e81ae94fd733959bb1f1675681a",
   "manifest_resource": "tiktok-adsagent://guide/tool-manifest",
   "manifest_version": 1,
   "phase_counts": {
@@ -1651,8 +1633,7 @@
       ],
       "capability_gates": [
         "mcp_authenticated",
-        "mmp_aggregate_reads",
-        "mmp_product_aggregate_reads.available"
+        "mmp_aggregate_reads"
       ],
       "description_digest_sha256": "01caca574f55fa3906083607c25d54c0d9a07c33f9f9c9debb3bbf9d433c09a3",
       "domain": "mmp",
@@ -1685,8 +1666,7 @@
       ],
       "capability_gates": [
         "mcp_authenticated",
-        "mmp_aggregate_reads",
-        "mmp_product_aggregate_reads.available"
+        "mmp_aggregate_reads"
       ],
       "description_digest_sha256": "81b06c4e41af174495aaf0e8f59a38fb372e5938411120a18c6396f0864a8346",
       "domain": "mmp",
@@ -1775,8 +1755,7 @@
         "agent_method_profile",
         "management_receipts",
         "mcp_authenticated",
-        "optimization",
-        "optimization.available"
+        "optimization"
       ],
       "description_digest_sha256": "7c3a172ba8707f31173d6452c911f848ef5f280bc0ebfeed153bf3711f6413ad",
       "domain": "notifications",
@@ -1819,8 +1798,7 @@
         "agent_method_profile",
         "management_receipts",
         "mcp_authenticated",
-        "optimization",
-        "optimization.available"
+        "optimization"
       ],
       "description_digest_sha256": "a8473efced40285ecd1b189ff3f58a95b85e1a6c3432f86c72e94ed51145f8d9",
       "domain": "notifications",
@@ -1936,8 +1914,7 @@
         "agent_method_profile",
         "management_receipts",
         "mcp_authenticated",
-        "optimization",
-        "optimization.available"
+        "optimization"
       ],
       "description_digest_sha256": "51f5636f3eb1f3d6460a54ca25f71b3d5b0cd9d831512aebdbe86cdd3df31b60",
       "domain": "optimization",
@@ -1980,8 +1957,7 @@
         "agent_method_profile",
         "management_receipts",
         "mcp_authenticated",
-        "optimization",
-        "optimization.available"
+        "optimization"
       ],
       "description_digest_sha256": "3c0022394b0de0a795a22f4bc19fa8e213a8df863accbd7c3f2049e22ac69d97",
       "domain": "optimization",
@@ -2024,8 +2000,7 @@
         "agent_method_profile",
         "management_receipts",
         "mcp_authenticated",
-        "optimization",
-        "optimization.available"
+        "optimization"
       ],
       "description_digest_sha256": "9a0b5739d2ee8e072b19a1f385342197b32efdb985cf5d4ede7fdb18a490488d",
       "domain": "optimization",
@@ -2068,8 +2043,7 @@
         "agent_method_profile",
         "management_receipts",
         "mcp_authenticated",
-        "optimization",
-        "optimization.available"
+        "optimization"
       ],
       "description_digest_sha256": "b24a5dc24cec1eacd98ede5250b8e6ccd412019321ac7c6cf21f9ede57963fb3",
       "domain": "optimization",
@@ -2207,8 +2181,7 @@
         "read_and_support"
       ],
       "capability_gates": [
-        "mcp_authenticated",
-        "support_reporting"
+        "mcp_authenticated"
       ],
       "description_digest_sha256": "da3274ee0efd6e764601ff46cb1416aac93b2b29ec39cf38d8c4d2ccb936fa2e",
       "domain": "support",
@@ -2231,8 +2204,7 @@
         "read_and_support"
       ],
       "capability_gates": [
-        "mcp_authenticated",
-        "support_reporting"
+        "mcp_authenticated"
       ],
       "description_digest_sha256": "2544bc31034b5613c4758e3af32f5d876f14c1e7e165e4f49ddd2ea311c8e492",
       "domain": "support",

@@ -111,31 +111,38 @@
         {"name": "campaigns_recreate_from_task"},
         {
           "name": "optimization_evaluate",
-          "capability_gate": "optimization.available"
+          "capability_gate": "optimization",
+          "required_capability": "capabilities.agent_method_profile.optimization.available"
         },
         {
           "name": "notifications_list",
-          "capability_gate": "optimization.available"
+          "capability_gate": "optimization",
+          "required_capability": "capabilities.agent_method_profile.optimization.available"
         },
         {
           "name": "optimization_prepare_action",
-          "capability_gate": "optimization.available"
+          "capability_gate": "optimization",
+          "required_capability": "capabilities.agent_method_profile.optimization.available"
         },
         {
           "name": "mmp_insights_get_product_event_today",
-          "capability_gate": "mmp_product_aggregate_reads.available"
+          "capability_gate": "mmp_aggregate_reads",
+          "required_capability": "capabilities.mmp_product_aggregate_reads.available"
         },
         {
           "name": "mmp_insights_query_product_event_summary",
-          "capability_gate": "mmp_product_aggregate_reads.available"
+          "capability_gate": "mmp_aggregate_reads",
+          "required_capability": "capabilities.mmp_product_aggregate_reads.available"
         },
         {
           "name": "support_report_error",
-          "capability_gate": "support_reporting"
+          "capability_gate": "mcp_authenticated",
+          "required_capability": "mcp_authenticated"
         },
         {
           "name": "support_get_report_status",
-          "capability_gate": "support_reporting"
+          "capability_gate": "mcp_authenticated",
+          "required_capability": "mcp_authenticated"
         }
       ]
     }

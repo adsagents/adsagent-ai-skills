@@ -155,7 +155,7 @@ def test_gate_normalization_accepts_singular_and_list_formats(
     payload["capability_gated_tools"] = [
         {
             "name": "support_report_error",
-            "gate": "support_reporting",
+            "gate": "mcp_authenticated",
         }
     ]
     path = tmp_path / "tiktok.json"

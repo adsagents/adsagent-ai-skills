@@ -34,7 +34,7 @@ def test_export_artifact_url_is_treated_as_opaque_capability():
 
 
 def test_release_version_is_current():
-    assert _read("VERSION").strip() == "0.7.37"
-    assert '"version": "0.7.37"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.37"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.37`" in _read("README.md")
+    assert _read("VERSION").strip() == "0.7.38"
+    assert '"version": "0.7.38"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.38"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.38`" in _read("README.md")

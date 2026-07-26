@@ -1,17 +1,17 @@
 {
   "digest_algorithm": "sha256",
-  "guide_version": "2026-07-26.3",
+  "guide_version": "2026-07-27.1",
   "manifest_resource": "adsagent://guide/tool-manifest",
   "manifest_version": 1,
   "platform": "meta",
   "profile": "v2",
   "server_version": "adsagent-mcp-v1",
-  "tool_count": 109,
+  "tool_count": 110,
   "tools": [
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "920478c90f1dba1da069d0837a305ba47b427296a6d04498e1f6acb5807c7e5b",
+      "description_digest_sha256": "586cb972ca7df6a81f2b9f13299a60cce82570566f1095b35f4314d31ca8ca39",
       "domain": "accounts",
       "guide_resource": "adsagent://guide/catalog/accounts",
       "name": "accounts_find_owner",
@@ -21,7 +21,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "c2bb6880b7d364a598f0fddf4d5353f95764ab7a2212467efc6172ec8ecdfeb0",
+      "description_digest_sha256": "098b465dbd7dec610e58f698f74fb2953c7d421aed9a382e6f7ef69e25e9731b",
       "domain": "accounts",
       "guide_resource": "adsagent://guide/catalog/accounts",
       "name": "accounts_get_account_detail",
@@ -31,7 +31,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "1190dc32a28d3f46b93bf7ea87f5f3eb69708203030d8c4b7479cc1ae7869e02",
+      "description_digest_sha256": "28cab25f057a62100404e174a8b157da267e5ad12fce6bf3d181ef0822e79bd7",
       "domain": "accounts",
       "guide_resource": "adsagent://guide/catalog/accounts",
       "name": "accounts_list_linked_accounts",
@@ -41,7 +41,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "6a09025fab7301ffede10fe9ccd15db3c9ba0f7cbed87119211d8d436dd780e2",
+      "description_digest_sha256": "8fa58dc80ebfc47c7c9c39a85add209ed3a8f9c93a305593a806021c9ac49298",
       "domain": "assets",
       "guide_resource": "adsagent://guide/catalog/assets",
       "name": "assets_list_ad_accounts",
@@ -51,7 +51,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "1086139384136fb4e0595e83fbeb1348dea95e76ef10378fe908259c0b59b8e8",
+      "description_digest_sha256": "51cbb403fbeb0094129e06ba70cb104e2ad780dd3a674101e58b4f3177afe34c",
       "domain": "assets",
       "guide_resource": "adsagent://guide/catalog/assets",
       "name": "assets_list_businesses",
@@ -61,7 +61,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "3c6ce6c6912ea252258a7d52f3ca899c371f784366a39d050ebb7539770b4633",
+      "description_digest_sha256": "12c1b4647e7dfe3f1b0e73b039d3e158e10105b818856994ab5951dec760819a",
       "domain": "assets",
       "guide_resource": "adsagent://guide/catalog/assets",
       "name": "assets_list_pages",
@@ -71,7 +71,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "a05f0671d163714533b20e76e5d278394b3d78ce7745c4c24f3e0ad473ffeff7",
+      "description_digest_sha256": "d9d7c850c07cfd6e3583b5dc182389bc6e2ac88fecf9e3fb5dd9d2a331133600",
       "domain": "assets",
       "guide_resource": "adsagent://guide/catalog/assets",
       "name": "assets_refresh_all",
@@ -81,7 +81,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "afed8a95cb769a8b1e24f642672c9f7b15a0bfab8e11301921ffdda60ed4aa98",
+      "description_digest_sha256": "f23844dba868268f2d45f3cf8a82330d99630257598a7b9be6f19018ff70e371",
       "domain": "assets",
       "guide_resource": "adsagent://guide/catalog/assets",
       "name": "assets_update_account_permissions",
@@ -101,7 +101,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "a3c79d283feebe36ed613eb8ace3cdd31bc43aea671b04273268b43479cc1a97",
+      "description_digest_sha256": "a8a8f59a5283c6754e94608599638b92cc27aeea815a9f9428441610c8918cb6",
       "domain": "campaigns",
       "guide_resource": "adsagent://guide/catalog/campaigns",
       "name": "campaigns_quick_create_confirm",
@@ -111,7 +111,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "42ca692ecd3fb5ef1a5717db74030719aaa17618f7bfd665e57164b1a1b98b14",
+      "description_digest_sha256": "2f51803baf535f58dcd99964a65aea6e3f77dfcb2bce2a47f34935e4982a1601",
       "domain": "campaigns",
       "guide_resource": "adsagent://guide/catalog/campaigns",
       "name": "campaigns_quick_create_deny",
@@ -121,7 +121,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "2ad1cc173064126ad48ffc214c161508db9e6615259e997c19362548b68b2888",
+      "description_digest_sha256": "a8a8f59a5283c6754e94608599638b92cc27aeea815a9f9428441610c8918cb6",
       "domain": "campaigns",
       "guide_resource": "adsagent://guide/catalog/campaigns",
       "name": "campaigns_recreate_confirm",
@@ -131,7 +131,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "6a5e9522f3e8389e9f288f4d2cdfa683984927c4c35fb3f3db5a917caceb1bf6",
+      "description_digest_sha256": "cb5c687e296d581ccc92dca9eb3504e50d98ee29fec5db7272d65378d86aa077",
       "domain": "campaigns",
       "guide_resource": "adsagent://guide/catalog/campaigns",
       "name": "campaigns_recreate_deny",
@@ -141,7 +141,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "da54f7e35f47d70879b387b8adbfd93bd13459148ba324200d87cba3aa4c1c18",
+      "description_digest_sha256": "0839f58bd0ee9bb3a8cb7e81755dccc8ef2d4b31e2f4a8adb4538bdb45b90a04",
       "domain": "campaigns",
       "guide_resource": "adsagent://guide/catalog/campaigns",
       "name": "campaigns_recreate_from_task",
@@ -151,7 +151,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "b44e90031835e034618799a97d2d29a1e1e4f9f86fb83c8ae1541f5eb288fb4f",
+      "description_digest_sha256": "988f66c6b8fd4f14c80c8d3ccb96dffd2aba68d437b410896cbd14c07e36b91b",
       "domain": "connections",
       "guide_resource": "adsagent://guide/catalog/connections",
       "name": "connections_check_intent",
@@ -161,7 +161,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "68e436bf45bd578c56bde3592017967ea161420bf0fecbf4690dd7715dec6a0f",
+      "description_digest_sha256": "59a4be3b422166dab7f97e8bb03351c98b458c2cebf3e0895a4addaddd515dcd",
       "domain": "connections",
       "guide_resource": "adsagent://guide/catalog/connections",
       "name": "connections_create_intent",
@@ -171,7 +171,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "429bb22152c8976fcec10b980972b235d7e1372c69125484ecf837a530e22ab7",
+      "description_digest_sha256": "89a1faf30e790838b77a433aadf619e66e81534519d083d9e5745d622efe553c",
       "domain": "connections",
       "guide_resource": "adsagent://guide/catalog/connections",
       "name": "connections_list",
@@ -181,7 +181,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "76794636a49f4c50722d64d8640fea938c5910b0b8ab5886094dd18f9175fb50",
+      "description_digest_sha256": "0f4ec133a956caeb251236912103e45c1f0cc89920b20726324637ad0ab6610b",
       "domain": "copy_ad",
       "guide_resource": "adsagent://guide/catalog/copy_ad",
       "name": "copy_ad_clone_structure",
@@ -191,7 +191,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "94c5c712f1cf91a32913601121b5f255ced0414ca9d3521c39649b79b6f5cda3",
+      "description_digest_sha256": "a8a8f59a5283c6754e94608599638b92cc27aeea815a9f9428441610c8918cb6",
       "domain": "copy_ad",
       "guide_resource": "adsagent://guide/catalog/copy_ad",
       "name": "copy_ad_clone_structure_confirm",
@@ -201,7 +201,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "2b7fa47b04ec53dcc34e8352d937a32d86f2815e2287f69bce05207b78412907",
+      "description_digest_sha256": "cb5c687e296d581ccc92dca9eb3504e50d98ee29fec5db7272d65378d86aa077",
       "domain": "copy_ad",
       "guide_resource": "adsagent://guide/catalog/copy_ad",
       "name": "copy_ad_clone_structure_deny",
@@ -211,7 +211,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "f3cf2ceb9a6f5ba274d167cc91d584420e66bfe3043622893d057b2cb4df2c6d",
+      "description_digest_sha256": "f6c94455494accb9ac7d033e98b1263ed3e2f1b5f9094d2f45c2c46dbcc225e3",
       "domain": "copy_ad",
       "guide_resource": "adsagent://guide/catalog/copy_ad",
       "name": "copy_ad_quick_copy",
@@ -221,7 +221,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "e8c3e2c44d31d7798f2dc7b7b1442ddce1a44fbae3a3785ab82836c0b6f391ae",
+      "description_digest_sha256": "a8a8f59a5283c6754e94608599638b92cc27aeea815a9f9428441610c8918cb6",
       "domain": "copy_ad",
       "guide_resource": "adsagent://guide/catalog/copy_ad",
       "name": "copy_ad_quick_copy_confirm",
@@ -241,7 +241,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "cc89223e3ac57a25d020afd1ae6ca8c50e75f1568827939c67da11559d02dd0c",
+      "description_digest_sha256": "acf3ea65f2162e445c48e3abb52987dda1b4ae5c074d85b1fd9505d7c0b67d42",
       "domain": "creatives",
       "guide_resource": "adsagent://guide/catalog/creatives",
       "name": "creatives_abandon_upload",
@@ -251,7 +251,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "61a88c97a04d378f404664cbd9c2d6b279895191a15aa13c2a6a143558225213",
+      "description_digest_sha256": "7cdc5bcbdd3e2411ae0bca831e4257ca44fb9940b0526dd3ed70f9ed76333781",
       "domain": "creatives",
       "guide_resource": "adsagent://guide/catalog/creatives",
       "name": "creatives_confirm_upload",
@@ -261,7 +261,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "fae47a32d5178e8c53477783bab49f546e32f03e8c63e738691ffe04b53c615f",
+      "description_digest_sha256": "9113e7db65cbc38de0fb728cb9e806dd0a800792cb8e08f166de59e4d258334d",
       "domain": "creatives",
       "guide_resource": "adsagent://guide/catalog/creatives",
       "name": "creatives_create_folder",
@@ -271,7 +271,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "32176f599635f80723af469a7905020f61fbd21b417fd19277f16d1cf489e2df",
+      "description_digest_sha256": "ad5fcf04ce079c34013ff699a70734ea584b563fe0aa69845ebe1449c973db0e",
       "domain": "creatives",
       "guide_resource": "adsagent://guide/catalog/creatives",
       "name": "creatives_delete",
@@ -281,7 +281,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "c5da830757f424629a511d34c8ec4921c1108e992c32f0b80ed943de10c0ca32",
+      "description_digest_sha256": "ad5fcf04ce079c34013ff699a70734ea584b563fe0aa69845ebe1449c973db0e",
       "domain": "creatives",
       "guide_resource": "adsagent://guide/catalog/creatives",
       "name": "creatives_delete_folder",
@@ -291,7 +291,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "adeb4f7db378a94bfdf6926d187b2812748cf8f9b6b02b15be3c49fc83e40658",
+      "description_digest_sha256": "257652b9624a905c142275f4653553b4e9f6f7074b421bc70947de618c2a34a3",
       "domain": "creatives",
       "guide_resource": "adsagent://guide/catalog/creatives",
       "name": "creatives_get",
@@ -301,7 +301,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "a05292b9f0c06f1722941709ccec34b7d8fada8fae7750bfa121bbaf6bb44fe4",
+      "description_digest_sha256": "be563eaa3f01cca04bb118553bcbbca97648445b0b075f8ed9a9e9831c0fef0b",
       "domain": "creatives",
       "guide_resource": "adsagent://guide/catalog/creatives",
       "name": "creatives_list",
@@ -311,7 +311,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "d856ba33685a7e4a0af060854c11c080a3a4ae770b1563db46cea80cb554d0f3",
+      "description_digest_sha256": "85840c415d5ef75a07440a025e6aaa4e1e77dbfaca13315db2d24c4deb147b49",
       "domain": "creatives",
       "guide_resource": "adsagent://guide/catalog/creatives",
       "name": "creatives_list_folders",
@@ -321,7 +321,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "5e7ec42d1e20295696857df6908f2e38a5ecfc8c197345c7d75caf1b42bc1e50",
+      "description_digest_sha256": "6ac9826a72487aabe98b3ad2b61a45bd0cbf905e86bac055e728d2e7f771fe9b",
       "domain": "creatives",
       "guide_resource": "adsagent://guide/catalog/creatives",
       "name": "creatives_rename_folder",
@@ -331,7 +331,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "4583eb1c425a68ec5be16ebf5d85e3d382587dfbaf7d87379109e6a41d30e176",
+      "description_digest_sha256": "6689e7258205854871d5b1a0795e66bf26c19177c6451bcabb10e47c2b5f13fb",
       "domain": "creatives",
       "guide_resource": "adsagent://guide/catalog/creatives",
       "name": "creatives_request_upload",
@@ -341,7 +341,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "3453bd41b53fbc9350007efa6212b9da58c0d475c8f8060ccf803ea653825c49",
+      "description_digest_sha256": "f75be67a45d501e437ce120fd32dac14bcfdf92cf1197ecdf55d881c4b7f527b",
       "domain": "fb_users",
       "guide_resource": "adsagent://guide/catalog/fb_users",
       "name": "fb_users_list",
@@ -351,7 +351,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "2a1ef0ca8dde5229bafa4ca67c634c8a2bd8b86ab31831374a755c9ad47ba3e7",
+      "description_digest_sha256": "54cba253296c7f162bc687ec99063b4ff51444a7f235e565f98d6a521f4d8115",
       "domain": "fb_users",
       "guide_resource": "adsagent://guide/catalog/fb_users",
       "name": "fb_users_refresh_routing",
@@ -361,7 +361,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "1173b5b972c495ad159c7c1472ddee4a654f7f0c7ef19ce9033eeaac02cdb4e4",
+      "description_digest_sha256": "c9749bbff022b71c123401f101b5f8132e0e2ec523ec271906d125b3546f8be0",
       "domain": "fb_users",
       "guide_resource": "adsagent://guide/catalog/fb_users",
       "name": "fb_users_update_permissions",
@@ -371,7 +371,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "90b6f25cc611ea5b1ddd6d58a7d52f68a87f4dee47af55b3ff04e8cd9ae41fa7",
+      "description_digest_sha256": "941ff3ff8328bd28dec13b5f41151fa39a5f92ef36f62a8a4ff33614aaf73c5c",
       "domain": "insights",
       "guide_resource": "adsagent://guide/catalog/insights",
       "name": "insights_export_csv",
@@ -381,7 +381,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "eb2215a3067daa41f3eb28d2445fc30bede588a66f7e06ad0ef63278bed358bf",
+      "description_digest_sha256": "28dbee500420bd1b93237edafdf802f4a889852208cba14711018df7a09793d3",
       "domain": "insights",
       "guide_resource": "adsagent://guide/catalog/insights",
       "name": "insights_get_date_range",
@@ -391,7 +391,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "01b46f6c043e67e9260dd57bae6359921ce79d214ac5e3e6304d7b371c4d07f6",
+      "description_digest_sha256": "f0ab89d4f3144cf43cf2ee08f9a22122e6401e3d26be13482e8e2ddecd3997a5",
       "domain": "insights",
       "guide_resource": "adsagent://guide/catalog/insights",
       "name": "insights_pull_insights",
@@ -401,7 +401,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "368a96d63f5781f5f1cac6a5004533d4e55743d3070b93c05498a9fb58fc5a5e",
+      "description_digest_sha256": "af1b23f02fd14e80b37e5ec7dccfd43609bd2025ebb38a7f3741f3d36e8f3d53",
       "domain": "insights",
       "guide_resource": "adsagent://guide/catalog/insights",
       "name": "insights_pull_product_breakdowns",
@@ -411,7 +411,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "ca322b0140ade6b4a75d7fe7eae4b367be71d7c808a6b8171a5a8addfc5cfc0b",
+      "description_digest_sha256": "393b3c5bf1c711d9182c02d87dc555df40889fdbb82a002826dde9b607d5cfda",
       "domain": "insights",
       "guide_resource": "adsagent://guide/catalog/insights",
       "name": "insights_query_batch_overview",
@@ -421,7 +421,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "19d4059930cb1b8366480f2d4d2e93c398458cf89d320691b56275393a395e1c",
+      "description_digest_sha256": "2b6c9f1435a3b582b7a3891208de8cf95fc323f60e207b0367573b19fda728e0",
       "domain": "insights",
       "guide_resource": "adsagent://guide/catalog/insights",
       "name": "insights_query_consistent",
@@ -431,7 +431,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "7141b8710eec6544e48259a20cc272f3a8a4daacd9fd76b27bbad36e3fee8868",
+      "description_digest_sha256": "5bf3405963e1c986d08e35e35814052eafef6f76b4090e3e26868a3e7f462f0a",
       "domain": "insights",
       "guide_resource": "adsagent://guide/catalog/insights",
       "name": "insights_query_overview",
@@ -441,7 +441,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "ba37cf3854718bce9e342732dcfa41a97f5b02507e437d8fc0e7fbcf27e0a262",
+      "description_digest_sha256": "040c79c2b9eb9a1716cee3ad967ba2106bca4b210a4b2010d2d1a53abed23d2a",
       "domain": "insights",
       "guide_resource": "adsagent://guide/catalog/insights",
       "name": "insights_query_rows",
@@ -451,7 +451,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "08e311ad9ac405884ecc47094e07b4bdcaf3ef590009d0bb67fbf520c5d479a9",
+      "description_digest_sha256": "a0daa8df7f5381a10c5623259dbd16a24a900bd0b23ab550bb4bd47d0aaae473",
       "domain": "insights",
       "guide_resource": "adsagent://guide/catalog/insights",
       "name": "insights_read_breakdowns",
@@ -461,7 +461,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "101e5c8bae9dad8b1d92b73a81fd466470913921c37bfbc0be0e08ac607c6bec",
+      "description_digest_sha256": "85b24712a8a4c63d096f3e9b0f33198090c7c85c62eb41d5a957999c6c3e0439",
       "domain": "interests",
       "guide_resource": "adsagent://guide/catalog/interests",
       "name": "interests_archive",
@@ -471,7 +471,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "4a1aa4b2a730fa83f26d8e930203a533d2ee8fceac3cefd7366f0c02f04f0825",
+      "description_digest_sha256": "343978a64a258ff1a1f05fb33162d26a5a590c3f0daf0406bd413a88ca573fe8",
       "domain": "interests",
       "guide_resource": "adsagent://guide/catalog/interests",
       "name": "interests_fetch_from_adset",
@@ -481,7 +481,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "a36228d1f7e019dbbf11b70080ea78d02b92133728df753546f0090c5e911993",
+      "description_digest_sha256": "56af649bb82ee14aefe5cfe02dd07f2ef8eae8c088151315b0061fb04427cf7d",
       "domain": "interests",
       "guide_resource": "adsagent://guide/catalog/interests",
       "name": "interests_get",
@@ -491,7 +491,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "ee340884a4f88e79cfa5aa2a2764075b2ca85ef3be862a228e5fafeefa9c31c0",
+      "description_digest_sha256": "41f47eb563ded4b010e23847d7666525a3e6d8b9348ef711e664540df3770631",
       "domain": "interests",
       "guide_resource": "adsagent://guide/catalog/interests",
       "name": "interests_list",
@@ -501,7 +501,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "3252c4ba1fde16283ea8a78ad3e23a6f01e4c1b242043c7200425f3a9319737e",
+      "description_digest_sha256": "9b76bbf42ee4a36300333cb88155b47c55f1b3d6b3f1519fa1a5bd508a6d03b1",
       "domain": "interests",
       "guide_resource": "adsagent://guide/catalog/interests",
       "name": "interests_save_fetched_pack",
@@ -511,7 +511,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "0ccbf683c2a227b22689f07744f941c2d3e9706022981176385bbc10691f6efa",
+      "description_digest_sha256": "407f4ade6010e188501fa5b4f4e8a1926599419234b49e768fbfc426a291bfa6",
       "domain": "mmp",
       "guide_resource": "adsagent://guide/catalog/mmp",
       "name": "mmp_connect",
@@ -521,7 +521,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "c76ebbafab197de2bc6d00217b268a41d474cb4cac3faf1d75a500580624de8a",
+      "description_digest_sha256": "657305e1609b6f230bbe4794400021fd522b59089bc899c09d5a639ddeaeecd7",
       "domain": "mmp",
       "guide_resource": "adsagent://guide/catalog/mmp",
       "name": "mmp_delete_connection",
@@ -531,7 +531,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "bcb36d66b3786a1f72e9a01a0a781acae7b2f208ad4ea13589426b67f0942c5b",
+      "description_digest_sha256": "04ae16ae5463c9bf36d0488efa61bcd7f25664170dc61cb54ee20c1413c3626a",
       "domain": "mmp",
       "guide_resource": "adsagent://guide/catalog/mmp",
       "name": "mmp_fetch_cohorts",
@@ -541,7 +541,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "b3f230a79f7aea96808d25065cd727c6616da1f8cc0349076e9e0d6c79bc6bbc",
+      "description_digest_sha256": "b1d54da129d651789bc56c1af8f231cd715f9c08bc9e65b1e7be7f307e1d4df6",
       "domain": "mmp",
       "guide_resource": "adsagent://guide/catalog/mmp",
       "name": "mmp_get_state",
@@ -551,7 +551,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "02fccd3af2690bd2d0a637bdbe8aeab01c26ecf5389710016f373b0da8af23c8",
+      "description_digest_sha256": "2aedb635cf6f5f605235864e5334d11dae3767489391e5497628aa22cf6a9b6b",
       "domain": "mmp_insights",
       "guide_resource": "adsagent://guide/catalog/mmp_insights",
       "name": "mmp_insights_get_product_event_today",
@@ -561,7 +561,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "31c46029425ad7730fbf51bbbf1542ea8840d3105f86ae37494a6f8a7d675264",
+      "description_digest_sha256": "4d5cf91ae0df80c10d1c08df0202ae2c24c2729fdcefb83612160a41e288a64f",
       "domain": "mmp_insights",
       "guide_resource": "adsagent://guide/catalog/mmp_insights",
       "name": "mmp_insights_get_product_today",
@@ -571,7 +571,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "23209ebd6007e089e76dfd40b127ab773e148b61fa821be213150964e72df0e1",
+      "description_digest_sha256": "34fad860241da1982eee776918986a679648aa287c1b4b0ffb8b8f7e9908e1e5",
       "domain": "mmp_insights",
       "guide_resource": "adsagent://guide/catalog/mmp_insights",
       "name": "mmp_insights_query_product_cohort",
@@ -581,7 +581,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "59d7d6096b6ac60e8f588ee9020f33e44b77c4a7212936bd6fa640f0b4b09903",
+      "description_digest_sha256": "33fb2d1bf2968c57d395558dcef65167fa4d1c936aaa64d12686d92784be3ae1",
       "domain": "mmp_insights",
       "guide_resource": "adsagent://guide/catalog/mmp_insights",
       "name": "mmp_insights_query_product_event_summary",
@@ -591,7 +591,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "b8d722436774fb0a7615d097535293aa2e5b2b90513c72a3466feca942cc5a90",
+      "description_digest_sha256": "a9c914e623265d7ed2baee8b40d0bdb51fe326ef06a014a7f07247588e002a3e",
       "domain": "mmp",
       "guide_resource": "adsagent://guide/catalog/mmp",
       "name": "mmp_refresh_connection",
@@ -611,7 +611,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "ed8c2b9bd0d4becca5e92dd87bcb87af8a995e7284ade3c04f94eb4a53635643",
+      "description_digest_sha256": "4ea527b03a43717cad969e729f7a748525c6f6909e56d8875573479e8d543f66",
       "domain": "notifications",
       "guide_resource": "adsagent://guide/catalog/notifications",
       "name": "notifications_ack",
@@ -623,7 +623,7 @@
       "capability_gates": [
         "notifications_integrations"
       ],
-      "description_digest_sha256": "088f6d6114c244c8da248620e6a9649e76e9541ebdf12ac1bc4ec64cb0dd31d0",
+      "description_digest_sha256": "e900edc1c05eb5bf9f63312fc7aae67e908d503d4f9753a604ef12878c0add17",
       "domain": "notifications",
       "guide_resource": "adsagent://guide/catalog/notifications",
       "name": "notifications_integration_confirm",
@@ -633,7 +633,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "df14faba25c8b08f7b96ec0fce1cf6e4a49e44a439a37dbd38b1a441822e323a",
+      "description_digest_sha256": "cb5c687e296d581ccc92dca9eb3504e50d98ee29fec5db7272d65378d86aa077",
       "domain": "notifications",
       "guide_resource": "adsagent://guide/catalog/notifications",
       "name": "notifications_integration_deny",
@@ -645,7 +645,7 @@
       "capability_gates": [
         "notifications_integrations"
       ],
-      "description_digest_sha256": "29116706304d1b3c4ec31075ea1a5ad30dab040705235e35994e51dbe743a7a8",
+      "description_digest_sha256": "42f17fca3d739a7f7a15873d37fccd29d17d12716f16622fa03eb9b2e4356056",
       "domain": "notifications",
       "guide_resource": "adsagent://guide/catalog/notifications",
       "name": "notifications_integration_prepare",
@@ -657,7 +657,7 @@
       "capability_gates": [
         "notifications_integrations"
       ],
-      "description_digest_sha256": "f8189170af14fe2137b58c5b6aaa47d00aec46fb9bcd349a82ac9a62af21bbca",
+      "description_digest_sha256": "e7193116f0eaea55f5d1dd006a91e68dc478bc102fabf94b0069304a8a726940",
       "domain": "notifications",
       "guide_resource": "adsagent://guide/catalog/notifications",
       "name": "notifications_integrations_list",
@@ -667,7 +667,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "8845e316eedcb62994589a7cb13bac5b8b5906674b4d2e935a536e4f61889227",
+      "description_digest_sha256": "8ad9a776e520f2b77941335da24a3a3618389ab45006f1063ee21c79c40f8e2f",
       "domain": "notifications",
       "guide_resource": "adsagent://guide/catalog/notifications",
       "name": "notifications_list",
@@ -677,7 +677,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "609c9dbfce3bf0926a64d6ea69aaf8ce61685aefaab2997280979c733e00177c",
+      "description_digest_sha256": "6247644fef52adf8829dc9c3b1c8e3626e75895210edf70a128aacf4104b32bb",
       "domain": "notifications",
       "guide_resource": "adsagent://guide/catalog/notifications",
       "name": "notifications_resolve",
@@ -687,7 +687,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "288e666017b5c62cb1776ecca8102a79605a11ec5d6a41de6f71467356abc84c",
+      "description_digest_sha256": "3e8b76893b30ab6ab79601b56add465cdd8e3a28a04a3a9a002c2df79614e071",
       "domain": "notifications",
       "guide_resource": "adsagent://guide/catalog/notifications",
       "name": "notifications_scan",
@@ -697,7 +697,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "4997617cdf02f384b18db5a401b4219e05dd46cf4acab86c9d65c0a05ed59eba",
+      "description_digest_sha256": "ef91d2d6cb3ab7e10cba8fcaaed6e247c02d17e7ae47ffbf611210d325246917",
       "domain": "notifications",
       "guide_resource": "adsagent://guide/catalog/notifications",
       "name": "notifications_summary",
@@ -707,7 +707,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "66812a9de766c62475aa81b517a7a97014479009d5be6b0e2bdc286776e6ed2f",
+      "description_digest_sha256": "ec142378b78a49eda62894ce8c2259adc3a1a0df3622ec9ca029f12383863168",
       "domain": "operations",
       "guide_resource": "adsagent://guide/catalog/operations",
       "name": "operations_get",
@@ -717,7 +717,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "289ba7c3d77cebb00d0d67f92ecf0973d95b8c9dbee4e9dfe5f8a19a3e58771c",
+      "description_digest_sha256": "0d631c66966b96341283c8dbbfa142b78be0f46fed26dcd8044d441bdcd66f93",
       "domain": "operations",
       "guide_resource": "adsagent://guide/catalog/operations",
       "name": "operations_get_context",
@@ -747,7 +747,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "99b6a5cd596aed7e481bd591f1a14cb397c039dbb46907f49a6cd05b3de96a34",
+      "description_digest_sha256": "22dd10a06ff5a32797532d1ab0edfdaa26c423f1299d647bf133590ef0fb061d",
       "domain": "overview",
       "guide_resource": "adsagent://guide/catalog/overview",
       "name": "overview_update_adset_bid",
@@ -759,7 +759,7 @@
       "capability_gates": [
         "delivery_mutations"
       ],
-      "description_digest_sha256": "be1244d332215da6d35d6c61755bb60da666ed426b1d91bd90bfe79ba3b6a937",
+      "description_digest_sha256": "22dd10a06ff5a32797532d1ab0edfdaa26c423f1299d647bf133590ef0fb061d",
       "domain": "overview",
       "guide_resource": "adsagent://guide/catalog/overview",
       "name": "overview_update_adset_budget",
@@ -781,7 +781,7 @@
       "capability_gates": [
         "delivery_mutations"
       ],
-      "description_digest_sha256": "4443dff5cd82bc21e46ca23ed6267951ffcbd7e48982fa6a7cb57eb080651611",
+      "description_digest_sha256": "1cbb0bcf4cd693dba71711483fd4baa4a937cb4a4eb4e89af465cc8f62a6cfc2",
       "domain": "overview",
       "guide_resource": "adsagent://guide/catalog/overview",
       "name": "overview_update_campaign_budget",
@@ -793,7 +793,7 @@
       "capability_gates": [
         "delivery_mutations"
       ],
-      "description_digest_sha256": "7e8a4bf0e933a576f6da51bcb44a94447a7b52232e3c31cafa32506e9b2c3824",
+      "description_digest_sha256": "beae79bc5082272c0b7dc82df13947485a11de31094620c0c2df72d00c8ee786",
       "domain": "overview",
       "guide_resource": "adsagent://guide/catalog/overview",
       "name": "overview_update_campaign_budget_confirm",
@@ -803,7 +803,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "4ba86cd23acf1c7a2fe37b43298ef4fd6a9584b5e138ef41ef19b45a95f25f91",
+      "description_digest_sha256": "cb5c687e296d581ccc92dca9eb3504e50d98ee29fec5db7272d65378d86aa077",
       "domain": "overview",
       "guide_resource": "adsagent://guide/catalog/overview",
       "name": "overview_update_campaign_budget_deny",
@@ -825,7 +825,7 @@
       "capability_gates": [
         "delivery_mutations"
       ],
-      "description_digest_sha256": "c35eb55f886bb493a43974c58c57a071ac8fbbbc0c2fdcae3862737bea242ade",
+      "description_digest_sha256": "beae79bc5082272c0b7dc82df13947485a11de31094620c0c2df72d00c8ee786",
       "domain": "overview",
       "guide_resource": "adsagent://guide/catalog/overview",
       "name": "overview_update_confirm",
@@ -835,7 +835,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "029cb89b4f2a009d84e2ad4b7404ed5c66019b874e1bcc957bb4bc8649e19318",
+      "description_digest_sha256": "cb5c687e296d581ccc92dca9eb3504e50d98ee29fec5db7272d65378d86aa077",
       "domain": "overview",
       "guide_resource": "adsagent://guide/catalog/overview",
       "name": "overview_update_deny",
@@ -845,7 +845,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "d8f11d2143438e1271629d2d3564c8711774217638f63aa6558a1bcbecf73c73",
+      "description_digest_sha256": "a90fc33970a4a80550b7f430eb0d9596e81aba9c86ee6b22538d54672245b8e7",
       "domain": "products",
       "guide_resource": "adsagent://guide/catalog/products",
       "name": "products_get_actions",
@@ -855,7 +855,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "93a4d41ee6415e722a430e78b472b4ab423379d3b771f4d818fb27c3ce4480dc",
+      "description_digest_sha256": "2c315081937dbb2f6590d400b9921ba18f1f4ef6d49f84b6ace898ba0d534828",
       "domain": "products",
       "guide_resource": "adsagent://guide/catalog/products",
       "name": "products_get_funnel_values",
@@ -865,7 +865,17 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "8d9fb39cf91ec539278f87fa51a558a15b5549fc24373829389e45e87b39d9f5",
+      "description_digest_sha256": "40af4dc638d14598b991fb03bc511e633f4d705aba91733dc59bcf7a891f3c9e",
+      "domain": "products",
+      "guide_resource": "adsagent://guide/catalog/products",
+      "name": "products_get_health",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "bda99d4461fe15bfc3c7dcd0776d2fe6dcf82d0626234bcf932c9c06c058c759"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "85c9887541de8727d49484182198c01df400d920e6685ed008855633b8d8926a",
       "domain": "products",
       "guide_resource": "adsagent://guide/catalog/products",
       "name": "products_get_top_campaigns",
@@ -875,7 +885,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "d930afa3bd0206fa162bf36c3bd733287d0cec4e1124ea2e74cfb14120555a01",
+      "description_digest_sha256": "fb85e4bd8963671afca10fcec1bb106f106a9fff831b174542383b7e38689fbb",
       "domain": "products",
       "guide_resource": "adsagent://guide/catalog/products",
       "name": "products_link_mmp_app",
@@ -885,7 +895,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "773d68beedc636aa3f1127d798095785d907c3ebbbbc9260dc77dea8d27503ca",
+      "description_digest_sha256": "cb03f9f8a6ddfc76b7f64a86483ef4a927e1aa1c8d6858b015992913a5fe71d0",
       "domain": "products",
       "guide_resource": "adsagent://guide/catalog/products",
       "name": "products_list",
@@ -895,7 +905,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "6a32817904cb169cad2ec1075377af2f2b44c50f6dc98b24f213dcc31d88609f",
+      "description_digest_sha256": "7c5e4dcc5777653f3b24c5ab0b1b655f988e36ec17b155f0e7239556670614d4",
       "domain": "products",
       "guide_resource": "adsagent://guide/catalog/products",
       "name": "products_save_funnel_events",
@@ -905,7 +915,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "cc2d4fc4d3469d334aee88d9992c5a01c5457f5ef120f4d7b17401a0b1c80db5",
+      "description_digest_sha256": "6b2e4b19a141c229024d2d2f7a4c550f6ca6c1d0585bfa1d8ed93897cae5c884",
       "domain": "products",
       "guide_resource": "adsagent://guide/catalog/products",
       "name": "products_save_timezone_offset",
@@ -915,7 +925,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "2ee72cc6581303b9f7ea45c504848ae58c9adc335231aeda17ee17278dcda3d9",
+      "description_digest_sha256": "23f1c679a40f97b0058ba7d7306a87cc550378e9f15074a7cb1003bc1e6d0731",
       "domain": "setup",
       "guide_resource": "adsagent://guide/catalog/setup",
       "name": "setup_analyze_products",
@@ -925,7 +935,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "be8f9af7b854c187a3a9ff9454ae29fc95f9ef0625287644dc86b63b26acfd32",
+      "description_digest_sha256": "5876ea3a6cac50869b7e8a73b10851befe31c2a96351f7a2077f2f88b4d788dc",
       "domain": "setup",
       "guide_resource": "adsagent://guide/catalog/setup",
       "name": "setup_begin_facebook_connect",
@@ -935,7 +945,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "4a656605a3d67ebb4cefdbb241852a9cb5a3c2c2c107c60836aa2e51137fd559",
+      "description_digest_sha256": "c5fc5cc3ef94bcdd93e34b19cce9aa441537fb1627ad43b26997e0edd07eaafe",
       "domain": "setup",
       "guide_resource": "adsagent://guide/catalog/setup",
       "name": "setup_check_facebook_connect",
@@ -945,7 +955,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "cfae50639f29a6fc65333d35ddd7b8e4abb27b1034e6ea88a03720ccdf3100d8",
+      "description_digest_sha256": "2aade9d22279c9c46a30352f9acec01eae5996e77736662b95b55b0e10160a03",
       "domain": "setup",
       "guide_resource": "adsagent://guide/catalog/setup",
       "name": "setup_ensure_baseline_templates",
@@ -955,7 +965,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "f5b19706e91046db77fda7c1e80a0e044892c80fbff088b17dc8f70f825d322a",
+      "description_digest_sha256": "b246a7609bafd24fe0430db017dd4c1fd31c89d07d331ff168394f94ba3a5b36",
       "domain": "setup",
       "guide_resource": "adsagent://guide/catalog/setup",
       "name": "setup_get_status",
@@ -965,7 +975,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "2089a07f70560eb219e617947f636a3622f5de6f5a94cb5e0ca2a7c0426a4aff",
+      "description_digest_sha256": "069cd63198966f4b14a346574bc7e98b734fda97564a7f6362309b31fa8e5273",
       "domain": "setup",
       "guide_resource": "adsagent://guide/catalog/setup",
       "name": "setup_readiness_check",
@@ -975,7 +985,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "97b3448b96fea1cd30c40889c4e96b6d3bb4cfd7062627c76bd45823ad851eae",
+      "description_digest_sha256": "7f728f94db15c5ad7fbb4928ce5242c8da7a19639f7b48ca3eb4b77427424f4b",
       "domain": "operations",
       "guide_resource": "adsagent://guide/catalog/operations",
       "name": "support_get_report_status",
@@ -985,7 +995,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "9c19197a499bcdce3afcbbde203e75c5f812424fcb1efa8450e0808834193026",
+      "description_digest_sha256": "729f002c29e78143fa2177f970ce6a80c422eb423c4726dfedb2fd313fe5d4dd",
       "domain": "operations",
       "guide_resource": "adsagent://guide/catalog/operations",
       "name": "support_report_error",
@@ -995,7 +1005,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "251e629bb78965963b9637d3ef3ca67db1117fc5b40561ebe131b5898e69c908",
+      "description_digest_sha256": "f389d8a0f8b0f228dc377dc9601487c7ccbfce5cd6925e9df3a3f2957ce8485e",
       "domain": "tasks",
       "guide_resource": "adsagent://guide/catalog/tasks",
       "name": "tasks_cancel",
@@ -1005,7 +1015,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "83e8e9ff5a53ba249df84f08b50135c65b5eec3e8947609485a06d44b62bcfc2",
+      "description_digest_sha256": "41e79c4e41c0aa328ecdcda358d57353492f7ae80f5be1a917b6d644fb6ed7aa",
       "domain": "tasks",
       "guide_resource": "adsagent://guide/catalog/tasks",
       "name": "tasks_get_create_detail",
@@ -1025,7 +1035,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "381bb52d13a6b700f34ba4ed7777f588163718b7ecd9383e72f37478efde0f3c",
+      "description_digest_sha256": "2329d46de9f1556ea86a2b49dc27fd9ec21a01e688678e591cd22389488086fd",
       "domain": "tasks",
       "guide_resource": "adsagent://guide/catalog/tasks",
       "name": "tasks_latest",
@@ -1035,7 +1045,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "6ef574f7d8eb3f813110eb048f012cce54979dae3594682630fd2568af0d15c3",
+      "description_digest_sha256": "92d5e8736fe40ed62549f20f777248fbae26e159e8b8f5ae1d6bcd1d71b724d9",
       "domain": "tasks",
       "guide_resource": "adsagent://guide/catalog/tasks",
       "name": "tasks_list",
@@ -1045,7 +1055,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "c5df2a929bfd998cfe651f04edf5b5931dc28a4ff17945e7dcf62c2408e67d03",
+      "description_digest_sha256": "3b112195f0b5e2e4493b7034e1b1bf10e784766c5dbadf1e2b98ebe9b7521ac6",
       "domain": "tasks",
       "guide_resource": "adsagent://guide/catalog/tasks",
       "name": "tasks_list_create_history",
@@ -1055,7 +1065,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "ae480eb889e72fed86179415c829d4053f561c2c7061d23fdd41ac0d52205886",
+      "description_digest_sha256": "f2f6bf4e3f171334080e9d587b6bc653bf9afc2b162007a1dcab8efe3c4e47dc",
       "domain": "templates",
       "guide_resource": "adsagent://guide/catalog/templates",
       "name": "templates_create",
@@ -1065,7 +1075,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "c8ea42ac25e09888732ae2515ee1e4eced53f3f191c9bb3b5dcc5bf48cb756fb",
+      "description_digest_sha256": "ba98647089fce07188919f227d55a7a6748721ce3577e8b609e38cea75da615d",
       "domain": "templates",
       "guide_resource": "adsagent://guide/catalog/templates",
       "name": "templates_delete",
@@ -1075,7 +1085,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "7be53097a5540e0a1f07a54cd8dbedf5b1d61997d3379439004710eb5ce913f1",
+      "description_digest_sha256": "d80e5cb563243a20ed904633aa53c24e573d4aed7a875e052c56815879f69f34",
       "domain": "templates",
       "guide_resource": "adsagent://guide/catalog/templates",
       "name": "templates_get",
@@ -1095,7 +1105,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "e5e40d51bd1c0dae897ac6fdde1f56816d34db40aa60e9165410aaa29df7549e",
+      "description_digest_sha256": "7fe7d2432f5884a051bc58d3cc5edad55535f057b0f54577ce77544e89b733b3",
       "domain": "templates",
       "guide_resource": "adsagent://guide/catalog/templates",
       "name": "templates_reverse_engineer",
@@ -1105,7 +1115,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "5f321b402458e0e5eef00d45d16db54f3510d90be9c5f463f7bea6687832ff18",
+      "description_digest_sha256": "c3dc40a583a42e14c242b8c19853e052e9e32ce0b984fa9073fb5ac0c4b369b7",
       "domain": "templates",
       "guide_resource": "adsagent://guide/catalog/templates",
       "name": "templates_update",

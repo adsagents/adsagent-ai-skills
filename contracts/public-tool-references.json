@@ -16,6 +16,14 @@
           "required_capability": "mcp.read"
         },
         {"name": "products_list"},
+        {
+          "name": "products_get_health",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "assets_list_pages",
+          "required_capability": "mcp.read"
+        },
         {"name": "accounts_list_linked_accounts"},
         {"name": "insights_query_overview"},
         {"name": "insights_query_batch_overview"},

@@ -1,11 +1,13 @@
 from pathlib import Path
 
+from tests.contract_reader import read_contract
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def _read(path: str) -> str:
-    return (ROOT / path).read_text(encoding="utf-8")
+    return read_contract(ROOT, path)
 
 
 def test_meta_batch_write_guidance_is_receipt_driven_and_never_replays():
@@ -37,8 +39,8 @@ def test_meta_batch_write_guidance_is_receipt_driven_and_never_replays():
 
 
 def test_meta_batch_write_release_surfaces_are_consistently_versioned():
-    assert _read("VERSION").strip() == "0.7.36"
-    assert '"version": "0.7.36"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.36"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.36`" in _read("README.md")
-    assert 'VERSION = "0.7.36"' in _read("scripts/validate_tri_channel_pack.py")
+    assert _read("VERSION").strip() == "0.7.37"
+    assert '"version": "0.7.37"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.37"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.37`" in _read("README.md")
+    assert 'VERSION = "0.7.37"' in _read("scripts/validate_tri_channel_pack.py")

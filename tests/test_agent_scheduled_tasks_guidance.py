@@ -4,13 +4,15 @@ import json
 import unittest
 from pathlib import Path
 
+from tests.contract_reader import read_contract
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class AgentScheduledTasksGuidanceTests(unittest.TestCase):
     def _read(self, relative_path: str) -> str:
-        return (ROOT / relative_path).read_text(encoding="utf-8")
+        return read_contract(ROOT, relative_path)
 
     def test_skill_is_packaged_and_routed(self) -> None:
         plugin = json.loads(self._read(".claude-plugin/plugin.json"))
@@ -77,7 +79,7 @@ class AgentScheduledTasksGuidanceTests(unittest.TestCase):
     def test_release_version_is_consistent(self) -> None:
         plugin = json.loads(self._read(".claude-plugin/plugin.json"))
         marketplace = json.loads(self._read(".claude-plugin/marketplace.json"))
-        expected = "0.7.36"
+        expected = "0.7.37"
 
         self.assertEqual(expected, self._read("VERSION").strip())
         self.assertEqual(expected, plugin["version"])

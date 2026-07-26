@@ -1,11 +1,13 @@
 from pathlib import Path
 
+from tests.contract_reader import read_contract
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def _read(path: str) -> str:
-    return (ROOT / path).read_text(encoding="utf-8")
+    return read_contract(ROOT, path)
 
 
 def test_terminal_create_failures_are_reported_without_replaying_writes():

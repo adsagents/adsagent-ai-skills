@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.36`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.37`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -88,6 +88,8 @@ Version 0.7.35 restores explicit Meta delivery-management discovery. Agents insp
 
 Version 0.7.36 reconciles terminal Meta QuickCreate tasks before recovery. Agents require requested-to-created accounting, map Ad names and available creative selection keys to created Ad IDs, treat URL-fallback image-upload failures as compensated rather than retryable, send explicit web/app destination types, and discover recent uploads with a bounded inclusive/exclusive time window.
 
+Version 0.7.37 narrows Skill activation and adds progressive disclosure. A clear single-channel request activates only its specialized Skill; the router is reserved for ambiguous or cross-channel requests. Each `SKILL.md` now contains the decision path and links to bounded references for detailed contracts. Release CI validates documented tool names, required capabilities, and capability gates against pinned public Meta, Google Ads, and TikTok service manifests.
+
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 
 ## What This Is
@@ -127,6 +129,18 @@ Use that copied prompt to install or refresh the hosted HTTP MCP connection. Thi
 | `meta-copy` | Copy or compare Meta ads with confirmation and operator-review safety. |
 | `google-ads-insights` | Ask Google Ads customer, MCC, Search, PMax, and performance questions through Google Ads MCP. |
 | `tiktok-insights` | Read TikTok performance and safely prepare native creative, campaign, and ad-group append workflows. |
+
+## Progressive Disclosure
+
+Agent clients load every Skill description for discovery, but should load only
+the selected `SKILL.md` body. Each entrypoint is intentionally small and links
+to local reference files that are read only when the selected workflow needs
+those details.
+
+The files under `docs/` are human-facing product and operator documentation.
+They are not automatic agent context and are not part of Skill reference
+traversal. Agent behavior contracts live under `skills/` and are reached from
+the selected `SKILL.md`.
 
 ## Agent Output Contract
 
@@ -197,6 +211,41 @@ Group these distinct Meta Ads by language into the requested Campaign and AdSet 
 ```
 
 More examples are in [docs/examples.md](docs/examples.md).
+
+## Validation
+
+Run the local release contract and tests:
+
+```bash
+python scripts/validate_tri_channel_pack.py
+python -m pytest -q
+```
+
+Release validation is fail-closed against the three committed snapshots in
+`contracts/manifests/`. Each snapshot is copied byte-for-byte from a committed
+service artifact and locked to its channel, source revision, public artifact
+path, metadata, and SHA-256 in `contracts/manifests/provenance.json`. CI does
+not make live network requests.
+
+```bash
+python scripts/validate_public_tool_manifests.py
+```
+
+An operator can deterministically update all three snapshots after the service
+manifest changes. The command rejects uncommitted, dirty, missing, or
+contract-incompatible sources and never fetches from the network:
+
+```bash
+python scripts/sync_public_tool_manifests.py \
+  --source meta=/path/to/meta-tools.json \
+  --source google=/path/to/google-tools.json \
+  --source tiktok=/path/to/tiktok-tools.json
+```
+
+All three sources are mandatory. A missing referenced tool, an unproven
+required capability or gate, a stale provenance digest, or an absent channel
+fails release validation. `--allow-missing` exists only for explicit local
+diagnostics and is not used by release CI.
 
 ## Installation
 

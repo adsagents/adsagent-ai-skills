@@ -1,5 +1,8 @@
 # Safety And Semi-Black-Box Design
 
+> Human-facing reference. Agent workflows load the bounded contracts linked
+> from the selected file under `skills/`.
+
 AdsAgent is intentionally operated as a semi-black-box MCP product across Meta, Google Ads, and TikTok.
 
 The agent-facing contract should help users succeed without exposing the internal implementation details that make the system easy to clone, probe, or misuse.

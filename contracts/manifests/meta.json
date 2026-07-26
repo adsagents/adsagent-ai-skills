@@ -1,0 +1,1116 @@
+{
+  "digest_algorithm": "sha256",
+  "guide_version": "2026-07-26.3",
+  "manifest_resource": "adsagent://guide/tool-manifest",
+  "manifest_version": 1,
+  "platform": "meta",
+  "profile": "v2",
+  "server_version": "adsagent-mcp-v1",
+  "tool_count": 109,
+  "tools": [
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "920478c90f1dba1da069d0837a305ba47b427296a6d04498e1f6acb5807c7e5b",
+      "domain": "accounts",
+      "guide_resource": "adsagent://guide/catalog/accounts",
+      "name": "accounts_find_owner",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "c07e7012e35dc35859762b932bf5f6fafd3f77f578396bbc95be033075b36184"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "c2bb6880b7d364a598f0fddf4d5353f95764ab7a2212467efc6172ec8ecdfeb0",
+      "domain": "accounts",
+      "guide_resource": "adsagent://guide/catalog/accounts",
+      "name": "accounts_get_account_detail",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "1bb0866be74eae3697c22decf1faaa2fb1ab046e0c16cb12dc1b2de6bf7eef85"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "1190dc32a28d3f46b93bf7ea87f5f3eb69708203030d8c4b7479cc1ae7869e02",
+      "domain": "accounts",
+      "guide_resource": "adsagent://guide/catalog/accounts",
+      "name": "accounts_list_linked_accounts",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "be9e70a16bee8e59b5d7de2a8bbec3beec0594e3733dff3fc7186c8524e6f7fa"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "6a09025fab7301ffede10fe9ccd15db3c9ba0f7cbed87119211d8d436dd780e2",
+      "domain": "assets",
+      "guide_resource": "adsagent://guide/catalog/assets",
+      "name": "assets_list_ad_accounts",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "be9e70a16bee8e59b5d7de2a8bbec3beec0594e3733dff3fc7186c8524e6f7fa"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "1086139384136fb4e0595e83fbeb1348dea95e76ef10378fe908259c0b59b8e8",
+      "domain": "assets",
+      "guide_resource": "adsagent://guide/catalog/assets",
+      "name": "assets_list_businesses",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "be9e70a16bee8e59b5d7de2a8bbec3beec0594e3733dff3fc7186c8524e6f7fa"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "3c6ce6c6912ea252258a7d52f3ca899c371f784366a39d050ebb7539770b4633",
+      "domain": "assets",
+      "guide_resource": "adsagent://guide/catalog/assets",
+      "name": "assets_list_pages",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "be9e70a16bee8e59b5d7de2a8bbec3beec0594e3733dff3fc7186c8524e6f7fa"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "a05f0671d163714533b20e76e5d278394b3d78ce7745c4c24f3e0ad473ffeff7",
+      "domain": "assets",
+      "guide_resource": "adsagent://guide/catalog/assets",
+      "name": "assets_refresh_all",
+      "required_capability": "mcp.assets.refresh",
+      "schema_digest_sha256": "93c97dcbc49a46a59947907c54efe71d43900bbee809ce22844bc36166038ded"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "afed8a95cb769a8b1e24f642672c9f7b15a0bfab8e11301921ffdda60ed4aa98",
+      "domain": "assets",
+      "guide_resource": "adsagent://guide/catalog/assets",
+      "name": "assets_update_account_permissions",
+      "required_capability": "mcp.routing.write",
+      "schema_digest_sha256": "bb270b2125a1e99ea6fa9206ce38e9a54f161684afa3f3d902ea4963097c2024"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "da8cb2d6824e480840705925193c65013f5a68af381eed9d7610362aa253791d",
+      "domain": "campaigns",
+      "guide_resource": "adsagent://guide/catalog/campaigns",
+      "name": "campaigns_quick_create",
+      "required_capability": "mcp.launch.prepare",
+      "schema_digest_sha256": "c554f488d645163d871d766b3f480ecfbcd59c47767344d54e84f7ab776adeb8"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "a3c79d283feebe36ed613eb8ace3cdd31bc43aea671b04273268b43479cc1a97",
+      "domain": "campaigns",
+      "guide_resource": "adsagent://guide/catalog/campaigns",
+      "name": "campaigns_quick_create_confirm",
+      "required_capability": "mcp.launch.confirm",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "42ca692ecd3fb5ef1a5717db74030719aaa17618f7bfd665e57164b1a1b98b14",
+      "domain": "campaigns",
+      "guide_resource": "adsagent://guide/catalog/campaigns",
+      "name": "campaigns_quick_create_deny",
+      "required_capability": "mcp.launch.confirm",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "2ad1cc173064126ad48ffc214c161508db9e6615259e997c19362548b68b2888",
+      "domain": "campaigns",
+      "guide_resource": "adsagent://guide/catalog/campaigns",
+      "name": "campaigns_recreate_confirm",
+      "required_capability": "mcp.launch.confirm",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "6a5e9522f3e8389e9f288f4d2cdfa683984927c4c35fb3f3db5a917caceb1bf6",
+      "domain": "campaigns",
+      "guide_resource": "adsagent://guide/catalog/campaigns",
+      "name": "campaigns_recreate_deny",
+      "required_capability": "mcp.launch.confirm",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "da54f7e35f47d70879b387b8adbfd93bd13459148ba324200d87cba3aa4c1c18",
+      "domain": "campaigns",
+      "guide_resource": "adsagent://guide/catalog/campaigns",
+      "name": "campaigns_recreate_from_task",
+      "required_capability": "mcp.launch.prepare",
+      "schema_digest_sha256": "e5d2bc7fbfe3aab72615172e7d33dc0dd6c6cad244ced9645698b70789d376bd"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "b44e90031835e034618799a97d2d29a1e1e4f9f86fb83c8ae1541f5eb288fb4f",
+      "domain": "connections",
+      "guide_resource": "adsagent://guide/catalog/connections",
+      "name": "connections_check_intent",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "69166c585e8a0f886897cecf91af0bd0cea5a22e76490ad7b52265bf37944126"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "68e436bf45bd578c56bde3592017967ea161420bf0fecbf4690dd7715dec6a0f",
+      "domain": "connections",
+      "guide_resource": "adsagent://guide/catalog/connections",
+      "name": "connections_create_intent",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "9518a750b4fff790fd48994b0d73388ad1e2f737ec4d13fcb7878e2de11194b0"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "429bb22152c8976fcec10b980972b235d7e1372c69125484ecf837a530e22ab7",
+      "domain": "connections",
+      "guide_resource": "adsagent://guide/catalog/connections",
+      "name": "connections_list",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "126457878b64a79719b7bc3763094323877aaeb588417ea0ddfd932fa5dcf014"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "76794636a49f4c50722d64d8640fea938c5910b0b8ab5886094dd18f9175fb50",
+      "domain": "copy_ad",
+      "guide_resource": "adsagent://guide/catalog/copy_ad",
+      "name": "copy_ad_clone_structure",
+      "required_capability": "mcp.launch.prepare",
+      "schema_digest_sha256": "d7824a42f931aab665af1495e3a1cda3bd5ff75159d0123b93f2174b97a950e6"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "94c5c712f1cf91a32913601121b5f255ced0414ca9d3521c39649b79b6f5cda3",
+      "domain": "copy_ad",
+      "guide_resource": "adsagent://guide/catalog/copy_ad",
+      "name": "copy_ad_clone_structure_confirm",
+      "required_capability": "mcp.launch.confirm",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "2b7fa47b04ec53dcc34e8352d937a32d86f2815e2287f69bce05207b78412907",
+      "domain": "copy_ad",
+      "guide_resource": "adsagent://guide/catalog/copy_ad",
+      "name": "copy_ad_clone_structure_deny",
+      "required_capability": "mcp.launch.confirm",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "f3cf2ceb9a6f5ba274d167cc91d584420e66bfe3043622893d057b2cb4df2c6d",
+      "domain": "copy_ad",
+      "guide_resource": "adsagent://guide/catalog/copy_ad",
+      "name": "copy_ad_quick_copy",
+      "required_capability": "mcp.launch.prepare",
+      "schema_digest_sha256": "4180c066bab3ddd66a2970c515135659cf5456b405bce44f4252d01ec6233739"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "e8c3e2c44d31d7798f2dc7b7b1442ddce1a44fbae3a3785ab82836c0b6f391ae",
+      "domain": "copy_ad",
+      "guide_resource": "adsagent://guide/catalog/copy_ad",
+      "name": "copy_ad_quick_copy_confirm",
+      "required_capability": "mcp.launch.confirm",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "c44f86b46a42489ad0f6f50059cc84cd23fceed1f1a797a387f95a4476c9a6a8",
+      "domain": "copy_ad",
+      "guide_resource": "adsagent://guide/catalog/copy_ad",
+      "name": "copy_ad_quick_copy_deny",
+      "required_capability": "mcp.launch.confirm",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "cc89223e3ac57a25d020afd1ae6ca8c50e75f1568827939c67da11559d02dd0c",
+      "domain": "creatives",
+      "guide_resource": "adsagent://guide/catalog/creatives",
+      "name": "creatives_abandon_upload",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "6cb2201c1649af4d467d71b1d52310a7f22587bedbabf35076764af176720a6f"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "61a88c97a04d378f404664cbd9c2d6b279895191a15aa13c2a6a143558225213",
+      "domain": "creatives",
+      "guide_resource": "adsagent://guide/catalog/creatives",
+      "name": "creatives_confirm_upload",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "074075424fda0597852f5e91fcff2e7e3bea48a6eb4753f33d9bc4a9ac9f04b5"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "fae47a32d5178e8c53477783bab49f546e32f03e8c63e738691ffe04b53c615f",
+      "domain": "creatives",
+      "guide_resource": "adsagent://guide/catalog/creatives",
+      "name": "creatives_create_folder",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "4d955ca09d286c20f39ba263af876d6101900a9f8adf6e7c2a11f4cb1eedddf5"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "32176f599635f80723af469a7905020f61fbd21b417fd19277f16d1cf489e2df",
+      "domain": "creatives",
+      "guide_resource": "adsagent://guide/catalog/creatives",
+      "name": "creatives_delete",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "6ad2fe2b0679e32a3d60d2d4687aae5d131f67c77a9afd7692ca1583edf96ec5"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "c5da830757f424629a511d34c8ec4921c1108e992c32f0b80ed943de10c0ca32",
+      "domain": "creatives",
+      "guide_resource": "adsagent://guide/catalog/creatives",
+      "name": "creatives_delete_folder",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "a78460954fd22b571ce6b07c474370f3100f6cdefab9ba1eb698cef9f634d38b"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "adeb4f7db378a94bfdf6926d187b2812748cf8f9b6b02b15be3c49fc83e40658",
+      "domain": "creatives",
+      "guide_resource": "adsagent://guide/catalog/creatives",
+      "name": "creatives_get",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "6ad2fe2b0679e32a3d60d2d4687aae5d131f67c77a9afd7692ca1583edf96ec5"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "a05292b9f0c06f1722941709ccec34b7d8fada8fae7750bfa121bbaf6bb44fe4",
+      "domain": "creatives",
+      "guide_resource": "adsagent://guide/catalog/creatives",
+      "name": "creatives_list",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "26abfcf796fe8de79f81d3cf93d13ccc5aae53b2ed73feca594505c9b29693a6"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "d856ba33685a7e4a0af060854c11c080a3a4ae770b1563db46cea80cb554d0f3",
+      "domain": "creatives",
+      "guide_resource": "adsagent://guide/catalog/creatives",
+      "name": "creatives_list_folders",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "efd7c8106db71c26742263647686151e3ea3f52bf21f163bdab2ef77b51bd2fc"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "5e7ec42d1e20295696857df6908f2e38a5ecfc8c197345c7d75caf1b42bc1e50",
+      "domain": "creatives",
+      "guide_resource": "adsagent://guide/catalog/creatives",
+      "name": "creatives_rename_folder",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "a62809111e0eb2699c7ccc7d656f832fbae7ee6f5a0c4eabb7aeccda95e707e3"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "4583eb1c425a68ec5be16ebf5d85e3d382587dfbaf7d87379109e6a41d30e176",
+      "domain": "creatives",
+      "guide_resource": "adsagent://guide/catalog/creatives",
+      "name": "creatives_request_upload",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "e37a89376c37c3e385083fd9e32afba0e22c9f16f36260ae12f5300ba2451baa"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "3453bd41b53fbc9350007efa6212b9da58c0d475c8f8060ccf803ea653825c49",
+      "domain": "fb_users",
+      "guide_resource": "adsagent://guide/catalog/fb_users",
+      "name": "fb_users_list",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "be9e70a16bee8e59b5d7de2a8bbec3beec0594e3733dff3fc7186c8524e6f7fa"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "2a1ef0ca8dde5229bafa4ca67c634c8a2bd8b86ab31831374a755c9ad47ba3e7",
+      "domain": "fb_users",
+      "guide_resource": "adsagent://guide/catalog/fb_users",
+      "name": "fb_users_refresh_routing",
+      "required_capability": "mcp.routing.write",
+      "schema_digest_sha256": "56e89abf27930bb630f85a9099b7d58036ce27410f6e97f33f682ed93199007c"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "1173b5b972c495ad159c7c1472ddee4a654f7f0c7ef19ce9033eeaac02cdb4e4",
+      "domain": "fb_users",
+      "guide_resource": "adsagent://guide/catalog/fb_users",
+      "name": "fb_users_update_permissions",
+      "required_capability": "mcp.routing.write",
+      "schema_digest_sha256": "bc2e77dc6a26a4b0386d45b0eb0ea83d6dab071fbfbd6e7e38d91d41abafcb35"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "90b6f25cc611ea5b1ddd6d58a7d52f68a87f4dee47af55b3ff04e8cd9ae41fa7",
+      "domain": "insights",
+      "guide_resource": "adsagent://guide/catalog/insights",
+      "name": "insights_export_csv",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "e5e63ffbcbf5bbb47a39ebc5a6bd34b06a582d9cfa7c7bf0aa9a3a8b97052128"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "eb2215a3067daa41f3eb28d2445fc30bede588a66f7e06ad0ef63278bed358bf",
+      "domain": "insights",
+      "guide_resource": "adsagent://guide/catalog/insights",
+      "name": "insights_get_date_range",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "93c97dcbc49a46a59947907c54efe71d43900bbee809ce22844bc36166038ded"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "01b46f6c043e67e9260dd57bae6359921ce79d214ac5e3e6304d7b371c4d07f6",
+      "domain": "insights",
+      "guide_resource": "adsagent://guide/catalog/insights",
+      "name": "insights_pull_insights",
+      "required_capability": "mcp.insights.pull",
+      "schema_digest_sha256": "14e6cf55ef706d822a3b8f54733d8e0635b7a1b837674c0385ee30014fd2f618"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "368a96d63f5781f5f1cac6a5004533d4e55743d3070b93c05498a9fb58fc5a5e",
+      "domain": "insights",
+      "guide_resource": "adsagent://guide/catalog/insights",
+      "name": "insights_pull_product_breakdowns",
+      "required_capability": "mcp.insights.pull",
+      "schema_digest_sha256": "3e40932c81604d21dfa0cc23831e98a9ab0b739aeead23d7f551557d442168ba"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "ca322b0140ade6b4a75d7fe7eae4b367be71d7c808a6b8171a5a8addfc5cfc0b",
+      "domain": "insights",
+      "guide_resource": "adsagent://guide/catalog/insights",
+      "name": "insights_query_batch_overview",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "67964f8b7603264d116f40a177104a4b3fd93abaaf757ab88ba23a60025006e4"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "19d4059930cb1b8366480f2d4d2e93c398458cf89d320691b56275393a395e1c",
+      "domain": "insights",
+      "guide_resource": "adsagent://guide/catalog/insights",
+      "name": "insights_query_consistent",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "d6326c627221d386fe2e5c57dc445911be095bef0ae58deb4e10ecac1c879c49"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "7141b8710eec6544e48259a20cc272f3a8a4daacd9fd76b27bbad36e3fee8868",
+      "domain": "insights",
+      "guide_resource": "adsagent://guide/catalog/insights",
+      "name": "insights_query_overview",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "01be6c706a12f40316a349d4cf0994f8fe067687d58d77ca776021b1df41261a"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "ba37cf3854718bce9e342732dcfa41a97f5b02507e437d8fc0e7fbcf27e0a262",
+      "domain": "insights",
+      "guide_resource": "adsagent://guide/catalog/insights",
+      "name": "insights_query_rows",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "f372c6528e646c4e76b57ac994a99d18d7c50216046c9592f219b691e96e8de6"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "08e311ad9ac405884ecc47094e07b4bdcaf3ef590009d0bb67fbf520c5d479a9",
+      "domain": "insights",
+      "guide_resource": "adsagent://guide/catalog/insights",
+      "name": "insights_read_breakdowns",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "0286bc82352adf9406a88b3ee7e7dcb5363b79efe1d835cdea9b870af5ab7624"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "101e5c8bae9dad8b1d92b73a81fd466470913921c37bfbc0be0e08ac607c6bec",
+      "domain": "interests",
+      "guide_resource": "adsagent://guide/catalog/interests",
+      "name": "interests_archive",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "44b73d80be3a0ea24771fc04e41067cdca7337948493f2c99565c86c41f6720d"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "4a1aa4b2a730fa83f26d8e930203a533d2ee8fceac3cefd7366f0c02f04f0825",
+      "domain": "interests",
+      "guide_resource": "adsagent://guide/catalog/interests",
+      "name": "interests_fetch_from_adset",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "477f4a31e8e75737dbb4d10e6a732921c480eebbb79ed03179b0282028732b68"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "a36228d1f7e019dbbf11b70080ea78d02b92133728df753546f0090c5e911993",
+      "domain": "interests",
+      "guide_resource": "adsagent://guide/catalog/interests",
+      "name": "interests_get",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "44b73d80be3a0ea24771fc04e41067cdca7337948493f2c99565c86c41f6720d"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "ee340884a4f88e79cfa5aa2a2764075b2ca85ef3be862a228e5fafeefa9c31c0",
+      "domain": "interests",
+      "guide_resource": "adsagent://guide/catalog/interests",
+      "name": "interests_list",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "e82e6d680116d048cbcff27d5f04984da311c654a9bdb6ea796bcbcf06d08062"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "3252c4ba1fde16283ea8a78ad3e23a6f01e4c1b242043c7200425f3a9319737e",
+      "domain": "interests",
+      "guide_resource": "adsagent://guide/catalog/interests",
+      "name": "interests_save_fetched_pack",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "c01b9c036fb3f05436eb693d8d530816a02245ef376d33427eff4dd8e4c4c773"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "0ccbf683c2a227b22689f07744f941c2d3e9706022981176385bbc10691f6efa",
+      "domain": "mmp",
+      "guide_resource": "adsagent://guide/catalog/mmp",
+      "name": "mmp_connect",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "846cff2e1791d33668f93d4505f54d956f9cb7c328d7066901562ea6b8f84a93"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "c76ebbafab197de2bc6d00217b268a41d474cb4cac3faf1d75a500580624de8a",
+      "domain": "mmp",
+      "guide_resource": "adsagent://guide/catalog/mmp",
+      "name": "mmp_delete_connection",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "46c2c2ee84e1d80540944c8a15bb3ea69252c7562e1abc1f1b16ac2597d67b99"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "bcb36d66b3786a1f72e9a01a0a781acae7b2f208ad4ea13589426b67f0942c5b",
+      "domain": "mmp",
+      "guide_resource": "adsagent://guide/catalog/mmp",
+      "name": "mmp_fetch_cohorts",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "af48973a39ba327c0d49f7077dd5d6b6ee534058f83d9cfbb08b6aad53355ad2"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "b3f230a79f7aea96808d25065cd727c6616da1f8cc0349076e9e0d6c79bc6bbc",
+      "domain": "mmp",
+      "guide_resource": "adsagent://guide/catalog/mmp",
+      "name": "mmp_get_state",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "93c97dcbc49a46a59947907c54efe71d43900bbee809ce22844bc36166038ded"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "02fccd3af2690bd2d0a637bdbe8aeab01c26ecf5389710016f373b0da8af23c8",
+      "domain": "mmp_insights",
+      "guide_resource": "adsagent://guide/catalog/mmp_insights",
+      "name": "mmp_insights_get_product_event_today",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "4f2e193aae62e5f093fb812459483f2de292138c29e6ff821239683798e90ede"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "31c46029425ad7730fbf51bbbf1542ea8840d3105f86ae37494a6f8a7d675264",
+      "domain": "mmp_insights",
+      "guide_resource": "adsagent://guide/catalog/mmp_insights",
+      "name": "mmp_insights_get_product_today",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "afdb616c60e35a8a514545ff815a388822c477401b9c593ccfc273d37483d3ab"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "23209ebd6007e089e76dfd40b127ab773e148b61fa821be213150964e72df0e1",
+      "domain": "mmp_insights",
+      "guide_resource": "adsagent://guide/catalog/mmp_insights",
+      "name": "mmp_insights_query_product_cohort",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "278738ca58aab32a71f3565a7f94deaf5f2158264b302c3c68b1b924b8d78a80"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "59d7d6096b6ac60e8f588ee9020f33e44b77c4a7212936bd6fa640f0b4b09903",
+      "domain": "mmp_insights",
+      "guide_resource": "adsagent://guide/catalog/mmp_insights",
+      "name": "mmp_insights_query_product_event_summary",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "a161c3ccede20bfab11bc1e70beb746e82109a624804db096b5c8e243cdc98e0"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "b8d722436774fb0a7615d097535293aa2e5b2b90513c72a3466feca942cc5a90",
+      "domain": "mmp",
+      "guide_resource": "adsagent://guide/catalog/mmp",
+      "name": "mmp_refresh_connection",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "46c2c2ee84e1d80540944c8a15bb3ea69252c7562e1abc1f1b16ac2597d67b99"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "7931174cece8bfd7af4984f5d28e3d8b9da803d5c79ba136290ace7e9cb51b6b",
+      "domain": "mmp",
+      "guide_resource": "adsagent://guide/catalog/mmp",
+      "name": "mmp_save_cohort_config",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "ad51ddfb3a0fbfb09b525c91cd82f6f1fc4361dff37b7164f180fba1b7d8da23"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "ed8c2b9bd0d4becca5e92dd87bcb87af8a995e7284ade3c04f94eb4a53635643",
+      "domain": "notifications",
+      "guide_resource": "adsagent://guide/catalog/notifications",
+      "name": "notifications_ack",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "2476171c490c3d16e041eb29f03cc2819cb4692c4c46c70a45f8f0e2d05cd951"
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "notifications_integrations"
+      ],
+      "description_digest_sha256": "088f6d6114c244c8da248620e6a9649e76e9541ebdf12ac1bc4ec64cb0dd31d0",
+      "domain": "notifications",
+      "guide_resource": "adsagent://guide/catalog/notifications",
+      "name": "notifications_integration_confirm",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "df14faba25c8b08f7b96ec0fce1cf6e4a49e44a439a37dbd38b1a441822e323a",
+      "domain": "notifications",
+      "guide_resource": "adsagent://guide/catalog/notifications",
+      "name": "notifications_integration_deny",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "notifications_integrations"
+      ],
+      "description_digest_sha256": "29116706304d1b3c4ec31075ea1a5ad30dab040705235e35994e51dbe743a7a8",
+      "domain": "notifications",
+      "guide_resource": "adsagent://guide/catalog/notifications",
+      "name": "notifications_integration_prepare",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "bc5e6e80ac8ae447925a89c69b6cccad5fbc8df005505289bdb6c921e052baad"
+    },
+    {
+      "access": "read",
+      "capability_gates": [
+        "notifications_integrations"
+      ],
+      "description_digest_sha256": "f8189170af14fe2137b58c5b6aaa47d00aec46fb9bcd349a82ac9a62af21bbca",
+      "domain": "notifications",
+      "guide_resource": "adsagent://guide/catalog/notifications",
+      "name": "notifications_integrations_list",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "04f2e29c181fc79ebba5eb84a831d5e5b222bf57b13d999203fc746007900559"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "8845e316eedcb62994589a7cb13bac5b8b5906674b4d2e935a536e4f61889227",
+      "domain": "notifications",
+      "guide_resource": "adsagent://guide/catalog/notifications",
+      "name": "notifications_list",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "a00cc4c2da22e2736c470f269cd2eb49fe9450abee67ca6e5df92585d4d7a2b8"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "609c9dbfce3bf0926a64d6ea69aaf8ce61685aefaab2997280979c733e00177c",
+      "domain": "notifications",
+      "guide_resource": "adsagent://guide/catalog/notifications",
+      "name": "notifications_resolve",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "2476171c490c3d16e041eb29f03cc2819cb4692c4c46c70a45f8f0e2d05cd951"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "288e666017b5c62cb1776ecca8102a79605a11ec5d6a41de6f71467356abc84c",
+      "domain": "notifications",
+      "guide_resource": "adsagent://guide/catalog/notifications",
+      "name": "notifications_scan",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "93c97dcbc49a46a59947907c54efe71d43900bbee809ce22844bc36166038ded"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "4997617cdf02f384b18db5a401b4219e05dd46cf4acab86c9d65c0a05ed59eba",
+      "domain": "notifications",
+      "guide_resource": "adsagent://guide/catalog/notifications",
+      "name": "notifications_summary",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "93c97dcbc49a46a59947907c54efe71d43900bbee809ce22844bc36166038ded"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "66812a9de766c62475aa81b517a7a97014479009d5be6b0e2bdc286776e6ed2f",
+      "domain": "operations",
+      "guide_resource": "adsagent://guide/catalog/operations",
+      "name": "operations_get",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "6e6c2f415cda69be05e63d4a9ae1635332b8b5112ff5cc5a613069fa530e7479"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "289ba7c3d77cebb00d0d67f92ecf0973d95b8c9dbee4e9dfe5f8a19a3e58771c",
+      "domain": "operations",
+      "guide_resource": "adsagent://guide/catalog/operations",
+      "name": "operations_get_context",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "95ce1a48b89e56643f41f791e76cb2be7b115107d70da86b79c71c7a35b5c719"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "c747dfd49571b95cea47da335b826103d4c01d03ec9d9b5e526d4a224322000f",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "overview_get_live_configs",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "36a11eb4d89ed05596dec56382ad8f40ef209c54f17c895ce387b62218fd2de7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "f9063e8d13e9c489c148dd4675b3348b81ac8545826d8d4510af6c2e836ce6b4",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "overview_update_ad_status",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "532c580b12bf79203e98063a5a7aa66ff69ec795614042340017b2f7c517f53d"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "99b6a5cd596aed7e481bd591f1a14cb397c039dbb46907f49a6cd05b3de96a34",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "overview_update_adset_bid",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "128a369bc207bbde1196b022fef571ab2f4b159f51a26d117ea5310f335ba0fc"
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "delivery_mutations"
+      ],
+      "description_digest_sha256": "be1244d332215da6d35d6c61755bb60da666ed426b1d91bd90bfe79ba3b6a937",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "overview_update_adset_budget",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "9252bdc0a09b0e0f338cd9cc3d6b20d5b046a89a4bd89052436dee4edc1b1e7e"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "79ad70c2bfe11730c8f599ca6677ceef353bc2193fc36862fe9427dde99f7024",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "overview_update_adset_status",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "de6b42d0fd24d200b631e3f52864a9465a414c5fd190e87bd2ee81c37ec85b6a"
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "delivery_mutations"
+      ],
+      "description_digest_sha256": "4443dff5cd82bc21e46ca23ed6267951ffcbd7e48982fa6a7cb57eb080651611",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "overview_update_campaign_budget",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "01eb15aef9dceebdf8fad7162bfdea1b99766d10c80444534be21171214c4243"
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "delivery_mutations"
+      ],
+      "description_digest_sha256": "7e8a4bf0e933a576f6da51bcb44a94447a7b52232e3c31cafa32506e9b2c3824",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "overview_update_campaign_budget_confirm",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "4ba86cd23acf1c7a2fe37b43298ef4fd6a9584b5e138ef41ef19b45a95f25f91",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "overview_update_campaign_budget_deny",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "83e9556ee21b39446e623735c3af04d290a5bbab7ee115632acbe46249de9150",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "overview_update_campaign_status",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "740103ad47548c0118ac2ca73fa94d9248d4a62cda97fa20acfbe0b887781da1"
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "delivery_mutations"
+      ],
+      "description_digest_sha256": "c35eb55f886bb493a43974c58c57a071ac8fbbbc0c2fdcae3862737bea242ade",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "overview_update_confirm",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "029cb89b4f2a009d84e2ad4b7404ed5c66019b874e1bcc957bb4bc8649e19318",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "overview_update_deny",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "d8f11d2143438e1271629d2d3564c8711774217638f63aa6558a1bcbecf73c73",
+      "domain": "products",
+      "guide_resource": "adsagent://guide/catalog/products",
+      "name": "products_get_actions",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "93c97dcbc49a46a59947907c54efe71d43900bbee809ce22844bc36166038ded"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "93a4d41ee6415e722a430e78b472b4ab423379d3b771f4d818fb27c3ce4480dc",
+      "domain": "products",
+      "guide_resource": "adsagent://guide/catalog/products",
+      "name": "products_get_funnel_values",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "46aa17af4ae866ab15cdfccf9a936aab5a0b28a071497d172078d9aae06d9abd"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "8d9fb39cf91ec539278f87fa51a558a15b5549fc24373829389e45e87b39d9f5",
+      "domain": "products",
+      "guide_resource": "adsagent://guide/catalog/products",
+      "name": "products_get_top_campaigns",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "ea20349ac5145189f60a86a767cbea7526db338a2693daee12c832737c76d860"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "d930afa3bd0206fa162bf36c3bd733287d0cec4e1124ea2e74cfb14120555a01",
+      "domain": "products",
+      "guide_resource": "adsagent://guide/catalog/products",
+      "name": "products_link_mmp_app",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "454f715d706cd99469e2d3284c33389bb0635a3ef5324461003aa584ad58cf9c"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "773d68beedc636aa3f1127d798095785d907c3ebbbbc9260dc77dea8d27503ca",
+      "domain": "products",
+      "guide_resource": "adsagent://guide/catalog/products",
+      "name": "products_list",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "11fbb4f5b515929043c05e441615fc3c4d7fbbe790c0694fe0d985176bd82d8f"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "6a32817904cb169cad2ec1075377af2f2b44c50f6dc98b24f213dcc31d88609f",
+      "domain": "products",
+      "guide_resource": "adsagent://guide/catalog/products",
+      "name": "products_save_funnel_events",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "d2be029508047c22c380052745b69905b76a5116cab745c510a20bfa5647d40a"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "cc2d4fc4d3469d334aee88d9992c5a01c5457f5ef120f4d7b17401a0b1c80db5",
+      "domain": "products",
+      "guide_resource": "adsagent://guide/catalog/products",
+      "name": "products_save_timezone_offset",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "6937a95911656255d8799c6d8d9edc050d75c2e73d71d39e8f1594bd8a4fb3ee"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "2ee72cc6581303b9f7ea45c504848ae58c9adc335231aeda17ee17278dcda3d9",
+      "domain": "setup",
+      "guide_resource": "adsagent://guide/catalog/setup",
+      "name": "setup_analyze_products",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "93c97dcbc49a46a59947907c54efe71d43900bbee809ce22844bc36166038ded"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "be8f9af7b854c187a3a9ff9454ae29fc95f9ef0625287644dc86b63b26acfd32",
+      "domain": "setup",
+      "guide_resource": "adsagent://guide/catalog/setup",
+      "name": "setup_begin_facebook_connect",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "93c97dcbc49a46a59947907c54efe71d43900bbee809ce22844bc36166038ded"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "4a656605a3d67ebb4cefdbb241852a9cb5a3c2c2c107c60836aa2e51137fd559",
+      "domain": "setup",
+      "guide_resource": "adsagent://guide/catalog/setup",
+      "name": "setup_check_facebook_connect",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "b7d0f0351483ef8a657b2bd54b2a083dc540e5580bf24202f99426e7f9f7f0d0"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "cfae50639f29a6fc65333d35ddd7b8e4abb27b1034e6ea88a03720ccdf3100d8",
+      "domain": "setup",
+      "guide_resource": "adsagent://guide/catalog/setup",
+      "name": "setup_ensure_baseline_templates",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "93c97dcbc49a46a59947907c54efe71d43900bbee809ce22844bc36166038ded"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "f5b19706e91046db77fda7c1e80a0e044892c80fbff088b17dc8f70f825d322a",
+      "domain": "setup",
+      "guide_resource": "adsagent://guide/catalog/setup",
+      "name": "setup_get_status",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "93c97dcbc49a46a59947907c54efe71d43900bbee809ce22844bc36166038ded"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "2089a07f70560eb219e617947f636a3622f5de6f5a94cb5e0ca2a7c0426a4aff",
+      "domain": "setup",
+      "guide_resource": "adsagent://guide/catalog/setup",
+      "name": "setup_readiness_check",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "93c97dcbc49a46a59947907c54efe71d43900bbee809ce22844bc36166038ded"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "97b3448b96fea1cd30c40889c4e96b6d3bb4cfd7062627c76bd45823ad851eae",
+      "domain": "operations",
+      "guide_resource": "adsagent://guide/catalog/operations",
+      "name": "support_get_report_status",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "fce6b7c49c19a93a9b314f2174d1f9fffc87b34d11c633753a3cfd46cb42d1e1"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "9c19197a499bcdce3afcbbde203e75c5f812424fcb1efa8450e0808834193026",
+      "domain": "operations",
+      "guide_resource": "adsagent://guide/catalog/operations",
+      "name": "support_report_error",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "fce6b7c49c19a93a9b314f2174d1f9fffc87b34d11c633753a3cfd46cb42d1e1"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "251e629bb78965963b9637d3ef3ca67db1117fc5b40561ebe131b5898e69c908",
+      "domain": "tasks",
+      "guide_resource": "adsagent://guide/catalog/tasks",
+      "name": "tasks_cancel",
+      "required_capability": "mcp.operator",
+      "schema_digest_sha256": "cb8ee53bb4d81a43f17fd6899baea0951f1f16d7d0dc6c21d1131e345dac522b"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "83e8e9ff5a53ba249df84f08b50135c65b5eec3e8947609485a06d44b62bcfc2",
+      "domain": "tasks",
+      "guide_resource": "adsagent://guide/catalog/tasks",
+      "name": "tasks_get_create_detail",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "1815c03bc7b46995d619d22ac871611c5bc2bbfb942d650b3e696438d29f226d"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "ac2bb9006637ea24e05ab2e0c96b0b930328b132bae1a0e66609f821361d528b",
+      "domain": "tasks",
+      "guide_resource": "adsagent://guide/catalog/tasks",
+      "name": "tasks_get_status",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "8c7071349d9483171335c865c1dd3c4b9e0503cdd13c36a6f7408c4987af8740"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "381bb52d13a6b700f34ba4ed7777f588163718b7ecd9383e72f37478efde0f3c",
+      "domain": "tasks",
+      "guide_resource": "adsagent://guide/catalog/tasks",
+      "name": "tasks_latest",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "5940b3379ccbc2b013df6498bed8da0c62eec847b636a7d1f6821ff8e538c8c4"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "6ef574f7d8eb3f813110eb048f012cce54979dae3594682630fd2568af0d15c3",
+      "domain": "tasks",
+      "guide_resource": "adsagent://guide/catalog/tasks",
+      "name": "tasks_list",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "fe167399e51c81300e8061acc3c2de4edb2832214110e6d98fd62eca1182b10e"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "c5df2a929bfd998cfe651f04edf5b5931dc28a4ff17945e7dcf62c2408e67d03",
+      "domain": "tasks",
+      "guide_resource": "adsagent://guide/catalog/tasks",
+      "name": "tasks_list_create_history",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "c43984dd95fe2acb57f2514642bab76eb2b035b51cc1a43ec6fe20c9651f41a2"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "ae480eb889e72fed86179415c829d4053f561c2c7061d23fdd41ac0d52205886",
+      "domain": "templates",
+      "guide_resource": "adsagent://guide/catalog/templates",
+      "name": "templates_create",
+      "required_capability": "mcp.templates.write",
+      "schema_digest_sha256": "66f31e2593883746a47f8e762225e8cdb39973936540d1b4f1404ce6257529b0"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "c8ea42ac25e09888732ae2515ee1e4eced53f3f191c9bb3b5dcc5bf48cb756fb",
+      "domain": "templates",
+      "guide_resource": "adsagent://guide/catalog/templates",
+      "name": "templates_delete",
+      "required_capability": "mcp.templates.write",
+      "schema_digest_sha256": "bea6cab56667b112967074fdec05e1de1b93fd2a7a947b301cce219cb12a4ed9"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "7be53097a5540e0a1f07a54cd8dbedf5b1d61997d3379439004710eb5ce913f1",
+      "domain": "templates",
+      "guide_resource": "adsagent://guide/catalog/templates",
+      "name": "templates_get",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "bea6cab56667b112967074fdec05e1de1b93fd2a7a947b301cce219cb12a4ed9"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "caa8d227cb2067cfb35a6dc37fb8536b2dc3e1d792b0f68a0d1556a1ff1fb04e",
+      "domain": "templates",
+      "guide_resource": "adsagent://guide/catalog/templates",
+      "name": "templates_list",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "60d27e0da9b577fbdec9622b78392b60e915096e1268725839860534b13e042c"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "e5e40d51bd1c0dae897ac6fdde1f56816d34db40aa60e9165410aaa29df7549e",
+      "domain": "templates",
+      "guide_resource": "adsagent://guide/catalog/templates",
+      "name": "templates_reverse_engineer",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "477f4a31e8e75737dbb4d10e6a732921c480eebbb79ed03179b0282028732b68"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "5f321b402458e0e5eef00d45d16db54f3510d90be9c5f463f7bea6687832ff18",
+      "domain": "templates",
+      "guide_resource": "adsagent://guide/catalog/templates",
+      "name": "templates_update",
+      "required_capability": "mcp.templates.write",
+      "schema_digest_sha256": "065886eda2ea789921cf19e71e8944490d10f408bd4ba60b24ded4e93aa85ba3"
+    }
+  ]
+}

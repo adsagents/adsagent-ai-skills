@@ -5,13 +5,15 @@ import json
 import unittest
 from pathlib import Path
 
+from tests.contract_reader import read_contract
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublicReleaseContractTests(unittest.TestCase):
     def _read(self, relative_path: str) -> str:
-        return (ROOT / relative_path).read_text(encoding="utf-8")
+        return read_contract(ROOT, relative_path)
 
     def test_public_surfaces_do_not_describe_an_unpublished_private_pack(self) -> None:
         text = "\n".join(
@@ -57,6 +59,62 @@ class PublicReleaseContractTests(unittest.TestCase):
 
         self.assertNotIn("exec", called_names)
         self.assertNotIn("eval", called_names)
+
+    def test_validation_helpers_have_no_network_or_process_capability(self) -> None:
+        imported_roots: set[str] = set()
+        for path in (
+            "scripts/skill_contract.py",
+            "scripts/skill_routing_contract.py",
+            "scripts/validate_public_tool_manifests.py",
+        ):
+            tree = ast.parse(self._read(path))
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Import):
+                    imported_roots.update(
+                        alias.name.split(".", 1)[0]
+                        for alias in node.names
+                    )
+                elif isinstance(node, ast.ImportFrom) and node.module:
+                    imported_roots.add(node.module.split(".", 1)[0])
+
+        self.assertTrue(
+            imported_roots.isdisjoint(
+                {
+                    "httpx",
+                    "requests",
+                    "socket",
+                    "subprocess",
+                    "urllib",
+                }
+            )
+        )
+
+    def test_validation_workflow_pins_third_party_actions(self) -> None:
+        workflow = self._read(".github/workflows/validate.yml")
+
+        self.assertIn(
+            "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            workflow,
+        )
+        self.assertIn(
+            "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            workflow,
+        )
+        self.assertNotIn("actions/checkout@v", workflow)
+        self.assertNotIn("actions/setup-python@v", workflow)
+
+    def test_release_files_do_not_hardcode_local_checkout_paths(self) -> None:
+        text = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in ROOT.rglob("*")
+            if path.is_file()
+            and ".git" not in path.parts
+            and ".pytest_cache" not in path.parts
+            and "__pycache__" not in path.parts
+        )
+
+        self.assertNotIn("/" + "Users/", text)
+        self.assertNotIn("/private" + "/tmp/", text)
 
     def test_update_reminder_has_no_network_or_process_capability(self) -> None:
         tree = ast.parse(self._read("scripts/update_reminder.py"))

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ambiguous_adsagent",
+    "prompt": "Use AdsAgent to help me inspect my advertising data.",
+    "expected": ["adsagent-router"]
+  },
+  {
+    "id": "cross_channel",
+    "prompt": "Compare Meta Ads and Google Ads performance with AdsAgent.",
+    "expected": ["adsagent-router"]
+  },
+  {
+    "id": "meta_insights",
+    "prompt": "Use AdsAgent to show Meta Ads spend and ROAS for last week.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_write_copy",
+    "prompt": "Use AdsAgent to copy this Meta Ad into the target account.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "google_insights",
+    "prompt": "Use AdsAgent to summarize Google Ads PMax spend yesterday.",
+    "expected": ["google-ads-insights"]
+  },
+  {
+    "id": "tiktok",
+    "prompt": "Use AdsAgent to append these creatives to a TikTok Ads campaign.",
+    "expected": ["tiktok-insights"]
+  },
+  {
+    "id": "notifications",
+    "prompt": "Configure an AdsAgent Telegram notification and send a test.",
+    "expected": ["adsagent-notifications"]
+  },
+  {
+    "id": "scheduled_task",
+    "prompt": "Create a scheduled task that checks AdsAgent every morning.",
+    "expected": ["agent-scheduled-tasks"]
+  },
+  {
+    "id": "reliability_429",
+    "prompt": "AdsAgent returned 429 with Retry-After. Recover safely.",
+    "expected": ["adsagent-reliability"]
+  },
+  {
+    "id": "reliability_503",
+    "prompt": "The AdsAgent MCP returned 503 dependency unavailable.",
+    "expected": ["adsagent-reliability"]
+  },
+  {
+    "id": "setup",
+    "prompt": "Connect AdsAgent MCP with OAuth and verify readiness.",
+    "expected": ["adsagent-setup"]
+  },
+  {
+    "id": "unrelated",
+    "prompt": "Explain how photosynthesis works.",
+    "expected": []
+  }
+]

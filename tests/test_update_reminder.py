@@ -13,6 +13,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest import mock
 
+from tests.contract_reader import read_contract
+
 
 ROOT = Path(__file__).resolve().parents[1]
 HELPER_PATH = ROOT / "scripts" / "update_reminder.py"
@@ -201,9 +203,7 @@ class UpdateReminderTests(unittest.TestCase):
         self.assertIn("unsupported argument", stderr.getvalue())
 
     def test_skill_contains_fixed_local_update_instructions(self) -> None:
-        setup = (ROOT / "skills" / "adsagent-setup" / "SKILL.md").read_text(
-            encoding="utf-8"
-        )
+        setup = read_contract(ROOT, "skills/adsagent-setup/SKILL.md")
         self.assertIn(
             "claude plugin update --scope user adsagent-ai-skills@adsagent-ai-skills",
             setup,

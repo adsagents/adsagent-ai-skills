@@ -21,6 +21,12 @@ never healthy. Inspect `data_coverage.levels`, `data_coverage.limitations`,
 `collection_meta`, and `channel_availability` before giving a conclusion.
 Truncated or incomplete coverage cannot support a healthy conclusion.
 
+When checked, current entity inventory can keep paused, rejected, and
+zero-Insights Campaigns, Ad Sets, and Ads visible. Treat inventory coverage and
+inventory freshness as separate evidence. A complete current inventory can
+support entity-existence and blocker counts; it still does not manufacture
+performance metrics for an entity without verified Insights rows.
+
 Unavailable, unsupported, stale, missing, and zero activity are distinct.
 Unavailable numeric metrics must not be converted to zero. Preserve
 `null` values and the returned availability reason.

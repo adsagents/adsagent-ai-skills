@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.38`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.39`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -95,6 +95,12 @@ connection, account, Page, delivery, and reporting health separate; inspect
 coverage and truncation before conclusions; preserve unavailable values as
 `null`; and never infer deliverability from a readable connection or Insights
 alone.
+
+Version 0.7.39 adds Meta current-entity inventory guidance. Agents distinguish
+zero Insights from zero activity, require complete inventory coverage for
+entity-existence totals, preserve inherited delivery blockers without
+rewriting native status, and pin every paginated read to its first-page
+inventory generation.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 

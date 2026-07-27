@@ -23,7 +23,7 @@ def test_meta_pagination_guidance_keeps_one_cached_snapshot_contract():
     assert "min_as_of" in combined
     assert "require_complete_range=true" in combined
     assert "pagination_anchor_unavailable" in combined
-    assert "never rerun page 1" in combined
+    assert "do not rerun page 1" in combined
 
 
 def test_meta_write_recovery_guidance_distinguishes_safe_terminal_states():
@@ -51,7 +51,7 @@ def test_meta_write_recovery_guidance_distinguishes_safe_terminal_states():
 
 
 def test_release_version_is_current():
-    assert _read("VERSION").strip() == "0.7.38"
-    assert '"version": "0.7.38"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.38"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.38`" in _read("README.md")
+    assert _read("VERSION").strip() == "0.7.39"
+    assert '"version": "0.7.39"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.39"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.39`" in _read("README.md")

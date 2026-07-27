@@ -42,7 +42,7 @@
 - Meta delivery config verification follows the returned `next_action` to `overview_get_live_configs`; never substitute an Insights watermark.
 - Meta decisions use `insights_query_consistent(require_fresh)` only when advertised; uncertain task writes use `operations_get_context` and are never replayed.
 - Meta candidate reads use one AND plan; keep IDs; deduplicate and group client-side.
-- Continue Meta pages with unchanged cached contract and first-page `min_as_of`; never rerun page 1.
+- Continue Meta pages with the unchanged cached contract and first-page `min_as_of`; do not rerun page 1 merely to continue. If the server rejects the continuation anchor, discard partial rows and restart page 1 serially.
 - Use the common envelope only for `agent_method_profile.profile_id=adsagent_agent_methods_v1`; otherwise preserve native output.
 - Preserve `support_ref` for unresolved handoff. It is not authorization.
 - Google is a cached read-only ledger. TikTok features are capability-gated; a shared profile does not imply evidence parity.

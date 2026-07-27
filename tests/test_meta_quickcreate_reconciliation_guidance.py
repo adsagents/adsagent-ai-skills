@@ -45,11 +45,11 @@ def test_meta_quickcreate_reconciliation_contract_is_public() -> None:
 
 
 def test_meta_quickcreate_reconciliation_release_is_0736() -> None:
-    assert _read("VERSION").strip() == "0.7.38"
-    assert '"version": "0.7.38"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.38"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.38`" in _read("README.md")
-    assert 'VERSION = "0.7.38"' in _read(
+    assert _read("VERSION").strip() == "0.7.39"
+    assert '"version": "0.7.39"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.39"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.39`" in _read("README.md")
+    assert 'VERSION = "0.7.39"' in _read(
         "scripts/validate_tri_channel_pack.py"
     )
 

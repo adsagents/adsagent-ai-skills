@@ -20,11 +20,37 @@ For `insights_query_consistent`, use `page_size<=50` and allowlisted `filters`. 
 
 Read `adsagent://guide/metadata-contract` once per guide version. `configured_status` is `ACTIVE`/`PAUSED`; `effective_status` includes `DISAPPROVED`, `PENDING_REVIEW`, and parent-paused. Legacy `status` aliases `effective_status`.
 
+Read `delivery_status` and `delivery_issue_codes` independently from both
+native status fields. Account and parent blockers may make an otherwise
+`ACTIVE` child unable to deliver. Never rewrite child status from an inherited
+blocker, and preserve simultaneous account, parent, review, and rejection
+issues.
+
 Money uses returned account currency and `money_unit=major`. `budget_level` is `campaign|adset`; `bid_strategy` and `optimization_goal` are canonical lower-case. `objective` and `billing_event` are Meta-native uppercase; `conversion_event` is separate lower-case metadata.
 
 With `group_by=ad`, preserve `ad_account_id`, `ad_account_name`, `campaign_id`, `campaign_name`, `adset_id`, `adset_name`, `ad_id`, and `ad_name`. Do not prefetch or fan out parents. Legacy `search` and `spend_gt` remain compatible; do not use `dedupe_by`. Exact Ad-name deduplication, language classification, and business grouping remain client-side.
 
-For matches, preserve each `ad_id`; advance pages serially while `data.meta.has_more=true`. Page 1 must be complete. For page 2 and later, keep `consistency=cached`, `query_contract_version=1`, `require_complete_range=true`, scope, dates, timezone, grouping, filters, sorting, and `page_size` unchanged; increment only `page` and pin `min_as_of` to task `result.meta.source_observed_at` or immediate `result.query_contract.coverage.source_observed_at`. Use the earliest multi-scope anchor. Never rerun page 1 or switch to `require_fresh`. Never enlarge or parallelize pages. On `pagination_anchor_unavailable`, stop and preserve `support_ref`; do not broaden, refresh, or treat it as a permission error. Large output uses grouped `insights_export_csv` with identical filters.
+For matches, preserve each `ad_id`; advance pages serially while the single-scope
+overview reports `data.meta.has_more=true` (or the corresponding
+`data.items[].result.meta.has_more=true` for a batch item). Page 1 must be
+complete. For page 2 and later, keep `consistency=cached`,
+`query_contract_version=1`, `require_complete_range=true`, scope, dates,
+timezone, grouping, filters, sorting, and `page_size` unchanged; increment only
+`page` and pin `min_as_of` to task `result.meta.source_observed_at` or the scope
+overview's `query_contract.coverage.source_observed_at`. Use the earliest
+multi-scope source anchor.
+
+Locate a single-scope overview at `data`, and each ordered multi-scope overview
+at `data.items[].result`. Preserve every first-page overview
+`meta.inventory_anchor` in original scope order. Pass those opaque values
+through `inventory_anchors` on page 2 and later. If the server returns
+`continuation_valid=false` or
+rejects an inventory anchor, discard all partially collected rows and restart
+from page 1 serially. Never combine rows from different inventory generations.
+Do not rerun page 1 merely to continue or switch to `require_fresh`.
+Never enlarge or parallelize pages. On `pagination_anchor_unavailable`, stop and
+preserve `support_ref`; do not broaden, refresh, or treat it as a permission
+error. Large output uses grouped `insights_export_csv` with identical filters.
 
 On `adsagent_query_invalid`, correct the public field once. On `scope_unavailable`, do not infer another workspace/token or Meta permission. Run setup and matching discovery (`products_list`/`accounts_list_linked_accounts`) once; if still listed, retry the identical bounded read once. Then preserve `support_ref` for operator review. Never broaden scope or alter permissions.
 
@@ -32,7 +58,18 @@ On `adsagent_query_invalid`, correct the public field once. On `scope_unavailabl
 
 Report server totals; never sum pages. Native totals require `meta.complete=true`; profile totals require top-level `complete=true`. Missing scopes are unknown.
 
-Poll distinct `task_ref` values serially with `tasks_get_status(task_ref=..., response_mode=compact)`. Consume only task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; never rerun page 1. Stop otherwise.
+For Campaign, Ad Set, or Ad existence totals, additionally require
+`meta.inventory_coverage=complete` and
+`zero_insights_entities_included=true`. Partial, unavailable, or
+Insights-rows-only inventory keeps absent entities unknown. Read
+`inventory_freshness` separately from Insights freshness.
+
+An inventory-only row uses `metrics_availability=unverified` and nullable
+metrics. Preserve those `null` values and never convert unavailable metrics to
+zero. Such a row proves the entity and its observed configuration/status, not
+zero spend, zero impressions, or fresh performance evidence.
+
+Poll distinct `task_ref` values serially with `tasks_get_status(task_ref=..., response_mode=compact)`. Consume only task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; do not rerun page 1 merely to continue. Stop otherwise.
 
 `freshness_kind=age_only` is not mutation coverage. Do not decide on `verification_pending`, `data_not_fresh`, unknown launch date, or incomplete data.
 

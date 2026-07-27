@@ -20,6 +20,261 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "meta_template_reverse_save",
+    "prompt": "Use AdsAgent to reverse-engineer this Meta AdSet and save it as a reusable template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_readback",
+    "prompt": "Read back this saved Meta Ads template before reuse.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "ambiguous_template_literal_tool",
+    "prompt": "Call templates_reverse_engineer before saving.",
+    "expected": ["adsagent-router"]
+  },
+  {
+    "id": "meta_template_literal_tool_prefix",
+    "prompt": "Call Meta templates_reverse_engineer before saving.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_literal_tool_suffix",
+    "prompt": "Call templates_get on Meta before reuse.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_list",
+    "prompt": "List my Meta Ads templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_view",
+    "prompt": "View the Meta Ads template named chad.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_show",
+    "prompt": "Show my saved Meta Ads templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_delete",
+    "prompt": "Delete the Meta Ads template named obsolete.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_rename",
+    "prompt": "Rename the Facebook Ads template old-name to new-name.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_list_literal_tool",
+    "prompt": "Call Meta templates_list.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_delete_literal_tool",
+    "prompt": "Call templates_delete for this Meta template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "ambiguous_template_list",
+    "prompt": "List my saved templates.",
+    "expected": ["adsagent-router"]
+  },
+  {
+    "id": "ambiguous_template_list_zh",
+    "prompt": "打开模板列表。",
+    "expected": ["adsagent-router"]
+  },
+  {
+    "id": "ambiguous_template_view",
+    "prompt": "View the template named chad.",
+    "expected": ["adsagent-router"]
+  },
+  {
+    "id": "ambiguous_template_delete",
+    "prompt": "Delete the template named obsolete.",
+    "expected": ["adsagent-router"]
+  },
+  {
+    "id": "ambiguous_template_rename",
+    "prompt": "Rename template old-name to new-name.",
+    "expected": ["adsagent-router"]
+  },
+  {
+    "id": "ambiguous_template_delete_zh",
+    "prompt": "删除这个模板。",
+    "expected": ["adsagent-router"]
+  },
+  {
+    "id": "meta_template_list_zh",
+    "prompt": "列出 Meta 广告模板。",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_list_channel_suffix",
+    "prompt": "List templates in Meta.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "facebook_template_view",
+    "prompt": "View this template in Facebook.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "fb_template_delete",
+    "prompt": "Delete this FB template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_list_zh_short",
+    "prompt": "列出 Meta 模板。",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_usage_is_insights",
+    "prompt": "Show Meta Ads template usage last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_usage_report_create_is_insights",
+    "prompt": "Create a Meta template usage report for last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_report_create_is_insights",
+    "prompt": "Create a report of Meta template spend last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_named_performance_report_is_lifecycle",
+    "prompt": "View the Meta template named Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_templates_tagged_report_are_lifecycle",
+    "prompt": "List Meta templates tagged report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_named_monthly_report_is_lifecycle",
+    "prompt": "Create a Meta template named Monthly Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_performance_settings_is_lifecycle",
+    "prompt": "Create a Meta template for performance settings.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_single_template_named_report_list_is_lifecycle",
+    "prompt": "List the Meta template named Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_single_template_named_report_browse_is_lifecycle",
+    "prompt": "Browse the Meta template named Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_title_report_show_is_lifecycle",
+    "prompt": "Show Meta template Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_title_usage_report_with_window_is_analytics",
+    "prompt": "Show Meta template Usage Report for last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_title_performance_report_with_window_is_analytics",
+    "prompt": "Show Meta template Performance Report for last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_title_performance_report_this_month_is_analytics",
+    "prompt": "Show Meta template Performance Report this month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_title_performance_report_this_week_is_analytics",
+    "prompt": "Show Meta template Performance Report this week.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_title_performance_report_mtd_is_analytics",
+    "prompt": "Show Meta template Performance Report month to date.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_single_template_named_report_open_is_lifecycle",
+    "prompt": "Open the Meta template named Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_delete_report_is_lifecycle",
+    "prompt": "Delete Meta template Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_delete_report_with_window_is_lifecycle",
+    "prompt": "Delete Meta template Performance Report this month.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_rename_report_is_lifecycle",
+    "prompt": "Rename Meta template Monthly Report to Weekly Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_remove_report_is_lifecycle",
+    "prompt": "Remove Meta template Usage Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_reuse_report_is_lifecycle",
+    "prompt": "Reuse Meta template Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_usage_report_save_is_analytics",
+    "prompt": "Save this report about Meta template usage last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_usage_report_direct_save_is_analytics",
+    "prompt": "Save the Meta template usage report for last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_performance_filters_reuse_is_analytics",
+    "prompt": "Reuse these filters for Meta template performance last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_insights_filters_reuse_is_analytics",
+    "prompt": "Reuse last month ROAS filters for Meta template insights.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_save_report_is_read",
+    "prompt": "Use AdsAgent to show Meta Ads spend and save the report.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_usage_is_read",
+    "prompt": "Summarize Meta Ads template usage last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_reuse_filter_is_read",
+    "prompt": "Reuse last week's ROAS filters for Meta Ads insights.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "google_insights",
     "prompt": "Use AdsAgent to summarize Google Ads PMax spend yesterday.",
     "expected": ["google-ads-insights"]

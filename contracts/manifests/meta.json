@@ -1,6 +1,6 @@
 {
   "digest_algorithm": "sha256",
-  "guide_version": "2026-07-27.4",
+  "guide_version": "2026-07-27.7",
   "manifest_resource": "adsagent://guide/tool-manifest",
   "manifest_version": 1,
   "platform": "meta",
@@ -1090,7 +1090,7 @@
       "guide_resource": "adsagent://guide/catalog/templates",
       "name": "templates_get",
       "required_capability": "mcp.read",
-      "schema_digest_sha256": "bea6cab56667b112967074fdec05e1de1b93fd2a7a947b301cce219cb12a4ed9"
+      "schema_digest_sha256": "96e3d8d13071fdf9a1da5f86ebc4cba0c1017cb0fa7ace118f22a17d7a19052e"
     },
     {
       "access": "read",
@@ -1120,7 +1120,7 @@
       "guide_resource": "adsagent://guide/catalog/templates",
       "name": "templates_update",
       "required_capability": "mcp.templates.write",
-      "schema_digest_sha256": "065886eda2ea789921cf19e71e8944490d10f408bd4ba60b24ded4e93aa85ba3"
+      "schema_digest_sha256": "f8425c848efb8fab95bf7813cb5c48884836908630879109eaa1b92bbbc8bcb9"
     }
   ]
 }

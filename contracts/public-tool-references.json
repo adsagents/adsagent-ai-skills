@@ -45,6 +45,30 @@
         },
         {"name": "creatives_list"},
         {
+          "name": "templates_reverse_engineer",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "templates_create",
+          "required_capability": "mcp.templates.write"
+        },
+        {
+          "name": "templates_list",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "templates_get",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "templates_update",
+          "required_capability": "mcp.templates.write"
+        },
+        {
+          "name": "templates_delete",
+          "required_capability": "mcp.templates.write"
+        },
+        {
           "name": "overview_update_adset_budget",
           "capability_gate": "delivery_mutations",
           "required_capability": "mcp.optimize.write"

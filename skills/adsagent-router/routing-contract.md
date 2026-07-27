@@ -16,7 +16,23 @@
 - Multiple distinct source Ads regrouped into one destination tree -> `copy_ad_quick_copy` with `grouped_plan`.
 - Campaign/ad set -> `copy_ad_clone_structure`.
 - Repeat prior creation -> `campaigns_recreate_from_task`.
+- Template reverse-engineer, save, read-back, or reuse -> `meta-copy`; require
+  snapshot verification before QuickCreate.
 - Ask deep/fresh.
+
+## Template Routing
+
+- An explicit Meta/Facebook template list, view, reverse-engineer, save, update,
+  rename, delete, or reuse request routes directly to `meta-copy`.
+- An unqualified natural-language template list/view/delete/rename request, or
+  an unqualified `templates_*` tool request, remains in `adsagent-router` long
+  enough to ask which channel. Do not assume Meta.
+- An explicit Google Ads or TikTok template request routes to that channel's
+  specialist. Capability discovery decides support; never substitute Meta
+  template tools.
+- In Meta, list with `templates_list`, view exact state with `templates_get`,
+  delete only through `templates_delete`, and rename only through
+  `templates_update` when the live guide advertises the operation.
 
 ## Ambiguous Scope
 
@@ -32,9 +48,14 @@
 - Never read raw rows for questions or fan out across scopes/days.
 - Trust totals only when `meta.complete=true`; missing scopes are unknown, never zero.
 - On `mcp_fanout_detected`, stop the loop and use the platform batch tool.
-- Before Meta writes inspect `capabilities.delivery_mutations`; if denied follow `permission_action`, never self-elevate, then reconnect.
-- Consequential writes require prepare, sanitized summary, explicit approval, then confirm; never substitute Campaign and AdSet budget levels.
+- Before Meta delivery writes inspect `capabilities.delivery_mutations`; if denied follow `permission_action`, never self-elevate, then reconnect.
+- Consequential platform/delivery writes require prepare, sanitized summary, explicit approval, then confirm; never substitute Campaign and AdSet budget levels.
 - Meta creation uses `creation_contract_version=3`; read `adsagent://guide/creation-contract` and `adsagent://guide/name-contract`, then emit only explicit role fields. QuickCreate always sends `destination.type=web|app`.
+- A reverse-engineered template preview is unsaved. Source labels and a
+  successful template write do not prove persisted configuration; block
+  QuickCreate until the exact saved template has server-owned snapshot
+  readiness evidence. Template state writes are direct: require the exact
+  advertised tool and explicit request instead of inventing prepare/confirm.
 - Meta metadata: read `adsagent://guide/metadata-contract`; status writes use `target_configured_status`.
 - On public `invalid_fields`, correct prepare once. Never replay confirm. A strict pre-send quota defer stops the plan before later confirms; follow `adsagent-reliability`.
 - QuickCreate tokens are single-use for 15 minutes. On `confirm_token_invalid`, prepare again; never retry old confirm.

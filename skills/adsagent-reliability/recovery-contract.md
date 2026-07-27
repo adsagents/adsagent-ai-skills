@@ -43,7 +43,12 @@ For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact
 | 410 `confirm_token_invalid` | Do not retry; re-prepare, show the fresh summary, and obtain approval. |
 | `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, `operator_review_required=false` | STOP before later confirms; preserve `completed_mutations`/`not_sent_mutations`/`remaining_mutations`/`safe_resume_from`/`support_refs`; wait; re-prepare unchanged remainder; fresh approval. See [meta-quota-plan.md](meta-quota-plan.md). |
 | `no_create_permission` | Send the user to `/dashboard/assets/fb-users`, then prepare again. |
-| `adsagent_request_incomplete` + `invalid_fields` | Correct public fields and prepare once; on repeat preserve `support_ref`. |
+| Prepare call: `adsagent_request_incomplete` + `invalid_fields` | Correct public fields and prepare once; on repeat preserve any returned `support_ref`. |
+| Rejected Meta template direct write, with or without bounded public fields | Stop; show fields if returned; any later template write is a new explicit request. Preserve `support_ref` when present, report when absent, and never infer a hidden schema or replay. |
+| Indeterminate Meta template direct write without task/operation recovery | Never replay. Perform at most one exact-name template read-back when advertised; remain outcome-unknown without authoritative write-bound evidence, then hand off. |
 | `scope_unavailable` | Do not infer permissions. Discover once; retry only if still listed. Never alter permissions. |
 
-If retries fail, report the category. Sent/uncertain writes use operation recovery. On `operator_review_required`, stop and preserve `support_ref`; it is not authorization.
+If retries fail, report the category. Task/operation-backed sent or uncertain
+writes use operation recovery; indeterminate Meta template direct writes
+follow the row above. On `operator_review_required`, stop, preserve any
+returned `support_ref` and report when absent; it is not authorization.

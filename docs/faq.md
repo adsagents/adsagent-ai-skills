@@ -38,6 +38,34 @@ TikTok may independently advertise receipt-backed delivery, budget, bid, copy, s
 
 For every terminal create/copy task, the agent first checks `result.create_reconciliation.reconciled`. It uses `creative_results` to map each Ad name and available creative selection key to its created Ad ID. A failed auxiliary image upload marked `recovered_by_url_fallback` was compensated and never authorizes a retry or new task. Remaining `result.failures.items` are reported with their bounded next actions; unknown items remain operator-review only.
 
+## Can a reverse-engineered Meta template be reused immediately?
+
+No. Reverse-engineering returns an unsaved preview, and source labels or a
+successful template write do not prove that its effective configuration was
+persisted. If the live guide does not first expose snapshot-import semantics,
+a bounded public write schema, normalization/rejected-path behavior, immutable
+read-back identity, and machine-verifiable readiness fields, the agent stops
+before saving. A metadata-only payload of source references, names, tags, and
+overwrite is not a snapshot. After an accepted, explicitly requested write
+under a complete contract, the agent reads the exact template back and waits
+for the Hosted guide's machine-verifiable snapshot readiness evidence.
+Persistence evidence without fresh-read, prepare-revision, and
+confirmation-token binding remains `snapshot_persisted_unbound`, not
+`snapshot_verified`, and cannot launch.
+
+For a reverse-engineered, legacy-projected, or persistence-unknown template,
+empty Campaign/AdSet/Ad configuration, `legacy_projection`,
+`migration_state.persisted=false`, a default-only projection, or missing
+revision/readiness evidence means **saved but not launch-safe**, unless
+authoritative complete coverage marks the empty level not applicable or every
+omission runtime-required. The agent must not prepare or confirm QuickCreate,
+fill gaps with defaults, or repair the template by guessed updates. A template
+write rejected without bounded public `invalid_fields` or `required_fields`
+stops for operator review with any returned `support_ref`; when no ref is
+returned, the agent says so. Public diagnostic items are deduplicated,
+length/count bounded scalar summaries with completeness flags; raw mappings,
+arguments, payloads, and credentials are never echoed.
+
 ## Does one install cover Google Ads and TikTok?
 
 Yes. v0.7.9 is an AdsAgent tri-channel skill pack. It includes Meta skills, `google-ads-insights`, `tiktok-insights`, and the platform-neutral `agent-scheduled-tasks` guidance. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and capability-gated profile adapters.

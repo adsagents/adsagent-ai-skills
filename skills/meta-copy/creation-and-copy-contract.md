@@ -6,7 +6,7 @@
 - Multiple distinct source Ads: grouped `copy_ad_quick_copy`.
 - Campaign/AdSet: `copy_ad_clone_structure`.
 - Prior task: `campaigns_recreate_from_task`.
-- New template: `campaigns_quick_create`.
+- New campaign from a saved template: `campaigns_quick_create`.
 
 Partnership/boosted sources require `copy_mode="deep"`. Stop on `partnership_fresh_copy_unsupported`; show `source_creative_type` and `post_linkage`; do not auto-retry.
 

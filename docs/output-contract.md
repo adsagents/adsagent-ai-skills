@@ -99,6 +99,55 @@ Google Ads `as_of` is read-only ledger observation time and its current public p
 - Never enable or modify customer permissions automatically, and never replay a failed or uncertain mutation.
 - Status writes use `target_configured_status=ACTIVE|PAUSED` and optional `current_configured_status`; never send `effective_status` or a task lifecycle state as a mutation target.
 
+## Meta Template Snapshot Verification
+
+- `templates_reverse_engineer` returns an unsaved preview. Source references,
+  names, tags, `updated_at`, and a successful template write are not launch
+  evidence.
+- Before writing a reverse-engineered preview, require the live guide to
+  expose snapshot-import semantics, a bounded public write schema,
+  normalization/rejected-path behavior, immutable read-back identity, and
+  machine-verifiable readiness fields. A tool/capability alone is not enough;
+  without the complete contract, stop before the write. Source references,
+  names, tags, and `overwrite` are metadata, not a snapshot payload.
+- For reverse-engineered templates, use snapshot semantics. After one
+  accepted `templates_create` or `templates_update`, call
+  `templates_get` by exact `template_name`. Keep
+  `write_accepted_unverified` until that object is found, then
+  `saved_unverified` until the Hosted guide's machine-verifiable snapshot
+  readiness evidence is present. Persistence evidence without the fresh-read,
+  prepare-revision, and confirmation-token bindings is
+  `snapshot_persisted_unbound`, not `snapshot_verified`, and is non-launchable.
+- Empty `campaign_params`, `adset_params`, or `ad_params`;
+  `migration_state.persisted=false`; `legacy_projection`; default-only
+  projection; missing revision/readiness; or any unhandled rejected
+  launch-critical path blocks `campaigns_quick_create`, unless authoritative
+  complete coverage marks the empty level not applicable or every omission
+  runtime-required.
+- Non-empty maps, `migration_state.persisted=true`, or `updated_at` alone are
+  not proof that nested targeting, promoted object/Pixel/app and conversion
+  event, placements, creative, CTA, URL, budget, or bid survived normalization.
+- `templates_create` and `templates_update` are direct writes, not prepare. A
+  generic `adsagent_request_incomplete` without bounded public
+  `invalid_fields` or `required_fields` stops; preserve `support_ref` when
+  returned and report when absent. Never probe or replay it. Any later
+  create/update is a new explicit user request followed by another read-back.
+- Public template diagnostics contain only bounded, deduplicated scalar/string
+  summaries. Inspect their per-field and aggregate completeness flags; never
+  print raw mappings, arguments, payloads, credentials, or a truncated
+  diagnostic as complete.
+- Immediately before QuickCreate from a reverse-engineered,
+  legacy-projected, or persistence-unknown template, get the exact template
+  again. Missing, changed, or stale snapshot evidence blocks both prepare and
+  confirm; never substitute defaults or live source state.
+- A re-read or client-authored summary is not confirmation-token binding. Use
+  only the exact public binding fields named by the live guide, and keep
+  QuickCreate blocked unless prepare proves the token uses the same immutable
+  snapshot revision/digest.
+- A missing or wrong read-back is **write accepted; persistence unverified**.
+  An exact object without sufficient snapshot evidence is **saved but not
+  launch-safe**.
+
 ## Resource Rules
 
 - Start narrow: yesterday or the user-supplied date window.

@@ -11,7 +11,8 @@ Load only the matching specialized skill:
 - ambiguous or cross-channel request: stay here long enough to decompose it;
 - connection/readiness: `adsagent-setup`;
 - transport, retry, partial, or queued failure: `adsagent-reliability`;
-- Meta read: `meta-insights`; Meta create/copy/change: `meta-copy`;
+- Meta performance/inventory read: `meta-insights`; explicit Meta
+  create/copy/template list/view/save/rename/delete/change: `meta-copy`;
 - Google Ads: `google-ads-insights`; TikTok: `tiktok-insights`;
 - notification integration: `adsagent-notifications`;
 - agent-owned schedule or automation: `agent-scheduled-tasks`.
@@ -19,6 +20,8 @@ Load only the matching specialized skill:
 For an ambiguous request, discover only enough scope to ask one clarifying
 question. For a cross-channel request, execute one channel plan at a time and
 preserve each channel's native capability and evidence contract.
+An unqualified list/view/delete/rename-template request is ambiguous until the
+user names the channel.
 
 Read [routing-contract.md](routing-contract.md) only when the request remains
 ambiguous, spans channels, or needs a Meta read-versus-write decision.

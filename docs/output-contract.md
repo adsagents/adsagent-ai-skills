@@ -115,7 +115,9 @@ Google Ads `as_of` is read-only ledger observation time and its current public p
   `templates_get` by exact `template_name`. Keep
   `write_accepted_unverified` until that object is found, then
   `saved_unverified` until the Hosted guide's machine-verifiable snapshot
-  readiness evidence is present.
+  readiness evidence is present. Persistence evidence without the fresh-read,
+  prepare-revision, and confirmation-token bindings is
+  `snapshot_persisted_unbound`, not `snapshot_verified`, and is non-launchable.
 - Empty `campaign_params`, `adset_params`, or `ad_params`;
   `migration_state.persisted=false`; `legacy_projection`; default-only
   projection; missing revision/readiness; or any unhandled rejected
@@ -130,6 +132,10 @@ Google Ads `as_of` is read-only ledger observation time and its current public p
   `invalid_fields` or `required_fields` stops; preserve `support_ref` when
   returned and report when absent. Never probe or replay it. Any later
   create/update is a new explicit user request followed by another read-back.
+- Public template diagnostics contain only bounded, deduplicated scalar/string
+  summaries. Inspect their per-field and aggregate completeness flags; never
+  print raw mappings, arguments, payloads, credentials, or a truncated
+  diagnostic as complete.
 - Immediately before QuickCreate from a reverse-engineered,
   legacy-projected, or persistence-unknown template, get the exact template
   again. Missing, changed, or stale snapshot evidence blocks both prepare and

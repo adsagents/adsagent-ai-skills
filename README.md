@@ -110,7 +110,10 @@ QuickCreate stays blocked until Hosted returns machine-verifiable persistence,
 normalization, revision, rejected-path, and launch-readiness evidence. Generic
 template validation without bounded public fields stops for operator review.
 This is a client-side safety mitigation; it does not claim that Hosted
-persistence or validation has been repaired.
+persistence or validation has been repaired. Persistence-only verification is
+non-launchable until QuickCreate binding is complete, template diagnostics are
+bounded and sanitized with completeness flags, and explicit Meta template
+list/view/delete/rename requests route through `meta-copy`.
 
 The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
 

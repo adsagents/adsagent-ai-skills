@@ -49,6 +49,9 @@ before saving. A metadata-only payload of source references, names, tags, and
 overwrite is not a snapshot. After an accepted, explicitly requested write
 under a complete contract, the agent reads the exact template back and waits
 for the Hosted guide's machine-verifiable snapshot readiness evidence.
+Persistence evidence without fresh-read, prepare-revision, and
+confirmation-token binding remains `snapshot_persisted_unbound`, not
+`snapshot_verified`, and cannot launch.
 
 For a reverse-engineered, legacy-projected, or persistence-unknown template,
 empty Campaign/AdSet/Ad configuration, `legacy_projection`,
@@ -59,7 +62,9 @@ omission runtime-required. The agent must not prepare or confirm QuickCreate,
 fill gaps with defaults, or repair the template by guessed updates. A template
 write rejected without bounded public `invalid_fields` or `required_fields`
 stops for operator review with any returned `support_ref`; when no ref is
-returned, the agent says so.
+returned, the agent says so. Public diagnostic items are deduplicated,
+length/count bounded scalar summaries with completeness flags; raw mappings,
+arguments, payloads, and credentials are never echoed.
 
 ## Does one install cover Google Ads and TikTok?
 

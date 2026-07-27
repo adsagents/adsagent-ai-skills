@@ -59,7 +59,10 @@ accepted create or update, enter client state
 - update: any prior saved-state label -> `write_accepted_unverified`;
 - exact-name get finds the intended object:
   `write_accepted_unverified -> saved_unverified`; and
-- authoritative snapshot evidence: `saved_unverified -> snapshot_verified`.
+- authoritative persistence evidence:
+  `saved_unverified -> snapshot_persisted_unbound`; and
+- fresh-read, prepare-revision, and confirmation-token binding:
+  `snapshot_persisted_unbound -> snapshot_verified`.
 
 After one write, call `templates_get` by exact `template_name`. The read-back is
 verified only when the server-advertised snapshot evidence:
@@ -87,6 +90,21 @@ exists but its snapshot readiness is missing, stale, or mismatched, report
 **saved but not launch-safe**. Do not auto-update, delete, recreate, overwrite,
 or silently substitute defaults or the current live source.
 
+## Template Lifecycle Routing
+
+For an explicit Meta request, use `templates_list` to list saved templates and
+`templates_get` to view one exact template. Both are reads under `mcp.read`.
+Use `templates_delete` only under `mcp.templates.write` when the user explicitly
+requests deletion of the exact named template; never infer deletion from a
+cleanup request. Rename is one `templates_update` direct state write using only
+the exact public fields advertised by the live guide, followed by exact-name
+read-back. Never implement rename as delete-and-recreate.
+
+If the user says only list/view/delete/rename "template" without naming Meta,
+Facebook, Google Ads, or TikTok, return to `adsagent-router` for one channel
+clarification. Explicit Google Ads or TikTok requests stay with their native
+specialist and capability profile; never call Meta template tools for them.
+
 ## Validation And QuickCreate
 
 `templates_create` and `templates_update` are direct AdsAgent-state writes, not
@@ -96,9 +114,17 @@ prepare calls. On `code=adsagent_request_incomplete` (including
 `support_ref`; when it is absent, report that none was returned. Do not probe
 the hidden schema by deleting fields or replaying the write.
 
-Even when bounded public fields are returned, show the proposed correction.
-Any later create or update is a new explicit user request, not an automatic
-retry, and it requires another exact-name read-back.
+Public template diagnostics are summaries, never raw mappings, arguments,
+payloads, or credentials. Preserve only bounded scalar/string
+`invalid_fields`, `required_fields`, and a safe scalar `support_ref`; deduplicate
+items and honor `invalid_fields_complete`, `required_fields_complete`,
+`support_ref_complete`, and aggregate `diagnostics_complete`. A false
+completeness flag means the public diagnostic was truncated or sanitized and
+must not be treated as the complete hidden schema.
+
+Even when bounded complete public fields are returned, show the proposed
+correction. Any later create or update is a new explicit user request, not an
+automatic retry, and it requires another exact-name read-back.
 
 An indeterminate create/update result enters agent-local
 `write_outcome_unknown`. Never replay it. Perform at most one exact-name
@@ -114,6 +140,9 @@ token to prove binding to the same immutable snapshot revision/digest, and show
 that identity, configuration coverage, and runtime-required inputs in the
 approval summary. A client re-read or client-added summary echo is not token
 binding. Missing or changed evidence blocks both prepare and confirm.
+Persistence verification without all three binding checks is agent-local state
+`snapshot_persisted_unbound`, never `snapshot_verified`, and remains
+non-launchable.
 
 This Skill guardrail cannot repair or attest persistence. Hosted must reject a
 partial snapshot instead of returning success, return bounded actionable

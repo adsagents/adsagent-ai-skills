@@ -184,7 +184,9 @@ write_accepted_unverified until the exact template_name is found, then
 saved_unverified until the Hosted template guide returns machine-verifiable
 snapshot readiness for the write-bound immutable revision/digest and accounts
 for campaign_params, adset_params, ad_params, normalization, and an explicitly
-complete rejected-path report.
+complete rejected-path report. If persistence is verified but the fresh-read,
+prepare-revision, or confirmation-token binding is missing, use
+snapshot_persisted_unbound, never snapshot_verified, and do not launch.
 
 If exact read-back is missing or wrong, report "write accepted; persistence
 unverified." If the intended object exists but its config maps are empty
@@ -196,6 +198,15 @@ do not call campaigns_quick_create. A response with
 code=adsagent_request_incomplete and category=template_request_incomplete but
 without public invalid_fields or required_fields is an operator handoff, not
 permission to guess fields, overwrite, or retry.
+```
+
+```text
+List or view my saved Meta Ads templates with templates_list or templates_get.
+Delete an exact named Meta template only when I explicitly request it, using
+templates_delete. Rename an exact Meta template through templates_update and
+read the new exact name back; never delete and recreate it. If I do not name a
+channel, ask whether I mean Meta, Google Ads, or TikTok before choosing a
+specialized skill or tool.
 ```
 
 ## Output Discipline

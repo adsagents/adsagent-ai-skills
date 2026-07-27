@@ -24,5 +24,6 @@ reconciliation, or failure recovery. For a strict pre-send quota defer, also
 read [meta-quota-plan.md](../adsagent-reliability/meta-quota-plan.md).
 
 Read [template-persistence-contract.md](template-persistence-contract.md) only
-for template reverse-engineering, create/update/read-back, or QuickCreate from
-a reverse-engineered, legacy-projected, or persistence-unknown template.
+for template list/view, reverse-engineering, create/update/rename/delete,
+read-back, or QuickCreate from a reverse-engineered, legacy-projected, or
+persistence-unknown template.

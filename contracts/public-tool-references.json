@@ -53,11 +53,19 @@
           "required_capability": "mcp.templates.write"
         },
         {
+          "name": "templates_list",
+          "required_capability": "mcp.read"
+        },
+        {
           "name": "templates_get",
           "required_capability": "mcp.read"
         },
         {
           "name": "templates_update",
+          "required_capability": "mcp.templates.write"
+        },
+        {
+          "name": "templates_delete",
           "required_capability": "mcp.templates.write"
         },
         {

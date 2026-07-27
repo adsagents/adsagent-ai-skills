@@ -20,6 +20,20 @@
   snapshot verification before QuickCreate.
 - Ask deep/fresh.
 
+## Template Routing
+
+- An explicit Meta/Facebook template list, view, reverse-engineer, save, update,
+  rename, delete, or reuse request routes directly to `meta-copy`.
+- An unqualified natural-language template list/view/delete/rename request, or
+  an unqualified `templates_*` tool request, remains in `adsagent-router` long
+  enough to ask which channel. Do not assume Meta.
+- An explicit Google Ads or TikTok template request routes to that channel's
+  specialist. Capability discovery decides support; never substitute Meta
+  template tools.
+- In Meta, list with `templates_list`, view exact state with `templates_get`,
+  delete only through `templates_delete`, and rename only through
+  `templates_update` when the live guide advertises the operation.
+
 ## Ambiguous Scope
 
 1. Read setup.

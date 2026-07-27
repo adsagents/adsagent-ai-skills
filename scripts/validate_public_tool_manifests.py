@@ -61,6 +61,7 @@ NON_TOOL_IDENTIFIERS = {
     "insights_query_contract",
     "optimization_goal",
     "support_ref",
+    "support_ref_complete",
     "support_refs",
     "support_reporting",
 }

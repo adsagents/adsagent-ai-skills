@@ -20,6 +20,46 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "meta_template_reverse_save",
+    "prompt": "Use AdsAgent to reverse-engineer this Meta AdSet and save it as a reusable template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_readback",
+    "prompt": "Read back this saved Meta Ads template before reuse.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "ambiguous_template_literal_tool",
+    "prompt": "Call templates_reverse_engineer before saving.",
+    "expected": ["adsagent-router"]
+  },
+  {
+    "id": "meta_template_literal_tool_prefix",
+    "prompt": "Call Meta templates_reverse_engineer before saving.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_literal_tool_suffix",
+    "prompt": "Call templates_get on Meta before reuse.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_save_report_is_read",
+    "prompt": "Use AdsAgent to show Meta Ads spend and save the report.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_usage_is_read",
+    "prompt": "Summarize Meta Ads template usage last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_reuse_filter_is_read",
+    "prompt": "Reuse last week's ROAS filters for Meta Ads insights.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "google_insights",
     "prompt": "Use AdsAgent to summarize Google Ads PMax spend yesterday.",
     "expected": ["google-ads-insights"]

@@ -51,8 +51,8 @@ def test_append_adset_guidance_is_ads_only_and_never_auto_confirms():
     assert "replay a confirm token" in text
 
 
-def test_release_version_is_0726():
-    assert _read("VERSION").strip() == "0.7.39"
-    assert '"version": "0.7.39"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.39"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.39`" in _read("README.md")
+def test_release_version_is_current():
+    assert _read("VERSION").strip() == "0.7.40"
+    assert '"version": "0.7.40"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.40"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.40`" in _read("README.md")

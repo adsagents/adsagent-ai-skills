@@ -40,11 +40,11 @@ Before changing a Meta budget, inspect capabilities.delivery_mutations. If denie
 ```
 
 ```text
-If a Meta require_fresh read queues work, poll tasks_get_status with response_mode=compact. On a complete terminal result, use that result directly and never rerun page 1. For later pages preserve every filter and pin min_as_of to the first-page source_observed_at; use the earliest source anchor for multiple scopes.
+If a Meta require_fresh read queues work, poll tasks_get_status with response_mode=compact. On a complete terminal result, use that result directly and do not rerun page 1 merely to continue. For later pages preserve every filter and pin min_as_of to the first-page source_observed_at; use the earliest source anchor for multiple scopes.
 ```
 
 ```text
-For an exhaustive Meta result, require a complete first page. Continue page 2 and later serially with consistency=cached, query_contract_version=1, require_complete_range=true, the identical scope/window/timezone/grouping/filters/sort/page_size, and the first-page min_as_of anchor. Never rerun page 1 or start a refresh during continuation.
+For an exhaustive Meta result, require a complete first page. Continue page 2 and later serially with consistency=cached, query_contract_version=1, require_complete_range=true, the identical scope/window/timezone/grouping/filters/sort/page_size, and the first-page min_as_of anchor. Do not rerun page 1 merely to continue or start a refresh during continuation. If the server rejects the continuation anchor, discard all partial rows and restart page 1 serially with the original query.
 ```
 
 ```text

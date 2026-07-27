@@ -11,13 +11,13 @@
       "tool_count": 82
     },
     "meta": {
-      "guide_version": "2026-07-27.1",
+      "guide_version": "2026-07-27.4",
       "manifest_version": 1,
       "service": "meta",
-      "sha256": "e152b02590e364f9b89646c48fbd3b879ef902aa7da0aaa2d0af77a812ba8c66",
+      "sha256": "68ea7e833ca226629ec5b00d8e9a97b2019a3dbc70542c9410f996ba4319404a",
       "snapshot_path": "contracts/manifests/meta.json",
       "source_path": "docs/mcp/manifests/meta-tools.json",
-      "source_revision": "a259e2a33ad385b9c797374366452f85b23f7cb2",
+      "source_revision": "5f139201a2e8aab3857caf8c0e007060fd6d0592",
       "tool_count": 110
     },
     "tiktok": {

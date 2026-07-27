@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.38"
+VERSION = "0.7.39"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -83,8 +83,10 @@ REQUIRED_REPO_TERMS = [
     "preserve each `ad_id`",
     "data.meta.has_more=true",
     "result.meta.source_observed_at",
-    "result.query_contract.coverage.source_observed_at",
-    "never rerun page 1",
+    "query_contract.coverage.source_observed_at",
+    "data.items[].result",
+    "meta.inventory_anchor",
+    "Do not rerun page 1 merely to continue",
     "Exact Ad-name deduplication",
     "language classification",
     "configured_status",
@@ -245,8 +247,10 @@ META_TERMS = [
     "preserve each `ad_id`",
     "data.meta.has_more=true",
     "result.meta.source_observed_at",
-    "result.query_contract.coverage.source_observed_at",
-    "never rerun page 1",
+    "query_contract.coverage.source_observed_at",
+    "data.items[].result",
+    "meta.inventory_anchor",
+    "Do not rerun page 1 merely to continue",
     "Exact Ad-name deduplication",
     "language classification",
     "business grouping",

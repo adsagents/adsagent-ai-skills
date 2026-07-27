@@ -1,6 +1,6 @@
 {
   "digest_algorithm": "sha256",
-  "guide_version": "2026-07-27.1",
+  "guide_version": "2026-07-27.4",
   "manifest_resource": "adsagent://guide/tool-manifest",
   "manifest_version": 1,
   "platform": "meta",
@@ -426,7 +426,7 @@
       "guide_resource": "adsagent://guide/catalog/insights",
       "name": "insights_query_consistent",
       "required_capability": "mcp.read",
-      "schema_digest_sha256": "d6326c627221d386fe2e5c57dc445911be095bef0ae58deb4e10ecac1c879c49"
+      "schema_digest_sha256": "4524b5c6dc64d8f47fb675d97ccede2cfcc9221037b53edba4338f81d0d7b38d"
     },
     {
       "access": "read",

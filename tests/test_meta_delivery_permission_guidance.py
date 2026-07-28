@@ -92,3 +92,23 @@ def test_known_entity_preflight_never_scans_historical_insights():
     assert "`read_query_too_large`" in recovery_text
     assert "is not an" in recovery_text
     assert "operator incident" in recovery_text
+
+
+def test_meta_delivery_write_matrix_stops_on_unsupported_object_fields():
+    text = " ".join(
+        _read("skills/meta-copy/creation-and-copy-contract.md").split()
+    )
+
+    for required in (
+        "Campaign status: `overview_update_campaign_status`",
+        "Campaign budget: `overview_update_campaign_budget`",
+        "Ad Set status: `overview_update_adset_status`",
+        "Ad Set budget: `overview_update_adset_budget`",
+        "Ad Set bid: `overview_update_adset_bid`",
+        "Ad status: `overview_update_ad_status`",
+        "Campaign bid is unsupported",
+        "Ad budget and Ad bid are unsupported",
+        "`overview_update_confirm`",
+        "`overview_update_campaign_budget_confirm`",
+    ):
+        assert required in text

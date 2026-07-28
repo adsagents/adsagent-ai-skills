@@ -97,7 +97,9 @@ _META_TEMPLATE_MUTATION = re.compile(
     re.IGNORECASE,
 )
 _META_TEMPLATE_EXPLICIT_LIFECYCLE = re.compile(
-    r"\b(?:list|browse)\b.{0,80}\btemplates\b|"
+    r"\b(?:list|browse|open)\b.{0,80}\btemplates?\b|"
+    r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back)\b"
+    r".{0,80}\btemplates?\b|"
     r"\b(?:list|browse|open|view|get|show|create|save|update|rename|"
     r"delete|remove)\b"
     r".{0,80}\btemplates?\b.{0,80}\b(?:named|called|tagged)\b|"

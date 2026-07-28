@@ -31,6 +31,18 @@ defaults. Never copy opaque preview maps wholesale into a write. Never send
 source references alone unless the guide explicitly defines a server-owned
 snapshot import with the same readiness evidence.
 
+The current Hosted contract distinguishes two inputs:
+
+- a reverse-engineered import sends `source_adset_id` with optional
+  `source_account_id` and no configuration maps; Hosted re-reads the source
+  before persistence; and
+- a manual template sends all three complete configuration maps. It may retain
+  `source_account_id` without `source_adset_id` as an account binding, not
+  reverse-engineered source provenance.
+
+Never combine a partial configuration map with either source mode. A manual
+account binding does not prove that Meta source settings were read or retained.
+
 ## Write And Read-Back
 
 Before writing a reverse-engineered preview, require the live guide to
@@ -92,8 +104,11 @@ or silently substitute defaults or the current live source.
 
 ## Template Lifecycle Routing
 
-For an explicit Meta request, use `templates_list` to list saved templates and
-`templates_get` to view one exact template. Both are reads under `mcp.read`.
+For an explicit Meta request, use `templates_list` only as bounded screening,
+then use exact-name `templates_get` before QuickCreate or any conclusion about
+snapshot readiness. A list row with `migration_state.persisted=false` is still
+discoverable, but the bounded summary did not certify its stored snapshot.
+Both reads are under `mcp.read`.
 Use `templates_delete` only under `mcp.templates.write` when the user explicitly
 requests deletion of the exact named template; never infer deletion from a
 cleanup request. Rename is one `templates_update` direct state write using only

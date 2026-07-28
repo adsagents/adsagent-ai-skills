@@ -201,12 +201,14 @@ _META_TEMPLATE_ANALYTICS_RELATION_SUFFIX = re.compile(
     r"结果|表格|摘要|分析|洞察|指标)",
     re.IGNORECASE,
 )
-_META_TEMPLATE_NON_ANALYTICS_MODIFIER_SUFFIX = re.compile(
-    r"\b(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
-    r"insights?|metrics?|trend)\b.{0,30}\b"
-    r"(?:settings?|testing|configuration|options?|rules?|setup)\b|"
-    r"(?:使用|表现|成效|消耗|花费|趋势|洞察|指标).{0,15}"
-    r"(?:设置|测试|配置|选项|规则)",
+_META_TEMPLATE_TERMINAL_ANALYTICS_SUFFIX = re.compile(
+    r"^\s+(?:'s\s+)?"
+    r"(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend)"
+    r"(?:\s+(?:(?:and|&)\s+)?(?:usage|performance|spend|roas|roi|"
+    r"cpa|cpc|cpm|ctr|insights?|metrics?|trend))*\s*$|"
+    r"^\s*(?:使用|表现|成效|消耗|花费|趋势|洞察|指标)"
+    r"(?:和|与|及)?(?:使用|表现|成效|消耗|花费|趋势|洞察|指标)*\s*$",
     re.IGNORECASE,
 )
 _META_TEMPLATE_GENERIC_ANALYTICS_SUFFIX = re.compile(
@@ -363,6 +365,7 @@ def _direct_template_lifecycle_objects(
             post_qualified = (
                 _META_TEMPLATE_POST_QUALIFIER.search(qualifier_suffix)
                 and not _NON_AD_TEMPLATE_MODIFIER.search(qualifier_prefix)
+                and not _NON_AD_TEMPLATE_MODIFIER.search(qualifier_suffix)
             )
             if (
                 _META_NAME.search(qualifier_prefix)
@@ -420,9 +423,7 @@ def _has_template_dimension_analytics(
         ):
             suffix_analytics = True
         if (
-            _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
-            and not _META_TEMPLATE_ANALYTICS_CONTAINER.search(suffix)
-            and not _META_TEMPLATE_NON_ANALYTICS_MODIFIER_SUFFIX.search(suffix)
+            _META_TEMPLATE_TERMINAL_ANALYTICS_SUFFIX.search(suffix)
             and not governed_by_unambiguous_verb
         ):
             suffix_analytics = True

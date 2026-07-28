@@ -715,6 +715,21 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "meta_template_spend_tracking_is_lifecycle",
+    "prompt": "Open my Meta template for spend tracking.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_spend_monitoring_is_lifecycle",
+    "prompt": "Open my Meta template for spend monitoring.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "post_nominal_newsletter_template_does_not_capture_meta_read",
+    "prompt": "Delete the template for our newsletter in Meta, then show Meta Ads performance.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

@@ -645,6 +645,36 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "report_detailing_meta_templates_is_insights",
+    "prompt": "Open a report detailing Meta templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "report_listing_facebook_templates_is_insights",
+    "prompt": "Open a report listing Facebook templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_data_processing_template_is_direct_lifecycle",
+    "prompt": "Delete my Meta data processing template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_report_scheduling_template_is_direct_lifecycle",
+    "prompt": "Open my Meta report scheduling template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "facebook_ads_leading_qualifier_template_tool_is_lifecycle",
+    "prompt": "For Facebook Ads: run templates_list.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_ads_leading_qualifier_template_tool_is_lifecycle",
+    "prompt": "On Meta Ads, run templates_get.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

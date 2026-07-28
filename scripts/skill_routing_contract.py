@@ -148,7 +148,8 @@ _NON_AD_TEMPLATE_MODIFIER = re.compile(
 )
 _META_TEMPLATE_LEADING_QUALIFIER = re.compile(
     r"(?:(?:in|on|for|within|using)\s+)?"
-    r"(?:meta|facebook|fb|脸书)\s*[,:\-]?\s*$",
+    r"(?:meta|facebook|fb)(?:\s+ads?)?\s*[,:\-]?\s*$|"
+    r"脸书(?:广告)?\s*[,:\-]?\s*$",
     re.IGNORECASE,
 )
 _META_TEMPLATE_CONFIGURATION_SUFFIX = re.compile(
@@ -158,13 +159,12 @@ _META_TEMPLATE_CONFIGURATION_SUFFIX = re.compile(
 )
 _META_TEMPLATE_RELATIVE_MARKER = re.compile(
     r"\b(?:that|which|whose|where|summari[sz]ing|visuali[sz]ing|showing|"
-    r"covering|comparing|containing|matching|grouping|filtering|"
-    r"analy[sz]ing|describing|reporting|aggregating|segmenting)\b|"
+    r"covering|comparing|containing|matching|grouping|filtering|listing|"
+    r"detailing|presenting|displaying|enumerating|itemi[sz]ing|charting|"
+    r"plotting|ranking|sorting|outlining|measuring|tracking|examining|"
+    r"analy[sz]ing|describing|reporting|aggregating|segmenting|"
+    r"breaking\s+down)\b|"
     r"用于|显示|描述|汇总|总结|比较|分析",
-    re.IGNORECASE,
-)
-_META_TEMPLATE_RELATION_GERUND = re.compile(
-    r"\b[a-z][a-z-]{2,}ing\b",
     re.IGNORECASE,
 )
 _META_TEMPLATE_GROUPING_RELATION = re.compile(
@@ -381,14 +381,7 @@ def _has_template_dimension_analytics(
             analytics_prefix
         ):
             relation = analytics_prefix[container.end():]
-            qualified_gerund_relation = (
-                _META_NAME.search(analytics_prefix[:container.start()])
-                and _META_TEMPLATE_RELATION_GERUND.search(relation)
-            )
-            if (
-                _META_TEMPLATE_RELATIVE_MARKER.search(relation)
-                or qualified_gerund_relation
-            ):
+            if _META_TEMPLATE_RELATIVE_MARKER.search(relation):
                 indirect_container = True
         if (
             _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)

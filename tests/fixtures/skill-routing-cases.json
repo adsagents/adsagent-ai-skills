@@ -890,6 +890,66 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "meta_template_comparison_noun_is_insights",
+    "prompt": "Show a Meta comparison of templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "facebook_template_comparisons_plural_are_insights",
+    "prompt": "Show comparisons of Facebook templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_breakdown_noun_is_insights",
+    "prompt": "Show a Meta breakdown by template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_benchmark_noun_is_insights",
+    "prompt": "Show a Meta benchmark across templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_metric_comparison_suffix_is_insights",
+    "prompt": "Show Meta template performance comparison.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_comparison_zh_is_insights",
+    "prompt": "显示 Meta 模板表现对比。",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_named_comparison_report_is_lifecycle",
+    "prompt": "Open the Meta template named Comparison Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_title_comparison_report_is_lifecycle",
+    "prompt": "Open my Meta template Comparison Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_title_comparison_report_with_window_is_insights",
+    "prompt": "Show Meta template Comparison Report this month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_comparison_settings_are_lifecycle",
+    "prompt": "Update my Meta template comparison settings.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "google_template_comparison_stays_on_google",
+    "prompt": "Compare Google Ads templates.",
+    "expected": ["google-ads-insights"]
+  },
+  {
+    "id": "tiktok_template_comparison_stays_on_tiktok",
+    "prompt": "Compare TikTok Ads templates.",
+    "expected": ["tiktok-insights"]
+  },
+  {
     "id": "meta_reuse_filter_is_read",
     "prompt": "Reuse last week's ROAS filters for Meta Ads insights.",
     "expected": ["meta-insights"]

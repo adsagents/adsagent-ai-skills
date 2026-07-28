@@ -80,6 +80,11 @@ _META_TEMPLATE_ANALYTICS_SIGNAL = re.compile(
     r"消耗|花费|表现|成效|趋势|报告|洞察|看板|图表|分析",
     re.IGNORECASE,
 )
+_META_TEMPLATE_ANALYTICS_NOUN = re.compile(
+    r"\b(?:comparisons?|breakdowns?|benchmarks?)\b|"
+    r"比较|对比|拆分|基准",
+    re.IGNORECASE,
+)
 _META_TEMPLATE_ANALYTICS_WINDOW = re.compile(
     r"\b(?:today|yesterday|"
     r"(?:this|last|previous)\s+(?:day|week|month|quarter|year)|"
@@ -124,10 +129,11 @@ _META_TEMPLATE_RELATIONAL_CONTAINER = re.compile(
     re.IGNORECASE,
 )
 _META_TEMPLATE_DIRECT_OBJECT_BLOCKER = re.compile(
-    r"\b(?:about|by|for|from|on|of|with|under|showing|covering|comparing|"
-    r"containing|using|matching|based\s+on|grouped\s+by|filtered\s+by|"
-    r"broken\s+down\s+by|linked\s+to|associated\s+with)\b|"
-    r"关于|对于|按照|基于|显示|包含|关联",
+    r"\b(?:about|by|for|from|on|of|with|under|across|between|versus|"
+    r"showing|covering|comparing|containing|using|matching|based\s+on|"
+    r"grouped\s+by|filtered\s+by|broken\s+down\s+by|linked\s+to|"
+    r"associated\s+with)\b|"
+    r"关于|对于|按照|基于|显示|包含|关联|跨",
     re.IGNORECASE,
 )
 _META_TEMPLATE_POSSESSIVE_OF = re.compile(
@@ -208,6 +214,17 @@ _META_TEMPLATE_ANALYTICS_RELATION_SUFFIX = re.compile(
     r"^\s*(?:使用|表现|成效|消耗|花费|趋势|洞察|指标).{0,30}"
     r"(?:按|按照|每).{0,20}(?:报告|看板|图表|广告系列|广告组|广告|数据|"
     r"结果|表格|摘要|分析|洞察|指标)",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_ANALYTICS_NOUN_SUFFIX = re.compile(
+    r"^\s+(?:(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend)\s+)?"
+    r"(?:comparisons?|breakdowns?|benchmarks?)"
+    r"(?:\s+(?:reports?|dashboards?|charts?|analysis))?"
+    r"(?:\s+(?:by|per|across|between|over|of|for|versus)\b"
+    r"[^.!?;:,\n]{0,60})?\s*$|"
+    r"^\s*(?:(?:使用|表现|成效|消耗|花费|趋势|洞察|指标)\s*)?"
+    r"(?:比较|对比|拆分|基准)(?:报告|看板|图表|分析)?\s*$",
     re.IGNORECASE,
 )
 _META_TEMPLATE_TERMINAL_ANALYTICS_SUFFIX = re.compile(
@@ -324,6 +341,7 @@ def _has_direct_object_boundary(text: str) -> bool:
         prior_object = text[:coordinator.start()]
         if (
             _META_TEMPLATE_ANALYTICS_SIGNAL.search(prior_object)
+            or _META_TEMPLATE_ANALYTICS_NOUN.search(prior_object)
             or _META_TEMPLATE_ANALYTICS_CONTAINER.search(prior_object)
         ):
             return True
@@ -420,12 +438,14 @@ def _has_template_dimension_analytics(
             and _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
         ):
             indirect_container = True
-        for container in _META_TEMPLATE_RELATIONAL_CONTAINER.finditer(
-            analytics_prefix
+        for container_pattern in (
+            _META_TEMPLATE_RELATIONAL_CONTAINER,
+            _META_TEMPLATE_ANALYTICS_NOUN,
         ):
-            relation = analytics_prefix[container.end():]
-            if _META_TEMPLATE_RELATIVE_MARKER.search(relation):
-                indirect_container = True
+            for container in container_pattern.finditer(analytics_prefix):
+                relation = analytics_prefix[container.end():]
+                if _META_TEMPLATE_RELATIVE_MARKER.search(relation):
+                    indirect_container = True
         if (
             _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
             and _META_TEMPLATE_ANALYTICS_WINDOW.search(suffix)
@@ -441,6 +461,22 @@ def _has_template_dimension_analytics(
         if _META_TEMPLATE_ANALYTICS_VISUAL_SUFFIX.search(suffix):
             suffix_analytics = True
         if _META_TEMPLATE_ANALYTICS_RELATION_SUFFIX.search(suffix):
+            suffix_analytics = True
+        noun_with_window = (
+            _META_TEMPLATE_ANALYTICS_NOUN.search(suffix)
+            and _META_TEMPLATE_ANALYTICS_WINDOW.search(suffix)
+        )
+        title_case_noun = (
+            _META_TEMPLATE_TITLE_CASE_SUFFIX.search(suffix)
+            and not noun_with_window
+        )
+        if (
+            _META_TEMPLATE_ANALYTICS_NOUN_SUFFIX.search(suffix)
+            and not governed_by_unambiguous_verb
+            and not title_case_noun
+        ):
+            suffix_analytics = True
+        if noun_with_window:
             suffix_analytics = True
         if _META_TEMPLATE_GENERIC_ANALYTICS_SUFFIX.search(suffix):
             suffix_analytics = True
@@ -469,6 +505,7 @@ def _has_direct_template_analytics_object(
             or _META_TEMPLATE_ANALYTICS_VISUAL_SUFFIX.search(suffix)
             or _META_TEMPLATE_GENERIC_ANALYTICS_SUFFIX.search(suffix)
             or _META_TEMPLATE_ANALYTICS_RELATION_SUFFIX.search(suffix)
+            or _META_TEMPLATE_ANALYTICS_NOUN_SUFFIX.search(suffix)
         ):
             return True
     return False
@@ -544,6 +581,10 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
     ):
         return ("adsagent-router",)
     if named_channels == ["meta"]:
+        template_analytics = bool(
+            _META_TEMPLATE_ANALYTICS.search(prompt)
+            or _META_TEMPLATE_ANALYTICS_NOUN.search(prompt)
+        )
         direct_templates = _direct_template_lifecycle_objects(
             prompt,
             _META_TEMPLATE_LIFECYCLE_VERB,
@@ -618,14 +659,14 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             return ("meta-copy",)
         if (
             _META_TEMPLATE_TOPIC.search(prompt)
-            and _META_TEMPLATE_ANALYTICS.search(prompt)
+            and template_analytics
         ):
             return ("meta-insights",)
         if (
             _META_WRITE.search(prompt)
             or (
                 _META_TEMPLATE_OPERATION.search(prompt)
-                and not _META_TEMPLATE_ANALYTICS.search(prompt)
+                and not template_analytics
             )
         ):
             return ("meta-copy",)

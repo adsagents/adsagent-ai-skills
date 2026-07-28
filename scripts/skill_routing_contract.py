@@ -96,10 +96,11 @@ _META_TEMPLATE_MUTATION = re.compile(
     r"模板(?:进行)?(?:更新|修改|重命名|删除|复制|复用|投放)",
     re.IGNORECASE,
 )
-_META_TEMPLATE_ANALYTICS_CONTAINER = re.compile(
-    r"\b(?:open|browse|view|get|show|read[- ]?back)\b"
-    r".{0,60}\b(?:report|dashboard|chart|analysis|insights?|metrics?)\b"
-    r"\s+(?:showing|about|for|on|of|with|covering|comparing|containing)\b"
+_META_TEMPLATE_INDIRECT_REFERENCE = re.compile(
+    r"\b(?:list|open|browse|view|get|show|read[- ]?back)\b"
+    r".{0,80}?\b(?:about|by|for|from|on|of|with|under|showing|covering|"
+    r"comparing|containing|using|matching|based\s+on|grouped\s+by|"
+    r"filtered\s+by|broken\s+down\s+by|linked\s+to|associated\s+with)\b"
     r".{0,80}\btemplates?\b",
     re.IGNORECASE,
 )
@@ -152,12 +153,12 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
     if len(named_channels) > 1:
         return ("adsagent-router",)
     if named_channels == ["meta"]:
-        analytics_container = bool(
-            _META_TEMPLATE_ANALYTICS_CONTAINER.search(prompt)
+        indirect_template_reference = bool(
+            _META_TEMPLATE_INDIRECT_REFERENCE.search(prompt)
         )
         explicit_template_lifecycle = bool(
             _META_TEMPLATE_EXPLICIT_LIFECYCLE.search(prompt)
-        ) and not analytics_container
+        ) and not indirect_template_reference
         if _META_TEMPLATE_MUTATION.search(prompt):
             return ("meta-copy",)
         if (
@@ -174,7 +175,7 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             or explicit_template_lifecycle
             or (
                 _META_TEMPLATE_TITLE_OBJECT.search(prompt)
-                and not analytics_container
+                and not indirect_template_reference
             )
         ):
             return ("meta-copy",)

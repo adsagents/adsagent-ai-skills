@@ -200,6 +200,16 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "meta_campaigns_by_template_performance_list_is_insights",
+    "prompt": "List campaigns by Meta template performance last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaigns_by_template_roas_browse_is_insights",
+    "prompt": "Browse campaigns by Meta template ROAS this month.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

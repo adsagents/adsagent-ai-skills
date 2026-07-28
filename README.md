@@ -104,9 +104,10 @@ inventory generation.
 
 Version 0.7.45 allows arbitrary natural-language modifiers on direct Meta
 template objects while keeping reports, dashboards, charts, and analyses that
-describe template performance with `meta-insights`. The router recognizes the
-analytics container relationship instead of maintaining an adjective
-whitelist.
+describe template performance with `meta-insights`. The router distinguishes a
+direct template object from an indirect template dimension introduced by
+relations such as `by`, `about`, `showing`, or `using`, instead of maintaining
+adjective or entity-name whitelists.
 
 Version 0.7.44 restricts Meta template lifecycle routing to requests whose
 verb operates directly on the template object, so analytics reports that

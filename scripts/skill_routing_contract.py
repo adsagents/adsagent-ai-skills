@@ -162,6 +162,7 @@ _META_TEMPLATE_RELATIVE_MARKER = re.compile(
     r"covering|comparing|containing|matching|grouping|filtering|listing|"
     r"detailing|presenting|displaying|enumerating|itemi[sz]ing|charting|"
     r"plotting|ranking|sorting|outlining|measuring|tracking|examining|"
+    r"including|featuring|comprising|incorporating|highlighting|"
     r"analy[sz]ing|describing|reporting|aggregating|segmenting|"
     r"breaking\s+down)\b|"
     r"用于|显示|描述|汇总|总结|比较|分析",
@@ -478,7 +479,11 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
         return ("adsagent-setup",)
     if len(named_channels) > 1:
         return ("adsagent-router",)
-    if template_tool and not meta_qualified_template_tool:
+    if (
+        template_tool
+        and not meta_qualified_template_tool
+        and named_channels in ([], ["meta"])
+    ):
         return ("adsagent-router",)
     if named_channels == ["meta"]:
         direct_templates = _direct_template_lifecycle_objects(

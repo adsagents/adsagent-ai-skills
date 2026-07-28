@@ -675,6 +675,26 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "google_template_tool_reaches_google_specialist",
+    "prompt": "For Google Ads, run templates_list.",
+    "expected": ["google-ads-insights"]
+  },
+  {
+    "id": "tiktok_template_tool_reaches_tiktok_specialist",
+    "prompt": "For TikTok Ads, run templates_list.",
+    "expected": ["tiktok-insights"]
+  },
+  {
+    "id": "report_including_meta_templates_is_insights",
+    "prompt": "Open a report including Meta templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "dashboard_featuring_meta_templates_is_insights",
+    "prompt": "Browse a dashboard featuring Meta templates.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

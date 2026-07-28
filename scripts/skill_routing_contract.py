@@ -72,6 +72,12 @@ _META_TEMPLATE_ANALYTICS = re.compile(
     r"消耗|花费|表现|成效|趋势|报告|洞察|上周|上月|去年",
     re.IGNORECASE,
 )
+_META_TEMPLATE_ANALYTICS_SIGNAL = re.compile(
+    r"\b(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend|report|dashboard|chart|analysis)\b|"
+    r"消耗|花费|表现|成效|趋势|报告|洞察|看板|图表|分析",
+    re.IGNORECASE,
+)
 _META_TEMPLATE_ANALYTICS_WINDOW = re.compile(
     r"\b(?:today|yesterday|"
     r"(?:this|last|previous)\s+(?:day|week|month|quarter|year)|"
@@ -85,6 +91,11 @@ _META_TEMPLATE_ANALYTICS_WINDOW = re.compile(
 )
 _META_TEMPLATE_TOPIC = re.compile(
     r"\btemplates?\b|模板",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_NAMED_OBJECT = re.compile(
+    r"\btemplates?\b.{0,60}\b(?:named|called|tagged)\b|"
+    r"模板.{0,40}(?:名为|名称|标签)",
     re.IGNORECASE,
 )
 _META_TEMPLATE_MUTATION = re.compile(
@@ -156,6 +167,9 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
         indirect_template_reference = bool(
             _META_TEMPLATE_INDIRECT_REFERENCE.search(prompt)
         )
+        named_template_object = bool(
+            _META_TEMPLATE_NAMED_OBJECT.search(prompt)
+        )
         explicit_template_lifecycle = bool(
             _META_TEMPLATE_EXPLICIT_LIFECYCLE.search(prompt)
         ) and not indirect_template_reference
@@ -163,11 +177,10 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             return ("meta-copy",)
         if (
             not template_tool
-            and not explicit_template_lifecycle
+            and not named_template_object
             and _META_TEMPLATE_TOPIC.search(prompt)
-            and _META_TEMPLATE_ANALYTICS.search(prompt)
+            and _META_TEMPLATE_ANALYTICS_SIGNAL.search(prompt)
             and _META_TEMPLATE_ANALYTICS_WINDOW.search(prompt)
-            and not _META_TEMPLATE_MUTATION.search(prompt)
         ):
             return ("meta-insights",)
         if (

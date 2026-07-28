@@ -288,6 +288,10 @@ def _has_template_dimension_analytics(
     indirect_container = False
     suffix_analytics = False
     lifecycle_verbs = tuple(_META_TEMPLATE_LIFECYCLE_VERB.finditer(prompt))
+    unambiguous_verbs = {
+        verb.start()
+        for verb in _META_TEMPLATE_UNAMBIGUOUS_LIFECYCLE_VERB.finditer(prompt)
+    }
     for template in direct_templates:
         governing = [
             verb
@@ -297,6 +301,7 @@ def _has_template_dimension_analytics(
         if not governing:
             continue
         verb = max(governing, key=lambda match: match.start())
+        governed_by_unambiguous_verb = verb.start() in unambiguous_verbs
         prefix = prompt[verb.end():template.start()]
         suffix = _bounded_template_suffix(prompt, template)
         if (
@@ -317,6 +322,7 @@ def _has_template_dimension_analytics(
         if (
             _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
             and not _META_TEMPLATE_ANALYTICS_CONTAINER.search(suffix)
+            and not governed_by_unambiguous_verb
         ):
             suffix_analytics = True
         if _META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX.search(suffix):

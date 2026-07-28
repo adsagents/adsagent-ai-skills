@@ -530,6 +530,16 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "template_performance_settings_update_is_lifecycle",
+    "prompt": "Update my Meta template's performance settings.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "template_performance_testing_delete_is_lifecycle",
+    "prompt": "Delete my Meta template for performance testing.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

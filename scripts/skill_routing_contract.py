@@ -235,6 +235,19 @@ def _bounded_template_suffix(
     return suffix[:min(ends)] if ends else suffix
 
 
+def _has_direct_object_boundary(text: str) -> bool:
+    if _DIRECT_OBJECT_COORDINATOR.search(text):
+        return True
+    for coordinator in _ACTION_COORDINATOR.finditer(text):
+        prior_object = text[:coordinator.start()]
+        if (
+            _META_TEMPLATE_ANALYTICS_SIGNAL.search(prior_object)
+            or _META_TEMPLATE_ANALYTICS_CONTAINER.search(prior_object)
+        ):
+            return True
+    return False
+
+
 def _direct_template_lifecycle_objects(
     prompt: str,
     verb_pattern: re.Pattern[str],
@@ -252,7 +265,7 @@ def _direct_template_lifecycle_objects(
                 break
             if (
                 _CLAUSE_BREAK.search(between)
-                or _DIRECT_OBJECT_COORDINATOR.search(between)
+                or _has_direct_object_boundary(between)
             ):
                 break
             if any(

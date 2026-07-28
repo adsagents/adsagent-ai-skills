@@ -570,6 +570,26 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "coordinated_archived_template_does_not_capture_meta_read",
+    "prompt": "Show Meta Ads performance and archived template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "coordinated_saved_template_does_not_capture_meta_read",
+    "prompt": "Show Meta Ads performance and saved template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "coordinated_marketing_template_does_not_capture_meta_read",
+    "prompt": "Show Meta Ads performance and marketing template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "coordinated_template_modifiers_remain_one_object",
+    "prompt": "Open Meta research and performance templates.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

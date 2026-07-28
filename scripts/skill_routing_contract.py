@@ -95,16 +95,16 @@ _META_TEMPLATE_TOPIC = re.compile(
 )
 _META_TEMPLATE_LIFECYCLE_VERB = re.compile(
     r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back|save|create|list|"
-    r"show|browse|view|get|open|update|rename|delete|remove|copy|reuse|"
-    r"launch)\b|"
+    r"show|browse|view|get|open|change|update|rename|delete|remove|copy|"
+    r"reuse|launch)\b|"
     r"逆向|回读|保存|创建|列出|展示|浏览|查看|获取|打开|更新|重命名|"
-    r"删除|移除|复制|复用|投放",
+    r"修改|删除|移除|复制|复用|投放",
     re.IGNORECASE,
 )
 _META_TEMPLATE_UNAMBIGUOUS_LIFECYCLE_VERB = re.compile(
-    r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back|update|rename|"
-    r"delete|remove|copy|reuse|launch)\b|"
-    r"逆向|回读|更新|重命名|删除|移除|复制|复用|投放",
+    r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back|change|update|"
+    r"rename|delete|remove|copy|reuse|launch)\b|"
+    r"逆向|回读|修改|更新|重命名|删除|移除|复制|复用|投放",
     re.IGNORECASE,
 )
 _META_TEMPLATE_TOKEN = re.compile(r"\btemplates?\b|模板", re.IGNORECASE)
@@ -135,6 +135,11 @@ _META_TEMPLATE_LEADING_QUALIFIER = re.compile(
 _META_TEMPLATE_CONFIGURATION_SUFFIX = re.compile(
     r"^\s+(?:for|with|using|based\s+on)\b.{0,80}\bsettings?\b|"
     r"^\s*(?:用于|使用|基于).{0,40}设置",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_RELATIVE_MARKER = re.compile(
+    r"\b(?:that|which|whose|where|[a-z][a-z-]{2,}ing)\b|"
+    r"用于|显示|描述|汇总|总结|比较|分析",
     re.IGNORECASE,
 )
 _META_TEMPLATE_NAMING = re.compile(
@@ -215,6 +220,11 @@ def _has_template_dimension_analytics(
             and _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
         ):
             return True
+        for container in _META_TEMPLATE_ANALYTICS_CONTAINER.finditer(prefix):
+            if _META_TEMPLATE_RELATIVE_MARKER.search(
+                prefix[container.end():]
+            ):
+                return True
         if (
             _META_TEMPLATE_ANALYTICS_CONTAINER.search(suffix)
             and _META_TEMPLATE_ANALYTICS_WINDOW.search(suffix)

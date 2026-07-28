@@ -325,6 +325,21 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "meta_template_change_analytics_title_is_lifecycle",
+    "prompt": "Change the Meta template named Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_report_relation_without_metric_is_insights",
+    "prompt": "Open a Meta report summarizing templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_dashboard_relation_without_metric_is_insights",
+    "prompt": "Browse a Meta dashboard visualizing templates.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

@@ -280,6 +280,31 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "meta_qualified_report_arbitrary_relation_is_insights",
+    "prompt": "Open a Meta report summarizing template spend.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_qualified_dashboard_arbitrary_relation_is_insights",
+    "prompt": "Browse a Meta dashboard visualizing template performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "unrelated_template_after_and_also_does_not_override_meta_read",
+    "prompt": "Show Meta performance and also delete the email template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "unrelated_template_after_ampersand_does_not_override_meta_read",
+    "prompt": "Show Meta performance & delete the email template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_report_templates_with_window_are_lifecycle",
+    "prompt": "Open my Meta report templates from last month.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

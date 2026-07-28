@@ -93,26 +93,18 @@ _META_TEMPLATE_TOPIC = re.compile(
     r"\btemplates?\b|模板",
     re.IGNORECASE,
 )
-_META_TEMPLATE_MUTATION = re.compile(
-    r"\b(?:update|change|rename|delete|remove|copy|reuse|launch)\b"
-    r"\s+(?:(?:this|that|the|my|saved|meta|facebook|fb|ads?)\s+){0,5}"
-    r"templates?\b|"
-    r"(?:更新|修改|重命名|删除|复制|复用|投放)"
-    r"(?:这个|该|我的|已保存的|Meta|Facebook|FB|广告|\s){0,20}模板|"
-    r"模板(?:进行)?(?:更新|修改|重命名|删除|复制|复用|投放)",
-    re.IGNORECASE,
-)
 _META_TEMPLATE_LIFECYCLE_VERB = re.compile(
     r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back|save|create|list|"
-    r"show|browse|view|get|open|update|rename|delete|remove|reuse)\b|"
+    r"show|browse|view|get|open|update|rename|delete|remove|copy|reuse|"
+    r"launch)\b|"
     r"逆向|回读|保存|创建|列出|展示|浏览|查看|获取|打开|更新|重命名|"
-    r"删除|移除|复用",
+    r"删除|移除|复制|复用|投放",
     re.IGNORECASE,
 )
 _META_TEMPLATE_UNAMBIGUOUS_LIFECYCLE_VERB = re.compile(
     r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back|update|rename|"
-    r"delete|remove|reuse)\b|"
-    r"逆向|回读|更新|重命名|删除|移除|复用",
+    r"delete|remove|copy|reuse|launch)\b|"
+    r"逆向|回读|更新|重命名|删除|移除|复制|复用|投放",
     re.IGNORECASE,
 )
 _META_TEMPLATE_TOKEN = re.compile(r"\btemplates?\b|模板", re.IGNORECASE)
@@ -140,13 +132,6 @@ _META_TEMPLATE_NAMING = re.compile(
     re.IGNORECASE,
 )
 _CLAUSE_BREAK = re.compile(r"[.!?;:,\n。！？；：，]")
-_QUALIFIER_BREAK = re.compile(
-    r"[.!?;:,\n。！？；：，]|\b(?:then|but|while|whereas)\b|"
-    r"\band(?:\s+then)?\s+(?=(?:reverse[- ]?engineer(?:ing)?|"
-    r"read[- ]?back|save|create|list|show|browse|view|get|open|update|"
-    r"rename|delete|remove|reuse)\b)",
-    re.IGNORECASE,
-)
 _ADSAGENT = re.compile(r"\badsagent\b", re.IGNORECASE)
 
 
@@ -156,6 +141,7 @@ def _direct_template_lifecycle_objects(
 ) -> tuple[re.Match[str], ...]:
     """Find templates directly governed by a lifecycle verb in one clause."""
     templates = tuple(_META_TEMPLATE_TOKEN.finditer(prompt))
+    lifecycle_verbs = tuple(_META_TEMPLATE_LIFECYCLE_VERB.finditer(prompt))
     direct: list[re.Match[str]] = []
     for verb in verb_pattern.finditer(prompt):
         for template in templates:
@@ -164,7 +150,13 @@ def _direct_template_lifecycle_objects(
             between = prompt[verb.end():template.start()]
             if len(between) > 100:
                 break
-            if _QUALIFIER_BREAK.search(between):
+            if _CLAUSE_BREAK.search(between):
+                break
+            if any(
+                verb.end() <= later.start() < template.start()
+                for later in lifecycle_verbs
+                if later.start() != verb.start()
+            ):
                 break
             normalized = re.sub(
                 r"\b(?:meta|facebook|fb)\s+ads?\b",
@@ -174,25 +166,9 @@ def _direct_template_lifecycle_objects(
             )
             if _META_TEMPLATE_DIRECT_OBJECT_BLOCKER.search(normalized):
                 break
-            qualifiers = tuple(_META_NAME.finditer(between))
-            containers = tuple(
-                _META_TEMPLATE_ANALYTICS_CONTAINER.finditer(between)
-            )
-            if any(
-                qualifier.start() > container.end()
-                for container in containers
-                for qualifier in qualifiers
-            ):
-                break
-            clause_start = 0
-            for boundary in _QUALIFIER_BREAK.finditer(prompt):
-                if boundary.end() <= verb.start():
-                    clause_start = boundary.end()
-                    continue
-                break
-            boundary = _QUALIFIER_BREAK.search(prompt, template.end())
+            boundary = _CLAUSE_BREAK.search(prompt, template.end())
             clause_end = boundary.start() if boundary else len(prompt)
-            qualifier_prefix = prompt[clause_start:template.start()]
+            qualifier_prefix = prompt[verb.start():template.start()]
             qualifier_suffix = prompt[template.end():clause_end]
             if (
                 _META_NAME.search(qualifier_prefix)
@@ -201,6 +177,38 @@ def _direct_template_lifecycle_objects(
                 direct.append(template)
             break
     return tuple(direct)
+
+
+def _has_template_dimension_analytics(
+    prompt: str,
+    direct_templates: tuple[re.Match[str], ...],
+) -> bool:
+    lifecycle_verbs = tuple(_META_TEMPLATE_LIFECYCLE_VERB.finditer(prompt))
+    for template in direct_templates:
+        governing = [
+            verb
+            for verb in lifecycle_verbs
+            if verb.end() <= template.start()
+        ]
+        if not governing:
+            continue
+        verb = max(governing, key=lambda match: match.start())
+        prefix = prompt[verb.end():template.start()]
+        suffix = prompt[template.end():template.end() + 120]
+        boundary = _CLAUSE_BREAK.search(suffix)
+        if boundary:
+            suffix = suffix[:boundary.start()]
+        if (
+            _META_TEMPLATE_ANALYTICS_CONTAINER.search(prefix)
+            and _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
+        ):
+            return True
+        if (
+            _META_TEMPLATE_ANALYTICS_CONTAINER.search(suffix)
+            and _META_TEMPLATE_ANALYTICS_WINDOW.search(suffix)
+        ):
+            return True
+    return False
 
 
 def _has_direct_named_template_object(
@@ -256,15 +264,21 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             prompt,
             direct_templates,
         )
+        template_dimension_analytics = _has_template_dimension_analytics(
+            prompt,
+            direct_templates,
+        )
         if (
-            _META_TEMPLATE_MUTATION.search(prompt)
-            or template_tool
+            template_tool
             or unambiguous_direct_templates
+            or named_template_object
         ):
             return ("meta-copy",)
+        if template_dimension_analytics:
+            return ("meta-insights",)
         if (
             not template_tool
-            and not named_template_object
+            and not direct_templates
             and _META_TEMPLATE_TOPIC.search(prompt)
             and _META_TEMPLATE_ANALYTICS_SIGNAL.search(prompt)
             and _META_TEMPLATE_ANALYTICS_WINDOW.search(prompt)
@@ -277,7 +291,6 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
         if (
             _META_TEMPLATE_TOPIC.search(prompt)
             and _META_TEMPLATE_ANALYTICS.search(prompt)
-            and not _META_TEMPLATE_MUTATION.search(prompt)
         ):
             return ("meta-insights",)
         if (

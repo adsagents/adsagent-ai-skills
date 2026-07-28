@@ -176,6 +176,13 @@ _META_TEMPLATE_GENERIC_ANALYTICS_SUFFIX = re.compile(
     r"^\s+(?:reports?|dashboards?|charts?|analysis)\b|"
     r"^\s*(?:报告|看板|图表|分析)\b"
 )
+_META_TEMPLATE_TITLE_CASE_SUFFIX = re.compile(
+    r"^\s+[A-Z][A-Za-z0-9_-]*"
+)
+_ACTION_COORDINATOR = re.compile(
+    r"\b(?:and(?:\s+(?:then|also))?|then|plus|but|while|whereas)\b|[&+]",
+    re.IGNORECASE,
+)
 _META_TEMPLATE_NAMING = re.compile(
     r"\b(?:named|called|tagged)\b|名为|名称|标签",
     re.IGNORECASE,
@@ -221,6 +228,17 @@ def _direct_template_lifecycle_objects(
                 break
             boundary = _CLAUSE_BREAK.search(prompt, template.end())
             clause_end = boundary.start() if boundary else len(prompt)
+            for later in lifecycle_verbs:
+                if later.start() < template.end():
+                    continue
+                coordinator = _ACTION_COORDINATOR.search(
+                    prompt,
+                    template.end(),
+                    later.start(),
+                )
+                if coordinator:
+                    clause_end = min(clause_end, coordinator.start())
+                    break
             qualifier_prefix = prompt[verb.start():template.start()]
             qualifier_suffix = prompt[template.end():clause_end]
             leading_prefix = prompt[max(0, verb.start() - 60):verb.start()]
@@ -292,6 +310,20 @@ def _has_direct_template_configuration(
         if boundary:
             suffix = suffix[:boundary.start()]
         if _META_TEMPLATE_CONFIGURATION_SUFFIX.search(suffix):
+            return True
+    return False
+
+
+def _has_direct_title_case_template_object(
+    prompt: str,
+    direct_templates: tuple[re.Match[str], ...],
+) -> bool:
+    for template in direct_templates:
+        suffix = prompt[template.end():template.end() + 120]
+        boundary = _CLAUSE_BREAK.search(suffix)
+        if boundary:
+            suffix = suffix[:boundary.start()]
+        if _META_TEMPLATE_TITLE_CASE_SUFFIX.search(suffix):
             return True
     return False
 
@@ -374,6 +406,10 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             prompt,
             direct_templates,
         )
+        direct_title_case_template = _has_direct_title_case_template_object(
+            prompt,
+            direct_templates,
+        )
         template_grouping_dimension = _has_template_grouping_dimension(
             prompt,
             direct_templates,
@@ -383,7 +419,8 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
         if named_template_object and not indirect_template_analytics:
             return ("meta-copy",)
         if (
-            unambiguous_direct_templates
+            direct_title_case_template
+            and unambiguous_direct_templates
             and not indirect_template_analytics
         ):
             return ("meta-copy",)
@@ -397,6 +434,8 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             return ("meta-copy",)
         if suffix_template_analytics:
             return ("meta-insights",)
+        if unambiguous_direct_templates:
+            return ("meta-copy",)
         if (
             not template_tool
             and not direct_templates

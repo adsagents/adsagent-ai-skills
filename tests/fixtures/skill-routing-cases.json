@@ -480,6 +480,26 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "email_template_does_not_borrow_later_post_qualifier",
+    "prompt": "Delete the email template and then show performance in Meta.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_performance_dashboard_update_is_insights",
+    "prompt": "Update the Meta template performance dashboard.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_report_delete_is_insights",
+    "prompt": "Delete the Meta template spend report.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_title_case_delete_with_window_is_lifecycle",
+    "prompt": "Delete the Meta template Performance Report this month.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

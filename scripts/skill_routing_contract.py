@@ -117,13 +117,15 @@ _META_TEMPLATE_UNAMBIGUOUS_LIFECYCLE_VERB = re.compile(
 )
 _META_TEMPLATE_TOKEN = re.compile(r"\btemplates?\b|模板", re.IGNORECASE)
 _META_TEMPLATE_DIRECT_OBJECT_BLOCKER = re.compile(
-    r"\b(?:reports?|dashboards?|charts?|campaigns?|ad\s*sets?|data|"
-    r"results?|tables?|filters?|summar(?:y|ies)|analysis|insights?|metrics?|"
-    r"about|by|from|on|of|with|under|showing|covering|comparing|"
+    r"\b(?:about|by|for|from|on|of|with|under|showing|covering|comparing|"
     r"containing|using|matching|based\s+on|grouped\s+by|filtered\s+by|"
     r"broken\s+down\s+by|linked\s+to|associated\s+with)\b|"
-    r"报告|看板|图表|广告系列|广告组|数据|结果|表格|摘要|分析|洞察|"
-    r"指标|关于|按照|基于|显示|包含|关联",
+    r"关于|对于|按照|基于|显示|包含|关联",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_POST_QUALIFIER = re.compile(
+    r"^\s*(?:(?:in|on|for|from|within)\s+|(?:在|用于|来自)\s*)"
+    r"(?:meta|facebook|fb|脸书)\b",
     re.IGNORECASE,
 )
 _META_TEMPLATE_NAMING = re.compile(
@@ -131,6 +133,13 @@ _META_TEMPLATE_NAMING = re.compile(
     re.IGNORECASE,
 )
 _CLAUSE_BREAK = re.compile(r"[.!?;:,\n。！？；：，]")
+_QUALIFIER_BREAK = re.compile(
+    r"[.!?;:,\n。！？；：，]|\b(?:then|but|while|whereas)\b|"
+    r"\band(?:\s+then)?\s+(?=(?:reverse[- ]?engineer(?:ing)?|"
+    r"read[- ]?back|save|create|list|show|browse|view|get|open|update|"
+    r"rename|delete|remove|reuse)\b)",
+    re.IGNORECASE,
+)
 _ADSAGENT = re.compile(r"\badsagent\b", re.IGNORECASE)
 
 
@@ -148,7 +157,7 @@ def _direct_template_lifecycle_objects(
             between = prompt[verb.end():template.start()]
             if len(between) > 100:
                 break
-            if _CLAUSE_BREAK.search(between):
+            if _QUALIFIER_BREAK.search(between):
                 break
             normalized = re.sub(
                 r"\b(?:meta|facebook|fb)\s+ads?\b",
@@ -156,7 +165,22 @@ def _direct_template_lifecycle_objects(
                 between,
                 flags=re.IGNORECASE,
             )
-            if not _META_TEMPLATE_DIRECT_OBJECT_BLOCKER.search(normalized):
+            if _META_TEMPLATE_DIRECT_OBJECT_BLOCKER.search(normalized):
+                break
+            clause_start = 0
+            for boundary in _QUALIFIER_BREAK.finditer(prompt):
+                if boundary.end() <= verb.start():
+                    clause_start = boundary.end()
+                    continue
+                break
+            boundary = _QUALIFIER_BREAK.search(prompt, template.end())
+            clause_end = boundary.start() if boundary else len(prompt)
+            qualifier_prefix = prompt[clause_start:template.start()]
+            qualifier_suffix = prompt[template.end():clause_end]
+            if (
+                _META_NAME.search(qualifier_prefix)
+                or _META_TEMPLATE_POST_QUALIFIER.search(qualifier_suffix)
+            ):
                 direct.append(template)
             break
     return tuple(direct)

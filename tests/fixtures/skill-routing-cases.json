@@ -245,6 +245,31 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "unrelated_email_template_does_not_override_meta_read",
+    "prompt": "Delete the email template, then show Meta Ads performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "unrelated_email_template_without_comma_does_not_override_meta_read",
+    "prompt": "Delete the email template and then show Meta Ads performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "prior_meta_read_does_not_qualify_unrelated_email_template",
+    "prompt": "Show Meta Ads performance and delete the email template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaign_templates_are_lifecycle",
+    "prompt": "Open my Meta campaign templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_report_templates_are_lifecycle",
+    "prompt": "Open my Meta report templates.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

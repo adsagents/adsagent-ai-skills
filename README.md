@@ -107,7 +107,9 @@ template objects while keeping reports, dashboards, charts, and analyses that
 describe template performance with `meta-insights`. The router distinguishes a
 direct template object from an indirect template dimension introduced by
 relations such as `by`, `about`, `showing`, or `using`, instead of maintaining
-adjective or entity-name whitelists.
+adjective or entity-name whitelists. Direct lifecycle overrides are limited to
+the same Meta-qualified clause, so unrelated email or document templates do
+not capture a Meta performance request.
 
 Version 0.7.44 restricts Meta template lifecycle routing to requests whose
 verb operates directly on the template object, so analytics reports that

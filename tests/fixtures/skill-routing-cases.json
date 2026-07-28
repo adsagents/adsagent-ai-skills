@@ -410,6 +410,21 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "meta_template_possessive_of_delete_is_lifecycle",
+    "prompt": "Delete one of my Meta templates named Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_possessive_of_view_is_lifecycle",
+    "prompt": "View any of the archived Meta templates named Usage Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_analytics_of_relation_is_insights",
+    "prompt": "Show a report of Meta template spend.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

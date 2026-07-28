@@ -130,6 +130,11 @@ _META_TEMPLATE_DIRECT_OBJECT_BLOCKER = re.compile(
     r"关于|对于|按照|基于|显示|包含|关联",
     re.IGNORECASE,
 )
+_META_TEMPLATE_POSSESSIVE_OF = re.compile(
+    r"\b(?:one|any|some|all|each|either|neither|none)\s+of\s+"
+    r"(?:my|our|your|the|these|those|saved|archived)\b",
+    re.IGNORECASE,
+)
 _META_TEMPLATE_POST_QUALIFIER = re.compile(
     r"^\s+[^.!?;:,\n]{0,80}?\b(?:in|on|for|from|within)\s+"
     r"(?:meta|facebook|fb|脸书)\b|"
@@ -194,6 +199,10 @@ def _direct_template_lifecycle_objects(
                 " ",
                 between,
                 flags=re.IGNORECASE,
+            )
+            normalized = _META_TEMPLATE_POSSESSIVE_OF.sub(
+                " ",
+                normalized,
             )
             if _META_TEMPLATE_DIRECT_OBJECT_BLOCKER.search(normalized):
                 break

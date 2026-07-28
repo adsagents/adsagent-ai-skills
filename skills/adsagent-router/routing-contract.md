@@ -31,9 +31,9 @@
   or `latest performance` do not change that direct-object route.
 - Route reports, dashboards, charts, campaign lists, comparisons, and analyses
   to `meta-insights` when templates are a grouping, filter, subject, or
-  performance dimension rather than the lifecycle object. This remains true
-  for arbitrary relation wording such as "a report summarizing Meta template
-  spend" or "a dashboard visualizing Meta template performance".
+  performance dimension rather than the lifecycle object. This includes
+  relation clauses such as "a report summarizing Meta template spend" or "a
+  dashboard visualizing Meta template performance".
 - Bind a direct-template override to the same Meta-qualified clause. An email,
   document, or other non-Meta template mentioned elsewhere in a compound
   request must not capture the Meta workflow.

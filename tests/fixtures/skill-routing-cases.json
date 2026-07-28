@@ -340,6 +340,26 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "meta_template_named_subject_in_report_is_insights",
+    "prompt": "Open a Meta report summarizing template named Summer.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_subject_in_dashboard_update_is_insights",
+    "prompt": "Update a Meta dashboard visualizing template performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaign_tracking_templates_are_lifecycle",
+    "prompt": "View my Meta campaign tracking templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_ads_testing_templates_are_lifecycle",
+    "prompt": "Browse my Meta ads testing templates.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

@@ -115,6 +115,12 @@ _META_TEMPLATE_ANALYTICS_CONTAINER = re.compile(
     r"洞察|指标",
     re.IGNORECASE,
 )
+_META_TEMPLATE_RELATIONAL_CONTAINER = re.compile(
+    r"\b(?:reports?|dashboards?|charts?|campaigns|data|results?|tables?|"
+    r"summar(?:y|ies)|analysis|insights?|metrics?)\b|"
+    r"报告|看板|图表|广告系列|数据|结果|表格|摘要|分析|洞察|指标",
+    re.IGNORECASE,
+)
 _META_TEMPLATE_DIRECT_OBJECT_BLOCKER = re.compile(
     r"\b(?:about|by|for|from|on|of|with|under|showing|covering|comparing|"
     r"containing|using|matching|based\s+on|grouped\s+by|filtered\s+by|"
@@ -199,7 +205,9 @@ def _direct_template_lifecycle_objects(
 def _has_template_dimension_analytics(
     prompt: str,
     direct_templates: tuple[re.Match[str], ...],
-) -> bool:
+) -> tuple[bool, bool]:
+    indirect_container = False
+    suffix_analytics = False
     lifecycle_verbs = tuple(_META_TEMPLATE_LIFECYCLE_VERB.finditer(prompt))
     for template in direct_templates:
         governing = [
@@ -219,18 +227,18 @@ def _has_template_dimension_analytics(
             _META_TEMPLATE_ANALYTICS_CONTAINER.search(prefix)
             and _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
         ):
-            return True
-        for container in _META_TEMPLATE_ANALYTICS_CONTAINER.finditer(prefix):
+            indirect_container = True
+        for container in _META_TEMPLATE_RELATIONAL_CONTAINER.finditer(prefix):
             if _META_TEMPLATE_RELATIVE_MARKER.search(
                 prefix[container.end():]
             ):
-                return True
+                indirect_container = True
         if (
             _META_TEMPLATE_ANALYTICS_CONTAINER.search(suffix)
             and _META_TEMPLATE_ANALYTICS_WINDOW.search(suffix)
         ):
-            return True
-    return False
+            suffix_analytics = True
+    return indirect_container, suffix_analytics
 
 
 def _has_direct_template_configuration(
@@ -300,7 +308,10 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             prompt,
             direct_templates,
         )
-        template_dimension_analytics = _has_template_dimension_analytics(
+        (
+            indirect_template_analytics,
+            suffix_template_analytics,
+        ) = _has_template_dimension_analytics(
             prompt,
             direct_templates,
         )
@@ -308,14 +319,17 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             prompt,
             direct_templates,
         )
+        if template_tool:
+            return ("meta-copy",)
+        if indirect_template_analytics:
+            return ("meta-insights",)
         if (
-            template_tool
-            or unambiguous_direct_templates
+            unambiguous_direct_templates
             or named_template_object
             or direct_template_configuration
         ):
             return ("meta-copy",)
-        if template_dimension_analytics:
+        if suffix_template_analytics:
             return ("meta-insights",)
         if (
             not template_tool

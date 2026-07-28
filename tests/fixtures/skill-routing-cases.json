@@ -540,6 +540,16 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "template_performance_testing_open_is_lifecycle",
+    "prompt": "Open my Meta template for performance testing.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "template_performance_settings_view_is_lifecycle",
+    "prompt": "View my Meta template's performance settings.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

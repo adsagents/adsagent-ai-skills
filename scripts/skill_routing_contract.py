@@ -186,6 +186,14 @@ _META_TEMPLATE_ANALYTICS_RELATION_SUFFIX = re.compile(
     r"结果|表格|摘要|分析|洞察|指标)",
     re.IGNORECASE,
 )
+_META_TEMPLATE_NON_ANALYTICS_MODIFIER_SUFFIX = re.compile(
+    r"\b(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend)\b.{0,30}\b"
+    r"(?:settings?|testing|configuration|options?|rules?|setup)\b|"
+    r"(?:使用|表现|成效|消耗|花费|趋势|洞察|指标).{0,15}"
+    r"(?:设置|测试|配置|选项|规则)",
+    re.IGNORECASE,
+)
 _META_TEMPLATE_GENERIC_ANALYTICS_SUFFIX = re.compile(
     r"^\s+(?:reports?|dashboards?|charts?|analysis)\b|"
     r"^\s*(?:报告|看板|图表|分析)\b"
@@ -322,6 +330,7 @@ def _has_template_dimension_analytics(
         if (
             _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
             and not _META_TEMPLATE_ANALYTICS_CONTAINER.search(suffix)
+            and not _META_TEMPLATE_NON_ANALYTICS_MODIFIER_SUFFIX.search(suffix)
             and not governed_by_unambiguous_verb
         ):
             suffix_analytics = True

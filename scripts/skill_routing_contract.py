@@ -109,10 +109,16 @@ _META_TEMPLATE_LIFECYCLE_VERB = re.compile(
     r"删除|移除|复用",
     re.IGNORECASE,
 )
+_META_TEMPLATE_UNAMBIGUOUS_LIFECYCLE_VERB = re.compile(
+    r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back|update|rename|"
+    r"delete|remove|reuse)\b|"
+    r"逆向|回读|更新|重命名|删除|移除|复用",
+    re.IGNORECASE,
+)
 _META_TEMPLATE_TOKEN = re.compile(r"\btemplates?\b|模板", re.IGNORECASE)
 _META_TEMPLATE_DIRECT_OBJECT_BLOCKER = re.compile(
     r"\b(?:reports?|dashboards?|charts?|campaigns?|ad\s*sets?|data|"
-    r"results?|tables?|summar(?:y|ies)|analysis|insights?|metrics?|"
+    r"results?|tables?|filters?|summar(?:y|ies)|analysis|insights?|metrics?|"
     r"about|by|from|on|of|with|under|showing|covering|comparing|"
     r"containing|using|matching|based\s+on|grouped\s+by|filtered\s+by|"
     r"broken\s+down\s+by|linked\s+to|associated\s+with)\b|"
@@ -130,11 +136,12 @@ _ADSAGENT = re.compile(r"\badsagent\b", re.IGNORECASE)
 
 def _direct_template_lifecycle_objects(
     prompt: str,
+    verb_pattern: re.Pattern[str],
 ) -> tuple[re.Match[str], ...]:
     """Find templates directly governed by a lifecycle verb in one clause."""
     templates = tuple(_META_TEMPLATE_TOKEN.finditer(prompt))
     direct: list[re.Match[str]] = []
-    for verb in _META_TEMPLATE_LIFECYCLE_VERB.finditer(prompt):
+    for verb in verb_pattern.finditer(prompt):
         for template in templates:
             if template.start() < verb.end():
                 continue
@@ -196,12 +203,23 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
     if len(named_channels) > 1:
         return ("adsagent-router",)
     if named_channels == ["meta"]:
-        direct_templates = _direct_template_lifecycle_objects(prompt)
+        direct_templates = _direct_template_lifecycle_objects(
+            prompt,
+            _META_TEMPLATE_LIFECYCLE_VERB,
+        )
+        unambiguous_direct_templates = _direct_template_lifecycle_objects(
+            prompt,
+            _META_TEMPLATE_UNAMBIGUOUS_LIFECYCLE_VERB,
+        )
         named_template_object = _has_direct_named_template_object(
             prompt,
             direct_templates,
         )
-        if _META_TEMPLATE_MUTATION.search(prompt):
+        if (
+            _META_TEMPLATE_MUTATION.search(prompt)
+            or template_tool
+            or unambiguous_direct_templates
+        ):
             return ("meta-copy",)
         if (
             not template_tool
@@ -212,8 +230,7 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
         ):
             return ("meta-insights",)
         if (
-            template_tool
-            or direct_templates
+            direct_templates
         ):
             return ("meta-copy",)
         if (

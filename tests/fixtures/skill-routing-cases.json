@@ -235,6 +235,16 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "meta_reverse_engineer_analytics_title_with_window_is_lifecycle",
+    "prompt": "Reverse-engineer my Meta template Performance Report from last month.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_read_back_analytics_title_with_window_is_lifecycle",
+    "prompt": "Read back my Meta template Usage Report from last month.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

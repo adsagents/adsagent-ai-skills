@@ -196,7 +196,8 @@ _META_TEMPLATE_NON_ANALYTICS_MODIFIER_SUFFIX = re.compile(
 )
 _META_TEMPLATE_GENERIC_ANALYTICS_SUFFIX = re.compile(
     r"^\s+(?:reports?|dashboards?|charts?|analysis)\b|"
-    r"^\s*(?:报告|看板|图表|分析)\b"
+    r"^\s*(?:报告|看板|图表|分析)\b",
+    re.IGNORECASE,
 )
 _META_TEMPLATE_TITLE_CASE_SUFFIX = re.compile(
     r"^\s+[A-Z][A-Za-z0-9_-]*"

@@ -520,6 +520,16 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "template_post_qualified_for_facebook_is_lifecycle",
+    "prompt": "Open my templates for Facebook.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "undated_template_usage_by_campaign_is_insights",
+    "prompt": "Show Meta template usage by campaign.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

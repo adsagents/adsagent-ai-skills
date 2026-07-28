@@ -136,10 +136,14 @@ _META_TEMPLATE_POSSESSIVE_OF = re.compile(
     re.IGNORECASE,
 )
 _META_TEMPLATE_POST_QUALIFIER = re.compile(
-    r"^\s+[^.!?;:,\n]{0,80}?\b(?:in|on|within)\s+"
+    r"^\s+[^.!?;:,\n]{0,80}?\b(?:for|in|on|within)\s+"
     r"(?:meta|facebook|fb|脸书)\b|"
     r"^\s*[^。！？；：，\n]{0,40}?在\s*"
     r"(?:meta|facebook|fb|脸书)\b",
+    re.IGNORECASE,
+)
+_NON_AD_TEMPLATE_MODIFIER = re.compile(
+    r"\b(?:email|document|design|html|message|newsletter|notion)\b",
     re.IGNORECASE,
 )
 _META_TEMPLATE_LEADING_QUALIFIER = re.compile(
@@ -171,6 +175,16 @@ _META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX = re.compile(
     r"(?:reports?|dashboards?|charts?|analysis)\b|"
     r"^\s*(?:使用|表现|成效|消耗|花费|趋势|洞察|指标).{0,30}"
     r"(?:报告|看板|图表|分析)"
+)
+_META_TEMPLATE_ANALYTICS_RELATION_SUFFIX = re.compile(
+    r"^\s+(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend)\b.{0,60}\b(?:by|per|across|over)\s+"
+    r"(?:reports?|dashboards?|charts?|campaigns?|ad\s*sets?|ads?|data|"
+    r"results?|tables?|summar(?:y|ies)|analysis|insights?|metrics?)\b|"
+    r"^\s*(?:使用|表现|成效|消耗|花费|趋势|洞察|指标).{0,30}"
+    r"(?:按|按照|每).{0,20}(?:报告|看板|图表|广告系列|广告组|广告|数据|"
+    r"结果|表格|摘要|分析|洞察|指标)",
+    re.IGNORECASE,
 )
 _META_TEMPLATE_GENERIC_ANALYTICS_SUFFIX = re.compile(
     r"^\s+(?:reports?|dashboards?|charts?|analysis)\b|"
@@ -253,9 +267,13 @@ def _direct_template_lifecycle_objects(
             qualifier_prefix = prompt[verb.start():template.start()]
             qualifier_suffix = _bounded_template_suffix(prompt, template)
             leading_prefix = prompt[max(0, verb.start() - 60):verb.start()]
+            post_qualified = (
+                _META_TEMPLATE_POST_QUALIFIER.search(qualifier_suffix)
+                and not _NON_AD_TEMPLATE_MODIFIER.search(qualifier_prefix)
+            )
             if (
                 _META_NAME.search(qualifier_prefix)
-                or _META_TEMPLATE_POST_QUALIFIER.search(qualifier_suffix)
+                or post_qualified
                 or _META_TEMPLATE_LEADING_QUALIFIER.search(leading_prefix)
             ):
                 direct.append(template)
@@ -302,6 +320,8 @@ def _has_template_dimension_analytics(
         ):
             suffix_analytics = True
         if _META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX.search(suffix):
+            suffix_analytics = True
+        if _META_TEMPLATE_ANALYTICS_RELATION_SUFFIX.search(suffix):
             suffix_analytics = True
         if _META_TEMPLATE_GENERIC_ANALYTICS_SUFFIX.search(suffix):
             suffix_analytics = True

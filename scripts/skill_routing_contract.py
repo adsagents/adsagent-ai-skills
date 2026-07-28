@@ -68,8 +68,10 @@ _META_TEMPLATE_OPERATION = re.compile(
 )
 _META_TEMPLATE_ANALYTICS = re.compile(
     r"\b(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
-    r"insights?|metrics?|trend|report|last\s+(?:week|month|quarter|year))\b|"
-    r"消耗|花费|表现|成效|趋势|报告|洞察|上周|上月|去年",
+    r"insights?|metrics?|trend|report|dashboard|chart|analysis|"
+    r"last\s+(?:week|month|quarter|year))\b|"
+    r"消耗|花费|表现|成效|趋势|报告|洞察|看板|图表|分析|上周|上月|"
+    r"去年",
     re.IGNORECASE,
 )
 _META_TEMPLATE_ANALYTICS_SIGNAL = re.compile(
@@ -234,7 +236,7 @@ def _has_template_dimension_analytics(
             ):
                 indirect_container = True
         if (
-            _META_TEMPLATE_ANALYTICS_CONTAINER.search(suffix)
+            _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
             and _META_TEMPLATE_ANALYTICS_WINDOW.search(suffix)
         ):
             suffix_analytics = True

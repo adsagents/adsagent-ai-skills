@@ -360,6 +360,26 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "meta_template_metric_suffix_with_window_is_insights",
+    "prompt": "Show my Meta template performance last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_suffix_with_window_is_insights",
+    "prompt": "Show Meta template spend last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_dashboard_without_window_is_insights",
+    "prompt": "Browse a dashboard about Meta templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_chart_without_window_is_insights",
+    "prompt": "Show a chart comparing Meta templates.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

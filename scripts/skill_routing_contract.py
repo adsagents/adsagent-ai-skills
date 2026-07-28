@@ -123,6 +123,11 @@ _META_TEMPLATE_RELATIONAL_CONTAINER = re.compile(
     r"报告|看板|图表|广告系列|数据|结果|表格|摘要|分析|洞察|指标",
     re.IGNORECASE,
 )
+_META_TEMPLATE_REPORTING_CONTAINER = re.compile(
+    r"\b(?:reports?|dashboards?|charts?|tables?)\b|"
+    r"报告|看板|图表|表格",
+    re.IGNORECASE,
+)
 _META_TEMPLATE_DIRECT_OBJECT_BLOCKER = re.compile(
     r"\b(?:about|by|for|from|on|of|with|under|showing|covering|comparing|"
     r"containing|using|matching|based\s+on|grouped\s+by|filtered\s+by|"
@@ -332,6 +337,11 @@ def _has_template_dimension_analytics(
             flags=re.IGNORECASE,
         )
         suffix = _bounded_template_suffix(prompt, template)
+        for container in _META_TEMPLATE_REPORTING_CONTAINER.finditer(
+            analytics_prefix
+        ):
+            if analytics_prefix[container.end():].strip():
+                indirect_container = True
         if (
             _META_TEMPLATE_ANALYTICS_CONTAINER.search(analytics_prefix)
             and _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)

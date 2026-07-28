@@ -750,6 +750,16 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "attached_template_possessive_performance_is_insights",
+    "prompt": "Show Meta template's performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "attached_templates_plural_possessive_spend_is_insights",
+    "prompt": "Show Meta templates' spend.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

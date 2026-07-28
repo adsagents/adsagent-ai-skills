@@ -205,7 +205,7 @@ _META_TEMPLATE_ANALYTICS_RELATION_SUFFIX = re.compile(
     re.IGNORECASE,
 )
 _META_TEMPLATE_TERMINAL_ANALYTICS_SUFFIX = re.compile(
-    r"^\s+(?:'s\s+)?"
+    r"^\s*(?:'(?:s)?\s+)?"
     r"(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
     r"insights?|metrics?|trend)"
     r"(?:\s+(?:(?:and|&)\s+)?(?:usage|performance|spend|roas|roi|"

@@ -470,6 +470,16 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "meta_template_grouping_title_open_without_named_is_lifecycle",
+    "prompt": "Open the Meta template Campaigns Grouped by Template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "email_template_for_meta_does_not_override_meta_read",
+    "prompt": "Delete the email template for Meta, then show Meta Ads performance.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

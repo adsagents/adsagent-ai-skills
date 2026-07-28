@@ -136,9 +136,9 @@ _META_TEMPLATE_POSSESSIVE_OF = re.compile(
     re.IGNORECASE,
 )
 _META_TEMPLATE_POST_QUALIFIER = re.compile(
-    r"^\s+[^.!?;:,\n]{0,80}?\b(?:in|on|for|from|within)\s+"
+    r"^\s+[^.!?;:,\n]{0,80}?\b(?:in|on|within)\s+"
     r"(?:meta|facebook|fb|脸书)\b|"
-    r"^\s*[^。！？；：，\n]{0,40}?(?:在|用于|来自)\s*"
+    r"^\s*[^。！？；：，\n]{0,40}?在\s*"
     r"(?:meta|facebook|fb|脸书)\b",
     re.IGNORECASE,
 )
@@ -310,6 +310,20 @@ def _has_direct_named_template_object(
     return False
 
 
+def _has_template_grouping_dimension(
+    prompt: str,
+    direct_templates: tuple[re.Match[str], ...],
+) -> bool:
+    for relation in _META_TEMPLATE_GROUPING_RELATION.finditer(prompt):
+        if any(
+            template.end() <= relation.start()
+            for template in direct_templates
+        ):
+            continue
+        return True
+    return False
+
+
 def expected_skill_activation(prompt: str) -> tuple[str, ...]:
     """Return the single initial skill expected for an acceptance fixture."""
     template_tool = bool(_TEMPLATE_TOOL.search(prompt))
@@ -360,6 +374,10 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             prompt,
             direct_templates,
         )
+        template_grouping_dimension = _has_template_grouping_dimension(
+            prompt,
+            direct_templates,
+        )
         if template_tool:
             return ("meta-copy",)
         if named_template_object and not indirect_template_analytics:
@@ -369,7 +387,7 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             and not indirect_template_analytics
         ):
             return ("meta-copy",)
-        if _META_TEMPLATE_GROUPING_RELATION.search(prompt):
+        if template_grouping_dimension:
             return ("meta-insights",)
         if indirect_template_analytics:
             return ("meta-insights",)

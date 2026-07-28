@@ -183,6 +183,13 @@ _ACTION_COORDINATOR = re.compile(
     r"\b(?:and(?:\s+(?:then|also))?|then|plus|but|while|whereas)\b|[&+]",
     re.IGNORECASE,
 )
+_DIRECT_OBJECT_COORDINATOR = re.compile(
+    r"(?:\b(?:and|plus|but)\b|[&+])\s*"
+    r"(?:then\s+|also\s+)?"
+    r"(?:(?:the|an?|my|our|your|this|that|these|those)\b|"
+    r"(?:email|document|design|html|message|newsletter|notion)\b)",
+    re.IGNORECASE,
+)
 _META_TEMPLATE_NAMING = re.compile(
     r"\b(?:named|called|tagged)\b|名为|名称|标签",
     re.IGNORECASE,
@@ -220,7 +227,10 @@ def _direct_template_lifecycle_objects(
             between = prompt[verb.end():template.start()]
             if len(between) > 100:
                 break
-            if _CLAUSE_BREAK.search(between):
+            if (
+                _CLAUSE_BREAK.search(between)
+                or _DIRECT_OBJECT_COORDINATOR.search(between)
+            ):
                 break
             if any(
                 verb.end() <= later.start() < template.start()

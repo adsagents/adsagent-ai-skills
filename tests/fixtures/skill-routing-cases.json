@@ -510,6 +510,16 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "coordinated_email_template_does_not_capture_meta_read",
+    "prompt": "Show Meta Ads performance and the email template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "coordinated_bare_email_template_does_not_capture_meta_read",
+    "prompt": "Show Meta Ads performance and email template.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

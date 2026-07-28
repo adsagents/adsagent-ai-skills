@@ -68,8 +68,21 @@ _META_TEMPLATE_OPERATION = re.compile(
 )
 _META_TEMPLATE_ANALYTICS = re.compile(
     r"\b(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
-    r"insights?|metrics?|trend|report|last\s+(?:week|month|quarter|year))\b|"
-    r"消耗|花费|表现|成效|趋势|报告|洞察|上周|上月|去年",
+    r"insights?|metrics?|trend|report|dashboard|chart|analysis|"
+    r"last\s+(?:week|month|quarter|year))\b|"
+    r"消耗|花费|表现|成效|趋势|报告|洞察|看板|图表|分析|上周|上月|"
+    r"去年",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_ANALYTICS_SIGNAL = re.compile(
+    r"\b(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend|report|dashboard|chart|analysis)\b|"
+    r"消耗|花费|表现|成效|趋势|报告|洞察|看板|图表|分析",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_ANALYTICS_NOUN = re.compile(
+    r"\b(?:comparisons?|breakdowns?|benchmarks?)\b|"
+    r"比较|对比|拆分|基准",
     re.IGNORECASE,
 )
 _META_TEMPLATE_ANALYTICS_WINDOW = re.compile(
@@ -87,45 +100,457 @@ _META_TEMPLATE_TOPIC = re.compile(
     r"\btemplates?\b|模板",
     re.IGNORECASE,
 )
-_META_TEMPLATE_MUTATION = re.compile(
-    r"\b(?:update|change|rename|delete|remove|copy|reuse|launch)\b"
-    r"\s+(?:(?:this|that|the|my|saved|meta|facebook|fb|ads?)\s+){0,5}"
-    r"templates?\b|"
-    r"(?:更新|修改|重命名|删除|复制|复用|投放)"
-    r"(?:这个|该|我的|已保存的|Meta|Facebook|FB|广告|\s){0,20}模板|"
-    r"模板(?:进行)?(?:更新|修改|重命名|删除|复制|复用|投放)",
+_META_TEMPLATE_LIFECYCLE_VERB = re.compile(
+    r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back|save|create|list|"
+    r"show|browse|view|get|open|change|update|rename|delete|remove|copy|"
+    r"reuse|launch)\b|"
+    r"逆向|回读|保存|创建|列出|展示|浏览|查看|获取|打开|更新|重命名|"
+    r"修改|删除|移除|复制|复用|投放",
     re.IGNORECASE,
 )
-_META_TEMPLATE_DIRECT_OBJECT = (
-    r"(?:\s+(?i:all|my|the|this|that|these|those|a|an|new|saved|"
-    r"existing|current|selected|meta|facebook|fb|ads?)){0,6}"
-    r"\s+(?i:templates?)\b"
-)
-_META_TEMPLATE_EXPLICIT_LIFECYCLE = re.compile(
-    rf"\b(?:list|browse|open)\b{_META_TEMPLATE_DIRECT_OBJECT}|"
-    r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back)\b"
-    rf"{_META_TEMPLATE_DIRECT_OBJECT}|"
-    r"\b(?:list|browse|open|view|get|show|create|save|update|rename|"
-    r"delete|remove)\b"
-    rf"{_META_TEMPLATE_DIRECT_OBJECT}.{{0,80}}\b(?:named|called|tagged)\b|"
-    rf"\b(?:create|save|update)\b{_META_TEMPLATE_DIRECT_OBJECT}"
-    r".{0,80}\bfor\b.{0,40}\bsettings?\b|"
-    r"(?:列出|浏览).{0,40}模板|"
-    r"(?:查看|获取|创建|保存|更新|重命名|删除).{0,40}模板"
-    r".{0,40}(?:名为|标签|设置)",
+_META_TEMPLATE_UNAMBIGUOUS_LIFECYCLE_VERB = re.compile(
+    r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back|change|update|"
+    r"rename|delete|remove|copy|reuse|launch)\b|"
+    r"逆向|回读|修改|更新|重命名|删除|移除|复制|复用|投放",
     re.IGNORECASE,
 )
-_META_TEMPLATE_TITLE_OBJECT = re.compile(
-    rf"\b(?i:show|open|view|get|create)\b{_META_TEMPLATE_DIRECT_OBJECT}"
-    r"(?:\s+(?i:named|called))?\s+"
-    r"[A-Z][A-Za-z0-9_-]*(?:\s+[A-Z][A-Za-z0-9_-]*)+"
+_META_TEMPLATE_TOKEN = re.compile(r"\btemplates?\b|模板", re.IGNORECASE)
+_META_TEMPLATE_ANALYTICS_CONTAINER = re.compile(
+    r"\b(?:reports?|dashboards?|charts?|campaigns?|ad\s*sets?|ads?|data|"
+    r"results?|tables?|summar(?:y|ies)|analysis|insights?|metrics?)\b|"
+    r"报告|看板|图表|广告系列|广告组|广告|数据|结果|表格|摘要|分析|"
+    r"洞察|指标",
+    re.IGNORECASE,
 )
+_META_TEMPLATE_RELATIONAL_CONTAINER = re.compile(
+    r"\b(?:reports?|dashboards?|charts?|campaigns|data|results?|tables?|"
+    r"summar(?:y|ies)|analysis|insights?|metrics?)\b|"
+    r"报告|看板|图表|广告系列|数据|结果|表格|摘要|分析|洞察|指标",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_DIRECT_OBJECT_BLOCKER = re.compile(
+    r"\b(?:about|by|for|from|on|of|with|under|across|between|versus|"
+    r"showing|covering|comparing|containing|using|matching|based\s+on|"
+    r"grouped\s+by|filtered\s+by|broken\s+down\s+by|linked\s+to|"
+    r"associated\s+with)\b|"
+    r"关于|对于|按照|基于|显示|包含|关联|跨",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_POSSESSIVE_OF = re.compile(
+    r"\b(?:one|any|some|all|each|either|neither|none)\s+of\s+"
+    r"(?:my|our|your|the|these|those|saved|archived)\b",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_POST_QUALIFIER = re.compile(
+    r"^\s+[^.!?;:,\n]{0,80}?\b(?:for|from|in|on|within)\s+"
+    r"(?:meta|facebook|fb|脸书)\b|"
+    r"^\s*[^。！？；：，\n]{0,40}?在\s*"
+    r"(?:meta|facebook|fb|脸书)\b",
+    re.IGNORECASE,
+)
+_NON_AD_TEMPLATE_MODIFIER = re.compile(
+    r"\b(?:email|document|design|html|message|newsletter|notion)\b",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_LEADING_QUALIFIER = re.compile(
+    r"(?:(?:in|on|for|within|using)\s+)?"
+    r"(?:meta|facebook|fb)(?:\s+ads?)?\s*[,:\-]?\s*$|"
+    r"(?:(?:in|on|for|within|using)\s+)?"
+    r"(?:meta|facebook|fb)(?:\s+ads?)?\s*[,:\-]\s*"
+    r"(?:(?:please|kindly|now|just)\s+|"
+    r"(?:can|could|would|will)\s+you\s+|"
+    r"go\s+ahead\s+and\s+)+$|"
+    r"脸书(?:广告)?\s*[,:\-]?\s*$|"
+    r"脸书(?:广告)?\s*[,:\-]\s*(?:请|麻烦|现在)\s*$",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_CONFIGURATION_SUFFIX = re.compile(
+    r"^\s+(?:for|with|using|based\s+on)\b.{0,80}\bsettings?\b|"
+    r"^\s*(?:用于|使用|基于).{0,40}设置",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_RELATIVE_MARKER = re.compile(
+    r"\b(?:that|which|whose|where|summari[sz]ing|visuali[sz]ing|showing|"
+    r"covering|comparing|containing|matching|grouping|filtering|listing|"
+    r"detailing|presenting|displaying|enumerating|itemi[sz]ing|charting|"
+    r"plotting|ranking|sorting|outlining|measuring|examining|"
+    r"including|featuring|comprising|incorporating|highlighting|"
+    r"analy[sz]ing|describing|reporting|aggregating|segmenting|"
+    r"breaking\s+down)\b|"
+    r"用于|显示|描述|汇总|总结|比较|分析",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_GROUPING_RELATION = re.compile(
+    r"\b(?:grouped|filtered|sorted|split|segmented|aggregated|"
+    r"broken\s+down)\s+by\b.{0,100}\btemplates?\b|"
+    r"\b(?:campaigns?|ad\s*sets?|ads?)\b.{0,60}\bby\s+templates?\b|"
+    r"\b(?:campaigns?|ad\s*sets?|ads?)\b.{0,60}\b"
+    r"(?:with(?:out)?|using|containing|matching|including|featuring|"
+    r"linked\s+to|associated\s+with)\s+templates?\b|"
+    r"按(?:照)?模板(?:分组|筛选|排序|拆分|细分|汇总)|"
+    r"(?:广告系列|广告组|广告).{0,20}按(?:照)?模板",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX = re.compile(
+    r"^\s+(?i:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend)\b.{0,60}\b"
+    r"reports?\b|"
+    r"^\s*(?:使用|表现|成效|消耗|花费|趋势|洞察|指标).{0,30}"
+    r"报告"
+)
+_META_TEMPLATE_ANALYTICS_VISUAL_SUFFIX = re.compile(
+    r"^\s+(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend)\b.{0,60}\b"
+    r"(?:dashboards?|charts?|analysis)\b|"
+    r"^\s*(?:使用|表现|成效|消耗|花费|趋势|洞察|指标).{0,30}"
+    r"(?:看板|图表|分析)",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_ANALYTICS_RELATION_SUFFIX = re.compile(
+    r"^\s+(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend)\b.{0,60}\b(?:by|per|across|over)\s+"
+    r"(?:reports?|dashboards?|charts?|campaigns?|ad\s*sets?|ads?|data|"
+    r"results?|tables?|summar(?:y|ies)|analysis|insights?|metrics?)\b|"
+    r"^\s*(?:使用|表现|成效|消耗|花费|趋势|洞察|指标).{0,30}"
+    r"(?:按|按照|每).{0,20}(?:报告|看板|图表|广告系列|广告组|广告|数据|"
+    r"结果|表格|摘要|分析|洞察|指标)",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_ANALYTICS_NOUN_SUFFIX = re.compile(
+    r"^\s+(?:(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend)\s+)?"
+    r"(?:comparisons?|breakdowns?|benchmarks?)"
+    r"(?:\s+(?:reports?|dashboards?|charts?|analysis))?"
+    r"(?:\s+(?:by|per|across|between|over|of|for|versus)\b"
+    r"[^.!?;:,\n]{0,60})?\s*$|"
+    r"^\s*(?:(?:使用|表现|成效|消耗|花费|趋势|洞察|指标)\s*)?"
+    r"(?:比较|对比|拆分|基准)(?:报告|看板|图表|分析)?\s*$",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_TERMINAL_ANALYTICS_SUFFIX = re.compile(
+    r"^\s*(?:'(?:s)?\s+)?"
+    r"(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend)"
+    r"(?:\s+(?:(?:and|&)\s+)?(?:usage|performance|spend|roas|roi|"
+    r"cpa|cpc|cpm|ctr|insights?|metrics?|trend))*\s*$|"
+    r"^\s*(?:使用|表现|成效|消耗|花费|趋势|洞察|指标)"
+    r"(?:和|与|及)?(?:使用|表现|成效|消耗|花费|趋势|洞察|指标)*\s*$",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_GENERIC_ANALYTICS_SUFFIX = re.compile(
+    r"^\s+(?:reports?|dashboards?|charts?|analysis)\b|"
+    r"^\s*(?:报告|看板|图表|分析)\b",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_TITLE_CASE_SUFFIX = re.compile(
+    r"^\s+[A-Z][A-Za-z0-9_-]*"
+)
+_ACTION_COORDINATOR = re.compile(
+    r"\b(?:and(?:\s+(?:then|also))?|then|plus|but|while|whereas)\b|[&+]",
+    re.IGNORECASE,
+)
+_COORDINATED_ACTION_START = re.compile(
+    r"^\s*(?:then\s+|also\s+)?(?:run|show|list|open|view|browse|get|"
+    r"create|save|change|update|rename|delete|remove|copy|reuse|launch|"
+    r"analy[sz]e|inspect|summari[sz]e|compare|calculate|pause|activate)\b|"
+    r"^\s*(?:然后|同时)?(?:运行|展示|列出|打开|查看|浏览|获取|创建|"
+    r"保存|修改|更新|重命名|删除|移除|复制|复用|投放|分析|比较|"
+    r"暂停|开启)",
+    re.IGNORECASE,
+)
+_DIRECT_OBJECT_COORDINATOR = re.compile(
+    r"(?:\b(?:and|plus|but)\b|[&+])\s*"
+    r"(?:then\s+|also\s+)?"
+    r"(?:(?:the|an?|my|our|your|this|that|these|those)\b|"
+    r"(?:email|document|design|html|message|newsletter|notion)\b)",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_NAMING = re.compile(
+    r"\b(?:named|called|tagged)\b|名为|名称|标签",
+    re.IGNORECASE,
+)
+_CLAUSE_BREAK = re.compile(r"[.!?;:,\n。！？；：，]")
 _ADSAGENT = re.compile(r"\badsagent\b", re.IGNORECASE)
+
+
+def _bounded_template_suffix(
+    prompt: str,
+    template: re.Match[str],
+    limit: int = 120,
+) -> str:
+    suffix = prompt[template.end():template.end() + limit]
+    ends = [
+        match.start()
+        for match in _CLAUSE_BREAK.finditer(suffix)
+    ]
+    for coordinator in _ACTION_COORDINATOR.finditer(suffix):
+        coordinated = suffix[coordinator.start():]
+        following = suffix[coordinator.end():]
+        strong_boundary = re.search(
+            r"\b(?:then|but|while|whereas)\b",
+            coordinator.group(),
+            re.IGNORECASE,
+        )
+        if (
+            strong_boundary
+            or _DIRECT_OBJECT_COORDINATOR.match(coordinated)
+            or _COORDINATED_ACTION_START.match(following)
+        ):
+            ends.append(coordinator.start())
+    return suffix[:min(ends)] if ends else suffix
+
+
+def _bounded_action_clause(
+    prompt: str,
+    subject: re.Match[str],
+) -> tuple[int, int]:
+    before = prompt[:subject.start()]
+    after = prompt[subject.end():]
+    starts = [
+        match.end()
+        for pattern in (_CLAUSE_BREAK, _ACTION_COORDINATOR)
+        for match in pattern.finditer(before)
+    ]
+    ends = [
+        match.start()
+        for pattern in (_CLAUSE_BREAK, _ACTION_COORDINATOR)
+        if (match := pattern.search(after))
+    ]
+    start = max(starts) if starts else 0
+    end = subject.end() + (min(ends) if ends else len(after))
+    return start, end
+
+
+def _has_meta_qualified_template_tool(prompt: str) -> bool:
+    for tool in _TEMPLATE_TOOL.finditer(prompt):
+        start, end = _bounded_action_clause(prompt, tool)
+        clause = prompt[start:end]
+        leading = prompt[max(0, start - 60):start]
+        if (
+            _META_NAME.search(clause)
+            or _META_TEMPLATE_LEADING_QUALIFIER.search(leading)
+        ):
+            return True
+    return False
+
+
+def _has_direct_object_boundary(text: str) -> bool:
+    if _DIRECT_OBJECT_COORDINATOR.search(text):
+        return True
+    for coordinator in _ACTION_COORDINATOR.finditer(text):
+        prior_object = text[:coordinator.start()]
+        if (
+            _META_TEMPLATE_ANALYTICS_SIGNAL.search(prior_object)
+            or _META_TEMPLATE_ANALYTICS_NOUN.search(prior_object)
+            or _META_TEMPLATE_ANALYTICS_CONTAINER.search(prior_object)
+        ):
+            return True
+    return False
+
+
+def _direct_template_lifecycle_objects(
+    prompt: str,
+    verb_pattern: re.Pattern[str],
+) -> tuple[re.Match[str], ...]:
+    """Find templates directly governed by a lifecycle verb in one clause."""
+    templates = tuple(_META_TEMPLATE_TOKEN.finditer(prompt))
+    lifecycle_verbs = tuple(_META_TEMPLATE_LIFECYCLE_VERB.finditer(prompt))
+    direct: list[re.Match[str]] = []
+    for verb in verb_pattern.finditer(prompt):
+        for template in templates:
+            if template.start() < verb.end():
+                continue
+            between = prompt[verb.end():template.start()]
+            if len(between) > 100:
+                break
+            if (
+                _CLAUSE_BREAK.search(between)
+                or _has_direct_object_boundary(between)
+            ):
+                break
+            if any(
+                verb.end() <= later.start() < template.start()
+                for later in lifecycle_verbs
+                if later.start() != verb.start()
+            ):
+                break
+            normalized = re.sub(
+                r"\b(?:meta|facebook|fb)\s+ads?\b",
+                " ",
+                between,
+                flags=re.IGNORECASE,
+            )
+            normalized = _META_TEMPLATE_POSSESSIVE_OF.sub(
+                " ",
+                normalized,
+            )
+            if _META_TEMPLATE_DIRECT_OBJECT_BLOCKER.search(normalized):
+                break
+            qualifier_prefix = prompt[verb.start():template.start()]
+            qualifier_suffix = _bounded_template_suffix(prompt, template)
+            leading_prefix = prompt[max(0, verb.start() - 60):verb.start()]
+            post_qualified = (
+                _META_TEMPLATE_POST_QUALIFIER.search(qualifier_suffix)
+                and not _NON_AD_TEMPLATE_MODIFIER.search(qualifier_prefix)
+                and not _NON_AD_TEMPLATE_MODIFIER.search(qualifier_suffix)
+            )
+            if (
+                _META_NAME.search(qualifier_prefix)
+                or post_qualified
+                or _META_TEMPLATE_LEADING_QUALIFIER.search(leading_prefix)
+            ):
+                direct.append(template)
+            break
+    return tuple(direct)
+
+
+def _has_template_dimension_analytics(
+    prompt: str,
+    direct_templates: tuple[re.Match[str], ...],
+) -> tuple[bool, bool]:
+    indirect_container = False
+    suffix_analytics = False
+    lifecycle_verbs = tuple(_META_TEMPLATE_LIFECYCLE_VERB.finditer(prompt))
+    unambiguous_verbs = {
+        verb.start()
+        for verb in _META_TEMPLATE_UNAMBIGUOUS_LIFECYCLE_VERB.finditer(prompt)
+    }
+    for template in direct_templates:
+        governing = [
+            verb
+            for verb in lifecycle_verbs
+            if verb.end() <= template.start()
+        ]
+        if not governing:
+            continue
+        verb = max(governing, key=lambda match: match.start())
+        governed_by_unambiguous_verb = verb.start() in unambiguous_verbs
+        prefix = prompt[verb.end():template.start()]
+        analytics_prefix = re.sub(
+            r"\b(?:meta|facebook|fb)\s+ads?\b",
+            " meta ",
+            prefix,
+            flags=re.IGNORECASE,
+        )
+        suffix = _bounded_template_suffix(prompt, template)
+        if (
+            _META_TEMPLATE_ANALYTICS_CONTAINER.search(analytics_prefix)
+            and _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
+        ):
+            indirect_container = True
+        for container_pattern in (
+            _META_TEMPLATE_RELATIONAL_CONTAINER,
+            _META_TEMPLATE_ANALYTICS_NOUN,
+        ):
+            for container in container_pattern.finditer(analytics_prefix):
+                relation = analytics_prefix[container.end():]
+                if _META_TEMPLATE_RELATIVE_MARKER.search(relation):
+                    indirect_container = True
+        if (
+            _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
+            and _META_TEMPLATE_ANALYTICS_WINDOW.search(suffix)
+        ):
+            suffix_analytics = True
+        if (
+            _META_TEMPLATE_TERMINAL_ANALYTICS_SUFFIX.search(suffix)
+            and not governed_by_unambiguous_verb
+        ):
+            suffix_analytics = True
+        if _META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX.search(suffix):
+            suffix_analytics = True
+        if _META_TEMPLATE_ANALYTICS_VISUAL_SUFFIX.search(suffix):
+            suffix_analytics = True
+        if _META_TEMPLATE_ANALYTICS_RELATION_SUFFIX.search(suffix):
+            suffix_analytics = True
+        noun_with_window = (
+            _META_TEMPLATE_ANALYTICS_NOUN.search(suffix)
+            and _META_TEMPLATE_ANALYTICS_WINDOW.search(suffix)
+        )
+        title_case_noun = (
+            _META_TEMPLATE_TITLE_CASE_SUFFIX.search(suffix)
+            and not noun_with_window
+        )
+        if (
+            _META_TEMPLATE_ANALYTICS_NOUN_SUFFIX.search(suffix)
+            and not governed_by_unambiguous_verb
+            and not title_case_noun
+        ):
+            suffix_analytics = True
+        if noun_with_window:
+            suffix_analytics = True
+        if _META_TEMPLATE_GENERIC_ANALYTICS_SUFFIX.search(suffix):
+            suffix_analytics = True
+    return indirect_container, suffix_analytics
+
+
+def _has_direct_template_configuration(
+    prompt: str,
+    direct_templates: tuple[re.Match[str], ...],
+) -> bool:
+    for template in direct_templates:
+        suffix = _bounded_template_suffix(prompt, template)
+        if _META_TEMPLATE_CONFIGURATION_SUFFIX.search(suffix):
+            return True
+    return False
+
+
+def _has_direct_template_analytics_object(
+    prompt: str,
+    direct_templates: tuple[re.Match[str], ...],
+) -> bool:
+    for template in direct_templates:
+        suffix = _bounded_template_suffix(prompt, template)
+        if (
+            _META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX.search(suffix)
+            or _META_TEMPLATE_ANALYTICS_VISUAL_SUFFIX.search(suffix)
+            or _META_TEMPLATE_GENERIC_ANALYTICS_SUFFIX.search(suffix)
+            or _META_TEMPLATE_ANALYTICS_RELATION_SUFFIX.search(suffix)
+            or _META_TEMPLATE_ANALYTICS_NOUN_SUFFIX.search(suffix)
+        ):
+            return True
+    return False
+
+
+def _has_direct_title_case_template_object(
+    prompt: str,
+    direct_templates: tuple[re.Match[str], ...],
+) -> bool:
+    for template in direct_templates:
+        suffix = _bounded_template_suffix(prompt, template)
+        if _META_TEMPLATE_TITLE_CASE_SUFFIX.search(suffix):
+            return True
+    return False
+
+
+def _has_direct_named_template_object(
+    prompt: str,
+    direct_templates: tuple[re.Match[str], ...],
+) -> bool:
+    for template in direct_templates:
+        suffix = _bounded_template_suffix(prompt, template, limit=80)
+        if _META_TEMPLATE_NAMING.search(suffix):
+            return True
+    return False
+
+
+def _has_template_grouping_dimension(
+    prompt: str,
+    direct_templates: tuple[re.Match[str], ...],
+) -> bool:
+    for relation in _META_TEMPLATE_GROUPING_RELATION.finditer(prompt):
+        if any(
+            template.end() <= relation.start()
+            for template in direct_templates
+        ):
+            continue
+        return True
+    return False
 
 
 def expected_skill_activation(prompt: str) -> tuple[str, ...]:
     """Return the single initial skill expected for an acceptance fixture."""
     template_tool = bool(_TEMPLATE_TOOL.search(prompt))
+    meta_qualified_template_tool = _has_meta_qualified_template_tool(prompt)
     channel_matches = [
         (
             "meta",
@@ -149,35 +574,99 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
         return ("adsagent-setup",)
     if len(named_channels) > 1:
         return ("adsagent-router",)
+    if (
+        template_tool
+        and not meta_qualified_template_tool
+        and named_channels in ([], ["meta"])
+    ):
+        return ("adsagent-router",)
     if named_channels == ["meta"]:
-        if _META_TEMPLATE_MUTATION.search(prompt):
+        template_analytics = bool(
+            _META_TEMPLATE_ANALYTICS.search(prompt)
+            or _META_TEMPLATE_ANALYTICS_NOUN.search(prompt)
+        )
+        direct_templates = _direct_template_lifecycle_objects(
+            prompt,
+            _META_TEMPLATE_LIFECYCLE_VERB,
+        )
+        unambiguous_direct_templates = _direct_template_lifecycle_objects(
+            prompt,
+            _META_TEMPLATE_UNAMBIGUOUS_LIFECYCLE_VERB,
+        )
+        named_template_object = _has_direct_named_template_object(
+            prompt,
+            direct_templates,
+        )
+        (
+            indirect_template_analytics,
+            suffix_template_analytics,
+        ) = _has_template_dimension_analytics(
+            prompt,
+            direct_templates,
+        )
+        direct_template_configuration = _has_direct_template_configuration(
+            prompt,
+            direct_templates,
+        )
+        direct_template_analytics_object = (
+            _has_direct_template_analytics_object(
+                prompt,
+                direct_templates,
+            )
+        )
+        direct_title_case_template = _has_direct_title_case_template_object(
+            prompt,
+            direct_templates,
+        )
+        template_grouping_dimension = _has_template_grouping_dimension(
+            prompt,
+            direct_templates,
+        )
+        if meta_qualified_template_tool:
+            return ("meta-copy",)
+        if named_template_object and not indirect_template_analytics:
+            return ("meta-copy",)
+        if (
+            direct_title_case_template
+            and unambiguous_direct_templates
+            and not indirect_template_analytics
+            and not direct_template_analytics_object
+        ):
+            return ("meta-copy",)
+        if template_grouping_dimension:
+            return ("meta-insights",)
+        if indirect_template_analytics:
+            return ("meta-insights",)
+        if (
+            direct_template_configuration
+        ):
+            return ("meta-copy",)
+        if suffix_template_analytics:
+            return ("meta-insights",)
+        if unambiguous_direct_templates:
             return ("meta-copy",)
         if (
             not template_tool
-            and not _META_TEMPLATE_EXPLICIT_LIFECYCLE.search(prompt)
+            and not direct_templates
             and _META_TEMPLATE_TOPIC.search(prompt)
-            and _META_TEMPLATE_ANALYTICS.search(prompt)
+            and _META_TEMPLATE_ANALYTICS_SIGNAL.search(prompt)
             and _META_TEMPLATE_ANALYTICS_WINDOW.search(prompt)
-            and not _META_TEMPLATE_MUTATION.search(prompt)
         ):
             return ("meta-insights",)
         if (
-            template_tool
-            or _META_TEMPLATE_EXPLICIT_LIFECYCLE.search(prompt)
-            or _META_TEMPLATE_TITLE_OBJECT.search(prompt)
+            direct_templates
         ):
             return ("meta-copy",)
         if (
             _META_TEMPLATE_TOPIC.search(prompt)
-            and _META_TEMPLATE_ANALYTICS.search(prompt)
-            and not _META_TEMPLATE_MUTATION.search(prompt)
+            and template_analytics
         ):
             return ("meta-insights",)
         if (
             _META_WRITE.search(prompt)
             or (
                 _META_TEMPLATE_OPERATION.search(prompt)
-                and not _META_TEMPLATE_ANALYTICS.search(prompt)
+                and not template_analytics
             )
         ):
             return ("meta-copy",)

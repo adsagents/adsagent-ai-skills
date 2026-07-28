@@ -24,8 +24,19 @@
 
 ## Template Routing
 
-- An explicit Meta/Facebook template list, view, reverse-engineer, save, update,
-  rename, delete, or reuse request routes directly to `meta-copy`.
+- Route to `meta-copy` only when the explicit Meta/Facebook template itself is
+  the lifecycle verb's direct object: list/view/open the templates,
+  reverse-engineer/read back a template, or create/update/rename/delete/reuse
+  one. Arbitrary compound modifiers such as `archived`, `campaign`, `report`,
+  or `latest performance` do not change that direct-object route.
+- Route reports, dashboards, charts, campaign lists, comparisons, and analyses
+  to `meta-insights` when templates are a grouping, filter, subject, or
+  performance dimension rather than the lifecycle object. This includes
+  relation clauses such as "a report summarizing Meta template spend" or "a
+  dashboard visualizing Meta template performance".
+- Bind a direct-template override to the same Meta-qualified clause. An email,
+  document, or other non-Meta template mentioned elsewhere in a compound
+  request must not capture the Meta workflow.
 - An unqualified natural-language template list/view/delete/rename request, or
   an unqualified `templates_*` tool request, remains in `adsagent-router` long
   enough to ask which channel. Do not assume Meta.

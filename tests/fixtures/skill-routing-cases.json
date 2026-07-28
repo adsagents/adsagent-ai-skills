@@ -170,6 +170,16 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "meta_archived_templates_open_is_lifecycle",
+    "prompt": "Open my archived Meta templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_latest_performance_template_read_back_is_lifecycle",
+    "prompt": "Read back my latest Meta performance template.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_template_spend_report_open_is_insights",
     "prompt": "Open a report showing Meta template spend last month.",
     "expected": ["meta-insights"]
@@ -178,6 +188,591 @@
     "id": "meta_template_spend_report_read_back_is_insights",
     "prompt": "Read back a report showing Meta template spend last month.",
     "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_dashboard_open_is_insights",
+    "prompt": "Open a dashboard about Meta template spend last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_chart_browse_is_insights",
+    "prompt": "Browse a chart comparing Meta template spend this month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaigns_by_template_performance_list_is_insights",
+    "prompt": "List campaigns by Meta template performance last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaigns_by_template_roas_browse_is_insights",
+    "prompt": "Browse campaigns by Meta template ROAS this month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_archived_template_performance_dashboard_is_insights",
+    "prompt": "Open the archived Meta template performance dashboard for last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_named_performance_dashboard_with_window_is_lifecycle",
+    "prompt": "Open the Meta template named Performance Dashboard for last month.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_templates_from_last_month_is_lifecycle",
+    "prompt": "Open my Meta templates from last month.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_named_template_report_subject_is_insights",
+    "prompt": "Create a report about Meta template named Summer for last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_analytics_cross_sentence_is_insights",
+    "prompt": "Open the spend report. It shows Meta template performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_reverse_engineer_analytics_title_with_window_is_lifecycle",
+    "prompt": "Reverse-engineer my Meta template Performance Report from last month.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_read_back_analytics_title_with_window_is_lifecycle",
+    "prompt": "Read back my Meta template Usage Report from last month.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "unrelated_email_template_does_not_override_meta_read",
+    "prompt": "Delete the email template, then show Meta Ads performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "unrelated_email_template_without_comma_does_not_override_meta_read",
+    "prompt": "Delete the email template and then show Meta Ads performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "prior_meta_read_does_not_qualify_unrelated_email_template",
+    "prompt": "Show Meta Ads performance and delete the email template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaign_templates_are_lifecycle",
+    "prompt": "Open my Meta campaign templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_report_templates_are_lifecycle",
+    "prompt": "Open my Meta report templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_report_arbitrary_relation_is_insights",
+    "prompt": "Open a report summarizing Meta template spend.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_dashboard_arbitrary_relation_is_insights",
+    "prompt": "Browse a dashboard visualizing Meta template performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_qualified_report_arbitrary_relation_is_insights",
+    "prompt": "Open a Meta report summarizing template spend.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_qualified_dashboard_arbitrary_relation_is_insights",
+    "prompt": "Browse a Meta dashboard visualizing template performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "unrelated_template_after_and_also_does_not_override_meta_read",
+    "prompt": "Show Meta performance and also delete the email template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "unrelated_template_after_ampersand_does_not_override_meta_read",
+    "prompt": "Show Meta performance & delete the email template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_report_templates_with_window_are_lifecycle",
+    "prompt": "Open my Meta report templates from last month.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "leading_meta_qualifier_template_open_is_lifecycle",
+    "prompt": "In Meta, open my templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "leading_facebook_qualifier_template_view_is_lifecycle",
+    "prompt": "For Facebook: view my archived templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_campaign_settings_with_window_is_lifecycle",
+    "prompt": "Create a Meta template for campaign settings from last month.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_campaign_settings_using_source_is_lifecycle",
+    "prompt": "Create a Meta template using campaign settings from last month.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_change_analytics_title_is_lifecycle",
+    "prompt": "Change the Meta template named Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_report_relation_without_metric_is_insights",
+    "prompt": "Open a Meta report summarizing templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_dashboard_relation_without_metric_is_insights",
+    "prompt": "Browse a Meta dashboard visualizing templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_named_subject_in_report_is_insights",
+    "prompt": "Open a Meta report summarizing template named Summer.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_subject_in_dashboard_update_is_insights",
+    "prompt": "Update a Meta dashboard visualizing template performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaign_tracking_templates_are_lifecycle",
+    "prompt": "View my Meta campaign tracking templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_ads_testing_templates_are_lifecycle",
+    "prompt": "Browse my Meta ads testing templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_metric_suffix_with_window_is_insights",
+    "prompt": "Show my Meta template performance last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_suffix_with_window_is_insights",
+    "prompt": "Show Meta template spend last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_dashboard_without_window_is_insights",
+    "prompt": "Browse a dashboard about Meta templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_chart_without_window_is_insights",
+    "prompt": "Show a chart comparing Meta templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_metric_suffix_without_window_is_insights",
+    "prompt": "Show Meta template performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_suffix_without_window_is_insights",
+    "prompt": "Show Meta template spend.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_named_before_post_qualifier_is_lifecycle",
+    "prompt": "Open a template called Summer in Meta.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_title_before_post_qualifier_is_lifecycle",
+    "prompt": "Open a template Summer Launch in Facebook.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_campaigns_grouped_by_template_are_insights",
+    "prompt": "Show Meta campaigns grouped by template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaigns_filtered_by_template_are_insights",
+    "prompt": "Show Meta campaigns filtered by template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_possessive_of_delete_is_lifecycle",
+    "prompt": "Delete one of my Meta templates named Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_possessive_of_view_is_lifecycle",
+    "prompt": "View any of the archived Meta templates named Usage Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_analytics_of_relation_is_insights",
+    "prompt": "Show a report of Meta template spend.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_grouping_phrase_in_name_is_lifecycle",
+    "prompt": "Delete the Meta template named Campaigns Grouped by Template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_grouping_phrase_in_name_open_is_lifecycle",
+    "prompt": "Open the Meta template named Campaigns Grouped by Template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_data_processing_template_is_lifecycle",
+    "prompt": "Delete my data processing Meta template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_grouping_phrase_title_without_named_is_lifecycle",
+    "prompt": "Delete the Meta template Campaigns Grouped by Template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_performance_dashboard_compound_is_insights",
+    "prompt": "Open the Meta template performance dashboard.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_report_compound_is_insights",
+    "prompt": "Browse my Meta template spend report.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_title_case_report_remains_lifecycle",
+    "prompt": "Open my Meta template Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_generic_report_is_insights",
+    "prompt": "Show Meta template report.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_generic_dashboard_is_insights",
+    "prompt": "Open Meta template dashboard.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_grouping_title_open_without_named_is_lifecycle",
+    "prompt": "Open the Meta template Campaigns Grouped by Template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "email_template_for_meta_does_not_override_meta_read",
+    "prompt": "Delete the email template for Meta, then show Meta Ads performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "email_template_does_not_borrow_later_post_qualifier",
+    "prompt": "Delete the email template and then show performance in Meta.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_performance_dashboard_update_is_insights",
+    "prompt": "Update the Meta template performance dashboard.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_report_delete_is_insights",
+    "prompt": "Delete the Meta template spend report.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_title_case_delete_with_window_is_lifecycle",
+    "prompt": "Delete the Meta template Performance Report this month.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "email_template_does_not_borrow_post_qualifier_after_analysis_action",
+    "prompt": "Delete the email template and analyze metrics in Meta.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "template_delete_does_not_borrow_later_analytics_suffix",
+    "prompt": "Delete my Meta template and then show spend.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "coordinated_email_template_does_not_capture_meta_read",
+    "prompt": "Show Meta Ads performance and the email template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "coordinated_bare_email_template_does_not_capture_meta_read",
+    "prompt": "Show Meta Ads performance and email template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "template_post_qualified_for_facebook_is_lifecycle",
+    "prompt": "Open my templates for Facebook.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "undated_template_usage_by_campaign_is_insights",
+    "prompt": "Show Meta template usage by campaign.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "template_performance_settings_update_is_lifecycle",
+    "prompt": "Update my Meta template's performance settings.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "template_performance_testing_delete_is_lifecycle",
+    "prompt": "Delete my Meta template for performance testing.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "template_performance_testing_open_is_lifecycle",
+    "prompt": "Open my Meta template for performance testing.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "template_performance_settings_view_is_lifecycle",
+    "prompt": "View my Meta template's performance settings.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "named_meta_ads_template_delete_is_lifecycle",
+    "prompt": "Delete my Meta Ads template named Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "named_facebook_ads_template_delete_is_lifecycle",
+    "prompt": "Delete my Facebook Ads template named Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "capitalized_template_dashboard_is_insights",
+    "prompt": "Open Meta template Dashboard.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "capitalized_template_analysis_is_insights",
+    "prompt": "Show Meta template Analysis.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "coordinated_archived_template_does_not_capture_meta_read",
+    "prompt": "Show Meta Ads performance and archived template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "coordinated_saved_template_does_not_capture_meta_read",
+    "prompt": "Show Meta Ads performance and saved template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "coordinated_marketing_template_does_not_capture_meta_read",
+    "prompt": "Show Meta Ads performance and marketing template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "coordinated_template_modifiers_remain_one_object",
+    "prompt": "Open Meta research and performance templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_report_detailing_templates_is_insights",
+    "prompt": "Open a Meta report detailing templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_report_listing_templates_is_insights",
+    "prompt": "Open a Meta report listing templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaigns_listing_templates_is_insights",
+    "prompt": "Open Meta campaigns listing templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_report_builder_template_is_lifecycle",
+    "prompt": "Delete my Meta report builder template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_report_configuration_template_is_lifecycle",
+    "prompt": "Open my Meta report configuration templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_campaigns_bare_by_template_is_insights",
+    "prompt": "List Meta campaigns by template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_ads_bare_by_template_is_insights",
+    "prompt": "Show Meta ads by template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "unqualified_template_tool_does_not_borrow_later_meta_clause",
+    "prompt": "Run templates_list, then show Meta Ads performance.",
+    "expected": ["adsagent-router"]
+  },
+  {
+    "id": "same_clause_meta_template_tool_is_lifecycle",
+    "prompt": "Run Meta templates_list.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "leading_meta_qualifier_template_tool_is_lifecycle",
+    "prompt": "For Meta: run templates_list.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "post_qualified_meta_template_tool_is_lifecycle",
+    "prompt": "Run templates_list for Meta.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "report_detailing_meta_templates_is_insights",
+    "prompt": "Open a report detailing Meta templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "report_listing_facebook_templates_is_insights",
+    "prompt": "Open a report listing Facebook templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_data_processing_template_is_direct_lifecycle",
+    "prompt": "Delete my Meta data processing template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_report_scheduling_template_is_direct_lifecycle",
+    "prompt": "Open my Meta report scheduling template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "facebook_ads_leading_qualifier_template_tool_is_lifecycle",
+    "prompt": "For Facebook Ads: run templates_list.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_ads_leading_qualifier_template_tool_is_lifecycle",
+    "prompt": "On Meta Ads, run templates_get.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "google_template_tool_reaches_google_specialist",
+    "prompt": "For Google Ads, run templates_list.",
+    "expected": ["google-ads-insights"]
+  },
+  {
+    "id": "tiktok_template_tool_reaches_tiktok_specialist",
+    "prompt": "For TikTok Ads, run templates_list.",
+    "expected": ["tiktok-insights"]
+  },
+  {
+    "id": "report_including_meta_templates_is_insights",
+    "prompt": "Open a report including Meta templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "dashboard_featuring_meta_templates_is_insights",
+    "prompt": "Browse a dashboard featuring Meta templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "coordinated_template_settings_remain_lifecycle",
+    "prompt": "Open my Meta template's performance and spend settings.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "capitalized_performance_dashboard_is_insights",
+    "prompt": "Open the Meta template Performance dashboard.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "template_from_meta_is_lifecycle",
+    "prompt": "Open a template from Meta.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_results_tracking_template_is_lifecycle",
+    "prompt": "Delete my Meta results tracking template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_spend_tracking_is_lifecycle",
+    "prompt": "Open my Meta template for spend tracking.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_spend_monitoring_is_lifecycle",
+    "prompt": "Open my Meta template for spend monitoring.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "post_nominal_newsletter_template_does_not_capture_meta_read",
+    "prompt": "Delete the template for our newsletter in Meta, then show Meta Ads performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "capitalized_template_dashboard_update_is_insights",
+    "prompt": "Update the Meta template Performance dashboard.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "capitalized_template_spend_report_delete_is_insights",
+    "prompt": "Delete the Meta template Spend report.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaigns_with_templates_is_insights",
+    "prompt": "Show Meta campaigns with templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaigns_using_templates_is_insights",
+    "prompt": "Show Meta campaigns using templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "attached_template_possessive_performance_is_insights",
+    "prompt": "Show Meta template's performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "attached_templates_plural_possessive_spend_is_insights",
+    "prompt": "Show Meta templates' spend.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "leading_meta_qualifier_with_please_is_lifecycle",
+    "prompt": "In Meta, please open my archived templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "leading_facebook_ads_qualifier_with_kindly_is_lifecycle",
+    "prompt": "For Facebook Ads: kindly view my saved templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "leading_meta_qualifier_with_can_you_is_lifecycle",
+    "prompt": "On Meta, can you browse my templates.",
+    "expected": ["meta-copy"]
   },
   {
     "id": "meta_templates_tagged_report_are_lifecycle",
@@ -293,6 +888,66 @@
     "id": "meta_template_usage_is_read",
     "prompt": "Summarize Meta Ads template usage last month.",
     "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_comparison_noun_is_insights",
+    "prompt": "Show a Meta comparison of templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "facebook_template_comparisons_plural_are_insights",
+    "prompt": "Show comparisons of Facebook templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_breakdown_noun_is_insights",
+    "prompt": "Show a Meta breakdown by template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_benchmark_noun_is_insights",
+    "prompt": "Show a Meta benchmark across templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_metric_comparison_suffix_is_insights",
+    "prompt": "Show Meta template performance comparison.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_comparison_zh_is_insights",
+    "prompt": "显示 Meta 模板表现对比。",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_named_comparison_report_is_lifecycle",
+    "prompt": "Open the Meta template named Comparison Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_title_comparison_report_is_lifecycle",
+    "prompt": "Open my Meta template Comparison Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_title_comparison_report_with_window_is_insights",
+    "prompt": "Show Meta template Comparison Report this month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_comparison_settings_are_lifecycle",
+    "prompt": "Update my Meta template comparison settings.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "google_template_comparison_stays_on_google",
+    "prompt": "Compare Google Ads templates.",
+    "expected": ["google-ads-insights"]
+  },
+  {
+    "id": "tiktok_template_comparison_stays_on_tiktok",
+    "prompt": "Compare TikTok Ads templates.",
+    "expected": ["tiktok-insights"]
   },
   {
     "id": "meta_reuse_filter_is_read",

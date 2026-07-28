@@ -35,6 +35,29 @@ def test_routing_fixtures_activate_at_most_one_initial_skill() -> None:
         assert len(actual) <= 1, case["id"]
 
 
+def test_meta_template_analytics_nouns_preserve_route_boundaries() -> None:
+    for noun in ("comparison", "breakdown", "benchmark"):
+        assert expected_skill_activation(
+            f"Show a Meta {noun} of templates."
+        ) == ("meta-insights",)
+        assert expected_skill_activation(
+            f"Show Meta template performance {noun}."
+        ) == ("meta-insights",)
+        assert expected_skill_activation(
+            f"Open the Meta template named {noun.title()} Report."
+        ) == ("meta-copy",)
+        assert expected_skill_activation(
+            f"Update my Meta template {noun} settings."
+        ) == ("meta-copy",)
+
+    assert expected_skill_activation(
+        "Compare Google Ads templates."
+    ) == ("google-ads-insights",)
+    assert expected_skill_activation(
+        "Compare TikTok Ads templates."
+    ) == ("tiktok-insights",)
+
+
 def test_router_frontmatter_is_ambiguity_only() -> None:
     description = _frontmatter_description(
         SKILLS["adsagent-router"]

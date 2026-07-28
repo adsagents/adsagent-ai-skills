@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.41"
+VERSION = "0.7.42"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -194,6 +194,11 @@ REQUIRED_REPO_TERMS = [
     "live_verified=false",
     "operations_get_context(response_mode=compact)",
     "recovered_by_url_fallback",
+    "read_query_too_large",
+    "query_change_required=true",
+    "skip Insights preflight",
+    "one typed entity",
+    "product/date Insights",
 ]
 
 FORBIDDEN_REPO_TERMS = [

@@ -15,6 +15,8 @@
 - One ad -> `copy_ad_quick_copy`.
 - Multiple distinct source Ads regrouped into one destination tree -> `copy_ad_quick_copy` with `grouped_plan`.
 - Campaign/ad set -> `copy_ad_clone_structure`.
+- Known Campaign/Ad Set/Ad status, budget, or bid change -> `meta-copy`; do not
+  route through a historical Meta performance read.
 - Repeat prior creation -> `campaigns_recreate_from_task`.
 - Template reverse-engineer, save, read-back, or reuse -> `meta-copy`; require
   snapshot verification before QuickCreate.
@@ -49,6 +51,10 @@
 - Trust totals only when `meta.complete=true`; missing scopes are unknown, never zero.
 - On `mcp_fanout_detected`, stop the loop and use the platform batch tool.
 - Before Meta delivery writes inspect `capabilities.delivery_mutations`; if denied follow `permission_action`, never self-elevate, then reconnect.
+- For one known Meta entity, call the matching prepare tool directly. It reads
+  live current configuration without mutation. Optional read-only preflight is
+  one typed `overview_get_live_configs` request without `mutation_ref`; never
+  substitute `management=true` or product/date Insights.
 - Consequential platform/delivery writes require prepare, sanitized summary, explicit approval, then confirm; never substitute Campaign and AdSet budget levels.
 - Meta creation uses `creation_contract_version=3`; read `adsagent://guide/creation-contract` and `adsagent://guide/name-contract`, then emit only explicit role fields. QuickCreate always sends `destination.type=web|app`.
 - A reverse-engineered template preview is unsaved. Source labels and a

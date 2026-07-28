@@ -54,6 +54,26 @@ error. Large output uses grouped `insights_export_csv` with identical filters.
 
 On `adsagent_query_invalid`, correct the public field once. On `scope_unavailable`, do not infer another workspace/token or Meta permission. Run setup and matching discovery (`products_list`/`accounts_list_linked_accounts`) once; if still listed, retry the identical bounded read once. Then preserve `support_ref` for operator review. Never broaden scope or alter permissions.
 
+## Known Entity Configuration
+
+Insights answers performance and bounded candidate-selection questions; it is
+not a live-configuration preflight for one known Campaign, Ad Set, or Ad. When
+the user asks to change a known entity's status, budget, or bid, route to
+`meta-copy` and call the matching prepare tool directly. Prepare reads the live
+current value and does not mutate Meta.
+
+If the user explicitly requests read-only configuration proof, call
+`overview_get_live_configs` with exactly one typed entity and no
+`mutation_ref`. Never use `management=true` or product/date Insights as live
+configuration evidence.
+
+On `read_query_too_large` with `operator_review_required=false`,
+`automatic_retry_allowed=false`, and `query_change_required=true`, do not send
+the user to an operator and do not repeat the unchanged request. Narrow the
+scope/date/filter/page shape, use `overview_get_live_configs` for one known
+entity, or use `insights_export_csv` only for an explicitly requested large
+table.
+
 ## Completeness And Freshness
 
 Report server totals; never sum pages. Native totals require `meta.complete=true`; profile totals require top-level `complete=true`. Missing scopes are unknown.

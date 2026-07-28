@@ -172,12 +172,15 @@ _META_TEMPLATE_GROUPING_RELATION = re.compile(
     r"\b(?:grouped|filtered|sorted|split|segmented|aggregated|"
     r"broken\s+down)\s+by\b.{0,100}\btemplates?\b|"
     r"\b(?:campaigns?|ad\s*sets?|ads?)\b.{0,60}\bby\s+templates?\b|"
+    r"\b(?:campaigns?|ad\s*sets?|ads?)\b.{0,60}\b"
+    r"(?:with(?:out)?|using|containing|matching|including|featuring|"
+    r"linked\s+to|associated\s+with)\s+templates?\b|"
     r"按(?:照)?模板(?:分组|筛选|排序|拆分|细分|汇总)|"
     r"(?:广告系列|广告组|广告).{0,20}按(?:照)?模板",
     re.IGNORECASE,
 )
 _META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX = re.compile(
-    r"^\s+(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"^\s+(?i:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
     r"insights?|metrics?|trend)\b.{0,60}\b"
     r"reports?\b|"
     r"^\s*(?:使用|表现|成效|消耗|花费|趋势|洞察|指标).{0,30}"
@@ -449,6 +452,22 @@ def _has_direct_template_configuration(
     return False
 
 
+def _has_direct_template_analytics_object(
+    prompt: str,
+    direct_templates: tuple[re.Match[str], ...],
+) -> bool:
+    for template in direct_templates:
+        suffix = _bounded_template_suffix(prompt, template)
+        if (
+            _META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX.search(suffix)
+            or _META_TEMPLATE_ANALYTICS_VISUAL_SUFFIX.search(suffix)
+            or _META_TEMPLATE_GENERIC_ANALYTICS_SUFFIX.search(suffix)
+            or _META_TEMPLATE_ANALYTICS_RELATION_SUFFIX.search(suffix)
+        ):
+            return True
+    return False
+
+
 def _has_direct_title_case_template_object(
     prompt: str,
     direct_templates: tuple[re.Match[str], ...],
@@ -542,6 +561,12 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             prompt,
             direct_templates,
         )
+        direct_template_analytics_object = (
+            _has_direct_template_analytics_object(
+                prompt,
+                direct_templates,
+            )
+        )
         direct_title_case_template = _has_direct_title_case_template_object(
             prompt,
             direct_templates,
@@ -558,6 +583,7 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             direct_title_case_template
             and unambiguous_direct_templates
             and not indirect_template_analytics
+            and not direct_template_analytics_object
         ):
             return ("meta-copy",)
         if template_grouping_dimension:

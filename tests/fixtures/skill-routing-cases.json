@@ -730,6 +730,26 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "capitalized_template_dashboard_update_is_insights",
+    "prompt": "Update the Meta template Performance dashboard.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "capitalized_template_spend_report_delete_is_insights",
+    "prompt": "Delete the Meta template Spend report.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaigns_with_templates_is_insights",
+    "prompt": "Show Meta campaigns with templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaigns_using_templates_is_insights",
+    "prompt": "Show Meta campaigns using templates.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

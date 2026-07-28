@@ -695,6 +695,26 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "coordinated_template_settings_remain_lifecycle",
+    "prompt": "Open my Meta template's performance and spend settings.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "capitalized_performance_dashboard_is_insights",
+    "prompt": "Open the Meta template Performance dashboard.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "template_from_meta_is_lifecycle",
+    "prompt": "Open a template from Meta.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_results_tracking_template_is_lifecycle",
+    "prompt": "Delete my Meta results tracking template.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

@@ -136,7 +136,7 @@ _META_TEMPLATE_POSSESSIVE_OF = re.compile(
     re.IGNORECASE,
 )
 _META_TEMPLATE_POST_QUALIFIER = re.compile(
-    r"^\s+[^.!?;:,\n]{0,80}?\b(?:for|in|on|within)\s+"
+    r"^\s+[^.!?;:,\n]{0,80}?\b(?:for|from|in|on|within)\s+"
     r"(?:meta|facebook|fb|脸书)\b|"
     r"^\s*[^。！？；：，\n]{0,40}?在\s*"
     r"(?:meta|facebook|fb|脸书)\b",
@@ -161,7 +161,7 @@ _META_TEMPLATE_RELATIVE_MARKER = re.compile(
     r"\b(?:that|which|whose|where|summari[sz]ing|visuali[sz]ing|showing|"
     r"covering|comparing|containing|matching|grouping|filtering|listing|"
     r"detailing|presenting|displaying|enumerating|itemi[sz]ing|charting|"
-    r"plotting|ranking|sorting|outlining|measuring|tracking|examining|"
+    r"plotting|ranking|sorting|outlining|measuring|examining|"
     r"including|featuring|comprising|incorporating|highlighting|"
     r"analy[sz]ing|describing|reporting|aggregating|segmenting|"
     r"breaking\s+down)\b|"
@@ -179,9 +179,17 @@ _META_TEMPLATE_GROUPING_RELATION = re.compile(
 _META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX = re.compile(
     r"^\s+(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
     r"insights?|metrics?|trend)\b.{0,60}\b"
-    r"(?:reports?|dashboards?|charts?|analysis)\b|"
+    r"reports?\b|"
     r"^\s*(?:使用|表现|成效|消耗|花费|趋势|洞察|指标).{0,30}"
-    r"(?:报告|看板|图表|分析)"
+    r"报告"
+)
+_META_TEMPLATE_ANALYTICS_VISUAL_SUFFIX = re.compile(
+    r"^\s+(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend)\b.{0,60}\b"
+    r"(?:dashboards?|charts?|analysis)\b|"
+    r"^\s*(?:使用|表现|成效|消耗|花费|趋势|洞察|指标).{0,30}"
+    r"(?:看板|图表|分析)",
+    re.IGNORECASE,
 )
 _META_TEMPLATE_ANALYTICS_RELATION_SUFFIX = re.compile(
     r"^\s+(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
@@ -213,6 +221,15 @@ _ACTION_COORDINATOR = re.compile(
     r"\b(?:and(?:\s+(?:then|also))?|then|plus|but|while|whereas)\b|[&+]",
     re.IGNORECASE,
 )
+_COORDINATED_ACTION_START = re.compile(
+    r"^\s*(?:then\s+|also\s+)?(?:run|show|list|open|view|browse|get|"
+    r"create|save|change|update|rename|delete|remove|copy|reuse|launch|"
+    r"analy[sz]e|inspect|summari[sz]e|compare|calculate|pause|activate)\b|"
+    r"^\s*(?:然后|同时)?(?:运行|展示|列出|打开|查看|浏览|获取|创建|"
+    r"保存|修改|更新|重命名|删除|移除|复制|复用|投放|分析|比较|"
+    r"暂停|开启)",
+    re.IGNORECASE,
+)
 _DIRECT_OBJECT_COORDINATOR = re.compile(
     r"(?:\b(?:and|plus|but)\b|[&+])\s*"
     r"(?:then\s+|also\s+)?"
@@ -236,9 +253,22 @@ def _bounded_template_suffix(
     suffix = prompt[template.end():template.end() + limit]
     ends = [
         match.start()
-        for pattern in (_CLAUSE_BREAK, _ACTION_COORDINATOR)
-        if (match := pattern.search(suffix))
+        for match in _CLAUSE_BREAK.finditer(suffix)
     ]
+    for coordinator in _ACTION_COORDINATOR.finditer(suffix):
+        coordinated = suffix[coordinator.start():]
+        following = suffix[coordinator.end():]
+        strong_boundary = re.search(
+            r"\b(?:then|but|while|whereas)\b",
+            coordinator.group(),
+            re.IGNORECASE,
+        )
+        if (
+            strong_boundary
+            or _DIRECT_OBJECT_COORDINATOR.match(coordinated)
+            or _COORDINATED_ACTION_START.match(following)
+        ):
+            ends.append(coordinator.start())
     return suffix[:min(ends)] if ends else suffix
 
 
@@ -397,6 +427,8 @@ def _has_template_dimension_analytics(
         ):
             suffix_analytics = True
         if _META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX.search(suffix):
+            suffix_analytics = True
+        if _META_TEMPLATE_ANALYTICS_VISUAL_SUFFIX.search(suffix):
             suffix_analytics = True
         if _META_TEMPLATE_ANALYTICS_RELATION_SUFFIX.search(suffix):
             suffix_analytics = True

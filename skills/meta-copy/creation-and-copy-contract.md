@@ -46,6 +46,14 @@ If the user omits its Campaign, AdSet, or template reference, stop before prepar
 
 Inspect `setup_get_status.capabilities.delivery_mutations`. If denied, follow `permission_action`: `/dashboard/settings#mcp-access` or OAuth `mcp.optimize.write`. Never change permissions automatically; reconnect and re-list tools.
 
+For one known Campaign, Ad Set, or Ad, do not scan historical or product-level
+Insights to discover its current status, budget, or bid. Call the matching
+prepare tool directly; prepare reads the live current value and does not mutate
+Meta. If an explicit read-only preflight is needed, call
+`overview_get_live_configs` with exactly one typed entity and no
+`mutation_ref`. `management=true` or product/date Insights is not live
+configuration evidence.
+
 ABO: `overview_update_adset_budget` then `overview_update_confirm`. CBO: `overview_update_campaign_budget` then `overview_update_campaign_budget_confirm`. Never substitute budget levels. Stop with `support_ref` when an advertised tool is absent.
 
 Correct `adsagent_request_incomplete` `invalid_fields` on prepare once. On repeat or `operator_review_required`, stop. On `no_create_permission`, use `/dashboard/assets/fb-users`.

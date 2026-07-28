@@ -40,6 +40,7 @@ For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact
 | 429 `mcp_concurrency_limited` / 429 concurrency | Honor `Retry-After` plus jitter; retry one read serially. |
 | 503 dependency unavailable structured tool error | Without `task_ref`, honor `retry_after_seconds` and retry the identical bounded read once; otherwise poll that task. |
 | `snapshot_expired` / replayed continuation | Restart page 1 unchanged. Do not reuse the continuation or broaden. |
+| `read_query_too_large` with `operator_review_required=false` | Do not escalate or repeat unchanged. Narrow the query; for one known entity use direct prepare or one typed `overview_get_live_configs` preflight; use export only for an explicitly requested large table. |
 | 410 `confirm_token_invalid` | Do not retry; re-prepare, show the fresh summary, and obtain approval. |
 | `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, `operator_review_required=false` | STOP before later confirms; preserve `completed_mutations`/`not_sent_mutations`/`remaining_mutations`/`safe_resume_from`/`support_refs`; wait; re-prepare unchanged remainder; fresh approval. See [meta-quota-plan.md](meta-quota-plan.md). |
 | `no_create_permission` | Send the user to `/dashboard/assets/fb-users`, then prepare again. |

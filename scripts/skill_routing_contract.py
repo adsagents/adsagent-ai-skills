@@ -165,6 +165,13 @@ _META_TEMPLATE_GROUPING_RELATION = re.compile(
     r"按(?:照)?模板(?:分组|筛选|排序|拆分|细分|汇总)",
     re.IGNORECASE,
 )
+_META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX = re.compile(
+    r"^\s+(?:usage|performance|spend|roas|roi|cpa|cpc|cpm|ctr|"
+    r"insights?|metrics?|trend)\b.{0,60}\b"
+    r"(?:reports?|dashboards?|charts?|analysis)\b|"
+    r"^\s*(?:使用|表现|成效|消耗|花费|趋势|洞察|指标).{0,30}"
+    r"(?:报告|看板|图表|分析)"
+)
 _META_TEMPLATE_NAMING = re.compile(
     r"\b(?:named|called|tagged)\b|名为|名称|标签",
     re.IGNORECASE,
@@ -264,6 +271,8 @@ def _has_template_dimension_analytics(
             and not _META_TEMPLATE_ANALYTICS_CONTAINER.search(suffix)
         ):
             suffix_analytics = True
+        if _META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX.search(suffix):
+            suffix_analytics = True
     return indirect_container, suffix_analytics
 
 
@@ -349,13 +358,17 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             return ("meta-copy",)
         if named_template_object and not indirect_template_analytics:
             return ("meta-copy",)
+        if (
+            unambiguous_direct_templates
+            and not indirect_template_analytics
+        ):
+            return ("meta-copy",)
         if _META_TEMPLATE_GROUPING_RELATION.search(prompt):
             return ("meta-insights",)
         if indirect_template_analytics:
             return ("meta-insights",)
         if (
-            unambiguous_direct_templates
-            or direct_template_configuration
+            direct_template_configuration
         ):
             return ("meta-copy",)
         if suffix_template_analytics:

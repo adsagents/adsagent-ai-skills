@@ -170,6 +170,16 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "meta_template_spend_report_open_is_insights",
+    "prompt": "Open a report showing Meta template spend last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_report_read_back_is_insights",
+    "prompt": "Read back a report showing Meta template spend last month.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

@@ -55,9 +55,13 @@ Hosted has not exposed a verifiable template-save contract.
 
 When that contract is present, use `templates_create` or `templates_update`
 only when it is advertised under `mcp.templates.write` and the user explicitly
-requested that exact write. A payload containing only provenance or metadata
-(including source references, names, tags, and `overwrite`) is never a
-snapshot write.
+requested that exact write. In the exact server-owned source-import mode
+described above, source references are import instructions that cause Hosted
+to re-read the source, not client-supplied snapshot evidence. Send that
+source-only shape only through the exact advertised mode and still require the
+same exact-name read-back. Outside that exact mode, a payload containing only
+provenance or metadata (including source references, names, tags, and
+`overwrite`) is never a snapshot write.
 For `templates_create`, only when its live guide advertises `overwrite`, use
 `overwrite=false` by default; `overwrite=true` is reserved for an
 operator-approved replacement, never recovery. Never add it to

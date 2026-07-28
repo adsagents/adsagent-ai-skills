@@ -96,14 +96,19 @@ _META_TEMPLATE_MUTATION = re.compile(
     r"模板(?:进行)?(?:更新|修改|重命名|删除|复制|复用|投放)",
     re.IGNORECASE,
 )
+_META_TEMPLATE_DIRECT_OBJECT = (
+    r"(?:\s+(?i:all|my|the|this|that|these|those|a|an|new|saved|"
+    r"existing|current|selected|meta|facebook|fb|ads?)){0,6}"
+    r"\s+(?i:templates?)\b"
+)
 _META_TEMPLATE_EXPLICIT_LIFECYCLE = re.compile(
-    r"\b(?:list|browse|open)\b.{0,80}\btemplates?\b|"
+    rf"\b(?:list|browse|open)\b{_META_TEMPLATE_DIRECT_OBJECT}|"
     r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back)\b"
-    r".{0,80}\btemplates?\b|"
+    rf"{_META_TEMPLATE_DIRECT_OBJECT}|"
     r"\b(?:list|browse|open|view|get|show|create|save|update|rename|"
     r"delete|remove)\b"
-    r".{0,80}\btemplates?\b.{0,80}\b(?:named|called|tagged)\b|"
-    r"\b(?:create|save|update)\b.{0,80}\btemplates?\b"
+    rf"{_META_TEMPLATE_DIRECT_OBJECT}.{{0,80}}\b(?:named|called|tagged)\b|"
+    rf"\b(?:create|save|update)\b{_META_TEMPLATE_DIRECT_OBJECT}"
     r".{0,80}\bfor\b.{0,40}\bsettings?\b|"
     r"(?:列出|浏览).{0,40}模板|"
     r"(?:查看|获取|创建|保存|更新|重命名|删除).{0,40}模板"
@@ -111,7 +116,7 @@ _META_TEMPLATE_EXPLICIT_LIFECYCLE = re.compile(
     re.IGNORECASE,
 )
 _META_TEMPLATE_TITLE_OBJECT = re.compile(
-    r"\b(?i:show|open|view|get|create)\b.{0,80}\b(?i:templates?)\b"
+    rf"\b(?i:show|open|view|get|create)\b{_META_TEMPLATE_DIRECT_OBJECT}"
     r"(?:\s+(?i:named|called))?\s+"
     r"[A-Z][A-Za-z0-9_-]*(?:\s+[A-Z][A-Za-z0-9_-]*)+"
 )

@@ -106,6 +106,20 @@ def test_manual_template_account_binding_is_not_source_provenance():
         assert term in guidance
 
 
+def test_server_owned_source_import_is_the_only_provenance_only_exception():
+    guidance = " ".join(
+        _read("skills/meta-copy/template-persistence-contract.md").split()
+    )
+
+    for term in (
+        "exact server-owned source-import mode",
+        "source references are import instructions",
+        "not client-supplied snapshot evidence",
+        "Outside that exact mode",
+    ):
+        assert term in guidance
+
+
 def test_unactionable_template_validation_never_probes_or_replays():
     guidance = " ".join(
         _read("skills/meta-copy/template-persistence-contract.md").split()
@@ -153,7 +167,7 @@ def test_template_tools_are_registered_with_hosted_capabilities():
 
 
 def test_meta_template_persistence_release_is_consistently_versioned():
-    expected = "0.7.43"
+    expected = "0.7.44"
     assert _read("VERSION").strip() == expected
     assert f'"version": "{expected}"' in _read(".claude-plugin/plugin.json")
     assert f'"version": "{expected}"' in _read(

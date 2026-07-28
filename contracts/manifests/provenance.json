@@ -17,7 +17,7 @@
       "sha256": "9d19e8419bc8e960ecc255b9b69fa21c6918f7ec94966618d5d221b6e8e520ec",
       "snapshot_path": "contracts/manifests/meta.json",
       "source_path": "docs/mcp/manifests/meta-tools.json",
-      "source_revision": "90386d32a4c069d76dd224e06eb9cbe4c7aeb4bd",
+      "source_revision": "137b96e6d2ee115b409bb2970d0f66b3d956065f",
       "tool_count": 110
     },
     "tiktok": {

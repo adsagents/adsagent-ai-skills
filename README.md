@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.43`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.44`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -101,6 +101,12 @@ zero Insights from zero activity, require complete inventory coverage for
 entity-existence totals, preserve inherited delivery blockers without
 rewriting native status, and pin every paginated read to its first-page
 inventory generation.
+
+Version 0.7.44 restricts Meta template lifecycle routing to requests whose
+verb operates directly on the template object, so analytics reports that
+mention templates remain with `meta-insights`. It also makes the exact
+server-owned source-import mode the only source-reference-only template-write
+exception; all other provenance-only payloads remain non-snapshot writes.
 
 Version 0.7.43 aligns Meta template lifecycle routing and delivery writes with
 the current Hosted contract. Explicit template open, reverse-engineer, and

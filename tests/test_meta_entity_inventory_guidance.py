@@ -62,7 +62,7 @@ def test_meta_product_health_uses_bounded_current_entity_inventory():
 
 
 def test_meta_entity_inventory_release_is_consistently_versioned():
-    expected = "0.7.43"
+    expected = "0.7.44"
     assert _read("VERSION").strip() == expected
     assert f'"version": "{expected}"' in _read(".claude-plugin/plugin.json")
     assert f'"version": "{expected}"' in _read(

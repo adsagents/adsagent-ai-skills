@@ -127,6 +127,16 @@ _META_TEMPLATE_POST_QUALIFIER = re.compile(
     r"(?:meta|facebook|fb|脸书)\b",
     re.IGNORECASE,
 )
+_META_TEMPLATE_LEADING_QUALIFIER = re.compile(
+    r"(?:(?:in|on|for|within|using)\s+)?"
+    r"(?:meta|facebook|fb|脸书)\s*[,:\-]?\s*$",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_CONFIGURATION_SUFFIX = re.compile(
+    r"^\s+(?:for|with|using|based\s+on)\b.{0,80}\bsettings?\b|"
+    r"^\s*(?:用于|使用|基于).{0,40}设置",
+    re.IGNORECASE,
+)
 _META_TEMPLATE_NAMING = re.compile(
     r"\b(?:named|called|tagged)\b|名为|名称|标签",
     re.IGNORECASE,
@@ -170,9 +180,11 @@ def _direct_template_lifecycle_objects(
             clause_end = boundary.start() if boundary else len(prompt)
             qualifier_prefix = prompt[verb.start():template.start()]
             qualifier_suffix = prompt[template.end():clause_end]
+            leading_prefix = prompt[max(0, verb.start() - 60):verb.start()]
             if (
                 _META_NAME.search(qualifier_prefix)
                 or _META_TEMPLATE_POST_QUALIFIER.search(qualifier_suffix)
+                or _META_TEMPLATE_LEADING_QUALIFIER.search(leading_prefix)
             ):
                 direct.append(template)
             break
@@ -207,6 +219,20 @@ def _has_template_dimension_analytics(
             _META_TEMPLATE_ANALYTICS_CONTAINER.search(suffix)
             and _META_TEMPLATE_ANALYTICS_WINDOW.search(suffix)
         ):
+            return True
+    return False
+
+
+def _has_direct_template_configuration(
+    prompt: str,
+    direct_templates: tuple[re.Match[str], ...],
+) -> bool:
+    for template in direct_templates:
+        suffix = prompt[template.end():template.end() + 120]
+        boundary = _CLAUSE_BREAK.search(suffix)
+        if boundary:
+            suffix = suffix[:boundary.start()]
+        if _META_TEMPLATE_CONFIGURATION_SUFFIX.search(suffix):
             return True
     return False
 
@@ -268,10 +294,15 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             prompt,
             direct_templates,
         )
+        direct_template_configuration = _has_direct_template_configuration(
+            prompt,
+            direct_templates,
+        )
         if (
             template_tool
             or unambiguous_direct_templates
             or named_template_object
+            or direct_template_configuration
         ):
             return ("meta-copy",)
         if template_dimension_analytics:

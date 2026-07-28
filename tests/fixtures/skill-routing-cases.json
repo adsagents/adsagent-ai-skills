@@ -305,6 +305,26 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "leading_meta_qualifier_template_open_is_lifecycle",
+    "prompt": "In Meta, open my templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "leading_facebook_qualifier_template_view_is_lifecycle",
+    "prompt": "For Facebook: view my archived templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_campaign_settings_with_window_is_lifecycle",
+    "prompt": "Create a Meta template for campaign settings from last month.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_campaign_settings_using_source_is_lifecycle",
+    "prompt": "Create a Meta template using campaign settings from last month.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

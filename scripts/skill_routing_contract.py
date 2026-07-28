@@ -170,7 +170,9 @@ _META_TEMPLATE_RELATION_GERUND = re.compile(
 _META_TEMPLATE_GROUPING_RELATION = re.compile(
     r"\b(?:grouped|filtered|sorted|split|segmented|aggregated|"
     r"broken\s+down)\s+by\b.{0,100}\btemplates?\b|"
-    r"按(?:照)?模板(?:分组|筛选|排序|拆分|细分|汇总)",
+    r"\b(?:campaigns?|ad\s*sets?|ads?)\b.{0,60}\bby\s+templates?\b|"
+    r"按(?:照)?模板(?:分组|筛选|排序|拆分|细分|汇总)|"
+    r"(?:广告系列|广告组|广告).{0,20}按(?:照)?模板",
     re.IGNORECASE,
 )
 _META_TEMPLATE_ANALYTICS_COMPOUND_SUFFIX = re.compile(
@@ -237,6 +239,40 @@ def _bounded_template_suffix(
         if (match := pattern.search(suffix))
     ]
     return suffix[:min(ends)] if ends else suffix
+
+
+def _bounded_action_clause(
+    prompt: str,
+    subject: re.Match[str],
+) -> tuple[int, int]:
+    before = prompt[:subject.start()]
+    after = prompt[subject.end():]
+    starts = [
+        match.end()
+        for pattern in (_CLAUSE_BREAK, _ACTION_COORDINATOR)
+        for match in pattern.finditer(before)
+    ]
+    ends = [
+        match.start()
+        for pattern in (_CLAUSE_BREAK, _ACTION_COORDINATOR)
+        if (match := pattern.search(after))
+    ]
+    start = max(starts) if starts else 0
+    end = subject.end() + (min(ends) if ends else len(after))
+    return start, end
+
+
+def _has_meta_qualified_template_tool(prompt: str) -> bool:
+    for tool in _TEMPLATE_TOOL.finditer(prompt):
+        start, end = _bounded_action_clause(prompt, tool)
+        clause = prompt[start:end]
+        leading = prompt[max(0, start - 60):start]
+        if (
+            _META_NAME.search(clause)
+            or _META_TEMPLATE_LEADING_QUALIFIER.search(leading)
+        ):
+            return True
+    return False
 
 
 def _has_direct_object_boundary(text: str) -> bool:
@@ -425,6 +461,7 @@ def _has_template_grouping_dimension(
 def expected_skill_activation(prompt: str) -> tuple[str, ...]:
     """Return the single initial skill expected for an acceptance fixture."""
     template_tool = bool(_TEMPLATE_TOOL.search(prompt))
+    meta_qualified_template_tool = _has_meta_qualified_template_tool(prompt)
     channel_matches = [
         (
             "meta",
@@ -447,6 +484,8 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
     if _SETUP.search(prompt):
         return ("adsagent-setup",)
     if len(named_channels) > 1:
+        return ("adsagent-router",)
+    if template_tool and not meta_qualified_template_tool:
         return ("adsagent-router",)
     if named_channels == ["meta"]:
         direct_templates = _direct_template_lifecycle_objects(
@@ -480,7 +519,7 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             prompt,
             direct_templates,
         )
-        if template_tool:
+        if meta_qualified_template_tool:
             return ("meta-copy",)
         if named_template_object and not indirect_template_analytics:
             return ("meta-copy",)

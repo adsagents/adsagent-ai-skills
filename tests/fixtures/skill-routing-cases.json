@@ -615,6 +615,36 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "meta_campaigns_bare_by_template_is_insights",
+    "prompt": "List Meta campaigns by template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_ads_bare_by_template_is_insights",
+    "prompt": "Show Meta ads by template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "unqualified_template_tool_does_not_borrow_later_meta_clause",
+    "prompt": "Run templates_list, then show Meta Ads performance.",
+    "expected": ["adsagent-router"]
+  },
+  {
+    "id": "same_clause_meta_template_tool_is_lifecycle",
+    "prompt": "Run Meta templates_list.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "leading_meta_qualifier_template_tool_is_lifecycle",
+    "prompt": "For Meta: run templates_list.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "post_qualified_meta_template_tool_is_lifecycle",
+    "prompt": "Run templates_list for Meta.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

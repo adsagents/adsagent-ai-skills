@@ -131,7 +131,9 @@ _META_TEMPLATE_DIRECT_OBJECT_BLOCKER = re.compile(
     re.IGNORECASE,
 )
 _META_TEMPLATE_POST_QUALIFIER = re.compile(
-    r"^\s*(?:(?:in|on|for|from|within)\s+|(?:在|用于|来自)\s*)"
+    r"^\s+[^.!?;:,\n]{0,80}?\b(?:in|on|for|from|within)\s+"
+    r"(?:meta|facebook|fb|脸书)\b|"
+    r"^\s*[^。！？；：，\n]{0,40}?(?:在|用于|来自)\s*"
     r"(?:meta|facebook|fb|脸书)\b",
     re.IGNORECASE,
 )
@@ -148,6 +150,12 @@ _META_TEMPLATE_CONFIGURATION_SUFFIX = re.compile(
 _META_TEMPLATE_RELATIVE_MARKER = re.compile(
     r"\b(?:that|which|whose|where|[a-z][a-z-]{2,}ing)\b|"
     r"用于|显示|描述|汇总|总结|比较|分析",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_GROUPING_RELATION = re.compile(
+    r"\b(?:grouped|filtered|sorted|split|segmented|aggregated|"
+    r"broken\s+down)\s+by\b.{0,100}\btemplates?\b|"
+    r"按(?:照)?模板(?:分组|筛选|排序|拆分|细分|汇总)",
     re.IGNORECASE,
 )
 _META_TEMPLATE_NAMING = re.compile(
@@ -240,6 +248,11 @@ def _has_template_dimension_analytics(
             and _META_TEMPLATE_ANALYTICS_WINDOW.search(suffix)
         ):
             suffix_analytics = True
+        if (
+            _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
+            and not _META_TEMPLATE_ANALYTICS_CONTAINER.search(suffix)
+        ):
+            suffix_analytics = True
     return indirect_container, suffix_analytics
 
 
@@ -323,6 +336,8 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
         )
         if template_tool:
             return ("meta-copy",)
+        if _META_TEMPLATE_GROUPING_RELATION.search(prompt):
+            return ("meta-insights",)
         if indirect_template_analytics:
             return ("meta-insights",)
         if (

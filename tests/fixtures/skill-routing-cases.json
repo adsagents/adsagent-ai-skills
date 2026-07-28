@@ -380,6 +380,36 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "meta_template_metric_suffix_without_window_is_insights",
+    "prompt": "Show Meta template performance.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_suffix_without_window_is_insights",
+    "prompt": "Show Meta template spend.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_named_before_post_qualifier_is_lifecycle",
+    "prompt": "Open a template called Summer in Meta.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_title_before_post_qualifier_is_lifecycle",
+    "prompt": "Open a template Summer Launch in Facebook.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_campaigns_grouped_by_template_are_insights",
+    "prompt": "Show Meta campaigns grouped by template.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_campaigns_filtered_by_template_are_insights",
+    "prompt": "Show Meta campaigns filtered by template.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

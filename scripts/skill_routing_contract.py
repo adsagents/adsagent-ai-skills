@@ -93,11 +93,6 @@ _META_TEMPLATE_TOPIC = re.compile(
     r"\btemplates?\b|模板",
     re.IGNORECASE,
 )
-_META_TEMPLATE_NAMED_OBJECT = re.compile(
-    r"\btemplates?\b.{0,60}\b(?:named|called|tagged)\b|"
-    r"模板.{0,40}(?:名为|名称|标签)",
-    re.IGNORECASE,
-)
 _META_TEMPLATE_MUTATION = re.compile(
     r"\b(?:update|change|rename|delete|remove|copy|reuse|launch)\b"
     r"\s+(?:(?:this|that|the|my|saved|meta|facebook|fb|ads?)\s+){0,5}"
@@ -107,34 +102,71 @@ _META_TEMPLATE_MUTATION = re.compile(
     r"模板(?:进行)?(?:更新|修改|重命名|删除|复制|复用|投放)",
     re.IGNORECASE,
 )
-_META_TEMPLATE_INDIRECT_REFERENCE = re.compile(
-    r"\b(?:list|open|browse|view|get|show|read[- ]?back)\b"
-    r".{0,80}?\b(?:about|by|for|from|on|of|with|under|showing|covering|"
-    r"comparing|containing|using|matching|based\s+on|grouped\s+by|"
-    r"filtered\s+by|broken\s+down\s+by|linked\s+to|associated\s+with)\b"
-    r".{0,80}\btemplates?\b",
+_META_TEMPLATE_LIFECYCLE_VERB = re.compile(
+    r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back|save|create|list|"
+    r"show|browse|view|get|open|update|rename|delete|remove|reuse)\b|"
+    r"逆向|回读|保存|创建|列出|展示|浏览|查看|获取|打开|更新|重命名|"
+    r"删除|移除|复用",
     re.IGNORECASE,
 )
-_META_TEMPLATE_EXPLICIT_LIFECYCLE = re.compile(
-    r"\b(?:list|browse|open)\b.{0,80}\btemplates?\b|"
-    r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back)\b"
-    r".{0,80}\btemplates?\b|"
-    r"\b(?:list|browse|open|view|get|show|create|save|update|rename|"
-    r"delete|remove)\b"
-    r".{0,80}\btemplates?\b.{0,80}\b(?:named|called|tagged)\b|"
-    r"\b(?:create|save|update)\b.{0,80}\btemplates?\b"
-    r".{0,80}\bfor\b.{0,40}\bsettings?\b|"
-    r"(?:列出|浏览).{0,40}模板|"
-    r"(?:查看|获取|创建|保存|更新|重命名|删除).{0,40}模板"
-    r".{0,40}(?:名为|标签|设置)",
+_META_TEMPLATE_TOKEN = re.compile(r"\btemplates?\b|模板", re.IGNORECASE)
+_META_TEMPLATE_DIRECT_OBJECT_BLOCKER = re.compile(
+    r"\b(?:reports?|dashboards?|charts?|campaigns?|ad\s*sets?|data|"
+    r"results?|tables?|summar(?:y|ies)|analysis|insights?|metrics?|"
+    r"about|by|from|on|of|with|under|showing|covering|comparing|"
+    r"containing|using|matching|based\s+on|grouped\s+by|filtered\s+by|"
+    r"broken\s+down\s+by|linked\s+to|associated\s+with)\b|"
+    r"报告|看板|图表|广告系列|广告组|数据|结果|表格|摘要|分析|洞察|"
+    r"指标|关于|按照|基于|显示|包含|关联",
     re.IGNORECASE,
 )
-_META_TEMPLATE_TITLE_OBJECT = re.compile(
-    r"\b(?i:show|open|view|get|create)\b.{0,80}\b(?i:templates?)\b"
-    r"(?:\s+(?i:named|called))?\s+"
-    r"[A-Z][A-Za-z0-9_-]*(?:\s+[A-Z][A-Za-z0-9_-]*)+"
+_META_TEMPLATE_NAMING = re.compile(
+    r"\b(?:named|called|tagged)\b|名为|名称|标签",
+    re.IGNORECASE,
 )
+_CLAUSE_BREAK = re.compile(r"[.!?;:,\n。！？；：，]")
 _ADSAGENT = re.compile(r"\badsagent\b", re.IGNORECASE)
+
+
+def _direct_template_lifecycle_objects(
+    prompt: str,
+) -> tuple[re.Match[str], ...]:
+    """Find templates directly governed by a lifecycle verb in one clause."""
+    templates = tuple(_META_TEMPLATE_TOKEN.finditer(prompt))
+    direct: list[re.Match[str]] = []
+    for verb in _META_TEMPLATE_LIFECYCLE_VERB.finditer(prompt):
+        for template in templates:
+            if template.start() < verb.end():
+                continue
+            between = prompt[verb.end():template.start()]
+            if len(between) > 100:
+                break
+            if _CLAUSE_BREAK.search(between):
+                break
+            normalized = re.sub(
+                r"\b(?:meta|facebook|fb)\s+ads?\b",
+                " ",
+                between,
+                flags=re.IGNORECASE,
+            )
+            if not _META_TEMPLATE_DIRECT_OBJECT_BLOCKER.search(normalized):
+                direct.append(template)
+            break
+    return tuple(direct)
+
+
+def _has_direct_named_template_object(
+    prompt: str,
+    direct_templates: tuple[re.Match[str], ...],
+) -> bool:
+    for template in direct_templates:
+        suffix = prompt[template.end():template.end() + 80]
+        boundary = _CLAUSE_BREAK.search(suffix)
+        if boundary:
+            suffix = suffix[:boundary.start()]
+        if _META_TEMPLATE_NAMING.search(suffix):
+            return True
+    return False
 
 
 def expected_skill_activation(prompt: str) -> tuple[str, ...]:
@@ -164,15 +196,11 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
     if len(named_channels) > 1:
         return ("adsagent-router",)
     if named_channels == ["meta"]:
-        indirect_template_reference = bool(
-            _META_TEMPLATE_INDIRECT_REFERENCE.search(prompt)
+        direct_templates = _direct_template_lifecycle_objects(prompt)
+        named_template_object = _has_direct_named_template_object(
+            prompt,
+            direct_templates,
         )
-        named_template_object = bool(
-            _META_TEMPLATE_NAMED_OBJECT.search(prompt)
-        )
-        explicit_template_lifecycle = bool(
-            _META_TEMPLATE_EXPLICIT_LIFECYCLE.search(prompt)
-        ) and not indirect_template_reference
         if _META_TEMPLATE_MUTATION.search(prompt):
             return ("meta-copy",)
         if (
@@ -185,11 +213,7 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             return ("meta-insights",)
         if (
             template_tool
-            or explicit_template_lifecycle
-            or (
-                _META_TEMPLATE_TITLE_OBJECT.search(prompt)
-                and not indirect_template_reference
-            )
+            or direct_templates
         ):
             return ("meta-copy",)
         if (

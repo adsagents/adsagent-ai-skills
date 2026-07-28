@@ -155,6 +155,21 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "meta_template_performance_report_reverse_engineer_is_lifecycle",
+    "prompt": "Reverse-engineer the Meta template Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_usage_report_read_back_is_lifecycle",
+    "prompt": "Read back the Meta template Usage Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_templates_open_collection_is_lifecycle",
+    "prompt": "Open my Meta templates.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

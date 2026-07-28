@@ -54,7 +54,23 @@ Meta. If an explicit read-only preflight is needed, call
 `mutation_ref`. `management=true` or product/date Insights is not live
 configuration evidence.
 
-ABO: `overview_update_adset_budget` then `overview_update_confirm`. CBO: `overview_update_campaign_budget` then `overview_update_campaign_budget_confirm`. Never substitute budget levels. Stop with `support_ref` when an advertised tool is absent.
+Use only this advertised object-field matrix:
+
+- Campaign status: `overview_update_campaign_status`, then
+  `overview_update_confirm`.
+- Campaign budget: `overview_update_campaign_budget`, then
+  `overview_update_campaign_budget_confirm`.
+- Ad Set status: `overview_update_adset_status`, then
+  `overview_update_confirm`.
+- Ad Set budget: `overview_update_adset_budget`, then
+  `overview_update_confirm`.
+- Ad Set bid: `overview_update_adset_bid`, then `overview_update_confirm`.
+- Ad status: `overview_update_ad_status`, then `overview_update_confirm`.
+
+Campaign bid is unsupported. Ad budget and Ad bid are unsupported. Stop instead
+of substituting another object level or inventing a tool. ABO uses the Ad Set
+budget path; CBO uses the Campaign budget path. Stop with `support_ref` when an
+advertised tool is absent.
 
 Correct `adsagent_request_incomplete` `invalid_fields` on prepare once. On repeat or `operator_review_required`, stop. On `no_create_permission`, use `/dashboard/assets/fb-users`.
 

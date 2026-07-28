@@ -81,12 +81,29 @@ def test_template_readback_blocks_unsafe_quickcreate():
         "diagnostics_complete",
         "templates_list",
         "templates_delete",
+        "bounded screening",
+        "exact-name `templates_get`",
     ):
         assert term in guidance
 
     assert "Non-empty maps" in guidance
     assert "still not sufficient" in guidance
     assert "reject QuickCreate from an unverified or stale template" in guidance
+
+
+def test_manual_template_account_binding_is_not_source_provenance():
+    guidance = " ".join(
+        _read("skills/meta-copy/template-persistence-contract.md").split()
+    )
+
+    for term in (
+        "all three complete configuration maps",
+        "`source_account_id` without `source_adset_id`",
+        "account binding",
+        "not reverse-engineered source provenance",
+        "`source_adset_id` with optional `source_account_id`",
+    ):
+        assert term in guidance
 
 
 def test_unactionable_template_validation_never_probes_or_replays():
@@ -136,7 +153,7 @@ def test_template_tools_are_registered_with_hosted_capabilities():
 
 
 def test_meta_template_persistence_release_is_consistently_versioned():
-    expected = "0.7.42"
+    expected = "0.7.43"
     assert _read("VERSION").strip() == expected
     assert f'"version": "{expected}"' in _read(".claude-plugin/plugin.json")
     assert f'"version": "{expected}"' in _read(

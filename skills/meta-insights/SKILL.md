@@ -1,11 +1,12 @@
 ---
 name: meta-insights
-description: Use when reading or analyzing Meta Ads performance, delivery metadata, MMP, AppsFlyer, cohorts, or exports through AdsAgent.
+description: Use when reading or analyzing Meta Ads performance, delivery, MMP, cohorts, exports, or reports where templates are an analysis dimension.
 ---
 
 # Meta Insights Through AdsAgent
 
-1. Classify the request as product health or performance reporting.
+1. Classify health or performance. Template-dimension reports stay here;
+   direct template lifecycle uses `meta-copy`.
 2. For product health, call `products_list`, select one public `product_ref`,
    then call `products_get_health`. This path does not require a date range or
    an Insights query.

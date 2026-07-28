@@ -270,6 +270,16 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "meta_template_report_arbitrary_relation_is_insights",
+    "prompt": "Open a report summarizing Meta template spend.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_dashboard_arbitrary_relation_is_insights",
+    "prompt": "Browse a dashboard visualizing Meta template performance.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

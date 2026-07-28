@@ -116,6 +116,13 @@ _META_TEMPLATE_UNAMBIGUOUS_LIFECYCLE_VERB = re.compile(
     re.IGNORECASE,
 )
 _META_TEMPLATE_TOKEN = re.compile(r"\btemplates?\b|模板", re.IGNORECASE)
+_META_TEMPLATE_ANALYTICS_CONTAINER = re.compile(
+    r"\b(?:reports?|dashboards?|charts?|campaigns?|ad\s*sets?|ads?|data|"
+    r"results?|tables?|summar(?:y|ies)|analysis|insights?|metrics?)\b|"
+    r"报告|看板|图表|广告系列|广告组|广告|数据|结果|表格|摘要|分析|"
+    r"洞察|指标",
+    re.IGNORECASE,
+)
 _META_TEMPLATE_DIRECT_OBJECT_BLOCKER = re.compile(
     r"\b(?:about|by|for|from|on|of|with|under|showing|covering|comparing|"
     r"containing|using|matching|based\s+on|grouped\s+by|filtered\s+by|"
@@ -166,6 +173,16 @@ def _direct_template_lifecycle_objects(
                 flags=re.IGNORECASE,
             )
             if _META_TEMPLATE_DIRECT_OBJECT_BLOCKER.search(normalized):
+                break
+            qualifiers = tuple(_META_NAME.finditer(between))
+            containers = tuple(
+                _META_TEMPLATE_ANALYTICS_CONTAINER.finditer(between)
+            )
+            if any(
+                qualifier.start() > container.end()
+                for container in containers
+                for qualifier in qualifiers
+            ):
                 break
             clause_start = 0
             for boundary in _QUALIFIER_BREAK.finditer(prompt):

@@ -311,15 +311,23 @@ def _has_template_dimension_analytics(
         verb = max(governing, key=lambda match: match.start())
         governed_by_unambiguous_verb = verb.start() in unambiguous_verbs
         prefix = prompt[verb.end():template.start()]
+        analytics_prefix = re.sub(
+            r"\b(?:meta|facebook|fb)\s+ads?\b",
+            " ",
+            prefix,
+            flags=re.IGNORECASE,
+        )
         suffix = _bounded_template_suffix(prompt, template)
         if (
-            _META_TEMPLATE_ANALYTICS_CONTAINER.search(prefix)
+            _META_TEMPLATE_ANALYTICS_CONTAINER.search(analytics_prefix)
             and _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
         ):
             indirect_container = True
-        for container in _META_TEMPLATE_RELATIONAL_CONTAINER.finditer(prefix):
+        for container in _META_TEMPLATE_RELATIONAL_CONTAINER.finditer(
+            analytics_prefix
+        ):
             if _META_TEMPLATE_RELATIVE_MARKER.search(
-                prefix[container.end():]
+                analytics_prefix[container.end():]
             ):
                 indirect_container = True
         if (

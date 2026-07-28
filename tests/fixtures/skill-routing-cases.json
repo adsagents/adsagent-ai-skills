@@ -550,6 +550,16 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "named_meta_ads_template_delete_is_lifecycle",
+    "prompt": "Delete my Meta Ads template named Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "named_facebook_ads_template_delete_is_lifecycle",
+    "prompt": "Delete my Facebook Ads template named Performance Report.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

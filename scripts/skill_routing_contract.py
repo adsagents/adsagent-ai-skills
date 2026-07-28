@@ -123,11 +123,6 @@ _META_TEMPLATE_RELATIONAL_CONTAINER = re.compile(
     r"报告|看板|图表|广告系列|数据|结果|表格|摘要|分析|洞察|指标",
     re.IGNORECASE,
 )
-_META_TEMPLATE_REPORTING_CONTAINER = re.compile(
-    r"\b(?:reports?|dashboards?|charts?|tables?)\b|"
-    r"报告|看板|图表|表格",
-    re.IGNORECASE,
-)
 _META_TEMPLATE_DIRECT_OBJECT_BLOCKER = re.compile(
     r"\b(?:about|by|for|from|on|of|with|under|showing|covering|comparing|"
     r"containing|using|matching|based\s+on|grouped\s+by|filtered\s+by|"
@@ -166,6 +161,10 @@ _META_TEMPLATE_RELATIVE_MARKER = re.compile(
     r"covering|comparing|containing|matching|grouping|filtering|"
     r"analy[sz]ing|describing|reporting|aggregating|segmenting)\b|"
     r"用于|显示|描述|汇总|总结|比较|分析",
+    re.IGNORECASE,
+)
+_META_TEMPLATE_RELATION_GERUND = re.compile(
+    r"\b[a-z][a-z-]{2,}ing\b",
     re.IGNORECASE,
 )
 _META_TEMPLATE_GROUPING_RELATION = re.compile(
@@ -332,16 +331,11 @@ def _has_template_dimension_analytics(
         prefix = prompt[verb.end():template.start()]
         analytics_prefix = re.sub(
             r"\b(?:meta|facebook|fb)\s+ads?\b",
-            " ",
+            " meta ",
             prefix,
             flags=re.IGNORECASE,
         )
         suffix = _bounded_template_suffix(prompt, template)
-        for container in _META_TEMPLATE_REPORTING_CONTAINER.finditer(
-            analytics_prefix
-        ):
-            if analytics_prefix[container.end():].strip():
-                indirect_container = True
         if (
             _META_TEMPLATE_ANALYTICS_CONTAINER.search(analytics_prefix)
             and _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
@@ -350,8 +344,14 @@ def _has_template_dimension_analytics(
         for container in _META_TEMPLATE_RELATIONAL_CONTAINER.finditer(
             analytics_prefix
         ):
-            if _META_TEMPLATE_RELATIVE_MARKER.search(
-                analytics_prefix[container.end():]
+            relation = analytics_prefix[container.end():]
+            qualified_gerund_relation = (
+                _META_NAME.search(analytics_prefix[:container.start()])
+                and _META_TEMPLATE_RELATION_GERUND.search(relation)
+            )
+            if (
+                _META_TEMPLATE_RELATIVE_MARKER.search(relation)
+                or qualified_gerund_relation
             ):
                 indirect_container = True
         if (

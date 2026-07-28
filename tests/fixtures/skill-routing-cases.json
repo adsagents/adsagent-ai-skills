@@ -600,6 +600,21 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "meta_campaigns_listing_templates_is_insights",
+    "prompt": "Open Meta campaigns listing templates.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_report_builder_template_is_lifecycle",
+    "prompt": "Delete my Meta report builder template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_report_configuration_template_is_lifecycle",
+    "prompt": "Open my Meta report configuration templates.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

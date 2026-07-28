@@ -149,7 +149,13 @@ _NON_AD_TEMPLATE_MODIFIER = re.compile(
 _META_TEMPLATE_LEADING_QUALIFIER = re.compile(
     r"(?:(?:in|on|for|within|using)\s+)?"
     r"(?:meta|facebook|fb)(?:\s+ads?)?\s*[,:\-]?\s*$|"
-    r"脸书(?:广告)?\s*[,:\-]?\s*$",
+    r"(?:(?:in|on|for|within|using)\s+)?"
+    r"(?:meta|facebook|fb)(?:\s+ads?)?\s*[,:\-]\s*"
+    r"(?:(?:please|kindly|now|just)\s+|"
+    r"(?:can|could|would|will)\s+you\s+|"
+    r"go\s+ahead\s+and\s+)+$|"
+    r"脸书(?:广告)?\s*[,:\-]?\s*$|"
+    r"脸书(?:广告)?\s*[,:\-]\s*(?:请|麻烦|现在)\s*$",
     re.IGNORECASE,
 )
 _META_TEMPLATE_CONFIGURATION_SUFFIX = re.compile(

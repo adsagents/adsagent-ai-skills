@@ -760,6 +760,21 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "leading_meta_qualifier_with_please_is_lifecycle",
+    "prompt": "In Meta, please open my archived templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "leading_facebook_ads_qualifier_with_kindly_is_lifecycle",
+    "prompt": "For Facebook Ads: kindly view my saved templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "leading_meta_qualifier_with_can_you_is_lifecycle",
+    "prompt": "On Meta, can you browse my templates.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

@@ -460,6 +460,16 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "meta_template_generic_report_is_insights",
+    "prompt": "Show Meta template report.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_generic_dashboard_is_insights",
+    "prompt": "Open Meta template dashboard.",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

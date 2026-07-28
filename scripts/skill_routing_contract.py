@@ -191,6 +191,20 @@ _CLAUSE_BREAK = re.compile(r"[.!?;:,\n。！？；：，]")
 _ADSAGENT = re.compile(r"\badsagent\b", re.IGNORECASE)
 
 
+def _bounded_template_suffix(
+    prompt: str,
+    template: re.Match[str],
+    limit: int = 120,
+) -> str:
+    suffix = prompt[template.end():template.end() + limit]
+    ends = [
+        match.start()
+        for pattern in (_CLAUSE_BREAK, _ACTION_COORDINATOR)
+        if (match := pattern.search(suffix))
+    ]
+    return suffix[:min(ends)] if ends else suffix
+
+
 def _direct_template_lifecycle_objects(
     prompt: str,
     verb_pattern: re.Pattern[str],
@@ -226,21 +240,8 @@ def _direct_template_lifecycle_objects(
             )
             if _META_TEMPLATE_DIRECT_OBJECT_BLOCKER.search(normalized):
                 break
-            boundary = _CLAUSE_BREAK.search(prompt, template.end())
-            clause_end = boundary.start() if boundary else len(prompt)
-            for later in lifecycle_verbs:
-                if later.start() < template.end():
-                    continue
-                coordinator = _ACTION_COORDINATOR.search(
-                    prompt,
-                    template.end(),
-                    later.start(),
-                )
-                if coordinator:
-                    clause_end = min(clause_end, coordinator.start())
-                    break
             qualifier_prefix = prompt[verb.start():template.start()]
-            qualifier_suffix = prompt[template.end():clause_end]
+            qualifier_suffix = _bounded_template_suffix(prompt, template)
             leading_prefix = prompt[max(0, verb.start() - 60):verb.start()]
             if (
                 _META_NAME.search(qualifier_prefix)
@@ -269,10 +270,7 @@ def _has_template_dimension_analytics(
             continue
         verb = max(governing, key=lambda match: match.start())
         prefix = prompt[verb.end():template.start()]
-        suffix = prompt[template.end():template.end() + 120]
-        boundary = _CLAUSE_BREAK.search(suffix)
-        if boundary:
-            suffix = suffix[:boundary.start()]
+        suffix = _bounded_template_suffix(prompt, template)
         if (
             _META_TEMPLATE_ANALYTICS_CONTAINER.search(prefix)
             and _META_TEMPLATE_ANALYTICS_SIGNAL.search(suffix)
@@ -305,10 +303,7 @@ def _has_direct_template_configuration(
     direct_templates: tuple[re.Match[str], ...],
 ) -> bool:
     for template in direct_templates:
-        suffix = prompt[template.end():template.end() + 120]
-        boundary = _CLAUSE_BREAK.search(suffix)
-        if boundary:
-            suffix = suffix[:boundary.start()]
+        suffix = _bounded_template_suffix(prompt, template)
         if _META_TEMPLATE_CONFIGURATION_SUFFIX.search(suffix):
             return True
     return False
@@ -319,10 +314,7 @@ def _has_direct_title_case_template_object(
     direct_templates: tuple[re.Match[str], ...],
 ) -> bool:
     for template in direct_templates:
-        suffix = prompt[template.end():template.end() + 120]
-        boundary = _CLAUSE_BREAK.search(suffix)
-        if boundary:
-            suffix = suffix[:boundary.start()]
+        suffix = _bounded_template_suffix(prompt, template)
         if _META_TEMPLATE_TITLE_CASE_SUFFIX.search(suffix):
             return True
     return False
@@ -333,10 +325,7 @@ def _has_direct_named_template_object(
     direct_templates: tuple[re.Match[str], ...],
 ) -> bool:
     for template in direct_templates:
-        suffix = prompt[template.end():template.end() + 80]
-        boundary = _CLAUSE_BREAK.search(suffix)
-        if boundary:
-            suffix = suffix[:boundary.start()]
+        suffix = _bounded_template_suffix(prompt, template, limit=80)
         if _META_TEMPLATE_NAMING.search(suffix):
             return True
     return False

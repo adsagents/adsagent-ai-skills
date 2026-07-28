@@ -500,6 +500,16 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "email_template_does_not_borrow_post_qualifier_after_analysis_action",
+    "prompt": "Delete the email template and analyze metrics in Meta.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "template_delete_does_not_borrow_later_analytics_suffix",
+    "prompt": "Delete my Meta template and then show spend.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

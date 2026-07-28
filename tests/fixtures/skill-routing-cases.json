@@ -170,6 +170,16 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "meta_archived_templates_open_is_lifecycle",
+    "prompt": "Open my archived Meta templates.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_latest_performance_template_read_back_is_lifecycle",
+    "prompt": "Read back my latest Meta performance template.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_template_spend_report_open_is_insights",
     "prompt": "Open a report showing Meta template spend last month.",
     "expected": ["meta-insights"]
@@ -177,6 +187,16 @@
   {
     "id": "meta_template_spend_report_read_back_is_insights",
     "prompt": "Read back a report showing Meta template spend last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_dashboard_open_is_insights",
+    "prompt": "Open a dashboard about Meta template spend last month.",
+    "expected": ["meta-insights"]
+  },
+  {
+    "id": "meta_template_spend_chart_browse_is_insights",
+    "prompt": "Browse a chart comparing Meta template spend this month.",
     "expected": ["meta-insights"]
   },
   {

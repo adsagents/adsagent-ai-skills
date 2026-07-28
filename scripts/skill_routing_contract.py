@@ -96,19 +96,21 @@ _META_TEMPLATE_MUTATION = re.compile(
     r"模板(?:进行)?(?:更新|修改|重命名|删除|复制|复用|投放)",
     re.IGNORECASE,
 )
-_META_TEMPLATE_DIRECT_OBJECT = (
-    r"(?:\s+(?i:all|my|the|this|that|these|those|a|an|new|saved|"
-    r"existing|current|selected|meta|facebook|fb|ads?)){0,6}"
-    r"\s+(?i:templates?)\b"
+_META_TEMPLATE_ANALYTICS_CONTAINER = re.compile(
+    r"\b(?:open|browse|view|get|show|read[- ]?back)\b"
+    r".{0,60}\b(?:report|dashboard|chart|analysis|insights?|metrics?)\b"
+    r"\s+(?:showing|about|for|on|of|with|covering|comparing|containing)\b"
+    r".{0,80}\btemplates?\b",
+    re.IGNORECASE,
 )
 _META_TEMPLATE_EXPLICIT_LIFECYCLE = re.compile(
-    rf"\b(?:list|browse|open)\b{_META_TEMPLATE_DIRECT_OBJECT}|"
+    r"\b(?:list|browse|open)\b.{0,80}\btemplates?\b|"
     r"\b(?:reverse[- ]?engineer(?:ing)?|read[- ]?back)\b"
-    rf"{_META_TEMPLATE_DIRECT_OBJECT}|"
+    r".{0,80}\btemplates?\b|"
     r"\b(?:list|browse|open|view|get|show|create|save|update|rename|"
     r"delete|remove)\b"
-    rf"{_META_TEMPLATE_DIRECT_OBJECT}.{{0,80}}\b(?:named|called|tagged)\b|"
-    rf"\b(?:create|save|update)\b{_META_TEMPLATE_DIRECT_OBJECT}"
+    r".{0,80}\btemplates?\b.{0,80}\b(?:named|called|tagged)\b|"
+    r"\b(?:create|save|update)\b.{0,80}\btemplates?\b"
     r".{0,80}\bfor\b.{0,40}\bsettings?\b|"
     r"(?:列出|浏览).{0,40}模板|"
     r"(?:查看|获取|创建|保存|更新|重命名|删除).{0,40}模板"
@@ -116,7 +118,7 @@ _META_TEMPLATE_EXPLICIT_LIFECYCLE = re.compile(
     re.IGNORECASE,
 )
 _META_TEMPLATE_TITLE_OBJECT = re.compile(
-    rf"\b(?i:show|open|view|get|create)\b{_META_TEMPLATE_DIRECT_OBJECT}"
+    r"\b(?i:show|open|view|get|create)\b.{0,80}\b(?i:templates?)\b"
     r"(?:\s+(?i:named|called))?\s+"
     r"[A-Z][A-Za-z0-9_-]*(?:\s+[A-Z][A-Za-z0-9_-]*)+"
 )
@@ -150,11 +152,17 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
     if len(named_channels) > 1:
         return ("adsagent-router",)
     if named_channels == ["meta"]:
+        analytics_container = bool(
+            _META_TEMPLATE_ANALYTICS_CONTAINER.search(prompt)
+        )
+        explicit_template_lifecycle = bool(
+            _META_TEMPLATE_EXPLICIT_LIFECYCLE.search(prompt)
+        ) and not analytics_container
         if _META_TEMPLATE_MUTATION.search(prompt):
             return ("meta-copy",)
         if (
             not template_tool
-            and not _META_TEMPLATE_EXPLICIT_LIFECYCLE.search(prompt)
+            and not explicit_template_lifecycle
             and _META_TEMPLATE_TOPIC.search(prompt)
             and _META_TEMPLATE_ANALYTICS.search(prompt)
             and _META_TEMPLATE_ANALYTICS_WINDOW.search(prompt)
@@ -163,8 +171,11 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             return ("meta-insights",)
         if (
             template_tool
-            or _META_TEMPLATE_EXPLICIT_LIFECYCLE.search(prompt)
-            or _META_TEMPLATE_TITLE_OBJECT.search(prompt)
+            or explicit_template_lifecycle
+            or (
+                _META_TEMPLATE_TITLE_OBJECT.search(prompt)
+                and not analytics_container
+            )
         ):
             return ("meta-copy",)
         if (

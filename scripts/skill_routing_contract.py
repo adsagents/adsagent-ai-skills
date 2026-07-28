@@ -153,7 +153,9 @@ _META_TEMPLATE_CONFIGURATION_SUFFIX = re.compile(
     re.IGNORECASE,
 )
 _META_TEMPLATE_RELATIVE_MARKER = re.compile(
-    r"\b(?:that|which|whose|where|[a-z][a-z-]{2,}ing)\b|"
+    r"\b(?:that|which|whose|where|summari[sz]ing|visuali[sz]ing|showing|"
+    r"covering|comparing|containing|matching|grouping|filtering|"
+    r"analy[sz]ing|describing|reporting|aggregating|segmenting)\b|"
     r"用于|显示|描述|汇总|总结|比较|分析",
     re.IGNORECASE,
 )
@@ -345,13 +347,14 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
         )
         if template_tool:
             return ("meta-copy",)
+        if named_template_object and not indirect_template_analytics:
+            return ("meta-copy",)
         if _META_TEMPLATE_GROUPING_RELATION.search(prompt):
             return ("meta-insights",)
         if indirect_template_analytics:
             return ("meta-insights",)
         if (
             unambiguous_direct_templates
-            or named_template_object
             or direct_template_configuration
         ):
             return ("meta-copy",)

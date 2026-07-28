@@ -425,6 +425,21 @@
     "expected": ["meta-insights"]
   },
   {
+    "id": "meta_template_grouping_phrase_in_name_is_lifecycle",
+    "prompt": "Delete the Meta template named Campaigns Grouped by Template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_template_grouping_phrase_in_name_open_is_lifecycle",
+    "prompt": "Open the Meta template named Campaigns Grouped by Template.",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_data_processing_template_is_lifecycle",
+    "prompt": "Delete my data processing Meta template.",
+    "expected": ["meta-copy"]
+  },
+  {
     "id": "meta_templates_tagged_report_are_lifecycle",
     "prompt": "List Meta templates tagged report.",
     "expected": ["meta-copy"]

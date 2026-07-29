@@ -1,33 +1,33 @@
 {
   "channels": {
     "google": {
-      "guide_version": "2026-07-25.1",
+      "guide_version": "2026-07-29.1",
       "manifest_version": 1,
       "service": "google",
-      "sha256": "4a681fe0dc4b26ead18192d2ecef18c81f5a4995dea6c1e5b43c53287f18a062",
+      "sha256": "9086ace7526c8db5917f6e1205c69eb6f1e782ef7c480d091d6f74da0d36d8d3",
       "snapshot_path": "contracts/manifests/google.json",
       "source_path": "docs/mcp/manifests/google-tools.json",
-      "source_revision": "fabbba662509128cd76884cecd7a3975a75ad9cf",
+      "source_revision": "9eac46fd0cdd5f059fdeacdba9a7d72652e54560",
       "tool_count": 82
     },
     "meta": {
-      "guide_version": "2026-07-28.5",
+      "guide_version": "2026-07-29.1",
       "manifest_version": 1,
       "service": "meta",
-      "sha256": "e851c62f0df8dd100d26a6b86d46cc95be5106c327091b79d47e9cba002144a4",
+      "sha256": "35a2d1434083ed35bb53b11da3bfd561170fb4497e5ef1c8e8115a46c41a052a",
       "snapshot_path": "contracts/manifests/meta.json",
       "source_path": "docs/mcp/manifests/meta-tools.json",
-      "source_revision": "c5eb7690e66d58c862c03be86fb4f3c570499def",
+      "source_revision": "e12ead5f282017dbc874a9891f1291904b2dfc4d",
       "tool_count": 110
     },
     "tiktok": {
-      "guide_version": "2026-07-26.1",
+      "guide_version": "2026-07-29.1",
       "manifest_version": 1,
       "service": "tiktok",
-      "sha256": "e9a9f30c1b491bf9e1b0a2229947fa1a294c2e5207fde895a46703decd2db6b5",
+      "sha256": "0fa59e6d0bc0a427e7725c725065f1ebab3d920f669532b5c7fdec8f45fe3b47",
       "snapshot_path": "contracts/manifests/tiktok.json",
       "source_path": "docs/mcp/manifests/tiktok-tools.json",
-      "source_revision": "fd7c3ffcb19d9ac29da60db3f7cce118596c7e94",
+      "source_revision": "e8732e070f96530d4a5a2edeb212ab8842a43add",
       "tool_count": 90
     }
   },

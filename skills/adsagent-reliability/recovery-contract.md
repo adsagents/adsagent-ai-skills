@@ -22,6 +22,11 @@ For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact
 
 ## Client Limits
 
+- Let the MCP client negotiate the protocol. Modern `2026-07-28` uses stateless
+  `server/discover`; session recovery is legacy-only and begins only from a
+  structured `mcp_session_not_found` response. Never
+  invent protocol/session headers, re-register, or replace a bearer solely
+  because the guide or protocol changed.
 - Retry only reads/idempotent operations; never parallel-retry or replay confirm.
 - After Meta writes, follow `next_action` to `overview_get_live_configs`; recover via `operations_get_context(task_ref=...)`.
 - Bulk Meta Ad writes may use configurable sequential chunks, not evidence of a fixed Meta limit. Preserve acknowledged objects; `manual_new_task_allowed=true` requires a fresh task and approval.
@@ -35,7 +40,7 @@ For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact
 
 | Signal | Required action |
 | --- | --- |
-| Legacy 404 `mcp_session_not_found` + `discard_session_and_initialize` | Reconnect, re-list, retry one read. |
+| Legacy 404 `mcp_session_not_found` + `discard_session_and_initialize` | Reconnect the existing transport, re-list, retry one read. Never apply this branch to modern stateless MCP. |
 | 429 `mcp_fanout_detected` | Stop; batch pending scopes. |
 | 429 `mcp_concurrency_limited` / 429 concurrency | Honor `Retry-After` plus jitter; retry one read serially. |
 | 503 dependency unavailable structured tool error | Without `task_ref`, honor `retry_after_seconds` and retry the identical bounded read once; otherwise poll that task. |

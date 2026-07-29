@@ -7,7 +7,9 @@ description: Use when connecting, authorizing, or verifying AdsAgent hosted MCP 
 
 1. Use the dashboard-generated install prompt; never invent endpoints,
    credentials, local relays, or stdio setup.
-2. Reconnect and re-list tools after a new connection or guide/schema version.
+2. Reconnect the existing transport and re-list tools after a new connection or
+   guide/schema version. Do not re-register or replace a bearer solely for a
+   protocol or guide update.
 3. Read the brief guide, run `setup_get_status`, and inspect advertised
    capabilities before any optional workflow.
 4. Report channel readiness, blockers, authorization next action, and local

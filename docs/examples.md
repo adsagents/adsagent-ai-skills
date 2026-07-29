@@ -9,6 +9,14 @@ Install or refresh AdsAgent MCP using the prompt I copied from Settings -> MCP A
 ```
 
 ```text
+Keep my existing AdsAgent hosted endpoint and bearer. Let the MCP client
+negotiate the protocol: use stateless server/discover for MCP 2026-07-28 and
+legacy initialize only when the client negotiated a supported legacy revision.
+Do not invent protocol/session headers, re-register, replace tokens, or change
+permissions solely because the guide version changed.
+```
+
+```text
 After setup, inspect top-level client_skill_pack once. Compare it with my installed adsagent-ai-skills package-root VERSION using the packaged reminder helper. Never auto-update; show only the fixed instruction for my detected install method, then tell me to start a fresh session after any update.
 ```
 

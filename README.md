@@ -7,7 +7,9 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.45`. New Meta connections default to the stateless v2 endpoint; legacy clients remain supported.
+Current contract version: `0.7.46`. New Meta connections default to the v2
+product profile; all three hosted endpoints negotiate modern MCP `2026-07-28`
+stateless discovery while retaining supported legacy initialize clients.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -101,6 +103,14 @@ zero Insights from zero activity, require complete inventory coverage for
 entity-existence totals, preserve inherited delivery blockers without
 rewriting native status, and pin every paginated read to its first-page
 inventory generation.
+
+Version 0.7.46 aligns all three channels with the MCP 2026-07-28 dual-era
+contract. Agents keep product endpoints/profiles separate from negotiated
+protocol revisions, let the client choose the supported revision, use
+stateless `server/discover` for modern connections, and limit session recovery
+to negotiated legacy clients. A protocol or guide update alone never requires
+MCP re-registration, bearer replacement, customer-permission changes, or an
+automatic Skill Pack update.
 
 Version 0.7.45 allows arbitrary natural-language modifiers on direct Meta
 template objects while keeping reports, dashboards, charts, and analyses that

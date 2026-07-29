@@ -104,7 +104,11 @@ Yes, if AdsAgent exposes both the sanitized creation snapshot and the current li
 
 The client should respect AdsAgent's recovery contract:
 
-- discard stale sessions and re-initialize when told to,
+- let the client negotiate the protocol and keep the existing endpoint/bearer,
+- for modern MCP `2026-07-28`, use stateless `server/discover` and never invent
+  a session ID,
+- discard stale sessions and re-initialize only after a legacy protocol was
+  negotiated and the server returns the structured recovery action,
 - respect `Retry-After`,
 - parse backoff from the header, top-level `data`, or JSON-RPC `error.data`,
 - add jitter,
@@ -114,3 +118,6 @@ The client should respect AdsAgent's recovery contract:
 - trust totals only when the response is complete and treat missing scopes as unknown.
 
 If the retry budget is exhausted, narrow the query or retry later.
+
+A protocol or guide update alone does not require MCP re-registration, token
+replacement, customer-permission changes, or automatic Skill Pack installation.

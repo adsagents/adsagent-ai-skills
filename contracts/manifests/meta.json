@@ -1,6 +1,6 @@
 {
   "digest_algorithm": "sha256",
-  "guide_version": "2026-07-28.5",
+  "guide_version": "2026-07-29.1",
   "manifest_resource": "adsagent://guide/tool-manifest",
   "manifest_version": 1,
   "platform": "meta",

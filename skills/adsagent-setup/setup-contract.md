@@ -17,12 +17,29 @@ Do not invent local relays, stdio setup, URLs, or credentials.
 | Google Ads | `https://google.adsagent.md/mcp` |
 | TikTok | `https://tiktok.adsagent.md/mcp` |
 
-Use Meta v2 for new connections. Keep `/mcp` as the legacy fallback for clients that cannot initialize stateless JSON v2.
+Use the Meta v2 product profile for new connections. Keep `/mcp` as the legacy
+product-profile fallback. These endpoint names are not MCP protocol versions.
+
+## Protocol Negotiation
+
+Keep the existing hosted endpoint and bearer. Let the MCP client negotiate a
+supported protocol revision:
+
+- modern `2026-07-28`: stateless `server/discover`;
+- supported legacy revisions: `initialize` with legacy session recovery.
+
+Do not synthesize `MCP-Protocol-Version` or `Mcp-Session-Id`. A protocol or
+guide update alone never requires MCP re-registration, bearer replacement,
+customer-permission changes, or a Skill Pack reinstall. A transport reconnect
+means close and reopen the existing connection, then re-list tools; it is not a
+new registration.
 
 ## Setup Flow
 
 1. Use dashboard install prompt.
-2. Reconnect and re-list tools. When `mcp.guide_version` changes, repeat this step before using cached schemas.
+2. Reconnect the existing transport and re-list tools. When
+   `mcp.guide_version` changes, repeat this step before using cached schemas;
+   do not re-register or replace the bearer solely for that change.
 3. Read `adsagent://guide/brief`, then one bounded `adsagent://guide/catalog/<domain>` topic if needed. Read `adsagent://guide/creation-contract` only for Meta creation/copy work. Never read `adsagent://guide/tools` end-to-end.
 4. Run `setup_get_status`; report readiness, blockers, and next action.
 5. Inspect `setup_get_status.capabilities`; use optional consistency, delivery mutation, verification, or recovery only when advertised.

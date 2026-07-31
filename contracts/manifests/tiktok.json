@@ -1,15 +1,15 @@
 {
   "access_counts": {
-    "read": 42,
-    "write": 48
+    "read": 43,
+    "write": 49
   },
   "action_class_counts": {
     "confirm": 8,
-    "prepare": 11,
-    "read": 42,
+    "prepare": 12,
+    "read": 43,
     "write": 29
   },
-  "default_tool_count": 64,
+  "default_tool_count": 66,
   "digest_algorithm": "sha256",
   "gate_definitions": {
     "agent_method_profile": {
@@ -85,23 +85,23 @@
     "optimization_list_decisions",
     "optimization_prepare_action"
   ],
-  "guide_version": "2026-07-29.1",
-  "manifest_fingerprint": "05f9dcfd30b9ac72adad36de29c2dc6581f0b598fa6f84e1f46e4d629ad44ba3",
+  "guide_version": "2026-07-31.8",
+  "manifest_fingerprint": "bdcaff16160af775f4d566f784802a24b320b4e3e885140e5dc4ae7b6578cdce",
   "manifest_resource": "tiktok-adsagent://guide/tool-manifest",
   "manifest_version": 1,
   "oauth_scope_semantics": "consent_hint_only",
   "phase_counts": {
     "confirm": 8,
     "direct": 29,
-    "prepare": 11,
-    "read": 42
+    "prepare": 12,
+    "read": 43
   },
   "platform": "tiktok",
   "profile": "all_public_policies",
-  "schema_fingerprint": "1ce4bf534b5d8f24825568719af3d5c6464827d7775e05ecb2e3a731e59bd6b5",
+  "schema_fingerprint": "3216d7702623f38cef63c13d45267e276067b61cdf653fe80805aa1f38a09d4a",
   "server_version": "tiktok-adsagent-mcp-v1",
   "source": "hosted_mcp_registry",
-  "tool_count": 90,
+  "tool_count": 92,
   "tools": [
     {
       "access": "read",
@@ -517,7 +517,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "b5d3da559a8e577985509a5f1fcff9363b648f47fcabc2c2c1d2c1bb12dc0f6d",
+      "description_digest_sha256": "5609abb9eea68072e64410831eadc36ea60cb5234cd2f42a86198859e6efc729",
       "domain": "campaigns",
       "effect": "draft_only",
       "name": "campaigns_quick_create",
@@ -530,6 +530,34 @@
       "schema_digest_sha256": "e2b1ce7e90badec7cead12fcaf277ca9936240bf7d126542fbf12be9d14422b0",
       "schema_property_count": 14,
       "schema_required_count": 1
+    },
+    {
+      "access": "write",
+      "action_class": "prepare",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
+        "campaign_create"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [],
+      "description_digest_sha256": "e528413c6afbe1c54ca70c9354d4f0870e5da8f9e897b52e048f032382cbd0d7",
+      "domain": "campaigns",
+      "effect": "draft_only",
+      "name": "campaigns_quick_create_batch",
+      "phase": "prepare",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.launch.prepare",
+      "required_oauth_scopes": [
+        "mcp"
+      ],
+      "schema_digest_sha256": "5c5171b7ecb4d66210aad8e3efd35ef3cbb324e215fc12a4944332f4d25675ee",
+      "schema_property_count": 13,
+      "schema_required_count": 2
     },
     {
       "access": "write",
@@ -1159,7 +1187,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "85b213e639b57c9a7859a59d08ddc851533d1c6e50bf2d8ea9f3031168e40fa5",
+      "description_digest_sha256": "6f64566bd7fa50e16bd0df78a592222b167e792d0561a4cccc2e486ded78884a",
       "domain": "creatives",
       "effect": "none",
       "name": "creatives_list",
@@ -1169,8 +1197,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "c888cfe37e9e314deb5eea03c4e839cc72383ca4713e9d49a1080915993e35da",
-      "schema_property_count": 3,
+      "schema_digest_sha256": "7181886130e6a6a9d2aa7fb296739b9833b02873609efdf4eca3157199cad704",
+      "schema_property_count": 7,
       "schema_required_count": 0
     },
     {
@@ -1301,7 +1329,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "99314565878da6f4f8353a6d7bf13bde6365d8c62576746e03e953253f08af13",
+      "description_digest_sha256": "16463e30e16f555a125b6c69c684be3eb2f4f00d8a8041dbb8d8640c25eef1e4",
       "domain": "creatives",
       "effect": "draft_only",
       "name": "creatives_request_upload_v2",
@@ -2571,6 +2599,34 @@
         "always": true
       },
       "advertisement_groups": [
+        "campaign_create"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [],
+      "description_digest_sha256": "8c840c257b669309167ba4683daa7385a67a7badf49329bafdf792092b7e5a5c",
+      "domain": "campaigns",
+      "effect": "none",
+      "name": "spark_ads_list_posts",
+      "phase": "read",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.read",
+      "required_oauth_scopes": [
+        "mcp"
+      ],
+      "schema_digest_sha256": "a5b53119bcdc2d536d826c864d053d43c1090c339de7cfc1033aa0966d302a04",
+      "schema_property_count": 4,
+      "schema_required_count": 1
+    },
+    {
+      "access": "read",
+      "action_class": "read",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
         "read_and_support"
       ],
       "capability_gates": [
@@ -2801,7 +2857,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "790d5e77074e8fd928dce3d174d74b332b447cbb8b6ed55fb8e7dedab7cc4fe1",
+      "description_digest_sha256": "194fef5df894d373afc2d718f0a766cd465977538e041e7e11d37f50eb287906",
       "domain": "templates",
       "effect": "adsagent_state",
       "name": "templates_create",
@@ -2811,8 +2867,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "0209de7904dba441fa614696411b90a1caae3528ab585eac17c1575087f78040",
-      "schema_property_count": 15,
+      "schema_digest_sha256": "c83ed0e7b4484068625e5aa701e11d7baedd55afeff9a6d149fa948e8a547dd0",
+      "schema_property_count": 16,
       "schema_required_count": 1
     },
     {
@@ -2913,7 +2969,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "8a89a28ff5840e93f5801089b2e56b45e3c4b8128e706a55d65db6d5390c3600",
+      "description_digest_sha256": "646aa519d4712d7c7adc328a9b9549999501b77e1a2126028bf51abe6919efd3",
       "domain": "templates",
       "effect": "none",
       "name": "templates_reverse_engineer",

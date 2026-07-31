@@ -67,6 +67,26 @@ For `templates_create`, only when its live guide advertises `overwrite`, use
 operator-approved replacement, never recovery. Never add it to
 `templates_update` unless that exact tool guide exposes it.
 
+For a creative-distribution-only change, use the existing canonical tool shape:
+
+```json
+{
+  "request": {
+    "template_name": "<exact template name>",
+    "creative_distribution": "one_per_adset"
+  }
+}
+```
+
+Do not invent a creative-distribution-specific template update tool, `patch`,
+`update_mask`, or revision fields for a new request. Hosted may accept a
+compatibility patch from a stale client only when its update mask exactly
+matches its patch and its expected snapshot revision is still current; that is
+server compatibility, not the preferred agent contract. On
+`template_snapshot_changed`, call
+`templates_get` once with the returned exact name, show the changed snapshot,
+and require a new explicit update request. Never replay the stale update.
+
 The following labels are agent-local, not Hosted response fields. After every
 accepted create or update, enter client state
 `write_accepted_unverified`. The verification transitions are:

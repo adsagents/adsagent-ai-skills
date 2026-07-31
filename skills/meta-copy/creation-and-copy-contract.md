@@ -80,4 +80,12 @@ Poll `tasks_get_status(task_ref=..., response_mode=compact)`. At terminal, requi
 
 Report `result.failures.items` `code`, `message`, and `next_action`; never expose a raw Meta error or retry the unchanged write. `recovered_by_url_fallback` is compensated and never permits retry or a new task. Only `manual_new_task_allowed=true` permits a new task with fresh approval. Stop on `failures.unclassified_count>0`.
 
-Server chunking is not a fixed Meta limit; preserve every acknowledged object and receipt. Status writes use `target_configured_status=ACTIVE|PAUSED` and `current_configured_status`. Never pass `effective_status`. Follow `next_action` to `overview_get_live_configs`; post-write metrics do not verify delivery configuration.
+Server chunking is not a fixed Meta limit; preserve every acknowledged object and receipt.
+Status writes use `target_configured_status=ACTIVE|PAUSED` and
+`current_configured_status`. Never pass `effective_status`. After a delivery
+confirm, consume inline
+`verification` and `verification_result` first. Follow `next_action` to
+`overview_get_live_configs` only while pending. A local selector miss after
+`mutation_applied=true` is client snapshot drift; preserve `mutation_ref` and
+never reauthorize, replace the bearer, or replay the write. Post-write metrics
+do not verify delivery configuration.

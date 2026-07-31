@@ -15,7 +15,9 @@ that groups, filters, or describes templates belongs to `meta-insights`.
 3. For known writes, skip Insights preflight: prepare reads live configuration
    without mutation. Show its summary and await fresh approval. Templates use
    the snapshot contract.
-4. Confirm once. Never replay or switch levels, routes, modes, or permissions.
+4. Confirm once. Consume inline `verification_result` first; follow read-only
+   `next_action` only while pending. Never replay or switch level, route, mode,
+   or permissions.
 5. Poll task writes and reconcile results through the matching recovery path.
 
 Read [creation-and-copy-contract.md](creation-and-copy-contract.md) for

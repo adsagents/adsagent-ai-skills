@@ -73,8 +73,8 @@ def test_notification_capability_and_source_boundaries_are_explicit():
 
 
 def test_notification_release_surfaces_are_consistently_versioned():
-    assert _read("VERSION").strip() == "0.7.46"
-    assert '"version": "0.7.46"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.46"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.46`" in _read("README.md")
-    assert 'VERSION = "0.7.46"' in _read("scripts/validate_tri_channel_pack.py")
+    assert _read("VERSION").strip() == "0.7.47"
+    assert '"version": "0.7.47"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.47"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.47`" in _read("README.md")
+    assert 'VERSION = "0.7.47"' in _read("scripts/validate_tri_channel_pack.py")

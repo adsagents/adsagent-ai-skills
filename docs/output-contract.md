@@ -73,7 +73,16 @@ Report the server's exact evidence kind:
 
 For Meta decisions, use `insights_query_consistent(consistency=require_fresh)` only when `setup_get_status.capabilities` advertises it. Stop on `verification_pending`, `data_not_fresh`, unknown launch date, or `complete=false`.
 
-After an approved Meta confirm, call the returned `next_action` exactly; expect `overview_get_live_configs` with typed entities and `mutation_ref`. Retry only that read while pending. For task writes, recover the persisted receipt through `operations_get_context(task_ref=...)`; never replay an uncertain write.
+After an approved Meta delivery confirm, consume top-level `verification` and
+`verification_result` first. Inline `evidence_kind=config_verified_live` is
+authoritative live configuration evidence. Only while verification remains
+pending, call the returned read-only `next_action` exactly; expect
+`overview_get_live_configs` with typed entities and `mutation_ref`. If the local
+client cannot select that tool after `mutation_applied=true`, report
+applied-but-pending and preserve `mutation_ref`; do not claim the token or
+server registration failed, reauthorize, replace the bearer, or replay the
+confirm/write. For task writes, recover the persisted receipt through
+`operations_get_context(task_ref=...)`; never replay an uncertain write.
 
 Write recovery is receipt-driven and typed. Follow each failure item's `automatic_retry_allowed`, `manual_new_task_allowed`, and `operator_review_required`; only `manual_new_task_allowed=true` permits a newly prepared task with fresh approval. Pending or ambiguous writes require context recovery and a stop; `verified_created` supplies recovered IDs. No state authorizes replaying the original task or confirmation token.
 

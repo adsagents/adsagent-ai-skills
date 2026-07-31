@@ -56,7 +56,7 @@ For an exhaustive Meta result, require a complete first page. Continue page 2 an
 ```
 
 ```text
-After I approve this Meta delivery change, call the returned next_action exactly. Expect overview_get_live_configs with typed entities and mutation_ref; retry only that read while pending. Use operations_get_context if interrupted. If I also ask for post-write metrics, use after_mutation_ref separately; it does not verify delivery configuration. Do not repeat an uncertain write.
+After I approve this Meta delivery change, consume inline verification and verification_result first. If config_verified_live is present, report the verified result without a second tool call. Only while verification remains pending, call the returned next_action exactly; expect overview_get_live_configs with typed entities and mutation_ref. If the local client cannot select that read after mutation_applied=true, preserve mutation_ref and report applied-but-pending; do not reauthorize, replace the bearer, or repeat the write. Use operations_get_context if interrupted. If I also ask for post-write metrics, use after_mutation_ref separately; it does not verify delivery configuration.
 ```
 
 ```text

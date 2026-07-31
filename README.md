@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.47`. New Meta connections default to the v2
+Current contract version: `0.7.48`. New Meta connections default to the v2
 product profile; all three hosted endpoints negotiate modern MCP `2026-07-28`
 stateless discovery while retaining supported legacy initialize clients.
 
@@ -110,6 +110,13 @@ with cached per-conversation tool catalogs. Agents consume inline
 while pending. A local selector miss after `mutation_applied=true` is client
 snapshot drift, never a reason to reauthorize, replace the bearer, or replay
 the accepted write.
+
+Version 0.7.48 makes Meta template creative-distribution updates deterministic.
+Agents use the existing `templates_update` tool with flat `template_name` and
+`creative_distribution` fields, never invent a separate distribution tool,
+and always read the exact template back before QuickCreate. Hosted also accepts
+an exact-mask, revision-bound compatibility patch without silently broadening
+or replaying the update.
 
 Version 0.7.46 aligns all three channels with the MCP 2026-07-28 dual-era
 contract. Agents keep product endpoints/profiles separate from negotiated

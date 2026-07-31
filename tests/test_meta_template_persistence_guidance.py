@@ -120,6 +120,23 @@ def test_server_owned_source_import_is_the_only_provenance_only_exception():
         assert term in guidance
 
 
+def test_creative_distribution_update_uses_existing_canonical_template_tool():
+    guidance = " ".join(
+        _read("skills/meta-copy/template-persistence-contract.md").split()
+    )
+
+    for term in (
+        "`templates_update`",
+        '"template_name": "<exact template name>"',
+        '"creative_distribution": "one_per_adset"',
+        "Do not invent a creative-distribution-specific template update tool",
+        "update mask exactly matches its patch",
+        "`template_snapshot_changed`",
+        "Never replay the stale update",
+    ):
+        assert term in guidance
+
+
 def test_unactionable_template_validation_never_probes_or_replays():
     guidance = " ".join(
         _read("skills/meta-copy/template-persistence-contract.md").split()
@@ -167,7 +184,7 @@ def test_template_tools_are_registered_with_hosted_capabilities():
 
 
 def test_meta_template_persistence_release_is_consistently_versioned():
-    expected = "0.7.47"
+    expected = "0.7.48"
     assert _read("VERSION").strip() == expected
     assert f'"version": "{expected}"' in _read(".claude-plugin/plugin.json")
     assert f'"version": "{expected}"' in _read(

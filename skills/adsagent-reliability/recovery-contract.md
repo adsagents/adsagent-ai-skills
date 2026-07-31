@@ -28,7 +28,13 @@ For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact
   invent protocol/session headers, re-register, or replace a bearer solely
   because the guide or protocol changed.
 - Retry only reads/idempotent operations; never parallel-retry or replay confirm.
-- After Meta writes, follow `next_action` to `overview_get_live_configs`; recover via `operations_get_context(task_ref=...)`.
+- After a Meta delivery confirm, consume inline `verification` and
+  `verification_result` first. Follow `next_action` to
+  `overview_get_live_configs` only while verification remains pending. A local
+  selector miss after `mutation_applied=true` is client snapshot drift: keep
+  the `mutation_ref`, report applied-but-pending, and never reauthorize, replace
+  the bearer, or replay the confirm/write. Recover task-backed uncertainty via
+  `operations_get_context(task_ref=...)`.
 - Bulk Meta Ad writes may use configurable sequential chunks, not evidence of a fixed Meta limit. Preserve acknowledged objects; `manual_new_task_allowed=true` requires a fresh task and approval.
 - `operations_get_context(response_mode=compact)` returns receipt totals, create reconciliation, and anomalous receipts. Use `standard` only when every receipt is required.
 - A failed auxiliary `adimages` receipt marked `workflow_status=recovered_by_url_fallback` is compensated, has no final-Ad impact, and never authorizes retry or a new task.

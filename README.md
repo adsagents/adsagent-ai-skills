@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.46`. New Meta connections default to the v2
+Current contract version: `0.7.47`. New Meta connections default to the v2
 product profile; all three hosted endpoints negotiate modern MCP `2026-07-28`
 stateless discovery while retaining supported legacy initialize clients.
 
@@ -103,6 +103,13 @@ zero Insights from zero activity, require complete inventory coverage for
 entity-existence totals, preserve inherited delivery blockers without
 rewriting native status, and pin every paginated read to its first-page
 inventory generation.
+
+Version 0.7.47 makes Meta delivery confirmation self-contained across clients
+with cached per-conversation tool catalogs. Agents consume inline
+`verification_result` first and call a returned live-read `next_action` only
+while pending. A local selector miss after `mutation_applied=true` is client
+snapshot drift, never a reason to reauthorize, replace the bearer, or replay
+the accepted write.
 
 Version 0.7.46 aligns all three channels with the MCP 2026-07-28 dual-era
 contract. Agents keep product endpoints/profiles separate from negotiated

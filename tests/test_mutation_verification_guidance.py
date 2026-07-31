@@ -42,6 +42,31 @@ class MutationVerificationGuidanceTests(unittest.TestCase):
         self.assertNotIn("verify with `after_mutation_ref", text)
         self.assertNotIn("verify it with `insights_query_consistent", text)
 
+    def test_meta_delivery_confirmation_consumes_inline_verification_first(
+        self,
+    ) -> None:
+        paths = (
+            "skills/meta-copy/SKILL.md",
+            "skills/meta-copy/creation-and-copy-contract.md",
+            "skills/meta-insights/query-contract.md",
+            "skills/adsagent-reliability/recovery-contract.md",
+            "skills/adsagent-router/routing-contract.md",
+            "docs/output-contract.md",
+            "docs/examples.md",
+        )
+        text = "\n".join(read_contract(ROOT, path) for path in paths)
+
+        self.assertIn("verification_result", text)
+        self.assertIn("mutation_applied=true", text)
+        self.assertIn("client snapshot drift", text)
+        self.assertIn("only while", text)
+        self.assertIn("never reauthorize", text)
+        self.assertIn("never reauthorize, replace the bearer, or replay", text)
+        self.assertNotIn(
+            "After an approved Meta confirm, call the returned `next_action` exactly",
+            text,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

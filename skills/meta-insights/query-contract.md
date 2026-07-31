@@ -95,6 +95,14 @@ Poll distinct `task_ref` values serially with `tasks_get_status(task_ref=..., re
 
 ## Verification And Output
 
-After confirm, follow `next_action` to `overview_get_live_configs`; `config_verified_live` proves configuration. `after_mutation_ref=mutation_ref` covers post-write metrics and does not verify delivery configuration. Recover with `operations_get_context`; never repeat writes.
+After a delivery confirm, consume top-level `verification` and
+`verification_result` first. An inline `config_verified_live` result proves
+configuration. Follow `next_action` to `overview_get_live_configs` only while
+verification remains pending. If the client cannot select that read after
+`mutation_applied=true`, preserve `mutation_ref` and report applied-but-pending;
+do not reauthorize, replace the bearer, or repeat the write.
+`after_mutation_ref=mutation_ref` covers post-write metrics and does not verify delivery configuration.
+Recover task-backed uncertainty with
+`operations_get_context`; never repeat writes.
 
 Keep Meta and MMP distinct. Poll exports with `tasks_get_status(..., response_mode=compact)` to terminal. Read `result.artifact`; HTTP GET `download_url` byte-for-byte. Never redact, rebuild, decode, truncate, or substitute it. `artifact_status=expired` or an absent URL requires a new explicit export. Return the link, never raw CSV. Output concise Markdown.

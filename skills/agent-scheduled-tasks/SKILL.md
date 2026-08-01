@@ -14,6 +14,10 @@ description: Use when creating, changing, debugging, or proving an agent-owned s
    evidence separately.
 5. Never put credentials in the prompt, guess permissions, or treat schedule
    creation as execution proof.
+6. Treat a matching delivery prepare as the live preflight. Consume inline
+   verification first and use the advertised native operation fallback only
+   when recovery remains pending; a missing optional selector before mutation
+   does not disable read-only schedule evaluation.
 
 Read [scheduled-task-contract.md](scheduled-task-contract.md) only when
 designing, creating, updating, debugging, pausing, deleting, or proving a

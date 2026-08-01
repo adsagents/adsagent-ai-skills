@@ -72,6 +72,12 @@ class AgentScheduledTasksGuidanceTests(unittest.TestCase):
             "confirm",
             "mutation_ref",
             "operations_get",
+            "matching prepare tool is the live preflight",
+            "verification_result",
+            "native_operation_fallback",
+            "operations_get_context",
+            "must not disable read-only schedule evaluation",
+            "keep subsequent runs read-only until it is reconciled",
             "Never auto-enable permissions",
         ):
             self.assertIn(term, text)
@@ -79,7 +85,7 @@ class AgentScheduledTasksGuidanceTests(unittest.TestCase):
     def test_release_version_is_consistent(self) -> None:
         plugin = json.loads(self._read(".claude-plugin/plugin.json"))
         marketplace = json.loads(self._read(".claude-plugin/marketplace.json"))
-        expected = "0.7.49"
+        expected = "0.7.50"
 
         self.assertEqual(expected, self._read("VERSION").strip())
         self.assertEqual(expected, plugin["version"])

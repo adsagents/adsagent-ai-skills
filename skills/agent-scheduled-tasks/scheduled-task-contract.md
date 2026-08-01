@@ -42,7 +42,18 @@ Do not claim success from a saved schedule, notification, nearby data pull, or c
 
 Read `setup_get_status.capabilities` once per run. Use stable public refs and server-side batch; never fan out. Trust an Insights decision only when the relevant result reports `complete=true`; poll a returned `task_ref` to terminal before reevaluating.
 
-For writes, use prepare, recorded authorization, confirm once, recover the `mutation_ref` through `operations_get`, then perform the advertised read-back. Stop when any capability, freshness, coverage, approval, receipt, or verification gate is missing. Never auto-enable permissions or retry an uncertain write.
+For writes, the matching prepare tool is the live preflight and does not mutate
+the provider. Use recorded authorization, confirm once, and consume inline
+`verification_result` first. Only while verification remains pending, follow
+the advertised read-back. If the profile's canonical `operation_get_tool` is
+absent from the client-local catalog, use its `native_operation_fallback`
+(`operations_get_context` for Meta) scoped to the same known entity and run.
+A selector miss before any mutation must not disable read-only schedule evaluation.
+If an applied write cannot be recovered, preserve its `task_ref`/`mutation_ref`
+receipt and keep subsequent runs read-only until it is reconciled; never replay
+it. Stop when any capability, freshness, coverage, approval, receipt, or
+verification gate required by the current phase is missing.
+Never auto-enable permissions or retry an uncertain write.
 
 ## Report
 

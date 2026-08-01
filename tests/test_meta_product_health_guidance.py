@@ -66,7 +66,7 @@ def test_meta_product_health_tools_are_locked_to_the_meta_manifest():
 
 
 def test_meta_product_health_release_is_consistently_versioned():
-    expected = "0.7.52"
+    expected = "0.7.53"
     assert _read("VERSION").strip() == expected
     assert f'"version": "{expected}"' in _read(".claude-plugin/plugin.json")
     assert f'"version": "{expected}"' in _read(

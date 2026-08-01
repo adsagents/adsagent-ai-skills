@@ -5,13 +5,14 @@ description: Use when preparing a Meta Ads creation, copy, budget, status, targe
 
 # Meta Copy And Comparison
 
-Use this only when the Meta template is the direct lifecycle object. Analysis
-that groups, filters, or describes templates belongs to `meta-insights`.
+Use this for direct Meta template lifecycle operations; route template
+analysis to `meta-insights`.
 
 1. Inspect `capabilities.delivery_mutations` and the exact object level.
    Template state instead requires
    `capabilities.template_mutations.allowed=true` with
-   `required_capability=mcp.templates.write`.
+   `required_capability=mcp.templates.write`. Without Resources, use its
+   `inline_contract`.
 2. Resolve explicit source, destination, parent, naming, and creative inputs.
    Never invent campaign, AdSet, template, budget, pixel/app, or compliance.
 3. For known writes, skip Insights preflight: prepare reads live configuration

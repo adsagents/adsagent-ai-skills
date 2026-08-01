@@ -2,10 +2,14 @@
 
 ## Snapshot Semantics
 
-Read `adsagent://guide/catalog/templates` before a template workflow. For a
-reverse-engineered template, this pack chooses snapshot semantics: source
-account/ad set IDs, names, and tags are provenance only. They are not evidence
-that Campaign, AdSet, or Ad configuration was saved.
+Read `setup_get_status.capabilities.template_mutations` before a template
+workflow. Its `inline_contract` is authoritative when
+`guide_resource_required=false`. Read `adsagent://guide/catalog/templates` as
+additional guidance only when the client exposes MCP Resources; an unavailable
+optional resource must not block the write. For a reverse-engineered template,
+this pack chooses snapshot semantics: source account/ad set IDs, names, and
+tags are provenance only. They are not evidence that Campaign, AdSet, or Ad
+configuration was saved.
 
 This fail-closed contract applies to a reverse-engineered preview and to a
 saved template whose persistence is legacy-projected, false, or unknown. It
@@ -56,9 +60,13 @@ Hosted has not exposed a verifiable template-save contract.
 When that contract is present, use `templates_create` or `templates_update`
 only when `setup_get_status.capabilities.template_mutations.allowed=true`, its
 `required_capability` is exactly `mcp.templates.write`, and the user explicitly
-requested that exact write. The block's named tools and
-`adsagent://guide/catalog/templates` remain the request-scoped authority; a
-tool name elsewhere in the guide is not a grant. In the exact server-owned source-import mode
+requested that exact write. The block's named tools and `inline_contract`
+remain the request-scoped authority; a tool name elsewhere in the guide is not
+a grant. When `guide_resource_required=false`, a client does not expose MCP
+Resources, or reading the optional resource returns `Unknown resource`, use the
+inline contract and continue the normal guarded workflow. That resource failure
+must not block the write or be reported as a server tool-registration failure.
+In the exact server-owned source-import mode
 described above, source references are import instructions that cause Hosted
 to re-read the source, not client-supplied snapshot evidence. Send that
 source-only shape only through the exact advertised mode and still require the

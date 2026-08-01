@@ -82,10 +82,32 @@ class AgentScheduledTasksGuidanceTests(unittest.TestCase):
         ):
             self.assertIn(term, text)
 
+    def test_meta_rules_require_exact_candidate_live_status_coverage(self) -> None:
+        text = "\n".join(
+            (
+                self._read("skills/agent-scheduled-tasks/SKILL.md"),
+                self._read(
+                    "skills/agent-scheduled-tasks/scheduled-task-contract.md"
+                ),
+                self._read("skills/meta-insights/query-contract.md"),
+            )
+        )
+        normalized = " ".join(text.split())
+
+        for term in (
+            "up to 50 exact candidate entities in one",
+            "`entity_type` and `entity_id`",
+            "parent status",
+            "outside the candidate ID set",
+            "configured_status",
+            "coverage is incomplete",
+        ):
+            self.assertIn(term, normalized)
+
     def test_release_version_is_consistent(self) -> None:
         plugin = json.loads(self._read(".claude-plugin/plugin.json"))
         marketplace = json.loads(self._read(".claude-plugin/marketplace.json"))
-        expected = "0.7.50"
+        expected = "0.7.52"
 
         self.assertEqual(expected, self._read("VERSION").strip())
         self.assertEqual(expected, plugin["version"])

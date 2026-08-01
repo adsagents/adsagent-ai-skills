@@ -42,6 +42,17 @@ Do not claim success from a saved schedule, notification, nearby data pull, or c
 
 Read `setup_get_status.capabilities` once per run. Use stable public refs and server-side batch; never fan out. Trust an Insights decision only when the relevant result reports `complete=true`; poll a returned `task_ref` to terminal before reevaluating.
 
+For a Meta rule or decision with explicit candidate IDs, call
+`overview_get_live_configs` with up to 50 exact candidate entities in one
+request. Match every result by `entity_type` and `entity_id`, require complete
+one-to-one live coverage, and exclude any candidate whose
+`configured_status` is not `ACTIVE`. If a candidate is missing, duplicated, or
+incomplete, live status coverage is incomplete: stop before consequential
+evaluation or mutation. Never infer an Ad's state from parent status, and keep
+a reported manual change outside the candidate ID set separate until an exact
+ID matches. A local selector miss may still permit a clearly labeled
+metrics-only read, but it cannot prove candidate delivery state.
+
 For writes, the matching prepare tool is the live preflight and does not mutate
 the provider. Use recorded authorization, confirm once, and consume inline
 `verification_result` first. Only while verification remains pending, follow

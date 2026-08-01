@@ -54,8 +54,11 @@ absent, stop before `templates_create` or `templates_update` and report that
 Hosted has not exposed a verifiable template-save contract.
 
 When that contract is present, use `templates_create` or `templates_update`
-only when it is advertised under `mcp.templates.write` and the user explicitly
-requested that exact write. In the exact server-owned source-import mode
+only when `setup_get_status.capabilities.template_mutations.allowed=true`, its
+`required_capability` is exactly `mcp.templates.write`, and the user explicitly
+requested that exact write. The block's named tools and
+`adsagent://guide/catalog/templates` remain the request-scoped authority; a
+tool name elsewhere in the guide is not a grant. In the exact server-owned source-import mode
 described above, source references are import instructions that cause Hosted
 to re-read the source, not client-supplied snapshot evidence. Send that
 source-only shape only through the exact advertised mode and still require the

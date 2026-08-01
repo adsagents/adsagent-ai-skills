@@ -18,6 +18,8 @@ description: Use when creating, changing, debugging, or proving an agent-owned s
    verification first and use the advertised native operation fallback only
    when recovery remains pending; a missing optional selector before mutation
    does not disable read-only schedule evaluation.
+7. For explicit Meta candidates, batch up to 50 exact IDs with
+   `overview_get_live_configs`; correlate only by `entity_type` and `entity_id`.
 
 Read [scheduled-task-contract.md](scheduled-task-contract.md) only when
 designing, creating, updating, debugging, pausing, deleting, or proving a

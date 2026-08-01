@@ -68,6 +68,15 @@ If the user explicitly requests read-only configuration proof, call
 `mutation_ref`. Never use `management=true` or product/date Insights as live
 configuration evidence.
 
+For a bounded rule or decision over explicit candidates, pass up to 50 exact
+candidate entities in one `overview_get_live_configs` request. Match every
+live row by `entity_type` and `entity_id`, require complete one-to-one coverage,
+and use `configured_status` to exclude non-active candidates. If any exact
+candidate is missing or incomplete, live status coverage is incomplete. Never
+infer child state from parent status, and never apply a reported manual change
+outside the candidate ID set to the current candidates without an exact ID
+match.
+
 On `read_query_too_large` with `operator_review_required=false`,
 `automatic_retry_allowed=false`, and `query_change_required=true`, do not send
 the user to an operator and do not repeat the unchanged request. Narrow the

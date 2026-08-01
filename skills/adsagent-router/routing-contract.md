@@ -66,6 +66,10 @@
   live current configuration without mutation. Optional read-only preflight is
   one typed `overview_get_live_configs` request without `mutation_ref`; never
   substitute `management=true` or product/date Insights.
+- For a Meta rule with explicit candidate IDs, route one batch of up to 50 exact
+  candidate entities to `overview_get_live_configs`. Correlate only by
+  `entity_type` and `entity_id`; parent status and manual changes outside the
+  candidate ID set are separate evidence.
 - Consequential platform/delivery writes require prepare, sanitized summary, explicit approval, then confirm; never substitute Campaign and AdSet budget levels.
 - Meta creation uses `creation_contract_version=3`; read `adsagent://guide/creation-contract` and `adsagent://guide/name-contract`, then emit only explicit role fields. QuickCreate always sends `destination.type=web|app`.
 - A reverse-engineered template preview is unsaved. Source labels and a

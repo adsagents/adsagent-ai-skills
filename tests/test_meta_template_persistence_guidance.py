@@ -136,6 +136,21 @@ def test_template_guide_resource_is_optional_when_inline_contract_is_present():
         assert term in guidance
 
 
+def test_precreate_exact_name_miss_is_not_operator_review():
+    guidance = " ".join(
+        _read("skills/meta-copy/template-persistence-contract.md").split()
+    )
+
+    for term in (
+        "`complete=true`, `found=false`, and `status=not_found`",
+        "normal pre-create read outcome",
+        "does not authorize a write",
+        "Post-write read-back",
+        "persistence unverified",
+    ):
+        assert term in guidance
+
+
 def test_creative_distribution_update_uses_existing_canonical_template_tool():
     guidance = " ".join(
         _read("skills/meta-copy/template-persistence-contract.md").split()
@@ -200,7 +215,7 @@ def test_template_tools_are_registered_with_hosted_capabilities():
 
 
 def test_meta_template_persistence_release_is_consistently_versioned():
-    expected = "0.7.53"
+    expected = "0.7.54"
     assert _read("VERSION").strip() == expected
     assert f'"version": "{expected}"' in _read(".claude-plugin/plugin.json")
     assert f'"version": "{expected}"' in _read(

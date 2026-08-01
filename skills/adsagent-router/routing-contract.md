@@ -53,7 +53,7 @@
 2. Inspect `setup_get_status.capabilities`; capability truth overrides guessed cross-platform parity.
 3. Discover accounts.
 4. Ask for scope and dates.
-5. When `agent_method_profile.profile_id=adsagent_agent_methods_v1`, use its `consistent_query_tool` with root `query_contract_version=1`; otherwise use native tools.
+5. When `agent_method_profile.profile_id=adsagent_agent_methods_v1` and its consistent query tool is present in the client-local catalog, use that tool with root `query_contract_version=1`. If it is missing only from the local catalog, use the profile's named native fallback or the channel's documented native overview/batch tools; do not report a server registration failure from a local selector miss.
 
 ## Shared Rules
 

@@ -4,9 +4,9 @@
 
 Use server-side batch.
 
-Read `setup_get_status.capabilities`. For `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call one root `query_contract_version=1` `insights_query_consistent`.
+Read `setup_get_status.capabilities`. For `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call one root `query_contract_version=1` `insights_query_consistent` only when that advertised read tool is present in the client-local catalog.
 
-Native fallback:
+Native fallback applies when the profile is absent or its advertised read tool is missing only from the client-local catalog. Prefer profile `native_single_fallback` / `native_batch_fallback` names when present, otherwise use this table. A local selector miss is not a server registration failure and never authorizes reauthentication or write replay.
 
 | Platform | One scope | Multiple scopes |
 | --- | --- | --- |
@@ -59,6 +59,7 @@ For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact
 | Rejected Meta template direct write, with or without bounded public fields | Stop; show fields if returned; any later template write is a new explicit request. Preserve `support_ref` when present, report when absent, and never infer a hidden schema or replay. |
 | Indeterminate Meta template direct write without task/operation recovery | Never replay. Perform at most one exact-name template read-back when advertised; remain outcome-unknown without authoritative write-bound evidence, then hand off. |
 | `scope_unavailable` | Do not infer permissions. Discover once; retry only if still listed. Never alter permissions. |
+| Advertised profile read missing only from client-local catalog | Use the named native read fallback once; do not file a server-registration claim, reauthorize, or replay a write. |
 
 If retries fail, report the category. Task/operation-backed sent or uncertain
 writes use operation recovery; indeterminate Meta template direct writes

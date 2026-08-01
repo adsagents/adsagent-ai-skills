@@ -3,7 +3,8 @@
 ## Start And Read
 
 - Run `setup_get_status`; inspect capability names before advertiser discovery.
-- With `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call `insights_query_consistent` once with `query_contract_version=1` and one `scope` or ordered `scopes`. Otherwise use `insights_query_overview` or `insights_query_batch_overview`; never client-side fan out.
+- With `agent_method_profile.profile_id=adsagent_agent_methods_v1` and its consistent query tool present in the client-local catalog, call `insights_query_consistent` once with `query_contract_version=1` and one `scope` or ordered `scopes`.
+- If that advertised read tool is missing only from the client-local catalog, use its named native fallback when present, otherwise `insights_query_overview` or `insights_query_batch_overview`. Do not report a server registration failure solely from a local selector miss; never client-side fan out.
 - Use `date_range_mode=since_launch` or `require_fresh` only when listed by `insights_query_contract.consistency_modes`. Trust top-level `complete=true` and server summary/total; missing scopes are unknown.
 - Poll returned `task_ref`; consume terminal `source_anchor`/`result.source_snapshot` directly and never rerun page 1.
 - The opaque continuation is single-use. Preserve tenant, advertiser, authorization route, dates, grouping, filters, order, page size, and source snapshot. Never add Meta `min_as_of`. On `snapshot_expired` or replay rejection, restart identical page 1 serially.

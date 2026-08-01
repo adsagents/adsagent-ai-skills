@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.48`. New Meta connections default to the v2
+Current contract version: `0.7.49`. New Meta connections default to the v2
 product profile; all three hosted endpoints negotiate modern MCP `2026-07-28`
 stateless discovery while retaining supported legacy initialize clients.
 
@@ -117,6 +117,14 @@ Agents use the existing `templates_update` tool with flat `template_name` and
 and always read the exact template back before QuickCreate. Hosted also accepts
 an exact-mask, revision-bound compatibility patch without silently broadening
 or replaying the update.
+
+Version 0.7.49 keeps reads available when a long-lived client has an older
+local tool catalog. When setup advertises an Agent Method Profile but its
+consistent read tool is absent only from the client selector, agents use the
+profile's named native overview/batch fallback (or the documented channel
+fallback), preserve native completeness semantics, and do not misreport a
+server registration failure. Applied writes remain receipt-bound and are never
+replayed.
 
 Version 0.7.46 aligns all three channels with the MCP 2026-07-28 dual-era
 contract. Agents keep product endpoints/profiles separate from negotiated
@@ -434,8 +442,8 @@ TikTok: https://tiktok.adsagent.md/mcp
 - Parse `Retry-After` from the HTTP header, top-level `data`, or JSON-RPC `error.data`.
 - Honor `mcp_concurrency_limited` with wait plus jitter.
 - Honor `mcp_fanout_detected` by switching to the platform batch overview tool instead of retrying the blocked single-scope request.
-- When `agent_method_profile.profile_id=adsagent_agent_methods_v1`, use one `insights_query_consistent` request with `scope` or ordered `scopes` for all three platforms.
-- Without that profile, use native server-side batch tools for multi-scope reads: Meta/TikTok `insights_query_batch_overview`, Google `google_ads_insights_overview_batch`.
+- When `agent_method_profile.profile_id=adsagent_agent_methods_v1` and its consistent read is present in the client-local catalog, use one `insights_query_consistent` request with `scope` or ordered `scopes` for all three platforms.
+- Without that profile, or when its advertised read is missing only from the client-local catalog, use the profile's named native fallback or the documented server-side tools: Meta/TikTok `insights_query_batch_overview`, Google `google_ads_insights_overview_batch`. Do not report a server registration failure from a local selector miss.
 - Query aggregated data first and never infer cross-platform capability parity from a shared tool name.
 - Report server-computed totals from the response; do not sum currently visible rows.
 - Trust totals only when `meta.complete=true`; missing scopes are unknown, never zero.

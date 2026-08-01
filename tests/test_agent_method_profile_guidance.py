@@ -69,6 +69,26 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
         self.assertIn("config_verified_live", text)
         self.assertIn("cached read-only ledger", text)
 
+    def test_client_local_catalog_miss_uses_native_read_fallback(self) -> None:
+        paths = (
+            "skills/meta-insights/SKILL.md",
+            "skills/google-ads-insights/SKILL.md",
+            "skills/tiktok-insights/SKILL.md",
+            "skills/adsagent-router/SKILL.md",
+            "skills/adsagent-reliability/SKILL.md",
+        )
+        combined = "\n".join(self._read(path) for path in paths)
+
+        self.assertIn("client-local catalog", combined)
+        self.assertIn("native_single_fallback", combined)
+        self.assertIn("native_batch_fallback", combined)
+        self.assertIn("server registration failure", combined)
+        self.assertIn("google_ads_insights_overview_query", combined)
+        self.assertIn("google_ads_insights_overview_batch", combined)
+        self.assertIn("insights_query_overview", combined)
+        self.assertIn("insights_query_batch_overview", combined)
+        self.assertIn("never authorizes reauthentication or write replay", combined)
+
     def test_google_and_tiktok_recovery_matches_hosted_contract(self) -> None:
         google = self._read("skills/google-ads-insights/SKILL.md")
         tiktok = self._read("skills/tiktok-insights/SKILL.md")

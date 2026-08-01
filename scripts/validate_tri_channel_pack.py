@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.48"
+VERSION = "0.7.49"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -50,6 +50,10 @@ REQUIRED_REPO_TERMS = [
     "artifact",
     "setup_get_status.capabilities",
     "insights_query_consistent",
+    "client-local catalog",
+    "native_single_fallback",
+    "native_batch_fallback",
+    "server registration failure",
     "freshness_kind=age_only",
     "mutation_ref",
     "config_verified_live",
@@ -218,6 +222,9 @@ ROUTER_TERMS = [
     "notification / webhook / email / Feishu / Telegram",
     "setup_get_status.capabilities",
     "capability",
+    "client-local catalog",
+    "named native fallback",
+    "server registration failure",
     "Multiple distinct source Ads",
     "grouped_plan",
 ]
@@ -247,6 +254,10 @@ META_TERMS = [
     "insights_query_overview",
     "insights_query_batch_overview",
     "insights_query_consistent",
+    "client-local catalog",
+    "native_single_fallback",
+    "native_batch_fallback",
+    "server registration failure",
     "consistency=require_fresh",
     "freshness_kind=age_only",
     "not mutation coverage",
@@ -310,6 +321,9 @@ GOOGLE_TERMS = [
     "setup_get_status",
     "agent_method_profile.profile_id=adsagent_agent_methods_v1",
     "insights_query_consistent",
+    "client-local catalog",
+    "named native fallback",
+    "server registration failure",
     "query_contract_version=1",
     "consistency=cached",
     "max_scopes",
@@ -339,6 +353,9 @@ TIKTOK_TERMS = [
     "setup_get_status",
     "agent_method_profile.profile_id=adsagent_agent_methods_v1",
     "insights_query_consistent",
+    "client-local catalog",
+    "named native fallback",
+    "server registration failure",
     "query_contract_version=1",
     "insights_query_contract.consistency_modes",
     "date_range_mode=since_launch",
@@ -734,6 +751,10 @@ def main() -> None:
             "server-side batch",
             "agent_method_profile.profile_id=adsagent_agent_methods_v1",
             "insights_query_consistent",
+            "client-local catalog",
+            "native_single_fallback",
+            "native_batch_fallback",
+            "server registration failure",
             "query_contract_version=1",
             "top-level `complete=true`",
             "google_ads_insights_overview_batch",

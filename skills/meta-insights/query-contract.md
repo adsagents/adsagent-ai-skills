@@ -7,7 +7,8 @@ Use bounded aggregates and public handles. Never expose rows, schemas, or diagno
 Missing scope: run `setup_get_status`, then `products_list`; ask for scope and dates.
 
 - One scope: `insights_query_overview`; multiple scopes: one `insights_query_batch_overview`. Native reads pass `metadata_contract_version=1`.
-- With `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call `insights_query_consistent` once with root `query_contract_version=1`, `consistency=require_fresh`, and one scope or up to 20 ordered scopes.
+- With `agent_method_profile.profile_id=adsagent_agent_methods_v1` and its consistent query tool present in the client-local catalog, call `insights_query_consistent` once with root `query_contract_version=1`, `consistency=require_fresh`, and one scope or up to 20 ordered scopes.
+- If that advertised read tool is missing only from the client-local catalog, use the profile's `native_single_fallback` or `native_batch_fallback` when present, otherwise the documented native overview/batch tool above. Do not report a server registration failure or stop a read solely because of a local selector miss.
 - On `mcp_fanout_detected`, stop, batch current plus pending scopes, and do not retry the blocked call.
 
 ## Filtering And Metadata

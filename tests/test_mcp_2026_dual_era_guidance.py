@@ -38,7 +38,7 @@ def test_release_identity_and_pinned_service_guides_are_current() -> None:
     release = json.loads(_read("release-manifest.json"))
     provenance = json.loads(_read("contracts/manifests/provenance.json"))
 
-    assert version == "0.7.52"
+    assert version == "0.7.53"
     assert release["version"] == version
     assert release["tag"] == f"v{version}"
     assert set(provenance["channels"]) == {"meta", "google", "tiktok"}

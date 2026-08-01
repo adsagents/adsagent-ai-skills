@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.51`. New Meta connections default to the v2
+Current contract version: `0.7.52`. New Meta connections default to the v2
 product profile; all three hosted endpoints negotiate modern MCP `2026-07-28`
 stateless discovery while retaining supported legacy initialize clients.
 
@@ -125,6 +125,11 @@ profile's named native overview/batch fallback (or the documented channel
 fallback), preserve native completeness semantics, and do not misreport a
 server registration failure. Applied writes remain receipt-bound and are never
 replayed.
+
+Version 0.7.52 uses the request-scoped template capability block from
+`setup_get_status` before saved-template writes. Agents can distinguish an
+authorized `mcp.templates.write` grant from a tool name appearing elsewhere,
+then perform the existing exact-name read-back without broadening permissions.
 
 Version 0.7.51 correlates scheduled Meta candidate delivery state by exact
 `entity_type` and `entity_id`. Agents read up to 50 explicit candidates in one

@@ -9,7 +9,9 @@ Use this only when the Meta template is the direct lifecycle object. Analysis
 that groups, filters, or describes templates belongs to `meta-insights`.
 
 1. Inspect `capabilities.delivery_mutations` and the exact object level.
-   Template state instead requires advertised `mcp.templates.write`.
+   Template state instead requires
+   `capabilities.template_mutations.allowed=true` with
+   `required_capability=mcp.templates.write`.
 2. Resolve explicit source, destination, parent, naming, and creative inputs.
    Never invent campaign, AdSet, template, budget, pixel/app, or compliance.
 3. For known writes, skip Insights preflight: prepare reads live configuration

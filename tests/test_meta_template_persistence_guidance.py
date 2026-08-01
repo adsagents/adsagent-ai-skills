@@ -38,6 +38,8 @@ def test_reverse_engineered_template_uses_fail_closed_snapshot_semantics():
         "templates_create",
         "templates_update",
         "mcp.templates.write",
+        "setup_get_status.capabilities.template_mutations.allowed=true",
+        "`required_capability` is exactly `mcp.templates.write`",
         "templates_get",
         "exact `template_name`",
         "write_accepted_unverified",
@@ -184,7 +186,7 @@ def test_template_tools_are_registered_with_hosted_capabilities():
 
 
 def test_meta_template_persistence_release_is_consistently_versioned():
-    expected = "0.7.51"
+    expected = "0.7.52"
     assert _read("VERSION").strip() == expected
     assert f'"version": "{expected}"' in _read(".claude-plugin/plugin.json")
     assert f'"version": "{expected}"' in _read(

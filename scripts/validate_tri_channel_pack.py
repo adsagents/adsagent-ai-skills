@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.53"
+VERSION = "0.7.54"
 
 REQUIRED_SKILLS = {
     "adsagent-router",

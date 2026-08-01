@@ -66,6 +66,14 @@ a grant. When `guide_resource_required=false`, a client does not expose MCP
 Resources, or reading the optional resource returns `Unknown resource`, use the
 inline contract and continue the normal guarded workflow. That resource failure
 must not block the write or be reported as a server tool-registration failure.
+
+Before create, an exact-name availability check may return `complete=true`,
+`found=false`, and `status=not_found`. This is a normal pre-create read outcome,
+not operator review. It does not authorize a write: continue only when the user
+explicitly requested creation with that exact name and the capability gate
+above is still allowed. Post-write read-back with the same result means
+**write accepted; persistence unverified**; stop without replaying the write.
+
 In the exact server-owned source-import mode
 described above, source references are import instructions that cause Hosted
 to re-read the source, not client-supplied snapshot evidence. Send that

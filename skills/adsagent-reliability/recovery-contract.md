@@ -16,7 +16,12 @@ Native fallback applies when the profile is absent or its advertised read tool i
 
 Never fan out. Trust top-level `complete=true` in profile mode; otherwise trust `meta.complete=true`. For Meta, combine AND `filters`; correct `adsagent_query_invalid` once.
 
-Poll advertised `next_action`; Meta uses `tasks_get_status(task_ref=..., response_mode=compact)`. At `terminal=true`, consume `result`; never rerun page 1. For create/copy, require `result.create_reconciliation.reconciled=true` before claiming complete accounting. Map `creative_results` to created IDs, then report `result.failures.items`, obey retry/review flags, and stop on unclassified failures.
+Poll advertised `next_action`; Meta uses `tasks_get_status(task_ref=..., response_mode=compact)`. At `terminal=true`, consume `result`; never rerun page 1. For create/copy, require `result.create_reconciliation.reconciled=true` before claiming complete accounting. Map `creative_results` to created IDs. When `create_reconciliation.next_action` is present, call that exact bounded read once and require `retry_write=false`; use its live configured/effective/delivery fields for current delivery state. It does not prove spend and never authorizes replaying the write. Then report `result.failures.items`, obey retry/review flags, and stop on unclassified failures.
+
+For common Insights results, exact zero requires
+`metrics_evidence.zero_proven=true`. Otherwise report no observed metrics and
+say the exact amount is unproven. `mutation_coverage` applies only when the
+metrics request supplied `after_mutation_ref`; it never proves live delivery.
 
 For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact_status=expired` requires export. Keep opaque continuation. Never move Meta `min_as_of` into Google or TikTok requests.
 

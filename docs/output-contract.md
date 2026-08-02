@@ -38,6 +38,7 @@ One concise answer.
 - Prefer cleaned and aggregated AdsAgent reads.
 - Report server-computed totals from the response. Do not sum currently visible rows; row pages can be capped or paginated.
 - Trust totals only when `meta.complete=true`; follow `meta.has_more` and treat missing scopes as unknown, never zero.
+- In a common Insights result, claim exact zero only when `metrics_evidence.zero_proven=true`. Otherwise say no metrics were observed and the exact amount is unproven.
 - When `setup_get_status.capabilities.agent_method_profile.profile_id=adsagent_agent_methods_v1`, use one `insights_query_consistent` call with root `query_contract_version=1` and exactly one `scope` or one ordered `scopes` batch up to advertised `max_scopes`.
 - In profile mode, preserve result order and trust only top-level `complete=true` plus every result's `status` and `query_contract`; shared tool names do not imply shared freshness or write evidence.
 - For queued consistency reads, poll the advertised task tool with `response_mode=compact`; Meta uses `tasks_get_status(response_mode=compact)`. Consume the bounded terminal `result` directly when task/result completion and platform source-anchor checks pass; do not rerun page 1 merely to continue. TikTok requires `source_anchor == result.source_snapshot`.
@@ -84,6 +85,13 @@ server registration failed, reauthorize, replace the bearer, or replay the
 confirm/write. For task writes, recover the persisted receipt through
 `operations_get_context(task_ref=...)`; never replay an uncertain write.
 
+For a terminal reconciled Meta create/copy task, follow
+`result.create_reconciliation.next_action` exactly once when present. It is a
+bounded read of the created Ads and must have `retry_write=false`. Use its live
+configured/effective/delivery fields for current delivery state, not spend.
+`mutation_coverage` applies only to metrics reads that supplied
+`after_mutation_ref`; it never proves live delivery.
+
 Write recovery is receipt-driven and typed. Follow each failure item's `automatic_retry_allowed`, `manual_new_task_allowed`, and `operator_review_required`; only `manual_new_task_allowed=true` permits a newly prepared task with fresh approval. Pending or ambiguous writes require context recovery and a stop; `verified_created` supplies recovered IDs. No state authorizes replaying the original task or confirmation token.
 
 Bulk Meta Ad writes may be split into configurable sequential AdsAgent chunks. This is a defensive reliability policy, not evidence of a fixed Meta limit. Successful objects and receipts remain authoritative when a later chunk fails.
@@ -101,7 +109,7 @@ Google Ads `as_of` is read-only ledger observation time and its current public p
 - Meta creation clients set `creation_contract_version=3`, use explicit single/grouped mode, and read `adsagent://guide/creation-contract` plus `adsagent://guide/name-contract` for canonical examples and role-specific names. Legacy aliases are exact-path compatibility only.
 - On `confirm_token_invalid`, never retry the old confirm. Prepare again, show the fresh sanitized approval summary, and obtain fresh explicit approval.
 - A successful asynchronous confirm returns a public `task_ref`. Poll it with `tasks_get_status(task_ref=..., response_mode=compact)` until `terminal=true`; never discover a replacement by guessing from task history.
-- First inspect `result.create_reconciliation`. Require `reconciled=true` before claiming every requested object is accounted for, and use `creative_results` to map `ad_name` plus available `selection_key`/`selection_keys` to `ad_id`. `configuration.source=approved_task_payload` with `live_verified=false` is execution input, not live Meta configuration.
+- First inspect `result.create_reconciliation`. Require `reconciled=true` before claiming every requested object is accounted for, and use `creative_results` to map `ad_name` plus available `selection_key`/`selection_keys` to `ad_id`. Follow its exact read-only `next_action` once when present; require `retry_write=false`, use live configured/effective/delivery fields for current state, and never infer spend or replay the write. `configuration.source=approved_task_payload` with `live_verified=false` is execution input, not live Meta configuration.
 - `operations_get_context(response_mode=compact)` returns receipt totals, reconciliation, and anomalous receipts. Use `standard` only when every receipt is required. An auxiliary `adimages` failure marked `workflow_status=recovered_by_url_fallback` is compensated and never authorizes retry or a new task.
 - For a terminal create/copy task, report every bounded `result.failures.items` entry using its public `ad_name`, `code`, `message`, and `next_action`. Raw Meta errors remain private. Never retry the unchanged write; any corrected retry requires a newly prepared task and fresh approval. When `failures.unclassified_count>0` or `operator_review_required=true`, report known items, stop, and preserve the task/support reference.
 - Compact terminal output preserves the safe `no_create_permission` code. Direct the user to `/dashboard/assets/fb-users` to enable Create on an active eligible connection, then prepare again.

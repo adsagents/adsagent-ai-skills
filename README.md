@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.54`. New Meta connections default to the v2
+Current contract version: `0.7.55`. New Meta connections default to the v2
 product profile; all three hosted endpoints negotiate modern MCP `2026-07-28`
 stateless discovery while retaining supported legacy initialize clients.
 
@@ -130,6 +130,13 @@ Version 0.7.54 treats an exact missing template selector as a normal bounded
 read result. Agents may continue an already explicitly approved create, while
 the same missing result after a write still means persistence is unverified and
 must never trigger replay.
+
+Version 0.7.55 separates post-create delivery evidence from spend evidence.
+Reconciled Meta create/copy tasks expose one bounded read-only live-config
+action for their created Ads; agents execute it once without replaying the
+write. Exact zero metrics require `metrics_evidence.zero_proven=true`, while
+`mutation_coverage` remains limited to metrics reads using
+`after_mutation_ref`.
 
 Version 0.7.53 keeps saved-template workflows available in clients that expose
 tools but not MCP Resources. Agents use the request-scoped

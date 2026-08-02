@@ -86,7 +86,7 @@ table.
 
 ## Completeness And Freshness
 
-Report server totals; never sum pages. Native totals require `meta.complete=true`; profile totals require top-level `complete=true`. Missing scopes are unknown.
+Report server totals; never sum pages. Native totals require `meta.complete=true`; profile totals require top-level `complete=true`. Missing scopes are unknown. In a common result, claim exact zero only when `metrics_evidence.zero_proven=true`; otherwise report no observed metrics and say the exact amount is unproven.
 
 For Campaign, Ad Set, or Ad existence totals, additionally require
 `meta.inventory_coverage=complete` and
@@ -111,7 +111,7 @@ configuration. Follow `next_action` to `overview_get_live_configs` only while
 verification remains pending. If the client cannot select that read after
 `mutation_applied=true`, preserve `mutation_ref` and report applied-but-pending;
 do not reauthorize, replace the bearer, or repeat the write.
-`after_mutation_ref=mutation_ref` covers post-write metrics and does not verify delivery configuration.
+`after_mutation_ref=mutation_ref` covers post-write metrics and does not verify delivery configuration. `mutation_coverage` is applicable only when that request field was supplied; it never proves current configured or delivery state.
 Recover task-backed uncertainty with
 `operations_get_context`; never repeat writes.
 

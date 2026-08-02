@@ -13,8 +13,11 @@ description: Use when an AdsAgent MCP call fails, repeats, fans out, queues, or 
    replay a confirm or parallelize recovery.
 4. Consume terminal results directly. Preserve completeness, receipts,
    continuation, and `support_ref` boundaries.
-5. Stop on unclassified, permission, or operator-review outcomes.
-6. Apply session recovery only after a legacy protocol was negotiated. Modern
+5. For reconciled Meta create/copy tasks, follow the returned read-only
+   `create_reconciliation.next_action` once. It verifies live delivery state,
+   never spend, and never authorizes replaying the write.
+6. Stop on unclassified, permission, or operator-review outcomes.
+7. Apply session recovery only after a legacy protocol was negotiated. Modern
    MCP `2026-07-28` is stateless; do not invent a session ID or re-register.
 
 Read [recovery-contract.md](recovery-contract.md) for the query plan, recovery

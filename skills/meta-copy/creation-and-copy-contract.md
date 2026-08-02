@@ -76,7 +76,12 @@ Correct `adsagent_request_incomplete` `invalid_fields` on prepare once. On repea
 
 On `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, `operator_review_required=false`, STOP and follow [meta-quota-plan.md](../adsagent-reliability/meta-quota-plan.md). Sent/uncertain writes use `operations_get_context`.
 
-Poll `tasks_get_status(task_ref=..., response_mode=compact)`. At terminal, require `result.create_reconciliation.reconciled=true`. Map `creative_results` `ad_name` plus `selection_key`/`selection_keys` to `ad_id`. `approved_task_payload` with `live_verified=false` is not live Meta state.
+Poll `tasks_get_status(task_ref=..., response_mode=compact)`. At terminal, require `result.create_reconciliation.reconciled=true`. Map `creative_results` `ad_name` plus `selection_key`/`selection_keys` to `ad_id`. When `create_reconciliation.next_action` is present, call that exact bounded read once, require `retry_write=false`, and use its live configured/effective/delivery fields for current delivery state. It never authorizes replaying the write and does not prove spend. `approved_task_payload` with `live_verified=false` is not live Meta state.
+
+Claim an exact zero only when the common Insights result has
+`metrics_evidence.zero_proven=true`. Otherwise say no metrics were observed and
+the exact amount is unproven. `mutation_coverage` is relevant only when the
+metrics request supplied `after_mutation_ref`; it never proves live delivery.
 
 Report `result.failures.items` `code`, `message`, and `next_action`; never expose a raw Meta error or retry the unchanged write. `recovered_by_url_fallback` is compensated and never permits retry or a new task. Only `manual_new_task_allowed=true` permits a new task with fresh approval. Stop on `failures.unclassified_count>0`.
 

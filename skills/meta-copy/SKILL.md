@@ -1,12 +1,9 @@
 ---
 name: meta-copy
-description: Use when preparing a Meta Ads creation, copy, budget, status, targeting, delivery change, or direct Meta template-object lifecycle operation; not for template analysis.
+description: Use when preparing a Meta Ads creation, copy, template write, budget, status, targeting, or delivery change; not template analysis.
 ---
 
 # Meta Copy And Comparison
-
-Use this for direct Meta template lifecycle operations; route template
-analysis to `meta-insights`.
 
 1. Inspect `capabilities.delivery_mutations` and the exact object level.
    Template state instead requires
@@ -21,7 +18,8 @@ analysis to `meta-insights`.
 4. Confirm once. Consume inline `verification_result` first; follow read-only
    `next_action` only while pending. Never replay or switch level, route, mode,
    or permissions.
-5. Poll task writes and reconcile results through the matching recovery path.
+5. Reconcile tasks through the matching recovery path. Follow a reconciled
+   create/copy `next_action` once; it proves live state, not spend or replay.
 
 Read [creation-and-copy-contract.md](creation-and-copy-contract.md) for
 QuickCreate, append, copy, delivery mutation, reconciliation, or recovery.

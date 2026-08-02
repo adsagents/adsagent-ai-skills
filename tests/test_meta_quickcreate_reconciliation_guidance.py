@@ -45,11 +45,11 @@ def test_meta_quickcreate_reconciliation_contract_is_public() -> None:
 
 
 def test_meta_quickcreate_reconciliation_release_is_current() -> None:
-    assert _read("VERSION").strip() == "0.7.54"
-    assert '"version": "0.7.54"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.54"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.54`" in _read("README.md")
-    assert 'VERSION = "0.7.54"' in _read(
+    assert _read("VERSION").strip() == "0.7.55"
+    assert '"version": "0.7.55"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.55"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.55`" in _read("README.md")
+    assert 'VERSION = "0.7.55"' in _read(
         "scripts/validate_tri_channel_pack.py"
     )
 
@@ -73,3 +73,32 @@ def test_reconciliation_guidance_stays_semi_black_box() -> None:
         "access_token",
     ):
         assert private_term not in text.lower()
+
+
+def test_reconciled_create_separates_live_delivery_and_metric_zero_evidence() -> None:
+    paths = (
+        "skills/adsagent-reliability/recovery-contract.md",
+        "skills/meta-copy/creation-and-copy-contract.md",
+        "skills/meta-insights/query-contract.md",
+        "docs/output-contract.md",
+        "docs/examples.md",
+    )
+    text = "\n".join(_read(path) for path in paths)
+
+    for term in (
+        "create_reconciliation.next_action",
+        "retry_write=false",
+        "metrics_evidence.zero_proven=true",
+        "mutation_coverage",
+        "after_mutation_ref",
+        "never proves live delivery",
+    ):
+        assert term in text
+
+    for path in (
+        "skills/adsagent-reliability/recovery-contract.md",
+        "skills/meta-copy/creation-and-copy-contract.md",
+    ):
+        contract = _read(path)
+        assert "does not prove spend" in contract
+        assert "never authorizes replaying the write" in contract

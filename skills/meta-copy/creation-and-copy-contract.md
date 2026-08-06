@@ -18,6 +18,16 @@ Read `adsagent://guide/creation-contract`, `adsagent://guide/name-contract`, and
 {"request":{"creation_contract_version":3,"request_mode":"single","source_ad_id":"<ad>","source_ad_account_id":"<source>","target_ad_account_id":"<target>","campaign_count":1,"adset_count":1,"ads_per_adset":1,"copy_mode":"deep","target_campaign_name":"<optional>"}}
 ```
 
+To add Ad Sets to an existing Campaign with `copy_ad_quick_copy`, use
+`mode="new_adsets"` plus `target_campaign_id`. Statuses use only
+`campaign_status`, `adset_status`, and `ad_status`, each `ACTIVE|PAUSED`;
+`status_option` belongs only to `copy_ad_clone_structure` and must never be
+sent to Quick Copy. `append_mode` belongs only to `campaigns_quick_create`.
+
+```json
+{"request":{"creation_contract_version":3,"request_mode":"single","source_ad_id":"<ad>","source_ad_account_id":"<source>","target_ad_account_id":"<target>","mode":"new_adsets","campaign_count":1,"adset_count":2,"ads_per_adset":1,"copy_mode":"fresh","target_campaign_id":"<campaign>","adset_status":"ACTIVE","ad_status":"ACTIVE"}}
+```
+
 ```json
 {"request":{"creation_contract_version":3,"request_mode":"grouped","grouped_plan":{"source_ad_account_id":"<source>","target_ad_account_id":"<target>","copy_mode":"deep","campaigns":[{"campaign_name":"<campaign>","adsets":[{"adset_name":"<optional>","ads":[{"source_ad_id":"<ad>","ad_name":"<optional>"}]}]}]}}}
 ```

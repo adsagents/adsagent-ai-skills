@@ -10,7 +10,8 @@ description: Use when preparing a Meta Ads creation, copy, template write, budge
    `capabilities.template_mutations.allowed=true` with
    `required_capability=mcp.templates.write`. Without Resources, use its
    `inline_contract`.
-2. Resolve explicit source, destination, parent, naming, and creative inputs.
+2. Resolve exact source, destination, parent, names, and creatives.
+   Quick Copy uses `*_status`, never `status_option`/`append_mode`.
    Never invent campaign, AdSet, template, budget, pixel/app, or compliance.
 3. For known writes, skip Insights preflight: prepare reads live configuration
    without mutation. Show its summary and await fresh approval. Templates use

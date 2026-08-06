@@ -7,7 +7,7 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Website:** [adsagent.md](https://adsagent.md)
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.55`. New Meta connections default to the v2
+Current contract version: `0.7.56`. New Meta connections default to the v2
 product profile; all three hosted endpoints negotiate modern MCP `2026-07-28`
 stateless discovery while retaining supported legacy initialize clients.
 
@@ -137,6 +137,11 @@ action for their created Ads; agents execute it once without replaying the
 write. Exact zero metrics require `metrics_evidence.zero_proven=true`, while
 `mutation_coverage` remains limited to metrics reads using
 `after_mutation_ref`.
+
+Version 0.7.56 pins Meta Quick Copy fields to their owning tools. Existing
+Campaign expansion uses `mode=new_adsets` with `target_campaign_id` and the
+`campaign_status`/`adset_status`/`ad_status` fields; `status_option` remains
+structural-clone-only and `append_mode` remains QuickCreate-only.
 
 Version 0.7.53 keeps saved-template workflows available in clients that expose
 tools but not MCP Resources. Agents use the request-scoped

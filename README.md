@@ -4,7 +4,9 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 
 **Official distribution:** [github.com/adsagents/adsagent-ai-skills](https://github.com/adsagents/adsagent-ai-skills)
 
-**Website:** [adsagent.md](https://adsagent.md)
+**Website:** [adsagent.md](https://adsagent.md?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
+**Official links hub:** [adsagent.md/connect](https://adsagent.md/connect?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
+**Skill pack landing page:** [adsagent.md/skills](https://adsagent.md/skills?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
 Current contract version: `0.7.56`. New Meta connections default to the v2

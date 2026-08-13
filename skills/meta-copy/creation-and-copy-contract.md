@@ -14,6 +14,17 @@ Partnership/boosted sources require `copy_mode="deep"`. Stop on `partnership_fre
 
 Read `adsagent://guide/creation-contract`, `adsagent://guide/name-contract`, and `adsagent://guide/metadata-contract`. Set `creation_contract_version=3`.
 
+For `creation_contract_version=3`, every object level that the selected mode creates must carry an explicit status before prepare succeeds:
+
+- `clone_all`: `campaign_status`, `adset_status`, and `ad_status`
+- `new_adsets`: `adset_status` and `ad_status`
+- `new_ads`: `ad_status` only
+- grouped copy: `campaign_status`, `adset_status`, and `ad_status` on the outer request
+
+Omitted required statuses fail closed at prepare with a validation error. Never infer `ACTIVE` for v3.
+
+Legacy/unversioned requests remain compatible: the server may apply paused-by-default or legacy ACTIVE defaults, but the approval summary must expose each level's `requested_status`, `resolved_status`, `default_applied`, and `compatibility_rule`, plus an activation-risk warning when any resolved status is `ACTIVE`.
+
 ```json
 {"request":{"creation_contract_version":3,"request_mode":"single","source_ad_id":"<ad>","source_ad_account_id":"<source>","target_ad_account_id":"<target>","campaign_count":1,"adset_count":1,"ads_per_adset":1,"copy_mode":"deep","target_campaign_name":"<optional>"}}
 ```

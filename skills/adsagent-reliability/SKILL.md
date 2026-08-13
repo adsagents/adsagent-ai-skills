@@ -22,5 +22,7 @@ description: Use when an AdsAgent MCP call fails, repeats, fans out, queues, or 
 
 Read [recovery-contract.md](recovery-contract.md) for the query plan, recovery
 matrix, task and artifact handling, and cross-channel boundaries. Read
-[retry-parser.md](retry-parser.md) only when parsing transport backoff. Read
+[mutation-lifecycle-contract.md](mutation-lifecycle-contract.md) for durable
+handle discipline and ref-first recovery when the hosted service advertises it.
+Read [retry-parser.md](retry-parser.md) only when parsing transport backoff. Read
 [meta-quota-plan.md](meta-quota-plan.md) only for a strict Meta quota defer.

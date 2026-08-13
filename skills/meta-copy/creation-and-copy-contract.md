@@ -50,10 +50,18 @@ Discover one upload window with `creatives_list(created_from=<inclusive>, create
 ## Append
 
 - `append_mode=append-campaign` plus `target_campaign_id`.
-- `append_mode=append-adset` plus `target_adset_id`, `campaign_count=1`, and `adset_count=1`; it creates zero Campaigns and zero AdSets, creates the requested Ads only, and inherits the existing parent budget.
+- `append_mode=append-adset` plus `target_adset_id`, `execution.campaign_count=1`, and `execution.adset_count=1`; it creates zero Campaigns and zero AdSets, creates the requested Ads only, and inherits the existing parent budget.
 - Never send `append_mode=existing`, `existing_campaign_id`, `existing_adset_id`, or `product_ref`.
+- Never place QuickCreate counts at the request root (`campaign_count`, `adset_count`) or Copy-only fields (`ads_per_adset`) under `execution`.
 
-On bounded `invalid_fields`, rerun prepare once, show the new summary, and obtain fresh explicit approval. Never auto-confirm, change permissions, or replay a confirm token. Never reuse confirmation material.
+| Misplaced path | Use instead |
+| --- | --- |
+| `request.campaign_count` | `request.execution.campaign_count` |
+| `request.adset_count` | `request.execution.adset_count` |
+| `request.execution.append_mode` | `request.append_mode` |
+| `request.execution.ads_per_adset` | remove; belongs to `copy_ad_quick_copy` only |
+
+On bounded `invalid_fields` (including `expected_path` when present), rerun prepare once, show the new summary, and obtain fresh explicit approval. Never auto-confirm, change permissions, or replay a confirm token. Never reuse confirmation material.
 
 ## Grouped Copy
 

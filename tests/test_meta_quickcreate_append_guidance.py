@@ -41,8 +41,8 @@ def test_quickcreate_append_contract_is_consistent_on_public_surfaces():
 def test_append_adset_guidance_is_ads_only_and_never_auto_confirms():
     text = _read("skills/meta-copy/SKILL.md")
 
-    assert "campaign_count=1" in text
-    assert "adset_count=1" in text
+    assert "execution.campaign_count=1" in text
+    assert "execution.adset_count=1" in text
     assert "creates zero Campaigns and zero AdSets" in text
     assert "creates the requested Ads only" in text
     assert "rerun prepare once" in text
@@ -52,7 +52,7 @@ def test_append_adset_guidance_is_ads_only_and_never_auto_confirms():
 
 
 def test_release_version_is_current():
-    assert _read("VERSION").strip() == "0.7.57"
-    assert '"version": "0.7.57"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.57"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.57`" in _read("README.md")
+    assert _read("VERSION").strip() == "0.7.58"
+    assert '"version": "0.7.58"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.58"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.58`" in _read("README.md")

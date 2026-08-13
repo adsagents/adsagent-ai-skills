@@ -9,12 +9,15 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Skill pack landing page:** [adsagent.md/skills](https://adsagent.md/skills?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.57`. New Meta connections default to the v2
+Current contract version: `0.7.58`. New Meta connections default to the v2
 product profile; all three hosted endpoints negotiate modern MCP `2026-07-28`
 stateless discovery while retaining supported legacy initialize clients.
 
-Version 0.7.57 hardens public manifest validators against false-pass shapes,
-scans all shipped skill bundles plus README/docs for unregistered tool
+Version 0.7.58 adds the shared mutation-lifecycle client scaffold (#66) and
+qualifies QuickCreate append counts as `execution.campaign_count` /
+`execution.adset_count` with an explicit QuickCreate-versus-Quick-Copy path
+table. Prior 0.7.57 hardens public manifest validators against false-pass
+shapes, scans all shipped skill bundles plus README/docs for unregistered tool
 references, and fixes remaining Meta template routing edge cases (order-
 independent compound modifiers and `campaigns based on templates`).
 

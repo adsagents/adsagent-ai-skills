@@ -590,6 +590,31 @@
     "expected": ["meta-copy"]
   },
   {
+    "id": "coordinated_performance_archived_delete_is_lifecycle",
+    "prompt": "Delete my performance and archived Meta templates",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "coordinated_archived_performance_delete_is_lifecycle",
+    "prompt": "Delete my archived and performance Meta templates",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "coordinated_performance_research_open_is_lifecycle",
+    "prompt": "Open Meta performance and research templates",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "coordinated_research_performance_open_is_lifecycle",
+    "prompt": "Open Meta research and performance templates",
+    "expected": ["meta-copy"]
+  },
+  {
+    "id": "meta_campaigns_based_on_templates_is_insights",
+    "prompt": "Show Meta campaigns based on templates",
+    "expected": ["meta-insights"]
+  },
+  {
     "id": "meta_report_detailing_templates_is_insights",
     "prompt": "Open a Meta report detailing templates.",
     "expected": ["meta-insights"]

@@ -184,6 +184,7 @@ _META_TEMPLATE_GROUPING_RELATION = re.compile(
     r"\b(?:grouped|filtered|sorted|split|segmented|aggregated|"
     r"broken\s+down)\s+by\b.{0,100}\btemplates?\b|"
     r"\b(?:campaigns?|ad\s*sets?|ads?)\b.{0,60}\bby\s+templates?\b|"
+    r"\b(?:campaigns?|ad\s*sets?|ads?)\b.{0,60}\bbased\s+on\s+templates?\b|"
     r"\b(?:campaigns?|ad\s*sets?|ads?)\b.{0,60}\b"
     r"(?:with(?:out)?|using|containing|matching|including|featuring|"
     r"linked\s+to|associated\s+with)\s+templates?\b|"
@@ -265,6 +266,14 @@ _DIRECT_OBJECT_COORDINATOR = re.compile(
     r"(?:email|document|design|html|message|newsletter|notion)\b)",
     re.IGNORECASE,
 )
+_COMPOUND_TEMPLATE_MODIFIER = re.compile(
+    r"^\s+(?:"
+    r"archived|saved|research|performance|marketing|campaign|report|"
+    r"obsolete|draft|active|paused|latest|recent|testing|tracking|"
+    r"configuration|builder"
+    r")\b",
+    re.IGNORECASE,
+)
 _META_TEMPLATE_NAMING = re.compile(
     r"\b(?:named|called|tagged)\b|名为|名称|标签",
     re.IGNORECASE,
@@ -334,10 +343,17 @@ def _has_meta_qualified_template_tool(prompt: str) -> bool:
     return False
 
 
-def _has_direct_object_boundary(text: str) -> bool:
+def _has_direct_object_boundary(
+    text: str,
+    *,
+    template_plural: bool = False,
+) -> bool:
     if _DIRECT_OBJECT_COORDINATOR.search(text):
         return True
     for coordinator in _ACTION_COORDINATOR.finditer(text):
+        following = text[coordinator.end():]
+        if template_plural and _COMPOUND_TEMPLATE_MODIFIER.match(following):
+            continue
         prior_object = text[:coordinator.start()]
         if (
             _META_TEMPLATE_ANALYTICS_SIGNAL.search(prior_object)
@@ -365,7 +381,10 @@ def _direct_template_lifecycle_objects(
                 break
             if (
                 _CLAUSE_BREAK.search(between)
-                or _has_direct_object_boundary(between)
+                or _has_direct_object_boundary(
+                    between,
+                    template_plural=template.group().endswith("s"),
+                )
             ):
                 break
             if any(

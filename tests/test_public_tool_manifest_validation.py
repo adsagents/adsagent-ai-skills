@@ -347,8 +347,31 @@ def test_excessive_manifest_nesting_fails(tmp_path: Path) -> None:
         },
     )
 
-    with pytest.raises(ManifestValidationError, match="nesting exceeds"):
+    with pytest.raises(ManifestValidationError, match="tool list entries"):
         validate_manifest("meta", path, root=ROOT)
+
+
+def test_removed_tools_in_nested_manifest_section_do_not_false_pass(
+    tmp_path: Path,
+) -> None:
+    payload = _manifest_for("meta")
+    payload["tools"] = {
+        "active": payload["tools"],
+        "removed": ["overview_get_nonexistent_config"],
+    }
+    path = tmp_path / "meta.json"
+    _write_json(path, payload)
+
+    with pytest.raises(ManifestValidationError, match="tool container"):
+        validate_manifest("meta", path, root=ROOT)
+
+
+def test_setup_prefix_tools_are_checked_in_documentation() -> None:
+    text = "Call `setup_reset_connection` before continuing."
+
+    assert documented_tool_names(text) == {"setup_reset_connection"}
+    with pytest.raises(ManifestValidationError, match="unregistered tools"):
+        validate_documented_tool_names(text, {"setup_get_status"})
 
 
 def test_explicit_missing_manifest_path_fails(tmp_path: Path) -> None:

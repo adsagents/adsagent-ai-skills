@@ -52,6 +52,7 @@ TOOL_PREFIXES = (
     "optimization_",
     "overview_",
     "products_",
+    "setup_",
     "support_",
     "tasks_",
     "templates_",
@@ -90,57 +91,86 @@ def _string_set(value: Any, *, label: str) -> frozenset[str]:
     return frozenset(item.strip() for item in values)
 
 
+CHANNEL_SKILL_MAP = {
+    "meta-copy": "meta",
+    "meta-insights": "meta",
+    "google-ads-insights": "google",
+    "tiktok-insights": "tiktok",
+}
+
+
+def _assert_registered_names_use_known_prefixes(names: set[str]) -> None:
+    unknown = sorted(
+        name for name in names if not name.startswith(TOOL_PREFIXES)
+    )
+    if unknown:
+        raise ManifestValidationError(
+            "registered tools use unknown prefix families: "
+            + ", ".join(unknown)
+        )
+
+
+def _entry_from_dict(current: dict[str, Any]) -> dict[str, Any]:
+    name = current.get("name")
+    if not isinstance(name, str) or not name.strip():
+        raise ManifestValidationError(
+            "tool entry name must be a non-empty string"
+        )
+    gates = frozenset()
+    for key in ("capability_gate", "capability_gates", "gate"):
+        gates |= _string_set(
+            current.get(key),
+            label=f"{name}.{key}",
+        )
+    required_capabilities = frozenset()
+    for key in ("required_capability", "required_capabilities"):
+        required_capabilities |= _string_set(
+            current.get(key),
+            label=f"{name}.{key}",
+        )
+    return {
+        "name": _normalize_tool_name(name),
+        "capability_gates": gates,
+        "required_capabilities": required_capabilities,
+    }
+
+
 def _entries(value: Any) -> list[dict[str, Any]]:
     result: list[dict[str, Any]] = []
-    pending: list[tuple[Any, int]] = [(value, 0)]
-    while pending:
-        current, depth = pending.pop()
-        if depth > MAX_MANIFEST_DEPTH:
-            raise ManifestValidationError(
-                f"manifest nesting exceeds {MAX_MANIFEST_DEPTH}"
-            )
-        if isinstance(current, str):
-            result.append(
-                {
-                    "name": _normalize_tool_name(current),
-                    "capability_gates": frozenset(),
-                    "required_capabilities": frozenset(),
-                }
-            )
-            continue
-        if isinstance(current, list):
-            pending.extend(
-                (item, depth + 1) for item in reversed(current)
-            )
-            continue
-        if not isinstance(current, dict):
-            continue
-        if isinstance(current.get("name"), str):
-            gates = frozenset()
-            for key in ("capability_gate", "capability_gates", "gate"):
-                gates |= _string_set(
-                    current.get(key),
-                    label=f"{current['name']}.{key}",
-                )
-            required_capabilities = frozenset()
-            for key in ("required_capability", "required_capabilities"):
-                required_capabilities |= _string_set(
-                    current.get(key),
-                    label=f"{current['name']}.{key}",
-                )
-            result.append(
-                {
-                    "name": _normalize_tool_name(current["name"]),
-                    "capability_gates": gates,
-                    "required_capabilities": required_capabilities,
-                }
-            )
-            continue
-        pending.extend(
-            (item, depth + 1)
-            for item in reversed(tuple(current.values()))
+    if isinstance(value, str):
+        result.append(
+            {
+                "name": _normalize_tool_name(value),
+                "capability_gates": frozenset(),
+                "required_capabilities": frozenset(),
+            }
         )
-    return result
+        return result
+    if isinstance(value, list):
+        for item in value:
+            if isinstance(item, str):
+                result.append(
+                    {
+                        "name": _normalize_tool_name(item),
+                        "capability_gates": frozenset(),
+                        "required_capabilities": frozenset(),
+                    }
+                )
+                continue
+            if isinstance(item, dict):
+                result.append(_entry_from_dict(item))
+                continue
+            raise ManifestValidationError(
+                "tool list entries must be strings or objects"
+            )
+        return result
+    if isinstance(value, dict):
+        if "name" in value:
+            return [_entry_from_dict(value)]
+        raise ManifestValidationError(
+            "unexpected tool container object; expected a list or tool entry"
+        )
+    raise ManifestValidationError("unsupported tool payload shape")
 
 
 def _index_entries(
@@ -199,9 +229,11 @@ def _manifest_entries(
     dict[str, dict[str, Any]],
 ]:
     if isinstance(payload, list):
-        return _index_entries(_entries(payload), label="tools"), {}
+        raise ManifestValidationError(
+            "list-rooted manifests are not supported; use an object root"
+        )
     if not isinstance(payload, dict):
-        raise ManifestValidationError("manifest root must be an object or list")
+        raise ManifestValidationError("manifest root must be an object")
 
     tool_payload = None
     for key in ("tools", "public_tools", "tool_manifest"):
@@ -264,22 +296,56 @@ def _load_reference_contract(root: Path) -> dict[str, Any]:
     return channels
 
 
-def documented_tool_names(text: str) -> set[str]:
+def documented_tool_names(
+    text: str,
+    *,
+    prefixes: tuple[str, ...] | None = None,
+) -> set[str]:
     """Extract callable-looking public tool names from inline code."""
+    active_prefixes = prefixes or TOOL_PREFIXES
     return {
         name
         for name in INLINE_CODE_IDENTIFIER_RE.findall(text)
-        if name.startswith(TOOL_PREFIXES)
+        if name.startswith(active_prefixes)
         and name not in NON_TOOL_IDENTIFIERS
         and not name.endswith("_tool")
     }
 
 
+def _collect_documentation_sources(root: Path) -> list[tuple[str, str]]:
+    sources: list[tuple[str, str]] = []
+    skills_root = root / "skills"
+    if skills_root.is_dir():
+        for skill_dir in sorted(skills_root.iterdir()):
+            if not skill_dir.is_dir():
+                continue
+            try:
+                text, _ = read_skill_bundle(root, skill_dir.name)
+            except SkillContractError as exc:
+                raise ManifestValidationError(str(exc)) from exc
+            sources.append((skill_dir.name, text))
+    for relative in ("README.md",):
+        path = root / relative
+        if path.is_file():
+            sources.append((relative, path.read_text(encoding="utf-8")))
+    docs_root = root / "docs"
+    if docs_root.is_dir():
+        for path in sorted(docs_root.glob("*.md")):
+            sources.append(
+                (str(path.relative_to(root)), path.read_text(encoding="utf-8"))
+            )
+    return sources
+
+
 def validate_documented_tool_names(
     text: str,
     registered_names: set[str],
+    *,
+    prefixes: tuple[str, ...] | None = None,
 ) -> None:
-    unregistered = sorted(documented_tool_names(text) - registered_names)
+    unregistered = sorted(
+        documented_tool_names(text, prefixes=prefixes) - registered_names
+    )
     if unregistered:
         raise ManifestValidationError(
             "skill references unregistered tools: "
@@ -290,7 +356,7 @@ def validate_documented_tool_names(
 def validate_reference_contract(root: Path = ROOT) -> None:
     channels = _load_reference_contract(root)
     registered_names: set[str] = set()
-    all_bundle_text = ""
+    channel_names: dict[str, set[str]] = {}
     for channel, contract in channels.items():
         if channel not in CHANNELS or not isinstance(contract, dict):
             raise ManifestValidationError(f"invalid channel contract: {channel}")
@@ -300,15 +366,7 @@ def validate_reference_contract(root: Path = ROOT) -> None:
             raise ManifestValidationError(
                 f"{channel} contract must define skill_bundles and tools"
             )
-        bundle_text = ""
-        for skill_name in bundles:
-            try:
-                text, _ = read_skill_bundle(root, str(skill_name))
-            except SkillContractError as exc:
-                raise ManifestValidationError(str(exc)) from exc
-            bundle_text += "\n" + text
-        all_bundle_text += "\n" + bundle_text
-        channel_names: set[str] = set()
+        names: set[str] = set()
         for reference in references:
             if not isinstance(reference, dict) or not isinstance(
                 reference.get("name"), str
@@ -317,12 +375,22 @@ def validate_reference_contract(root: Path = ROOT) -> None:
                     f"{channel} has malformed tool reference"
                 )
             name = reference["name"]
-            if name in channel_names:
+            if name in names:
                 raise ManifestValidationError(
                     f"{channel} has duplicate tool reference: {name}"
                 )
-            channel_names.add(name)
+            names.add(name)
             registered_names.add(name)
+        channel_names[channel] = names
+        bundle_text = ""
+        for skill_name in bundles:
+            try:
+                text, _ = read_skill_bundle(root, str(skill_name))
+            except SkillContractError as exc:
+                raise ManifestValidationError(str(exc)) from exc
+            bundle_text += "\n" + text
+        for reference in references:
+            name = reference["name"]
             if re.search(
                 rf"(?<![a-z0-9_]){re.escape(name)}(?![a-z0-9_])",
                 bundle_text,
@@ -330,7 +398,13 @@ def validate_reference_contract(root: Path = ROOT) -> None:
                 raise ManifestValidationError(
                     f"{channel} tool reference is not documented: {name}"
                 )
-    validate_documented_tool_names(all_bundle_text, registered_names)
+
+    _assert_registered_names_use_known_prefixes(registered_names)
+
+    for label, text in _collect_documentation_sources(root):
+        channel = CHANNEL_SKILL_MAP.get(label)
+        allowed = channel_names[channel] if channel else registered_names
+        validate_documented_tool_names(text, allowed)
 
 
 def validate_manifest(

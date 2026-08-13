@@ -246,7 +246,7 @@ SCHEDULED_TASK_TERMS = [
     "setup_get_status.capabilities",
     "complete=true",
     "mutation_ref",
-    "operations_get",
+    "operations_get_context",
     "Never auto-enable permissions",
 ]
 
@@ -360,7 +360,6 @@ TIKTOK_TERMS = [
     "insights_query_contract.consistency_modes",
     "date_range_mode=since_launch",
     "top-level `complete=true`",
-    "next_action",
     "task_ref",
     "mutation_receipts=true",
     "delivery_prepare_tool",
@@ -532,14 +531,50 @@ def parse_skill_frontmatter(path: Path) -> dict[str, str]:
     return data
 
 
+def _term_pattern(term: str) -> re.Pattern[str]:
+    if term.isdigit():
+        return re.compile(rf"(?<![0-9]){re.escape(term)}(?![0-9])")
+    if re.fullmatch(r"[A-Za-z0-9_./:-]+", term):
+        return re.compile(
+            rf"(?<![A-Za-z0-9_]){re.escape(term)}(?![A-Za-z0-9_])"
+        )
+    return re.compile(re.escape(term))
+
+
+def _assert_no_substring_terms(label: str, terms: list[str]) -> None:
+    for left in terms:
+        for right in terms:
+            if left == right:
+                continue
+            if right.startswith(left):
+                continue
+            if f".{left}" in right or f"/{left}" in right:
+                continue
+            if f"({left})" in right or f"({left}," in right:
+                continue
+            if not _term_pattern(left).search(right):
+                continue
+            if right.startswith(f"{left}.") or right.startswith(f"{left}_"):
+                continue
+            fail(
+                f"{label} term {left!r} is matched inside {right!r}; "
+                "tighten the required term list"
+            )
+
+
 def assert_terms(label: str, text: str, terms: list[str]) -> None:
-    missing = [term for term in terms if term not in text]
+    _assert_no_substring_terms(label, terms)
+    missing = [
+        term for term in terms if not _term_pattern(term).search(text)
+    ]
     if missing:
         fail(f"{label} missing terms: {', '.join(missing)}")
 
 
 def assert_forbidden_terms_absent(label: str, text: str, terms: list[str]) -> None:
-    matches = [term for term in terms if term in text]
+    matches = [
+        term for term in terms if _term_pattern(term).search(text)
+    ]
     if matches:
         fail(f"{label} has forbidden single-channel wording: {', '.join(matches)}")
 

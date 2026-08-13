@@ -68,7 +68,7 @@ Version 0.7.24 publishes the canonical Meta QuickCreate Append contract. Agents 
 
 Version 0.7.25 makes partial Meta Ad-create recovery receipt-driven. Agents report each bounded failed Ad and follow its returned retry flags, preserve already-created Ads, and prepare a new task only when `manual_new_task_allowed=true`. AdsAgent may split bulk Ad writes into configurable sequential chunks as a defensive reliability policy; the chunk size is not evidence of a fixed Meta platform limit.
 
-Version 0.7.26 added TikTok-native Quick Create append guidance and the original single-row `creatives_confirm_upload` readiness step, which version 0.7.28 supersedes with bounded batch reconciliation. Agents distinguish `append-campaign` from `append-adgroup`; every append remains prepare-first, explicitly confirmed once, and receipt-recovered on the exact original route.
+Version 0.7.26 added TikTok-native Quick Create append guidance and the original single-row creatives_confirm_upload readiness step, which version 0.7.28 supersedes with bounded batch reconciliation. Agents distinguish `append-campaign` from `append-adgroup`; every append remains prepare-first, explicitly confirmed once, and receipt-recovered on the exact original route.
 
 Version 0.7.27 adds a plan-level circuit breaker for strict pre-send Meta quota admission. On the first qualifying `mcp_meta_quota_deferred`, agents stop all later confirms, preserve completed/current/remaining partitions, wait for the largest `retry_after_seconds` plus jitter, and re-prepare only the unchanged remainder under one fresh consolidated approval. They never reuse a confirm token or replay completed, sent, or uncertain work.
 

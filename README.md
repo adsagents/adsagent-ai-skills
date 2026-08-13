@@ -9,9 +9,14 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Skill pack landing page:** [adsagent.md/skills](https://adsagent.md/skills?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.56`. New Meta connections default to the v2
+Current contract version: `0.7.57`. New Meta connections default to the v2
 product profile; all three hosted endpoints negotiate modern MCP `2026-07-28`
 stateless discovery while retaining supported legacy initialize clients.
+
+Version 0.7.57 hardens public manifest validators against false-pass shapes,
+scans all shipped skill bundles plus README/docs for unregistered tool
+references, and fixes remaining Meta template routing edge cases (order-
+independent compound modifiers and `campaigns based on templates`).
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -140,7 +145,7 @@ write. Exact zero metrics require `metrics_evidence.zero_proven=true`, while
 `mutation_coverage` remains limited to metrics reads using
 `after_mutation_ref`.
 
-Version 0.7.56 pins Meta Quick Copy fields to their owning tools. Existing
+Version 0.7.57 pins Meta Quick Copy fields to their owning tools. Existing
 Campaign expansion uses `mode=new_adsets` with `target_campaign_id` and the
 `campaign_status`/`adset_status`/`ad_status` fields; `status_option` remains
 structural-clone-only and `append_mode` remains QuickCreate-only.

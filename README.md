@@ -9,9 +9,14 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Skill pack landing page:** [adsagent.md/skills](https://adsagent.md/skills?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.56`. New Meta connections default to the v2
+Current contract version: `0.7.57`. New Meta connections default to the v2
 product profile; all three hosted endpoints negotiate modern MCP `2026-07-28`
 stateless discovery while retaining supported legacy initialize clients.
+
+Version 0.7.57 hardens public manifest validators against false-pass shapes,
+scans all shipped skill bundles plus README/docs for unregistered tool
+references, and fixes remaining Meta template routing edge cases (order-
+independent compound modifiers and `campaigns based on templates`).
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 
@@ -68,7 +73,7 @@ Version 0.7.24 publishes the canonical Meta QuickCreate Append contract. Agents 
 
 Version 0.7.25 makes partial Meta Ad-create recovery receipt-driven. Agents report each bounded failed Ad and follow its returned retry flags, preserve already-created Ads, and prepare a new task only when `manual_new_task_allowed=true`. AdsAgent may split bulk Ad writes into configurable sequential chunks as a defensive reliability policy; the chunk size is not evidence of a fixed Meta platform limit.
 
-Version 0.7.26 added TikTok-native Quick Create append guidance and the original single-row `creatives_confirm_upload` readiness step, which version 0.7.28 supersedes with bounded batch reconciliation. Agents distinguish `append-campaign` from `append-adgroup`; every append remains prepare-first, explicitly confirmed once, and receipt-recovered on the exact original route.
+Version 0.7.26 added TikTok-native Quick Create append guidance and the original single-row creatives_confirm_upload readiness step, which version 0.7.28 supersedes with bounded batch reconciliation. Agents distinguish `append-campaign` from `append-adgroup`; every append remains prepare-first, explicitly confirmed once, and receipt-recovered on the exact original route.
 
 Version 0.7.27 adds a plan-level circuit breaker for strict pre-send Meta quota admission. On the first qualifying `mcp_meta_quota_deferred`, agents stop all later confirms, preserve completed/current/remaining partitions, wait for the largest `retry_after_seconds` plus jitter, and re-prepare only the unchanged remainder under one fresh consolidated approval. They never reuse a confirm token or replay completed, sent, or uncertain work.
 
@@ -140,7 +145,7 @@ write. Exact zero metrics require `metrics_evidence.zero_proven=true`, while
 `mutation_coverage` remains limited to metrics reads using
 `after_mutation_ref`.
 
-Version 0.7.56 pins Meta Quick Copy fields to their owning tools. Existing
+Version 0.7.57 pins Meta Quick Copy fields to their owning tools. Existing
 Campaign expansion uses `mode=new_adsets` with `target_campaign_id` and the
 `campaign_status`/`adset_status`/`ad_status` fields; `status_option` remains
 structural-clone-only and `append_mode` remains QuickCreate-only.

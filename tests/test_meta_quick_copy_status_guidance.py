@@ -34,4 +34,4 @@ def test_quick_copy_existing_campaign_and_status_fields_are_tool_scoped():
 
     assert "`status_option` belongs only to `copy_ad_clone_structure`" in reference
     assert "`append_mode` belongs only to `campaigns_quick_create`" in reference
-    assert _read("VERSION").strip() == "0.7.59"
+    assert _read("VERSION").strip() == "0.7.60"

@@ -134,8 +134,8 @@
     }
   ],
   "digest_algorithm": "sha256",
-  "guide_digest_sha256": "eb98942f18539ccdafe6809bce59526ec01f93f2348e4c6b10ba61b311ec7064",
-  "guide_version": "2026-08-14.9",
+  "guide_digest_sha256": "209d9dc17f46b53e7469fd359e6b228b3d412b0b1c4265e291c433619f7186a9",
+  "guide_version": "2026-08-14.13",
   "manifest_resource": "adsagent://guide/tool-manifest",
   "manifest_version": 1,
   "platform": "meta",

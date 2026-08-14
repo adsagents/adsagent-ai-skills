@@ -26,6 +26,21 @@ class MutationLifecyclePhase6GuidanceTests(unittest.TestCase):
         ):
             self.assertIn(term, text)
 
+    def test_phase5_direct_write_families_documented(self) -> None:
+        text = read_contract(
+            ROOT, "skills/adsagent-reliability/mutation-lifecycle-contract.md"
+        )
+        for term in (
+            "Phase 5 complete",
+            "templates_create",
+            "products_save_funnel_events",
+            "mmp_connect",
+            "fb_users_update_permissions",
+            "tasks_cancel",
+            "2026-08-14.13",
+        ):
+            self.assertIn(term, text)
+
     def test_setup_and_examples_document_durable_ref_confirm(self) -> None:
         text = "\n".join(
             read_contract(ROOT, path)
@@ -41,8 +56,8 @@ class MutationLifecyclePhase6GuidanceTests(unittest.TestCase):
         self.assertIn("operations_get(mutation_ref", text)
         self.assertIn("upload_ref", text)
 
-    def test_version_bumped_to_0759(self) -> None:
-        self.assertEqual(read_contract(ROOT, "VERSION").strip(), "0.7.59")
+    def test_version_bumped_to_0760(self) -> None:
+        self.assertEqual(read_contract(ROOT, "VERSION").strip(), "0.7.60")
 
 
 if __name__ == "__main__":

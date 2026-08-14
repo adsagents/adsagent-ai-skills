@@ -7,6 +7,9 @@
 - Campaign/AdSet: `copy_ad_clone_structure`.
 - Prior task: `campaigns_recreate_from_task`.
 - New campaign from a saved template: `campaigns_quick_create`.
+- Fixed existing-Ad campaign scope check (read-only): `campaigns_reconcile_campaign_plan`.
+
+When the user wants a **fresh** QuickCreate after a partial failure — not task continuation — set `creation_intent=fresh` on `campaigns_quick_create`. Do not silently choose `campaigns_recreate_from_task`. Use `name_collision_policy=abort` when exact campaign names must not collide; prepare returns `creation_context.name_collisions` and may block with `status=blocked`.
 
 Partnership/boosted sources require `copy_mode="deep"`. Stop on `partnership_fresh_copy_unsupported`; show `source_creative_type` and `post_linkage`; do not auto-retry.
 

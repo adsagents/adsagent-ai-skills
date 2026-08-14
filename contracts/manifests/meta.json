@@ -134,14 +134,14 @@
     }
   ],
   "digest_algorithm": "sha256",
-  "guide_digest_sha256": "209d9dc17f46b53e7469fd359e6b228b3d412b0b1c4265e291c433619f7186a9",
-  "guide_version": "2026-08-14.13",
+  "guide_digest_sha256": "c699929cad66fcaf672ee22a397cdc7364ca90156c69c1bc4d4d033ee4b0ee30",
+  "guide_version": "2026-08-14.15",
   "manifest_resource": "adsagent://guide/tool-manifest",
   "manifest_version": 1,
   "platform": "meta",
   "profile": "v2",
   "server_version": "adsagent-mcp-v1",
-  "tool_count": 106,
+  "tool_count": 107,
   "tools": [
     {
       "access": "read",
@@ -231,7 +231,17 @@
       "guide_resource": "adsagent://guide/catalog/campaigns",
       "name": "campaigns_quick_create",
       "required_capability": "mcp.launch.prepare",
-      "schema_digest_sha256": "e25688f4c344894d7b53f5233f692174545622049dc5b59726968449b379da94"
+      "schema_digest_sha256": "582c1a3283357528b9606cba97baf2cecc274edbed58ff2134bce5d1638244ff"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
+      "description_digest_sha256": "9676e9e84dd32e0fbb399de53f22a7b295302184e19557a0753094bfe4cde596",
+      "domain": "campaigns",
+      "guide_resource": "adsagent://guide/catalog/campaigns",
+      "name": "campaigns_reconcile_campaign_plan",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "5526dd6388f5dae3cbbd7097d09376efc52bb36fa8fd01d956a164c97757f61b"
     },
     {
       "access": "write",
@@ -1218,5 +1228,5 @@
       "schema_digest_sha256": "8d3b349568f629eedf050542a653a50c3f6b2b33f176f6a2d50884ac4d7276f5"
     }
   ],
-  "toolset_revision": "sha256:d1762c75287ca873034bfa3363370a2d1a1e99635f82a73057909a9319bd1912"
+  "toolset_revision": "sha256:c023165d03ecfe3048eec9f7c9ca79b010147d146fa3b83abd8287dae6116efc"
 }

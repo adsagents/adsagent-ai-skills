@@ -9,11 +9,11 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Skill pack landing page:** [adsagent.md/skills](https://adsagent.md/skills?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.60`. New Meta connections default to the v2
+Current contract version: `0.7.61`. New Meta connections default to the v2
 product profile; all three hosted endpoints negotiate modern MCP `2026-07-28`
 stateless discovery while retaining supported legacy initialize clients.
 
-Version 0.7.60 completes Meta Phase 5 direct-write `mutation_ref` guidance
+Version 0.7.61 completes Meta Phase 5 direct-write `mutation_ref` guidance
 (templates, interests, products, permissions, MMP, setup, notifications,
 tasks) and pins the Meta manifest to prod `1ffa06f7` (guide `2026-08-14.13`).
 It builds on 0.7.59 Phase 6 durable-ref adoption: prefer

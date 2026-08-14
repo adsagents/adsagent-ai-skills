@@ -243,6 +243,10 @@ After setup_get_status, if capabilities.mutation_lifecycle is advertised, persis
 When a creative library delete, folder rename, or upload returns mutation_ref or upload_ref and the MCP response is lost, call operations_get with that exact ref before retrying. Do not repeat the write until the receipt state is known.
 ```
 
+```text
+When a direct config write (templates_create, products_save_funnel_events, mmp_connect, fb_users_update_permissions, notifications_ack, or tasks_cancel) returns mutation_ref and the response is lost, recover with operations_get(mutation_ref=...) before any retry. Never reconstruct the write payload from chat memory.
+```
+
 ## Failure Handling
 
 ```text

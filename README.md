@@ -9,17 +9,18 @@ Public skill pack for using AdsAgent tri-channel hosted MCP with AI agents: Meta
 **Skill pack landing page:** [adsagent.md/skills](https://adsagent.md/skills?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.59`. New Meta connections default to the v2
+Current contract version: `0.7.60`. New Meta connections default to the v2
 product profile; all three hosted endpoints negotiate modern MCP `2026-07-28`
 stateless discovery while retaining supported legacy initialize clients.
 
-Version 0.7.59 aligns client guidance with Meta Phase 6
-(`setup_get_status.capabilities.mutation_lifecycle`, guide `2026-08-14.9+`):
-prefer `operations_confirm_approval` with `approval_ref` and
-`expected_plan_digest`, recover lost context via `operations_get_approval` /
+Version 0.7.60 completes Meta Phase 5 direct-write `mutation_ref` guidance
+(templates, interests, products, permissions, MMP, setup, notifications,
+tasks) and pins the Meta manifest to prod `1ffa06f7` (guide `2026-08-14.13`).
+It builds on 0.7.59 Phase 6 durable-ref adoption: prefer
+`operations_confirm_approval` with `approval_ref` and `expected_plan_digest`,
+recover lost context via `operations_get_approval` /
 `operations_get(mutation_ref|upload_ref=...)`, and treat legacy `confirm_token`
-tools as compatibility-only. Prior 0.7.58 added the shared mutation-lifecycle
-scaffold (#66) and QuickCreate versus Quick-Copy path placement.
+tools as compatibility-only.
 
 AdsAgent helps operators analyze ad performance across Meta, Google Ads, and TikTok, compare safe platform state where supported, and prepare safer ad workflows. This repository teaches AI agents how to use AdsAgent responsibly without exposing internal tool catalogs, payload schemas, validation internals, or backend implementation details.
 

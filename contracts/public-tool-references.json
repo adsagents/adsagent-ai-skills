@@ -137,6 +137,78 @@
           "name": "notifications_integration_deny",
           "required_capability": "mcp.operator"
         },
+        {
+          "name": "assets_update_account_permissions",
+          "required_capability": "mcp.routing.write"
+        },
+        {
+          "name": "fb_users_update_permissions",
+          "required_capability": "mcp.routing.write"
+        },
+        {
+          "name": "interests_save_fetched_pack",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "interests_archive",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "products_save_funnel_events",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "products_save_timezone_offset",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "products_link_mmp_app",
+          "required_capability": "mcp.operator"
+        },
+        {
+          "name": "mmp_connect",
+          "required_capability": "mcp.operator"
+        },
+        {
+          "name": "mmp_delete_connection",
+          "required_capability": "mcp.operator"
+        },
+        {
+          "name": "mmp_refresh_connection",
+          "required_capability": "mcp.operator"
+        },
+        {
+          "name": "mmp_save_cohort_config",
+          "required_capability": "mcp.operator"
+        },
+        {
+          "name": "mmp_fetch_cohorts",
+          "required_capability": "mcp.operator"
+        },
+        {
+          "name": "setup_analyze_products",
+          "required_capability": "mcp.operator"
+        },
+        {
+          "name": "setup_begin_facebook_connect",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "setup_ensure_baseline_templates",
+          "required_capability": "mcp.operator"
+        },
+        {
+          "name": "notifications_ack",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "notifications_resolve",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "tasks_cancel",
+          "required_capability": "mcp.operator"
+        },
         {"name": "notifications_scan"}
       ]
     },

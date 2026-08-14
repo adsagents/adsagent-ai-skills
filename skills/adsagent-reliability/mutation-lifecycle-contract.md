@@ -1,6 +1,6 @@
 # AdsAgent Mutation Lifecycle Contract
 
-Version: `0.2` (pairs with smartads #131 Phase 6 — guide `2026-08-14.9+`)
+Version: `0.3` (pairs with smartads #131 Phase 5 complete + Phase 6 — guide `2026-08-14.13+`)
 
 The hosted MCP service owns canonical payloads, immutable plans, approval
 state, dispatch reservations, and recovery. The Skill Pack is a thin policy
@@ -37,9 +37,27 @@ Legacy confirm tools remain callable (`launch_confirm`, `launch_deny`,
 the documented compatibility window. Use them only when the client cannot select
 the preferred tools; never treat them as durable recovery.
 
-Direct-write families (creative library, uploads) return `mutation_ref` or
-`upload_ref` without a separate approval step. On a lost response, recover with
-`operations_get` using the exact ref before any retry.
+## Direct-Write Receipt Families (Phase 5 complete)
+
+These idempotent writes return `mutation_ref` (or `upload_ref` for creative
+uploads) without a separate approval step. Async refresh, pull, and export
+jobs return `task_ref`; `support_report_error` returns `support_ref`.
+
+| Domain | Example tools | Receipt |
+| --- | --- | --- |
+| Creative library | creative library mutations and uploads | `mutation_ref` / `upload_ref` |
+| Templates | `templates_create`, `templates_update`, `templates_delete` | `mutation_ref` |
+| Interests | `interests_save_fetched_pack`, `interests_archive` | `mutation_ref` |
+| Products | `products_save_funnel_events`, `products_save_timezone_offset`, `products_link_mmp_app` | `mutation_ref` |
+| Permissions | `fb_users_update_permissions`, `assets_update_account_permissions` | `mutation_ref` |
+| MMP | `mmp_connect`, `mmp_delete_connection`, `mmp_refresh_connection`, `mmp_save_cohort_config`, `mmp_fetch_cohorts` | `mutation_ref` |
+| Setup / connect | `connections_create_intent`, `setup_analyze_products`, `setup_ensure_baseline_templates`, `setup_begin_facebook_connect` | `mutation_ref` |
+| Notifications | `notifications_ack`, `notifications_resolve` | `mutation_ref` |
+| Tasks | `tasks_cancel` | `mutation_ref` |
+
+On any lost or ambiguous response, call `operations_get` with the exact ref
+before retrying. Never replay from chat memory or infer success from a later
+read.
 
 Persist when advertised: `tool_name`, `schema_version`, `approval_ref`,
 `plan_digest`, `mutation_ref`, `upload_ref`, `task_ref`, `expiry`. Handles are

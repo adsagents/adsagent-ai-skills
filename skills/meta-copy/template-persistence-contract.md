@@ -185,7 +185,9 @@ correction. Any later create or update is a new explicit user request, not an
 automatic retry, and it requires another exact-name read-back.
 
 An indeterminate create/update result enters agent-local
-`write_outcome_unknown`. Never replay it. Perform at most one exact-name
+`write_outcome_unknown`. When the response included `mutation_ref`, recover
+with `operations_get(mutation_ref=...)` before any retry or read-back. Never
+replay from chat memory. Without a durable ref, perform at most one exact-name
 read-back when advertised, but keep the outcome unknown unless authoritative
 write-bound revision/digest evidence identifies that exact write; then hand
 off and preserve any returned `support_ref`.

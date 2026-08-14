@@ -233,6 +233,16 @@ Create a daily 09:30 reminder in Asia/Kuala_Lumpur in this existing thread. Trea
 Create a daily AdsAgent monitoring task for this product_ref. Use a versioned rule, server-side batch, complete coverage, bounded retry, and an append-only run log. Read the schedule back and run the same entrypoint once now. Do not change delivery unless the hosted MCP advertises every required prepare, confirm, receipt, and read-back capability.
 ```
 
+## Meta Durable Refs (Phase 6)
+
+```text
+After setup_get_status, if capabilities.mutation_lifecycle is advertised, persist approval_ref and plan_digest from every prepare. After I explicitly approve, confirm with operations_confirm_approval using approval_ref and expected_plan_digest — never rebuild the write JSON from chat memory. If I lose the chat turn, recover with operations_get_approval(approval_ref=...) or operations_get(mutation_ref=...) exactly; legacy confirm_token tools are compatibility-only, not primary recovery.
+```
+
+```text
+When a creative library delete, folder rename, or upload returns mutation_ref or upload_ref and the MCP response is lost, call operations_get with that exact ref before retrying. Do not repeat the write until the receipt state is known.
+```
+
 ## Failure Handling
 
 ```text

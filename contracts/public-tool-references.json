@@ -69,6 +69,10 @@
           "name": "campaigns_quick_create",
           "required_capability": "mcp.launch.prepare"
         },
+        {
+          "name": "campaigns_reconcile_campaign_plan",
+          "required_capability": "mcp.read"
+        },
         {"name": "creatives_list"},
         {
           "name": "templates_reverse_engineer",

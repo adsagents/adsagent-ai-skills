@@ -21,6 +21,7 @@ description: Use when an AdsAgent MCP call fails, repeats, fans out, queues, or 
    modern MCP `2026-07-28` is stateless.
 
 Read [recovery-contract.md](recovery-contract.md) and, when advertised,
-[mutation-lifecycle-contract.md](mutation-lifecycle-contract.md). Use
+[mutation-lifecycle-contract.md](mutation-lifecycle-contract.md) and
+[plan-reconciliation-contract.md](plan-reconciliation-contract.md). Use
 [retry-parser.md](retry-parser.md) for transport backoff and
 [meta-quota-plan.md](meta-quota-plan.md) only for strict Meta quota defer.

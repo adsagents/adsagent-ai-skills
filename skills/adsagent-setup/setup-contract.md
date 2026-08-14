@@ -42,7 +42,7 @@ new registration.
    do not re-register or replace the bearer solely for that change.
 3. Read `adsagent://guide/brief`, then one bounded `adsagent://guide/catalog/<domain>` topic if needed. Read `adsagent://guide/creation-contract` only for Meta creation/copy work. Never read `adsagent://guide/tools` end-to-end.
 4. Run `setup_get_status`; report readiness, blockers, and next action.
-5. Inspect `setup_get_status.capabilities`; use optional consistency, delivery mutation, verification, or recovery only when advertised.
+5. Inspect `setup_get_status.capabilities`; use optional consistency, delivery mutation, verification, recovery, and `mutation_lifecycle` only when advertised. When `mutation_lifecycle` is present, prefer `operations_confirm_approval` with `approval_ref` and `expected_plan_digest` over legacy `confirm_token` tools.
 6. Inspect top-level `client_skill_pack` once. Its `reminder_mode=notify_only` policy is not a capability or command.
 7. Never infer readiness from screenshots or a central token alone.
 

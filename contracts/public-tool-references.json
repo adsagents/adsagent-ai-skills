@@ -31,6 +31,16 @@
         {"name": "insights_export_csv"},
         {"name": "tasks_get_status"},
         {"name": "operations_get_context"},
+        {"name": "operations_get"},
+        {"name": "operations_get_approval"},
+        {
+          "name": "operations_confirm_approval",
+          "required_capability": "mcp.launch.confirm"
+        },
+        {
+          "name": "operations_deny_approval",
+          "required_capability": "mcp.launch.confirm"
+        },
         {"name": "overview_get_live_configs"},
         {
           "name": "overview_update_ad_status",
@@ -95,6 +105,10 @@
           "required_capability": "mcp.optimize.write"
         },
         {
+          "name": "overview_update_deny",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
           "name": "overview_update_campaign_budget",
           "capability_gate": "delivery_mutations",
           "required_capability": "mcp.optimize.write"
@@ -117,6 +131,10 @@
         {
           "name": "notifications_integration_confirm",
           "capability_gate": "notifications_integrations",
+          "required_capability": "mcp.operator"
+        },
+        {
+          "name": "notifications_integration_deny",
           "required_capability": "mcp.operator"
         },
         {"name": "notifications_scan"}

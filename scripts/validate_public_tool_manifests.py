@@ -247,7 +247,11 @@ def _manifest_entries(
 
     tools = _index_entries(_entries(tool_payload), label="tools")
     gated: dict[str, dict[str, Any]] = {}
-    for key in ("capability_gated_tools", "gated_tools"):
+    for key in (
+        "capability_gated_tools",
+        "gated_tools",
+        "call_only_tools",
+    ):
         if key not in payload:
             continue
         indexed = _index_entries(_entries(payload[key]), label=key)
@@ -255,8 +259,7 @@ def _manifest_entries(
             previous = gated.get(name)
             if previous is not None and previous != entry:
                 raise ManifestValidationError(
-                    "capability-gated lists contain conflicting duplicate "
-                    f"tool: {name}"
+                    f"{key} contain conflicting duplicate tool: {name}"
                 )
             gated[name] = entry
     return tools, gated

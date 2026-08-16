@@ -28,8 +28,9 @@ Defaults are `effective_status`, `ad_recommendations`, and
 `with_issues_ad_objects`. App registration is not account subscription; each
 account needs observed subscription state.
 
-Cached asset-health monitoring runs after asset refresh or
-`notifications_scan`; it does not call Meta directly:
+Cached asset-health monitoring runs after asset refresh,
+`notifications_scan`, or hourly auto-pull connection checks; it does not call
+Meta directly:
 
 - `ad_account_status`
 - `ad_account_recharge`
@@ -39,10 +40,12 @@ Cached asset-health monitoring runs after asset refresh or
 - `fb_user_abnormal`
 - `fb_user_disabled`
 - `fb_user_token_expiring`
+- `fb_user_token_expired`
 
 Defaults: remaining spend cap <= 50 major units or <= 10 percent; USER-token
-expiry <= 7 days; 3600-second cooldown. Product ownership is included when
-mapped.
+expiry <= 7 days (warning) and already-expired USER tokens (critical);
+3600-second cooldown. Product ownership and affected ad-account ids are included
+when mapped.
 
 Email, Feishu, and Telegram accept all or one exact `notification_type`, with
 minimum `info`, `warning`, or `critical` severity.

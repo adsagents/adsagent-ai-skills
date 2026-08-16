@@ -15,6 +15,9 @@ Missing scope: run `setup_get_status`, then `products_list`; ask for scope and d
 
 For `insights_query_consistent`, use `page_size<=50` and allowlisted `filters`. All conditions are AND.
 
+- Batch cap: with `query_contract_version=1`, total rows requested may be up to `20 scopes × 50 page_size`. If the response exceeds the public 48 KiB budget, reduce `page_size`, use `response_mode=compact`, or request fewer fields (`response_budget_exceeded`).
+- OAuth Safe Mode accepts `date_range_mode=since_launch` without explicit `date_from`/`date_to` when product scope is anchored.
+
 - Text `contains`/`prefix`/`eq`: hierarchy IDs/names, `pixel_id`, `app_id`.
 - Number `gt`/`gte`/`lt`/`lte`/`eq`: metrics, `daily_budget`, `lifetime_budget`, `bid_amount`.
 - Enum `eq`/`in`: statuses, `objective`, `optimization_goal`, `billing_event`, `conversion_event`, budget/bid/product/currency fields.

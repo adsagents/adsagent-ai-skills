@@ -17,6 +17,7 @@ For `insights_query_consistent`, use `page_size<=50` and allowlisted `filters`. 
 
 - Batch cap: with `query_contract_version=1`, total rows requested may be up to `20 scopes × 50 page_size`. If the response exceeds the public 48 KiB budget, reduce `page_size`, use `response_mode=compact`, or request fewer fields (`response_budget_exceeded`).
 - OAuth Safe Mode accepts `date_range_mode=since_launch` without explicit `date_from`/`date_to` when product scope is anchored.
+- Product-scoped results may include `query_contract.spend_reconciliation` comparing `products_list` last-7d spend to the Insights summary for overlapping query windows. Treat `state=mismatch` as non-authoritative spend evidence.
 
 - Text `contains`/`prefix`/`eq`: hierarchy IDs/names, `pixel_id`, `app_id`.
 - Number `gt`/`gte`/`lt`/`lte`/`eq`: metrics, `daily_budget`, `lifetime_budget`, `bid_amount`.
@@ -30,7 +31,13 @@ native status fields. Account and parent blockers may make an otherwise
 blocker, and preserve simultaneous account, parent, review, and rejection
 issues.
 
-Money uses returned account currency and `money_unit=major`. `budget_level` is `campaign|adset`; `bid_strategy` and `optimization_goal` are canonical lower-case. `objective` and `billing_event` are Meta-native uppercase; `conversion_event` is separate lower-case metadata.
+Money uses returned account currency and `money_unit=major`. Cached Insights
+`daily_budget` values include `budget_config_source=inventory_snapshot` and
+optional `budget_observed_at`; compare live budgets through
+`overview_get_live_configs` before mutating. `budget_level` is `campaign|adset`;
+`bid_strategy` and `optimization_goal` are canonical lower-case. `objective`
+and `billing_event` are Meta-native uppercase; `conversion_event` is separate
+lower-case metadata.
 
 With `group_by=ad`, preserve `ad_account_id`, `ad_account_name`, `campaign_id`, `campaign_name`, `adset_id`, `adset_name`, `ad_id`, and `ad_name`. Do not prefetch or fan out parents. Legacy `search` and `spend_gt` remain compatible; do not use `dedupe_by`. Exact Ad-name deduplication, language classification, and business grouping remain client-side.
 
@@ -105,6 +112,12 @@ zero spend, zero impressions, or fresh performance evidence.
 Poll distinct `task_ref` values serially with `tasks_get_status(task_ref=..., response_mode=compact)`. Consume only task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; do not rerun page 1 merely to continue. Stop otherwise.
 
 `freshness_kind=age_only` is not mutation coverage. Do not decide on `verification_pending`, `data_not_fresh`, unknown launch date, or incomplete data.
+
+When `freshness.entity_activity_after_watermark=true` or warning
+`entity_activity_after_watermark` is present, treat metrics as stale relative to
+inventory: entities were created after the metrics watermark. Do not use those
+rows for spend totals, optimization, or pause decisions without
+`require_fresh` or live verification.
 
 ## Verification And Output
 

@@ -134,14 +134,14 @@
     }
   ],
   "digest_algorithm": "sha256",
-  "guide_digest_sha256": "c699929cad66fcaf672ee22a397cdc7364ca90156c69c1bc4d4d033ee4b0ee30",
-  "guide_version": "2026-08-14.15",
+  "guide_digest_sha256": "a952c4c50a735c33d7b7139d3a755f6ee6040dd55bd33a6d27d61b31d1cfbc3d",
+  "guide_version": "2026-08-16.5",
   "manifest_resource": "adsagent://guide/tool-manifest",
   "manifest_version": 1,
   "platform": "meta",
   "profile": "v2",
   "server_version": "adsagent-mcp-v1",
-  "tool_count": 107,
+  "tool_count": 110,
   "tools": [
     {
       "access": "read",
@@ -231,7 +231,7 @@
       "guide_resource": "adsagent://guide/catalog/campaigns",
       "name": "campaigns_quick_create",
       "required_capability": "mcp.launch.prepare",
-      "schema_digest_sha256": "582c1a3283357528b9606cba97baf2cecc274edbed58ff2134bce5d1638244ff"
+      "schema_digest_sha256": "146cb1c5845723e3919c19703716bb8700fe9aa8ed1885736fcc2f83d994e2ee"
     },
     {
       "access": "read",
@@ -948,6 +948,40 @@
       "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
     },
     {
+      "access": "write",
+      "capability_gates": [
+        "delivery_mutations"
+      ],
+      "description_digest_sha256": "a8a8f59a5283c6754e94608599638b92cc27aeea815a9f9428441610c8918cb6",
+      "domain": "products",
+      "guide_resource": "adsagent://guide/catalog/products",
+      "name": "products_delivery_pause_confirm",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "cb5c687e296d581ccc92dca9eb3504e50d98ee29fec5db7272d65378d86aa077",
+      "domain": "products",
+      "guide_resource": "adsagent://guide/catalog/products",
+      "name": "products_delivery_pause_deny",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "39971b3a1c264ccbefd20a2374afa9e3f8640ba6867514bc15169ac2a71999a7"
+    },
+    {
+      "access": "write",
+      "capability_gates": [
+        "delivery_mutations"
+      ],
+      "description_digest_sha256": "ea27530390c4a3b7406932417a754468becc1fcc4334a3f6feda65cd18077068",
+      "domain": "products",
+      "guide_resource": "adsagent://guide/catalog/products",
+      "name": "products_delivery_pause_prepare",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "e1ffaec08d61db8158927c450a61c67fe55e5c72a84c0ac8e4367662305bed91"
+    },
+    {
       "access": "read",
       "capability_gates": [],
       "description_digest_sha256": "a90fc33970a4a80550b7f430eb0d9596e81aba9c86ee6b22538d54672245b8e7",
@@ -1228,5 +1262,5 @@
       "schema_digest_sha256": "8d3b349568f629eedf050542a653a50c3f6b2b33f176f6a2d50884ac4d7276f5"
     }
   ],
-  "toolset_revision": "sha256:c023165d03ecfe3048eec9f7c9ca79b010147d146fa3b83abd8287dae6116efc"
+  "toolset_revision": "sha256:f2fd286c76f627a4b92e1ac01ff454a5890fecf869f204644f811b752e8be8a7"
 }

@@ -58,6 +58,18 @@
           "name": "overview_update_campaign_status",
           "required_capability": "mcp.optimize.write"
         },
+        {
+          "name": "products_delivery_pause_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "products_delivery_pause_confirm",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "products_delivery_pause_deny",
+          "required_capability": "mcp.optimize.write"
+        },
         {"name": "copy_ad_quick_copy"},
         {"name": "copy_ad_quick_copy_confirm"},
         {"name": "copy_ad_clone_structure"},

@@ -100,6 +100,7 @@ def test_tiktok_management_reuse_optimization_and_mmp_are_capability_driven() ->
         _read(path)
         for path in (
             "README.md",
+            "CHANGELOG.md",
             "docs/faq.md",
             "docs/examples.md",
             "docs/output-contract.md",

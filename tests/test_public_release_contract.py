@@ -40,7 +40,7 @@ class PublicReleaseContractTests(unittest.TestCase):
             readme,
         )
         self.assertIn(
-            "codex plugin add adsagent-ai-skills@adsagent-ai-skills",
+            "codex plugin add adsagent@adsagent",
             readme,
         )
         self.assertIn(
@@ -103,15 +103,32 @@ class PublicReleaseContractTests(unittest.TestCase):
         self.assertNotIn("actions/checkout@v", workflow)
         self.assertNotIn("actions/setup-python@v", workflow)
 
+    def test_root_mcp_json_declares_oauth_http_servers_without_bearer(self) -> None:
+        mcp = json.loads(self._read(".mcp.json"))
+        servers = mcp.get("mcpServers", {})
+        self.assertEqual(set(servers), {"meta", "google", "tiktok"})
+        for name, config in servers.items():
+            self.assertEqual(config.get("type"), "http", name)
+            self.assertIn("url", config, name)
+            self.assertNotIn("headers", config, name)
+            self.assertNotIn("Authorization", json.dumps(config), name)
+
     def test_release_files_do_not_hardcode_local_checkout_paths(self) -> None:
-        text = "\n".join(
-            path.read_text(encoding="utf-8")
-            for path in ROOT.rglob("*")
-            if path.is_file()
-            and ".git" not in path.parts
-            and ".pytest_cache" not in path.parts
-            and "__pycache__" not in path.parts
-        )
+        text_parts: list[str] = []
+        for path in ROOT.rglob("*"):
+            if not path.is_file():
+                continue
+            if ".git" in path.parts:
+                continue
+            if ".pytest_cache" in path.parts or "__pycache__" in path.parts:
+                continue
+            if path.name == ".DS_Store":
+                continue
+            try:
+                text_parts.append(path.read_text(encoding="utf-8"))
+            except UnicodeDecodeError:
+                continue
+        text = "\n".join(text_parts)
 
         self.assertNotIn("/" + "Users/", text)
         self.assertNotIn("/private" + "/tmp/", text)

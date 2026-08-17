@@ -2,13 +2,16 @@
 
 ## Does this repo include the AdsAgent MCP server config?
 
-No. The authoritative MCP setup prompt is generated inside the AdsAgent dashboard under:
+**Claude plugin installs:** yes — root `.mcp.json` ships HTTP MCP URLs for Meta,
+Google Ads, and TikTok (OAuth, no bearer headers). Install `adsagent@adsagent`
+from this marketplace for the skills + MCP bundle.
 
-```text
-Settings -> MCP Access -> Copy install prompt
-```
+**Other clients / MCP-only fallback:** the dashboard-generated install prompt
+under Settings -> MCP Access -> Copy install prompt stays authoritative when you
+are not using the Claude plugin bundle.
 
-That prompt stays current as server URLs, guide versions, and onboarding behavior evolve.
+Anthropic Connectors Directory MCP registration is separate from this plugin
+package.
 
 ## Why not publish the full tool list?
 

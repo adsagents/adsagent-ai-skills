@@ -1,6 +1,18 @@
 # AdsAgent Setup Contract
 
-The dashboard-generated install prompt is authoritative:
+## Plugin vs MCP (distribution split)
+
+| Surface | What it is | Where |
+| --- | --- | --- |
+| **Claude plugin** (this repo) | Behavior skills + root `.mcp.json` HTTP MCP URLs | `adsagent@adsagent` from marketplace `adsagent` |
+| **Anthropic Connectors Directory** | Hosted MCP server listing only | Registered separately on `adsagent.md` services — not this plugin package |
+| **Dashboard install prompt** | Manual MCP-only fallback for non-plugin clients | Settings -> MCP Access -> Copy install prompt |
+
+When the Claude plugin is installed, OAuth MCP setup comes from this repo's
+`.mcp.json`. Do not add `headers.Authorization` there.
+
+For clients without plugin support, the dashboard-generated install prompt is
+authoritative for MCP URLs and bearer/OAuth flow:
 
 ```text
 AdsAgent dashboard -> Settings -> MCP Access -> Copy install prompt
@@ -36,15 +48,16 @@ new registration.
 
 ## Setup Flow
 
-1. Use dashboard install prompt.
-2. Reconnect the existing transport and re-list tools. When
+1. **Plugin path:** install `adsagent@adsagent`, authenticate each MCP server in `/mcp`.
+2. **Non-plugin path:** use dashboard install prompt, then reconnect transport.
+3. Reconnect the existing transport and re-list tools. When
    `mcp.guide_version` changes, repeat this step before using cached schemas;
    do not re-register or replace the bearer solely for that change.
-3. Read `adsagent://guide/brief`, then one bounded `adsagent://guide/catalog/<domain>` topic if needed. Read `adsagent://guide/creation-contract` only for Meta creation/copy work. Never read `adsagent://guide/tools` end-to-end.
-4. Run `setup_get_status`; report readiness, blockers, and next action.
-5. Inspect `setup_get_status.capabilities`; use optional consistency, delivery mutation, verification, recovery, and `mutation_lifecycle` only when advertised. When `mutation_lifecycle` is present, prefer `operations_confirm_approval` with `approval_ref` and `expected_plan_digest` over legacy `confirm_token` tools.
-6. Inspect top-level `client_skill_pack` once. Its `reminder_mode=notify_only` policy is not a capability or command.
-7. Never infer readiness from screenshots or a central token alone.
+4. Read `adsagent://guide/brief`, then one bounded `adsagent://guide/catalog/<domain>` topic if needed. Read `adsagent://guide/creation-contract` only for Meta creation/copy work. Never read `adsagent://guide/tools` end-to-end.
+5. Run `setup_get_status`; report readiness, blockers, and next action.
+6. Inspect `setup_get_status.capabilities`; use optional consistency, delivery mutation, verification, recovery, and `mutation_lifecycle` only when advertised. When `mutation_lifecycle` is present, prefer `operations_confirm_approval` with `approval_ref` and `expected_plan_digest` over legacy `confirm_token` tools.
+7. Inspect top-level `client_skill_pack` once. Its `reminder_mode=notify_only` policy is not a capability or command.
+8. Never infer readiness from screenshots or a central token alone.
 
 ## Update Reminder
 
@@ -57,8 +70,8 @@ Read the installed version from the package root `VERSION` file. If the file, po
 No automatic update occurs. Show only the matching local instruction:
 
 ```text
-Claude: claude plugin update --scope user adsagent-ai-skills@adsagent-ai-skills
-Codex: codex plugin marketplace upgrade adsagent-ai-skills; Git fallback: git -C ~/.codex/skills/adsagent-ai-skills pull --ff-only
+Claude: claude plugin update --scope user adsagent@adsagent
+Codex: codex plugin marketplace upgrade adsagent; Git fallback: git -C ~/.codex/skills/adsagent-ai-skills pull --ff-only
 Manual/unknown: open https://github.com/adsagents/adsagent-ai-skills and repeat the original install method.
 ```
 
@@ -78,4 +91,3 @@ After an update, tell the user to start a fresh session.
 - Follow returned authorization links and status actions; do not scrape the dashboard.
 - Use public handles only.
 - On `operator_review_required`, stop and ask the AdsAgent operator to inspect internal diagnostics.
-- Return a concise Markdown status summary, not raw setup JSON.

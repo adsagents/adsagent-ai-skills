@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.62"
+VERSION = "0.7.63"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -691,6 +691,27 @@ def main() -> None:
         fail("missing scripts/update_reminder.py")
     if not (ROOT / "NOTICE.md").exists():
         fail("missing NOTICE.md")
+
+    mcp_path = ROOT / ".mcp.json"
+    if not mcp_path.exists():
+        fail("missing .mcp.json")
+    mcp = json.loads(mcp_path.read_text(encoding="utf-8"))
+    mcp_servers = mcp.get("mcpServers", {})
+    expected_mcp = {
+        "meta": {"type": "http", "url": "https://adsagent.md/mcp/v2"},
+        "google": {"type": "http", "url": "https://google.adsagent.md/mcp"},
+        "tiktok": {"type": "http", "url": "https://tiktok.adsagent.md/mcp"},
+    }
+    if mcp_servers != expected_mcp:
+        fail(".mcp.json does not match the public OAuth HTTP MCP contract")
+    for name, config in mcp_servers.items():
+        if "headers" in config or "Authorization" in json.dumps(config):
+            fail(f".mcp.json server {name} must not embed bearer headers")
+
+    if plugin.get("name") != "adsagent":
+        fail("plugin.json name must be adsagent")
+    if marketplace.get("name") != "adsagent":
+        fail("marketplace.json name must be adsagent")
 
     listed_skills = {Path(entry).name for entry in plugin.get("skills", [])}
     missing_listed = sorted(REQUIRED_SKILLS - listed_skills)

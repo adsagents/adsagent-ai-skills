@@ -1,7 +1,9 @@
 {
-  "name": "adsagent-ai-skills",
-  "version": "0.7.62",
-  "description": "Semi-black-box AdsAgent tri-channel skill pack for Meta, Google Ads, and TikTok hosted MCP with bounded aggregated reads and safer ad operations.",
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "adsagent",
+  "displayName": "AdsAgent",
+  "version": "0.7.63",
+  "description": "AdsAgent tri-channel Claude plugin: hosted MCP connections (Meta, Google Ads, TikTok) plus behavior skills for safer ad operations.",
   "author": {
     "name": "adsagents LLC",
     "email": "support@adsagent.md",
@@ -9,7 +11,7 @@
   },
   "homepage": "https://adsagent.md",
   "repository": "https://github.com/adsagents/adsagent-ai-skills",
-  "license": "All rights reserved",
+  "license": "LicenseRef-AdsAgent-Proprietary",
   "keywords": [
     "adsagent",
     "mcp",

@@ -34,4 +34,4 @@ def test_plan_reconciliation_contract_is_public() -> None:
 
 
 def test_plan_reconciliation_release_is_current() -> None:
-    assert _read("VERSION").strip() == "0.7.62"
+    assert _read("VERSION").strip() == "0.7.63"

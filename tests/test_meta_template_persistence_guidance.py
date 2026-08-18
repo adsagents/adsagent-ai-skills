@@ -215,7 +215,7 @@ def test_template_tools_are_registered_with_hosted_capabilities():
 
 
 def test_meta_template_persistence_release_is_consistently_versioned():
-    expected = "0.7.62"
+    expected = "0.7.63"
     assert _read("VERSION").strip() == expected
     assert f'"version": "{expected}"' in _read(".claude-plugin/plugin.json")
     assert f'"version": "{expected}"' in _read(
@@ -226,8 +226,9 @@ def test_meta_template_persistence_release_is_consistently_versioned():
         "scripts/validate_tri_channel_pack.py"
     )
     readme = " ".join(_read("README.md").split())
-    assert "client-side safety mitigation" in readme
-    assert "does not claim that Hosted persistence" in readme
+    changelog = " ".join(_read("CHANGELOG.md").split())
+    assert "client-side safety mitigation" in changelog
+    assert "does not claim that Hosted persistence" in changelog
 
 
 def _complete_snapshot(**overrides):

@@ -203,9 +203,9 @@ class UpdateReminderTests(unittest.TestCase):
         self.assertIn("unsupported argument", stderr.getvalue())
 
     def test_skill_contains_fixed_local_update_instructions(self) -> None:
-        setup = read_contract(ROOT, "skills/adsagent-setup/SKILL.md")
+        setup = read_contract(ROOT, "skills/adsagent-setup/setup-contract.md")
         self.assertIn(
-            "claude plugin update --scope user adsagent-ai-skills@adsagent-ai-skills",
+            "claude plugin update --scope user adsagent@adsagent",
             setup,
         )
         self.assertIn(
@@ -213,7 +213,7 @@ class UpdateReminderTests(unittest.TestCase):
             setup,
         )
         self.assertIn(
-            "codex plugin marketplace upgrade adsagent-ai-skills",
+            "codex plugin marketplace upgrade adsagent",
             setup,
         )
         self.assertIn("No automatic update", setup)

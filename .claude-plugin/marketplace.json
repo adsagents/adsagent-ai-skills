@@ -1,26 +1,44 @@
 {
-  "name": "adsagent-ai-skills",
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "adsagent",
   "owner": {
     "name": "adsagents LLC",
     "email": "support@adsagent.md",
     "url": "https://adsagent.md"
   },
   "metadata": {
-    "description": "AdsAgent tri-channel AI skill pack for Meta, Google Ads, and TikTok hosted HTTP MCP operation.",
-    "version": "0.7.62"
+    "description": "AdsAgent tri-channel plugin marketplace: hosted MCP plus skills. Separate from Anthropic Connectors Directory MCP listing.",
+    "version": "0.7.63"
+  },
+  "renames": {
+    "adsagent-ai-skills": "adsagent"
   },
   "plugins": [
     {
-      "name": "adsagent-ai-skills",
+      "name": "adsagent",
       "source": "./",
-      "description": "Semi-black-box AdsAgent tri-channel skill pack with cleaned reads, Retry-After discipline, safer ad workflows, and auditable scheduled-task guidance.",
-      "version": "0.7.62",
+      "description": "Hosted MCP (Meta, Google Ads, TikTok) and tri-channel behavior skills for bounded reads and safer ad workflows.",
+      "version": "0.7.63",
       "author": {
         "name": "adsagents LLC",
         "email": "support@adsagent.md",
         "url": "https://adsagent.md"
       },
       "category": "advertising",
+      "keywords": [
+        "adsagent",
+        "meta-ads",
+        "google-ads",
+        "tiktok-ads",
+        "mcp",
+        "b2b",
+        "insights",
+        "campaigns",
+        "automation",
+        "notifications",
+        "webhooks",
+        "scheduled-tasks"
+      ],
       "tags": [
         "adsagent",
         "meta-ads",

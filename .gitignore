@@ -7,4 +7,5 @@ dist/
 build/
 .cache/
 __pycache__/
+.pytest_cache/
 *.py[cod]

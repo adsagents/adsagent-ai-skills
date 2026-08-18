@@ -16,7 +16,7 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 **Skill pack landing page:** [adsagent.md/skills](https://adsagent.md/skills?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.63`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.64`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 New Meta connections default to the v2 product profile; all three hosted endpoints
 negotiate modern MCP `2026-07-28` stateless discovery while retaining supported
 legacy initialize clients.
@@ -123,7 +123,7 @@ The external agent contract is: ask clear questions, respect limits, confirm bef
 
 This repository contains only the client-readable behavior pack. AdsAgent server source, credentials, schemas, routing logic, and operational diagnostics are not distributed here.
 
-The package is proprietary and all rights are reserved by adsagents LLC. Public GitHub hosting allows people to view and fork the repository under GitHub's Terms of Service, but a fork or local copy does not grant any additional intellectual-property license. No permission is granted to redistribute, mirror, sell, sublicense, publish modified versions, create derivative works, train a competing product from the pack, or represent a fork as official. See [LICENSE.md](LICENSE.md) and [NOTICE.md](NOTICE.md).
+The package is proprietary and all rights are reserved by adsagents LLC. Public GitHub hosting allows people to view and fork the repository under GitHub's Terms of Service, but a fork or local copy does not grant any additional intellectual-property license except the limited Anthropic Claude plugin directory mirroring rights in [LICENSE.md](LICENSE.md). No other permission is granted to redistribute, mirror, sell, sublicense, publish modified versions, create derivative works, train a competing product from the pack, or represent a fork as official. See [LICENSE.md](LICENSE.md) and [NOTICE.md](NOTICE.md).
 
 ## Example Prompts
 

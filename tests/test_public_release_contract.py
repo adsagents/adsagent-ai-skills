@@ -197,6 +197,16 @@ class PublicReleaseContractTests(unittest.TestCase):
         ):
             self.assertIn(term, text)
 
+    def test_proprietary_license_grants_anthropic_directory_mirror_exception(self) -> None:
+        license_text = self._read("LICENSE.md")
+
+        for term in (
+            "Anthropic Claude Plugin Directory Exception",
+            "anthropics/claude-plugins-community",
+            "does not make this package open source",
+        ):
+            self.assertIn(term, license_text)
+
     def test_proprietary_license_file_is_present(self) -> None:
         license_text = self._read("LICENSE.md")
 

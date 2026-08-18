@@ -8,7 +8,7 @@
   },
   "metadata": {
     "description": "AdsAgent tri-channel plugin marketplace: hosted MCP plus skills. Separate from Anthropic Connectors Directory MCP listing.",
-    "version": "0.7.63"
+    "version": "0.7.64"
   },
   "renames": {
     "adsagent-ai-skills": "adsagent"
@@ -18,7 +18,7 @@
       "name": "adsagent",
       "source": "./",
       "description": "Hosted MCP (Meta, Google Ads, TikTok) and tri-channel behavior skills for bounded reads and safer ad workflows.",
-      "version": "0.7.63",
+      "version": "0.7.64",
       "author": {
         "name": "adsagents LLC",
         "email": "support@adsagent.md",

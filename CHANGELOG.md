@@ -3,6 +3,10 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.64 adds a narrow Anthropic Claude plugin directory mirroring
+exception to LICENSE.md so the community marketplace can pin commit SHAs
+without treating the pack as open source. Connectors Directory MCP listings
+remain URL-only and unchanged.
 Version 0.7.63 bundles hosted MCP connection metadata with the Claude plugin.
 Install `adsagent@adsagent` from this marketplace to get skills plus root
 `.mcp.json` HTTP endpoints (Meta, Google Ads, TikTok) without pasting dashboard

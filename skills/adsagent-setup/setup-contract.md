@@ -5,11 +5,13 @@
 | Surface | What it is | Where |
 | --- | --- | --- |
 | **Claude plugin** (this repo) | Behavior skills + root `.mcp.json` HTTP MCP URLs | `adsagent@adsagent` from marketplace `adsagent` |
+| **Cursor plugin** (this repo) | Behavior skills + root `mcp.json` HTTP MCP URLs | `.cursor-plugin/plugin.json` when installed from Cursor Marketplace |
 | **Anthropic Connectors Directory** | Hosted MCP server listing only | Registered separately on `adsagent.md` services — not this plugin package |
 | **Dashboard install prompt** | Manual MCP-only fallback for non-plugin clients | Settings -> MCP Access -> Copy install prompt |
 
 When the Claude plugin is installed, OAuth MCP setup comes from this repo's
-`.mcp.json`. Do not add `headers.Authorization` there.
+`.mcp.json`. When the Cursor plugin is installed, OAuth MCP setup comes from
+`mcp.json` (same URLs). Do not add `headers.Authorization` to either file.
 
 For clients without plugin support, the dashboard-generated install prompt is
 authoritative for MCP URLs and bearer/OAuth flow:

@@ -6,6 +6,10 @@
 Google Ads, and TikTok (OAuth, no bearer headers). Install `adsagent@adsagent`
 from this marketplace for the skills + MCP bundle.
 
+**Cursor plugin installs:** yes — `.cursor-plugin/plugin.json` plus root
+`mcp.json` ship the same HTTP MCP URLs. Install from the AdsAgent skill-pack repo
+when listed on Cursor Marketplace, or add the hosted Meta URL via Cursor MCP settings.
+
 **Other clients / MCP-only fallback:** the dashboard-generated install prompt
 under Settings -> MCP Access -> Copy install prompt stays authoritative when you
 are not using the Claude plugin bundle.

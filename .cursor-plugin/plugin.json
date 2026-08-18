@@ -1,0 +1,36 @@
+{
+  "name": "adsagent",
+  "displayName": "AdsAgent",
+  "version": "0.7.66",
+  "description": "AdsAgent tri-channel Cursor plugin: hosted MCP connections (Meta, Google Ads, TikTok) plus behavior skills for safer ad operations.",
+  "author": {
+    "name": "adsagents LLC",
+    "email": "support@adsagent.md"
+  },
+  "homepage": "https://adsagent.md",
+  "repository": "https://github.com/adsagents/adsagent-ai-skills",
+  "license": "LicenseRef-AdsAgent-Proprietary",
+  "logo": "assets/logo.png",
+  "keywords": [
+    "adsagent",
+    "mcp",
+    "meta-ads",
+    "google-ads",
+    "tiktok-ads",
+    "advertising",
+    "ai-agents",
+    "campaign-insights"
+  ],
+  "category": "productivity",
+  "tags": [
+    "adsagent",
+    "meta-ads",
+    "google-ads",
+    "tiktok-ads",
+    "mcp",
+    "advertising",
+    "insights"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./mcp.json"
+}

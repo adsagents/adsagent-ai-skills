@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.64"
+VERSION = "0.7.66"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -707,6 +707,33 @@ def main() -> None:
     for name, config in mcp_servers.items():
         if "headers" in config or "Authorization" in json.dumps(config):
             fail(f".mcp.json server {name} must not embed bearer headers")
+
+    cursor_plugin_path = ROOT / ".cursor-plugin" / "plugin.json"
+    if not cursor_plugin_path.exists():
+        fail("missing .cursor-plugin/plugin.json")
+    cursor_plugin = json.loads(cursor_plugin_path.read_text(encoding="utf-8"))
+    if cursor_plugin.get("name") != "adsagent":
+        fail(".cursor-plugin/plugin.json name must be adsagent")
+    if cursor_plugin.get("version") != VERSION:
+        fail(
+            ".cursor-plugin/plugin.json version is "
+            f"{cursor_plugin.get('version')}, expected {VERSION}"
+        )
+    if cursor_plugin.get("mcpServers") != "./mcp.json":
+        fail(".cursor-plugin/plugin.json must set mcpServers to ./mcp.json")
+
+    mcp_public_path = ROOT / "mcp.json"
+    if not mcp_public_path.exists():
+        fail("missing mcp.json")
+    mcp_public = json.loads(mcp_public_path.read_text(encoding="utf-8"))
+    if mcp_public != mcp:
+        fail("mcp.json must match .mcp.json")
+
+    logo_path = ROOT / "assets" / "logo.png"
+    if not logo_path.exists():
+        fail("missing assets/logo.png")
+    if cursor_plugin.get("logo") != "assets/logo.png":
+        fail(".cursor-plugin/plugin.json logo must be assets/logo.png")
 
     if plugin.get("name") != "adsagent":
         fail("plugin.json name must be adsagent")

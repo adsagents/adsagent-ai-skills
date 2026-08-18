@@ -113,6 +113,22 @@ class PublicReleaseContractTests(unittest.TestCase):
             self.assertNotIn("headers", config, name)
             self.assertNotIn("Authorization", json.dumps(config), name)
 
+    def test_cursor_mcp_json_matches_claude_mcp_contract(self) -> None:
+        claude_mcp = json.loads(self._read(".mcp.json"))
+        cursor_mcp = json.loads(self._read("mcp.json"))
+        self.assertEqual(cursor_mcp, claude_mcp)
+
+    def test_cursor_plugin_manifest_declares_skills_and_mcp(self) -> None:
+        manifest = json.loads(self._read(".cursor-plugin/plugin.json"))
+        self.assertEqual(manifest.get("name"), "adsagent")
+        self.assertEqual(manifest.get("mcpServers"), "./mcp.json")
+        self.assertEqual(manifest.get("skills"), "./skills/")
+        self.assertEqual(manifest.get("logo"), "assets/logo.png")
+        self.assertEqual(
+            manifest.get("version"),
+            self._read("VERSION").strip(),
+        )
+
     def test_release_files_do_not_hardcode_local_checkout_paths(self) -> None:
         text_parts: list[str] = []
         for path in ROOT.rglob("*"):
@@ -222,6 +238,7 @@ class PublicReleaseContractTests(unittest.TestCase):
                 "NOTICE.md",
                 ".claude-plugin/plugin.json",
                 ".claude-plugin/marketplace.json",
+                ".cursor-plugin/plugin.json",
             )
         )
 

@@ -3,6 +3,10 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.66 adds a Cursor plugin manifest (`.cursor-plugin/plugin.json`) plus
+root `mcp.json` for Cursor Marketplace submission, alongside the existing Claude
+plugin bundle (`.claude-plugin/` + `.mcp.json`). Both MCP files declare the same
+OAuth HTTP endpoints without bearer headers.
 Version 0.7.64 adds a narrow Anthropic Claude plugin directory mirroring
 exception to LICENSE.md so the community marketplace can pin commit SHAs
 without treating the pack as open source. Connectors Directory MCP listings

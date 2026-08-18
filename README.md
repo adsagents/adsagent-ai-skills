@@ -7,6 +7,7 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 | Surface | What it is | This repo? |
 | --- | --- | --- |
 | **Claude plugin** (self-hosted marketplace) | Skills + root `.mcp.json` HTTP MCP URLs (OAuth) | Yes |
+| **Cursor plugin** (marketplace manifest) | Skills + `mcp.json` HTTP MCP URLs (OAuth) | Yes |
 | **Anthropic Connectors Directory** | Hosted MCP server listing only | No — separate submission on `adsagent.md` services |
 
 **Official GitHub repo:** [github.com/adsagents/adsagent-ai-skills](https://github.com/adsagents/adsagent-ai-skills)
@@ -16,7 +17,7 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 **Skill pack landing page:** [adsagent.md/skills](https://adsagent.md/skills?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
-Current contract version: `0.7.64`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.66`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 New Meta connections default to the v2 product profile; all three hosted endpoints
 negotiate modern MCP `2026-07-28` stateless discovery while retaining supported
 legacy initialize clients.

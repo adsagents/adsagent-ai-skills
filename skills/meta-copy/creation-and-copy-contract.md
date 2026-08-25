@@ -13,6 +13,31 @@ When the user wants a **fresh** QuickCreate after a partial failure — not task
 
 Partnership/boosted sources require `copy_mode="deep"`. Stop on `partnership_fresh_copy_unsupported`; show `source_creative_type` and `post_linkage`; do not auto-retry.
 
+## Fresh Copy Page Selection
+
+Fresh copy (`engagement_mode=new_creatives` / `copy_mode="fresh"`) rebuilds media as a new post. The Page that publishes that post must be explicit on cross-account copies.
+
+1. When prepare returns `fresh_copy_page_selection_required`, call `accounts_list_eligible_pages` for the **target** ad account.
+2. Show the user every returned `page_id` with its display name. **Never auto-pick** a Page — wait for an explicit user choice.
+3. Prepare again with `page_id=<chosen>` on the same request (single copy on the request root; grouped copy on `grouped_plan.page_id`).
+4. Do **not** confirm while the warning is present and `page_id` is still missing.
+
+`page_id` is only valid with fresh copy. To keep the authorized post and its engagement, use `engagement_mode=preserve_post` instead — no `page_id`.
+
+For template-based append with a known Page and creative library, `campaigns_quick_create` + `append_mode=append-adset` + `overrides.page_id` remains valid.
+
+## Append To Existing Ad Sets
+
+Grouped copy **always creates a new destination tree**. It cannot append into existing Campaigns or Ad Sets.
+
+| Goal | Tool | Shape |
+| --- | --- | --- |
+| Add ads to one existing Ad Set, keep source post | `copy_ad_quick_copy` | `request_mode=single`, `mode=new_ads`, `target_adset_id` on request root, `engagement_mode=preserve_post` — one prepare/confirm per Ad Set |
+| Add ads via saved template + explicit Page | `campaigns_quick_create` | `append_mode=append-adset`, `target_adset_id`, `overrides.page_id` |
+| Multiple new campaigns/ad sets from distinct sources | `copy_ad_quick_copy` | `request_mode=grouped`, `grouped_plan` tree — **not** append |
+
+If prepare returns `grouped_copy_append_not_supported`, fix the payload — do not retry grouped with `target_adset_id`.
+
 ## Creation Contract V3
 
 Read `adsagent://guide/creation-contract`, `adsagent://guide/name-contract`, and `adsagent://guide/metadata-contract`. Set `creation_contract_version=3`.

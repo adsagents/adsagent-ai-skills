@@ -38,6 +38,17 @@ Grouped copy **always creates a new destination tree**. It cannot append into ex
 
 If prepare returns `grouped_copy_append_not_supported`, fix the payload — do not retry grouped with `target_adset_id`.
 
+## Prepare Warnings (copy_ad_quick_copy)
+
+| Code | Meaning | Agent action |
+| --- | --- | --- |
+| `fresh_copy_page_selection_required` | Cross-account fresh copy has no `page_id` | `accounts_list_eligible_pages` → user picks → prepare with `page_id` → then confirm |
+| `fresh_copy_destination_page_selected` | User chose a destination Page different from source | Show summary; confirm after explicit approval |
+| `fresh_copy_source_page_retained` | `page_id` matches source Page | Warn user target token needs Advertiser on that Page |
+| `grouped_copy_append_not_supported` | (prepare error, not warning) grouped plan tried append | Switch to single `mode=new_ads` or QuickCreate append |
+
+Prepare errors `grouped_copy_engagement_mode_conflict` mean `preserve_post` and `new_creatives` were mixed — pick one engagement mode only.
+
 ## Creation Contract V3
 
 Read `adsagent://guide/creation-contract`, `adsagent://guide/name-contract`, and `adsagent://guide/metadata-contract`. Set `creation_contract_version=3`.

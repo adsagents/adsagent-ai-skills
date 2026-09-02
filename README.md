@@ -1,6 +1,14 @@
 # AdsAgent Tri-Channel Plugin
 
+MCP here means **Model Context Protocol** (the Claude/Cursor tool-calling standard). It does **not** mean Multi-Channel Platform.
+
 Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Google Ads, and TikTok.
+
+**Install:**
+
+- **Claude plugin:** `claude plugin marketplace add adsagents/adsagent-ai-skills` then `claude plugin install adsagent@adsagent`
+- **Cursor plugin:** install AdsAgent from Cursor Marketplace (this repo's `.cursor-plugin/` + `mcp.json`)
+- **Dashboard fallback:** AdsAgent dashboard -> Settings -> MCP Access -> Copy install prompt (clients without plugin support)
 
 **Distribution split (important):**
 
@@ -16,6 +24,8 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 **Official links hub:** [adsagent.md/connect](https://adsagent.md/connect?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
 **Skill pack landing page:** [adsagent.md/skills](https://adsagent.md/skills?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
+
+Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [Cursor Directory](https://cursor.directory/plugins/adsagent-meta-mcp), and [MCP Market](https://mcpmarket.com/zh/server/adsagent-ai-skills).
 
 Current contract version: `0.7.66`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 New Meta connections default to the v2 product profile; all three hosted endpoints

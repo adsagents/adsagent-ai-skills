@@ -18,8 +18,8 @@ python3 -m pytest -q
 | Plugin slug | `adsagent` |
 | Display name | `AdsAgent` |
 | Version | See root `VERSION` (currently `0.7.66`) |
-| Homepage | `https://adsagent.md`（**单行 URL，前后不能有空格**；文档站放 description，不要拼两个 URL） |
-| Documentation (in description copy) | `https://adsagent.md/skills` |
+| Homepage | `https://adsagent.md/connect`（**单行 URL，前后不能有空格**；文档站放 description，不要拼两个 URL） |
+| Documentation (in description copy) | `https://adsagent.md/docs/mcp-onboarding` |
 | Support email | `support@adsagent.md` |
 | Publisher | adsagents LLC |
 
@@ -29,7 +29,7 @@ AdsAgent tri-channel Claude plugin: hosted OAuth MCP for Meta, Google Ads, and T
 
 ## Portal pitfalls
 
-- **`plugin_homepage`**: Anthropic API rejects spaces/control characters. Use exactly `https://adsagent.md` with no leading/trailing spaces. Do not paste two URLs, markdown links, or display names into this field.
+- **`plugin_homepage`**: Anthropic API rejects spaces/control characters. Use exactly `https://adsagent.md/connect` with no leading/trailing spaces. Do not paste two URLs, markdown links, or display names into this field.
 
 - Root `.mcp.json` declares HTTP MCP URLs only (no `Authorization` header).
 - License includes a narrow Anthropic community marketplace mirroring exception (`LICENSE.md`).

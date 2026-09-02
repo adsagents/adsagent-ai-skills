@@ -8,7 +8,7 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 
 - **Claude plugin:** `claude plugin marketplace add adsagents/adsagent-ai-skills` then `claude plugin install adsagent@adsagent`
 - **Cursor plugin:** install AdsAgent from Cursor Marketplace (this repo's `.cursor-plugin/` + `mcp.json`)
-- **Dashboard fallback:** AdsAgent dashboard → Settings → MCP Access → Copy install prompt (clients without plugin support)
+- **Dashboard fallback:** AdsAgent dashboard -> Settings -> MCP Access -> Copy install prompt (clients without plugin support)
 
 **Distribution split (important):**
 

@@ -12,7 +12,7 @@ description: Use when preparing Meta Ads creation, copy, template write, budget,
 2. Resolve source, destination, parent, names, and creatives. Quick Copy uses
    `*_status`, never `status_option`/`append_mode`. Never invent campaign,
    AdSet, template, budget, pixel/app, or compliance. Cross-account copy: call
-   `accounts_list_eligible_pages`, let the user pick `page_id`, then prepare
+   the eligible-pages listing action, let the user pick `page_id`, then prepare
    again — never auto-select Page.
 3. For known writes, skip Insights preflight: prepare reads live configuration
    without mutation. Show summary and await fresh approval. Templates use

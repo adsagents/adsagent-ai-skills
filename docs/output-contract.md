@@ -60,6 +60,7 @@ One concise answer.
 - For one recent creative upload window, call `creatives_list` with timezone-aware `created_from` (inclusive) and `created_to` (exclusive). Omit both bounds for the whole library.
 - Poll queued work to terminal, then summarize the artifact in Markdown; do not paste full CSV into chat.
 - Terminal `insights_export` results retain `result.artifact` in compact and standard task polls. Send its opaque short-lived `download_url` byte-for-byte to HTTP GET. Never redact, rebuild, decode, truncate, or substitute any segment. When `artifact_status=expired` or the URL is absent, request a new explicit export rather than reconstructing a provider URL.
+- For product-scoped Meta exports used in delivery automations, preflight the identical scope and calendar day with `insights_query_consistent` before calling `insights_export_csv`. Do not email, upload, or ingest a terminal export when preflight reports `complete=false`, `status=incomplete_coverage`, `metrics_evidence.authoritative=false`, or unproven zero (`metrics_evidence.zero_proven=false`) while same-date account scope shows activity. `row_count=0` plus a valid CSV hash is not sufficient proof.
 
 ## Freshness And Verification
 

@@ -17,7 +17,7 @@ Partnership/boosted sources require `copy_mode="deep"`. Stop on `partnership_fre
 
 Fresh copy (`engagement_mode=new_creatives` / `copy_mode="fresh"`) rebuilds media as a new post. The Page that publishes that post must be explicit on cross-account copies.
 
-1. When prepare returns `fresh_copy_page_selection_required`, call `accounts_list_eligible_pages` for the **target** ad account.
+1. When prepare returns `fresh_copy_page_selection_required`, call the eligible-pages listing action for the **target** ad account.
 2. Show the user every returned `page_id` with its display name. **Never auto-pick** a Page — wait for an explicit user choice.
 3. Prepare again with `page_id=<chosen>` on the same request (single copy on the request root; grouped copy on `grouped_plan.page_id`).
 4. Do **not** confirm while the warning is present and `page_id` is still missing.
@@ -42,7 +42,7 @@ If prepare returns `grouped_copy_append_not_supported`, fix the payload — do n
 
 | Code | Meaning | Agent action |
 | --- | --- | --- |
-| `fresh_copy_page_selection_required` | Cross-account fresh copy has no `page_id` | `accounts_list_eligible_pages` → user picks → prepare with `page_id` → then confirm |
+| `fresh_copy_page_selection_required` | Cross-account fresh copy has no `page_id` | eligible-pages listing → user picks → prepare with `page_id` → then confirm |
 | `fresh_copy_destination_page_selected` | User chose a destination Page different from source | Show summary; confirm after explicit approval |
 | `fresh_copy_source_page_retained` | `page_id` matches source Page | Warn user target token needs Advertiser on that Page |
 | `grouped_copy_append_not_supported` | (prepare error, not warning) grouped plan tried append | Switch to single `mode=new_ads` or QuickCreate append |

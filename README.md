@@ -4,7 +4,7 @@ MCP here means **Model Context Protocol** (the Claude/Cursor tool-calling standa
 
 Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Google Ads, and TikTok.
 
-> **Directory SEO one-liner:** AdsAgent is a hosted MCP (Model Context Protocol) for Meta, Google Ads, and TikTok — connect Claude/Cursor via [adsagent.md/connect](https://adsagent.md/connect?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills).
+> **Directory SEO one-liner:** AdsAgent is a hosted **Meta Ads MCP** (Model Context Protocol) plus Google Ads & TikTok MCP — connect Claude/Cursor via [adsagent.md/connect](https://adsagent.md/connect?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills).
 
 **Install:**
 

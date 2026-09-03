@@ -1,6 +1,6 @@
 ---
 name: meta-copy
-description: Use when preparing Meta Ads creation, copy, template write, budget, status, targeting, or delivery change; not analysis.
+description: Use when preparing a Meta Ads creation, copy, template write, budget, status, targeting, or delivery change; not analysis-only reads.
 ---
 
 # Meta Copy And Comparison
@@ -9,8 +9,7 @@ description: Use when preparing Meta Ads creation, copy, template write, budget,
    state requires `capabilities.template_mutations.allowed=true` with
    `required_capability=mcp.templates.write`. Without Resources, use
    `inline_contract`.
-2. Resolve source, destination, parent, names, and creatives. Quick Copy uses
-   `*_status`, never `status_option`/`append_mode`. Never invent campaign,
+2. Resolve source, destination, parent, names, and creatives. Quick Copy uses `*_status`, never `status_option`/`append_mode`. Never invent campaign,
    AdSet, template, budget, pixel/app, or compliance. Cross-account copy: call
    the eligible-pages listing action, let the user pick `page_id`, then prepare
    again — never auto-select Page.

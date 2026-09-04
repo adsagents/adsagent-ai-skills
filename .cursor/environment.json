@@ -1,0 +1,7 @@
+{
+  "name": "adsagent-ai-skills",
+  "repositoryDependencies": [
+    "github.com/kimlucky7/adsagent-marketing"
+  ],
+  "install": "rm -rf /tmp/adsagent-devbox && GIT_TERMINAL_PROMPT=0 git clone -q --depth 1 https://github.com/kimlucky7/adsagent-marketing /tmp/adsagent-devbox && bash /tmp/adsagent-devbox/scripts/devbox/cloud-agent-install.sh \"$PWD\""
+}

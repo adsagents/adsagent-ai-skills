@@ -31,7 +31,8 @@ anything in the "still forbidden" list.
 3. If Bugbot review is enabled on the PR, wait for it and address every
    comment, then re-run the checks.
 4. Squash-merge into `main` yourself. Report the PR link, the merge SHA, and
-   the check results.
+   the check results. (This repo is a skill pack with no deployment; unlike the
+   product repos it is not released by the box, so merging is the last step.)
 
 Still forbidden for cloud agents, without exception: deploying or releasing
 (`release_local.sh`, `deploy.sh`, `wrangler deploy`), connecting to the VPS,

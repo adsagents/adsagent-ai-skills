@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# `python3.12` on the shared dev box resolves to the uv-managed CPython 3.12.
+# Kept for humans following README-style instructions; agents should use
+# `codex-python run --project <repo> -- python ...` instead.
+set -euo pipefail
+# Pin uv's install dir to the login home so this works when HOME is sandboxed.
+login_home="$(getent passwd "$(id -u)" | cut -d: -f6)"
+export UV_PYTHON_INSTALL_DIR="${UV_PYTHON_INSTALL_DIR:-$login_home/.local/share/uv/python}"
+target="$(uv python find --managed-python 3.12 2>/dev/null || true)"
+if [[ -z "$target" || ! -x "$target" ]]; then
+    echo "python3.12: uv-managed CPython 3.12 is not installed. fix: uv python install 3.12 --managed-python" >&2
+    exit 127
+fi
+exec "$target" "$@"

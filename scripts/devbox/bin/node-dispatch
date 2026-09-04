@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Version-dispatching shim for node / npm / npx on the shared dev box.
+#
+# Installed under ~/.local/bin as `node`, `npm`, and `npx` (all three are the
+# same file). Resolves the nearest `.node-version` upward from $PWD and execs
+# the matching fnm-installed toolchain, so every repo gets its pinned Node
+# without relying on shell init (agent shells are non-interactive `bash -c`
+# and never source ~/.bashrc).
+#
+# Without a `.node-version` in scope the system Node is used unchanged.
+set -euo pipefail
+
+# Resolve fnm relative to this shim's real location (~/.local/bin/../share/fnm)
+# rather than $HOME: release runners sandbox HOME to a scratch directory while
+# passing PATH through, and the toolchain must still resolve there.
+shim_dir="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+FNM_DIR="${FNM_DIR:-$shim_dir/../share/fnm}"
+tool="$(basename "$0")"
+
+find_node_version() {
+    local dir="$PWD"
+    while :; do
+        if [[ -f "$dir/.node-version" ]]; then
+            tr -d '[:space:]v' < "$dir/.node-version"
+            return 0
+        fi
+        [[ "$dir" == "/" ]] && return 1
+        dir="$(dirname "$dir")"
+    done
+}
+
+exec_system() {
+    local cand
+    for cand in /usr/local/bin/"$tool" /usr/bin/"$tool" /bin/"$tool"; do
+        if [[ -x "$cand" && "$cand" != "$(readlink -f "$0")" ]]; then
+            exec "$cand" "$@"
+        fi
+    done
+    echo "node-dispatch: no system $tool found" >&2
+    exit 127
+}
+
+version="$(find_node_version || true)"
+if [[ -z "$version" ]]; then
+    exec_system "$@"
+fi
+
+install_bin="$FNM_DIR/node-versions/v$version/installation/bin"
+if [[ ! -x "$install_bin/$tool" ]]; then
+    cat >&2 <<EOF
+node-dispatch: Node v$version is pinned by .node-version but is not installed.
+  fix: FNM_DIR="$FNM_DIR" "$FNM_DIR/fnm" install $version
+EOF
+    exit 127
+fi
+
+# Put the matching toolchain first so npm's child `node` processes and
+# node_modules/.bin scripts resolve the same version.
+export PATH="$install_bin:$PATH"
+exec "$install_bin/$tool" "$@"

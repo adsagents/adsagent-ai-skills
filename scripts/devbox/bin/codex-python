@@ -1,0 +1,372 @@
+#!/usr/bin/python3
+"""Box-local `codex-python`: lock-addressed Python environments outside the repo.
+
+The AdsAgent repos document their Python entrypoint as
+
+    codex-python sync   --project <repo-root> [--lock <file>]...
+    codex-python run    --project <repo-root> [--lock <file>]... -- <command>
+    codex-python doctor --project <repo-root> [--lock <file>]...
+    codex-python path   --project <repo-root> [--lock <file>]...
+
+On the owner's Mac that is a private tool. This script gives the shared dev
+box the same command surface so the repo `AGENTS.md` files work unchanged:
+
+* the interpreter is the uv-managed CPython matching `.python-version`;
+* the environment lives under ``~/.local/share/adsagent-py/envs/<key>`` where
+  ``<key>`` hashes the Python minor version plus the exact lock contents, so
+  identical locks share one environment and any lock change gets a new one;
+* installs are ``uv pip install --require-hashes`` from the selected locks;
+* nothing is written inside the repository (no in-repo ``.venv``).
+
+Default lock selection is every ``requirements*.lock`` at the project root
+(e.g. ``requirements.lock`` + ``requirements-test.lock``) plus
+``backend/requirements.lock`` and ``release/requirements.lock`` when they exist.
+``--lock`` selects explicitly, relative to the project root.
+
+Builds are atomic (temp dir + rename) and serialized per key with a file lock,
+because Cursor and Codex agents share this machine and this user account.
+"""
+
+from __future__ import annotations
+
+import argparse
+import fcntl
+import hashlib
+import json
+import os
+import pwd
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+from typing import Sequence
+
+STAMP_NAME = ".adsagent-env.json"
+STAMP_SCHEMA = 1
+EXIT_UNAVAILABLE = 3
+
+
+def _login_home() -> Path:
+    """The login user's home, independent of $HOME.
+
+    The channel release drivers run their stages with HOME pointed at a
+    scratch directory; environments and caches must still resolve.
+    """
+    try:
+        return Path(pwd.getpwuid(os.geteuid()).pw_dir)
+    except KeyError:
+        return Path.home()
+
+
+def _root() -> Path:
+    return Path(os.environ.get("ADSAGENT_PY_ROOT", _login_home() / ".local" / "share" / "adsagent-py"))
+
+
+def _uv() -> str:
+    found = shutil.which("uv")
+    if not found:
+        raise SystemExit("codex-python: `uv` is not on PATH; it is required to build environments")
+    return found
+
+
+def _uv_env() -> dict[str, str]:
+    """Environment for uv calls: pin its dirs to the login home, not $HOME."""
+    env = dict(os.environ)
+    home = _login_home()
+    env.setdefault("UV_PYTHON_INSTALL_DIR", str(home / ".local" / "share" / "uv" / "python"))
+    env.setdefault("UV_CACHE_DIR", str(home / ".cache" / "uv"))
+    return env
+
+
+def _project(path_arg: str) -> Path:
+    project = Path(path_arg).expanduser().resolve()
+    if not project.is_dir():
+        raise SystemExit(f"codex-python: --project {project} is not a directory")
+    return project
+
+
+def _required_python(project: Path) -> str:
+    marker = project / ".python-version"
+    if not marker.is_file():
+        raise SystemExit(f"codex-python: {marker} is missing; refusing to guess a Python version")
+    raw = marker.read_text(encoding="utf-8").strip()
+    parts = raw.split(".")
+    if len(parts) < 2 or not all(p.isdigit() for p in parts[:2]):
+        raise SystemExit(f"codex-python: unparseable .python-version {raw!r}")
+    return f"{parts[0]}.{parts[1]}"
+
+
+# Non-root locks that count as part of a repo's default dev/test contract when
+# present: smartads keeps its FastAPI closure in backend/, tiktok keeps its
+# pytest closure in release/ (both named in the repos' AGENTS.md / CI).
+DEFAULT_EXTRA_LOCKS = ("backend/requirements.lock", "release/requirements.lock")
+
+
+def _resolve_locks(project: Path, explicit: Sequence[str]) -> list[Path]:
+    if explicit:
+        locks = [(project / lock).resolve() for lock in explicit]
+    else:
+        locks = sorted(project.glob("requirements*.lock"))
+        locks.extend(project / extra for extra in DEFAULT_EXTRA_LOCKS if (project / extra).is_file())
+    if not locks:
+        raise SystemExit(f"codex-python: no requirements*.lock found under {project}")
+    for lock in locks:
+        if not lock.is_file() or lock.is_symlink():
+            raise SystemExit(f"codex-python: lock is missing or unsafe: {lock}")
+        try:
+            lock.relative_to(project)
+        except ValueError:
+            raise SystemExit(f"codex-python: lock {lock} is outside the project root") from None
+    return locks
+
+
+def _lock_digests(project: Path, locks: Sequence[Path]) -> list[dict[str, str]]:
+    return [
+        {
+            "path": str(lock.relative_to(project)),
+            "sha256": hashlib.sha256(lock.read_bytes()).hexdigest(),
+        }
+        for lock in locks
+    ]
+
+
+def _locks_are_hashed(locks: Sequence[Path]) -> bool:
+    """True only if every lock carries --hash= pins.
+
+    pip/uv `--require-hashes` rejects a file set where any requirement lacks a
+    hash, so a plain `uv pip compile` lock (e.g. tiktok-adsagent) must be
+    installed as exact pins without hash verification.
+    """
+    return all("--hash=" in lock.read_text(encoding="utf-8") for lock in locks)
+
+
+def _env_key(python: str, digests: Sequence[dict[str, str]]) -> str:
+    # Order-independent: the release scripts pass the same locks in a different
+    # order than the default discovery, and both must resolve to one environment.
+    hasher = hashlib.sha256()
+    hasher.update(f"py={python}\n".encode())
+    for entry in sorted(digests, key=lambda d: d["path"]):
+        hasher.update(f"{entry['path']}\n{entry['sha256']}\n".encode())
+    return hasher.hexdigest()[:16]
+
+
+def _find_interpreter(python: str) -> Path | None:
+    proc = subprocess.run(
+        [_uv(), "python", "find", "--managed-python", python],
+        capture_output=True,
+        text=True,
+        env=_uv_env(),
+    )
+    if proc.returncode != 0:
+        return None
+    candidate = Path(proc.stdout.strip())
+    return candidate if candidate.is_file() else None
+
+
+class Context:
+    def __init__(self, project: Path, explicit_locks: Sequence[str]) -> None:
+        self.project = project
+        self.python = _required_python(project)
+        self.locks = _resolve_locks(project, explicit_locks)
+        self.digests = sorted(_lock_digests(project, self.locks), key=lambda d: d["path"])
+        self.key = _env_key(self.python, self.digests)
+        self.env_dir = _root() / "envs" / self.key
+        self.stamp_path = self.env_dir / STAMP_NAME
+
+    def expected_stamp(self) -> dict[str, object]:
+        return {
+            "schema": STAMP_SCHEMA,
+            "python": self.python,
+            "locks": self.digests,
+        }
+
+    def status(self) -> str:
+        if not (self.env_dir / "bin" / "python").exists():
+            return "missing"
+        if not self.stamp_path.is_file():
+            return "stale"
+        try:
+            stamp = json.loads(self.stamp_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return "stale"
+        expected = self.expected_stamp()
+        if {k: stamp.get(k) for k in expected} != expected:
+            return "stale"
+        return "ready"
+
+
+def _build(ctx: Context, force: bool) -> None:
+    interpreter = _find_interpreter(ctx.python)
+    if interpreter is None:
+        raise SystemExit(
+            f"codex-python: uv-managed CPython {ctx.python} is not installed. "
+            f"fix: uv python install {ctx.python} --managed-python"
+        )
+    root = _root()
+    (root / "envs").mkdir(parents=True, exist_ok=True)
+    (root / "locks").mkdir(parents=True, exist_ok=True)
+    lock_path = root / "locks" / f"{ctx.key}.lock"
+    with open(lock_path, "w", encoding="utf-8") as handle:
+        try:
+            fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            print(f"codex-python: waiting for another sync of {ctx.key} to finish", file=sys.stderr)
+            fcntl.flock(handle, fcntl.LOCK_EX)
+        if ctx.status() == "ready" and not force:
+            print(f"codex-python: environment {ctx.key} already ready at {ctx.env_dir}")
+            return
+        if ctx.env_dir.exists():
+            shutil.rmtree(ctx.env_dir)
+        tmp_dir = Path(tempfile.mkdtemp(prefix=f".build-{ctx.key}-", dir=root / "envs"))
+        try:
+            subprocess.run(
+                [_uv(), "venv", "--python", str(interpreter), "--no-project", "--quiet", str(tmp_dir)],
+                check=True,
+                env=_uv_env(),
+            )
+            install = [
+                _uv(), "pip", "install",
+                "--python", str(tmp_dir / "bin" / "python"),
+                "--quiet",
+            ]
+            hashed = _locks_are_hashed(ctx.locks)
+            if hashed:
+                install.append("--require-hashes")
+            else:
+                print(
+                    "codex-python: lock set has no --hash pins; installing exact versions without hash verification",
+                    file=sys.stderr,
+                )
+            for lock in ctx.locks:
+                install.extend(["-r", str(lock)])
+            subprocess.run(install, check=True, cwd=ctx.project, env=_uv_env())
+            stamp = ctx.expected_stamp()
+            stamp["hash_verified"] = hashed
+            stamp["interpreter"] = str(interpreter)
+            stamp["project_hint"] = str(ctx.project)
+            (tmp_dir / STAMP_NAME).write_text(json.dumps(stamp, indent=2) + "\n", encoding="utf-8")
+            os.replace(tmp_dir, ctx.env_dir)
+        except Exception:
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+            raise
+    print(f"codex-python: environment {ctx.key} ready at {ctx.env_dir}")
+
+
+def _report(ctx: Context) -> dict[str, object]:
+    interpreter = _find_interpreter(ctx.python)
+    status = ctx.status()
+    return {
+        "project": str(ctx.project),
+        "python_required": ctx.python,
+        "python_interpreter": str(interpreter) if interpreter else None,
+        "locks": ctx.digests,
+        "env_key": ctx.key,
+        "env_dir": str(ctx.env_dir),
+        "status": status,
+        "uv": shutil.which("uv"),
+        "hint": None if status == "ready" else f"codex-python sync --project {ctx.project}",
+    }
+
+
+def cmd_doctor(ctx: Context) -> int:
+    report = _report(ctx)
+    print(json.dumps(report, indent=2))
+    return 0 if report["status"] == "ready" and report["python_interpreter"] else EXIT_UNAVAILABLE
+
+
+def cmd_path(ctx: Context) -> int:
+    """Print the environment root (``<root>/bin/python`` is the interpreter).
+
+    Used by the channel repos' deploy scripts, which validate that the output is
+    a single absolute existing directory.
+    """
+    if ctx.status() != "ready":
+        print(
+            f"codex-python: environment {ctx.key} is {ctx.status()} for {ctx.project}; run codex-python sync",
+            file=sys.stderr,
+        )
+        return EXIT_UNAVAILABLE
+    print(ctx.env_dir)
+    return 0
+
+
+def cmd_sync(ctx: Context, force: bool) -> int:
+    _build(ctx, force)
+    return 0
+
+
+def cmd_run(ctx: Context, command: Sequence[str]) -> int:
+    if not command:
+        raise SystemExit("codex-python: run requires a command after `--`")
+    status = ctx.status()
+    if status != "ready":
+        print(
+            f"codex-python: environment {ctx.key} is {status} for {ctx.project}.\n"
+            f"  diagnose: codex-python doctor --project {ctx.project}\n"
+            f"  build:    codex-python sync --project {ctx.project}",
+            file=sys.stderr,
+        )
+        return EXIT_UNAVAILABLE
+    env = dict(os.environ)
+    env.pop("PYTHONHOME", None)
+    if not env.get("TMPDIR"):
+        # Linux /tmp is 1777 (world-writable); release-evidence validators in the
+        # channel repos reject temp roots with those bits, which macOS never has
+        # because its per-user temp dir is 0700. Give Python the same guarantee.
+        # Not under ~/.cache either: smartads' release_checkpoint rejects
+        # evidence roots there as well.
+        private_tmp = _login_home() / ".local" / "state" / "adsagent-tmp"
+        private_tmp.mkdir(mode=0o700, parents=True, exist_ok=True)
+        env["TMPDIR"] = str(private_tmp)
+    env["VIRTUAL_ENV"] = str(ctx.env_dir)
+    env["PATH"] = f"{ctx.env_dir / 'bin'}{os.pathsep}{env.get('PATH', '')}"
+    # The repos document `python server/app.py`-style entrypoints whose modules
+    # import from the project root; a script path puts only its own directory on
+    # sys.path, so expose the project root the way the workstation tool does.
+    existing_pp = env.get("PYTHONPATH", "")
+    if str(ctx.project) not in existing_pp.split(os.pathsep):
+        env["PYTHONPATH"] = str(ctx.project) + (os.pathsep + existing_pp if existing_pp else "")
+    env["ADSAGENT_PY_ENV_KEY"] = ctx.key
+    executable = shutil.which(command[0], path=env["PATH"])
+    if executable is None:
+        raise SystemExit(f"codex-python: command not found: {command[0]}")
+    os.execve(executable, list(command), env)
+    return 1  # unreachable
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(prog="codex-python", description=__doc__.splitlines()[0])
+    sub = parser.add_subparsers(dest="command", required=True)
+    for name in ("sync", "run", "doctor", "path"):
+        p = sub.add_parser(name)
+        p.add_argument("--project", required=True, help="repository root")
+        p.add_argument("--lock", action="append", default=[], help="lock file relative to the project (repeatable)")
+        if name == "sync":
+            p.add_argument("--force", action="store_true", help="rebuild even if the environment is ready")
+        if name == "run":
+            p.add_argument("cmd", nargs=argparse.REMAINDER, help="command to run, after `--`")
+    return parser
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = build_parser().parse_args(argv)
+    ctx = Context(_project(args.project), args.lock)
+    if args.command == "doctor":
+        return cmd_doctor(ctx)
+    if args.command == "sync":
+        return cmd_sync(ctx, args.force)
+    if args.command == "path":
+        return cmd_path(ctx)
+    command = list(args.cmd)
+    if command and command[0] == "--":
+        command = command[1:]
+    return cmd_run(ctx, command)
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except subprocess.CalledProcessError as exc:
+        print(f"codex-python: step failed with exit {exc.returncode}: {' '.join(map(str, exc.cmd))}", file=sys.stderr)
+        sys.exit(exc.returncode or 1)

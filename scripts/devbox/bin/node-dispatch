@@ -30,13 +30,19 @@ find_node_version() {
 }
 
 exec_system() {
-    local cand
+    # Never exec ourselves: /usr/local/bin/<tool> may be a symlink back to this
+    # dispatcher (cloud-agent-install.sh links it there), so compare resolved paths.
+    local self cand
+    self="$(readlink -f "${BASH_SOURCE[0]}")"
+    local resolved
     for cand in /usr/local/bin/"$tool" /usr/bin/"$tool" /bin/"$tool"; do
-        if [[ -x "$cand" && "$cand" != "$(readlink -f "$0")" ]]; then
-            exec "$cand" "$@"
-        fi
+        [[ -x "$cand" ]] || continue
+        resolved="$(readlink -f "$cand")"
+        # skip this dispatcher and any other copy of it (e.g. a vendored one)
+        [[ "$resolved" == "$self" || "$(basename "$resolved")" == "node-dispatch" ]] && continue
+        exec "$cand" "$@"
     done
-    echo "node-dispatch: no system $tool found" >&2
+    echo "node-dispatch: no system $tool found (no .node-version in scope and no system install)" >&2
     exit 127
 }
 

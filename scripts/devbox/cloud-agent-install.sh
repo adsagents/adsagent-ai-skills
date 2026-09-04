@@ -66,7 +66,8 @@ for tool in node npm npx; do ln -sfn "$BIN_DIR/node-dispatch" "$BIN_DIR/$tool"; 
 install -m 0755 "$SHIM_SRC/codex-python" "$BIN_DIR/codex-python"
 install -m 0755 "$SHIM_SRC/python3.12" "$BIN_DIR/python3.12"
 # Agent shells may not read ~/.profile; expose the shims system-wide when allowed.
-if sudo -n true 2>/dev/null; then
+# ADSAGENT_NO_SYSTEM_LINKS=1 skips this (used when simulating on a shared box).
+if [[ -z "${ADSAGENT_NO_SYSTEM_LINKS:-}" ]] && sudo -n true 2>/dev/null; then
     for tool in node npm npx codex-python python3.12; do
         sudo -n ln -sfn "$BIN_DIR/$tool" "/usr/local/bin/$tool"
     done

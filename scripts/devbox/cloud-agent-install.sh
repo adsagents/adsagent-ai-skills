@@ -15,6 +15,13 @@
 # (uses sudo only opportunistically to expose the shims system-wide).
 #
 # usage: bash cloud-agent-install.sh [<repo-root>]      default: cwd
+#
+# Cursor: referenced by .cursor/environment.json. Codex cloud: paste the same
+# command as the environment's setup script AND maintenance script (the latter
+# runs when a cached container resumes on a new branch); exports do not survive
+# into Codex's agent phase, which is why PATH goes into ~/.bashrc + ~/.profile.
+# Source of truth: scripts/devbox/ in kimlucky7/adsagent-marketing; sibling
+# repos carry a vendored copy that the box's repos-sync refreshes automatically.
 set -euo pipefail
 
 REPO_ROOT="$(cd "${1:-$PWD}" && pwd)"

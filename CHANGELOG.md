@@ -3,6 +3,10 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.67 gates product-scoped Meta CSV export and scheduled delivery on
+authoritative same-date `insights_query_consistent` coverage. Agents must not
+email, upload, or ingest a header-only `row_count=0` export when product scope
+is incomplete or zero is unproven—even if the artifact is `ready`.
 Version 0.7.66 adds a Cursor plugin manifest (`.cursor-plugin/plugin.json`) plus
 root `mcp.json` for Cursor Marketplace submission, alongside the existing Claude
 plugin bundle (`.claude-plugin/` + `.mcp.json`). Both MCP files declare the same

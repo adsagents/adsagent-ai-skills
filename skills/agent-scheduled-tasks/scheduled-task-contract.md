@@ -42,6 +42,13 @@ Do not claim success from a saved schedule, notification, nearby data pull, or c
 
 Read `setup_get_status.capabilities` once per run. Use stable public refs and server-side batch; never fan out. Trust an Insights decision only when the relevant result reports `complete=true`; poll a returned `task_ref` to terminal before reevaluating.
 
+For product-scoped daily delivery or reporting automations, run the same-date
+`insights_query_consistent` preflight before `insights_export_csv`. Block
+export, send, webhook, or workbook ingest when coverage is incomplete or zero
+is unproven—even if the export task completes with `artifact_status=ready` and
+`row_count=0`. A header-only CSV that passes file-level validation is not
+proof of a zero day.
+
 For a Meta rule or decision with explicit candidate IDs, call
 `overview_get_live_configs` with up to 50 exact candidate entities in one
 request. Match every result by `entity_type` and `entity_id`, require complete

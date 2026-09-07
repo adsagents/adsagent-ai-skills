@@ -21,7 +21,8 @@ description: Use when reading or analyzing Meta Ads performance, delivery, MMP, 
 
 Read [query-contract.md](query-contract.md) only when the request needs
 filtering, hierarchy metadata, exhaustive pagination, freshness, MMP,
-post-write verification, or export handling.
+post-write verification, export handling, or the Product Export And Delivery
+Gate for product-scoped CSV delivery.
 
 Read [product-health-contract.md](product-health-contract.md) only when the
 request asks whether a product, account, Page, Pixel, or delivery path is

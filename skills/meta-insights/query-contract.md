@@ -111,6 +111,33 @@ zero spend, zero impressions, or fresh performance evidence.
 
 Poll distinct `task_ref` values serially with `tasks_get_status(task_ref=..., response_mode=compact)`. Consume only task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; do not rerun page 1 merely to continue. Stop otherwise.
 
+## Product Export And Delivery Gate
+
+Before calling `insights_export_csv` or delivering a terminal export artifact
+for a product-scoped daily report (email, webhook, workbook ingest, or object
+storage):
+
+1. Preflight the identical scope, date window, timezone, grouping, and filters
+   with `insights_query_consistent` (`query_contract_version=1`,
+   `consistency=cached`, and `require_complete_range=true` when paginating).
+2. Require top-level `complete=true`, `result.status=complete`, and
+   `metrics_evidence.authoritative=true` for the same scope and calendar
+   day(s).
+3. When a same-batch account scope for the product's bound ad account shows
+   same-day non-zero activity while the product scope returns zero rows, treat
+   product aggregation as incomplete—not a proven zero day. Do not export,
+   send, or ingest downstream.
+4. On `status=incomplete_coverage` or `metrics_evidence.authoritative=false`,
+   stop before export. Follow `next_action`; use the profile's native read
+   fallback once when advertised. Preserve `support_ref`.
+5. A terminal export with `row_count=0` is delivery-ready only when preflight
+   proved authoritative complete coverage and `metrics_evidence.zero_proven=true`.
+   Otherwise treat `artifact_status=ready` as non-authoritative even when the
+   CSV schema and hash validate.
+6. When export terminal metadata exposes `coverage`, `source_watermark`,
+   `metrics_evidence.authoritative`, or `zero_proven`, enforce the same gates
+   before delivery.
+
 `freshness_kind=age_only` is not mutation coverage. Do not decide on `verification_pending`, `data_not_fresh`, unknown launch date, or incomplete data.
 
 When `freshness.entity_activity_after_watermark=true` or warning

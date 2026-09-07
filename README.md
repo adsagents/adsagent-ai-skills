@@ -29,7 +29,7 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 
 Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [Cursor Directory](https://cursor.directory/plugins/adsagent-meta-mcp), and [MCP Market](https://mcpmarket.com/zh/server/adsagent-ai-skills).
 
-Current contract version: `0.7.66`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.67`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 New Meta connections default to the v2 product profile; all three hosted endpoints
 negotiate modern MCP `2026-07-28` stateless discovery while retaining supported
 legacy initialize clients.

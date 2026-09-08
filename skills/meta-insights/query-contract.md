@@ -111,6 +111,12 @@ zero spend, zero impressions, or fresh performance evidence.
 
 Poll distinct `task_ref` values serially with `tasks_get_status(task_ref=..., response_mode=compact)`. Consume only task `status=completed`, `result.status=complete`, and `result.meta.complete=true`; do not rerun page 1 merely to continue. Stop otherwise.
 
+Before each poll, wait for the latest valid positive `poll_after_ms` in
+milliseconds; use 3000ms only when absent or invalid. Keep a 60-second local
+waiting budget and stop if the next wait exceeds it. Stop polling at terminal.
+A local deadline preserves the same task reference; never submit another
+query or request `require_fresh` just to check its status.
+
 `freshness_kind=age_only` is not mutation coverage. Do not decide on `verification_pending`, `data_not_fresh`, unknown launch date, or incomplete data.
 
 When `freshness.entity_activity_after_watermark=true` or warning

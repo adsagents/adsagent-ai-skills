@@ -159,6 +159,12 @@ On `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, `o
 
 Poll `tasks_get_status(task_ref=..., response_mode=compact)`. At terminal, require `result.create_reconciliation.reconciled=true`. Map `creative_results` `ad_name` plus `selection_key`/`selection_keys` to `ad_id`. When `create_reconciliation.next_action` is present, call that exact bounded read once, require `retry_write=false`, and use its live configured/effective/delivery fields for current delivery state. It never authorizes replaying the write and does not prove spend. `approved_task_payload` with `live_verified=false` is not live Meta state.
 
+Before each poll, wait for the latest valid positive `poll_after_ms` in
+milliseconds; use 3000ms only when absent or invalid. Keep a 60-second local
+waiting budget and stop if the next wait exceeds it. Stop polling at terminal.
+If the local budget expires, preserve `task_ref`; never re-prepare, re-confirm,
+or request fresh Insights merely to check status.
+
 Claim an exact zero only when the common Insights result has
 `metrics_evidence.zero_proven=true`. Otherwise say no metrics were observed and
 the exact amount is unproven. `mutation_coverage` is relevant only when the

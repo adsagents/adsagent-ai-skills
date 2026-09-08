@@ -3,6 +3,12 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.67 honors task polling delays and a bounded local waiting budget,
+preserving the task reference instead of resubmitting work. The retry reference
+now reads structured MCP and JSON-RPC error envelopes and selects the largest
+finite positive delay across applicable fields. Parsing a delay does not
+authorize write replay or bypass approval.
+
 Version 0.7.66 adds a Cursor plugin manifest (`.cursor-plugin/plugin.json`) plus
 root `mcp.json` for Cursor Marketplace submission, alongside the existing Claude
 plugin bundle (`.claude-plugin/` + `.mcp.json`). Both MCP files declare the same
@@ -236,4 +242,3 @@ persistence or validation has been repaired. Persistence-only verification is
 non-launchable until QuickCreate binding is complete, template diagnostics are
 bounded and sanitized with completeness flags, and explicit Meta template
 list/view/delete/rename requests route through `meta-copy`.
-

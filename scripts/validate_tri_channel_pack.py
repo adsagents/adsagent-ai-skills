@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.66"
+VERSION = "0.7.67"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -614,7 +614,7 @@ def validate_retry_parser_reference(source: str) -> None:
         for node in ast.walk(tree)
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
     }
-    if not attribute_calls <= {"get", "items", "lower"}:
+    if not attribute_calls <= {"append", "get", "items", "lower"}:
         fail("retry-parser.md calls an unexpected method")
     forbidden_nodes = (
         ast.AsyncFunctionDef,
@@ -639,7 +639,10 @@ def validate_retry_parser_reference(source: str) -> None:
     }
     required_literals = {
         "data",
+        "details",
         "error",
+        "result",
+        "structuredContent",
         "retry-after",
         "retry_after",
         "retry_after_seconds",

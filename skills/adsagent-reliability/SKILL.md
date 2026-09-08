@@ -8,7 +8,9 @@ description: Use when an AdsAgent MCP call fails, repeats, fans out, queues, or 
 1. Classify the result as read retry, queued work, known-not-sent write,
    uncertain write, or operator review.
 2. Obey the returned `next_action`, `task_ref`, `Retry-After`, and capability
-   gates. Never infer a retry from prose alone.
+   gates. Wait for `poll_after_ms` before each task poll and stop at terminal;
+   a local waiting deadline preserves the task reference, never resubmits it.
+   Never infer a retry from prose alone.
 3. Retry only bounded reads or operations explicitly proven not sent. Never
    replay a confirm or parallelize recovery.
 4. Consume terminal results directly. Preserve completeness, receipts,

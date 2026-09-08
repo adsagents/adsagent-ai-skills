@@ -2,18 +2,50 @@ from __future__ import annotations
 
 import ast
 import json
+import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from tests.contract_reader import read_contract
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from scripts import validate_tri_channel_pack
 
 
 class PublicReleaseContractTests(unittest.TestCase):
     def _read(self, relative_path: str) -> str:
         return read_contract(ROOT, relative_path)
+
+    def test_submission_copy_paste_version_matches_package(self) -> None:
+        version = self._read("VERSION").strip()
+        submission = self._read("submissions/claude-plugin-directory/SUBMIT.md")
+
+        self.assertIn(
+            f"| Version | See root `VERSION` (currently `{version}`) |",
+            submission,
+        )
+
+    def test_validator_rejects_stale_current_version_references(self) -> None:
+        read = validate_tri_channel_pack.read
+        version = self._read("VERSION").strip()
+        for stale_path in (
+            "README.md",
+            "submissions/claude-plugin-directory/SUBMIT.md",
+        ):
+            with self.subTest(path=stale_path):
+                def stale_read(path: str) -> str:
+                    text = read(path)
+                    if path == stale_path:
+                        return text.replace(version, "0.0.0")
+                    return text
+
+                with patch.object(validate_tri_channel_pack, "read", stale_read):
+                    with self.assertRaises(SystemExit):
+                        validate_tri_channel_pack.main()
 
     def test_public_surfaces_do_not_describe_an_unpublished_private_pack(self) -> None:
         text = "\n".join(

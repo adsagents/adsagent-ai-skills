@@ -664,6 +664,16 @@ def main() -> None:
     if version != VERSION:
         fail(f"VERSION is {version}, expected {VERSION}")
 
+    current_version_references = {
+        "README.md": f"Current contract version: `{VERSION}`.",
+        "submissions/claude-plugin-directory/SUBMIT.md": (
+            f"| Version | See root `VERSION` (currently `{VERSION}`) |"
+        ),
+    }
+    for path, expected_reference in current_version_references.items():
+        if expected_reference not in read(path):
+            fail(f"{path} current version does not match VERSION")
+
     plugin = json.loads(read(".claude-plugin/plugin.json"))
     marketplace = json.loads(read(".claude-plugin/marketplace.json"))
     if plugin.get("version") != VERSION:

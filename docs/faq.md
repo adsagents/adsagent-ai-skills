@@ -81,7 +81,7 @@ arguments, payloads, and credentials are never echoed.
 
 ## Does one install cover Google Ads and TikTok?
 
-Yes. v0.7.9 is an AdsAgent tri-channel skill pack. It includes Meta skills, `google-ads-insights`, `tiktok-insights`, and the platform-neutral `agent-scheduled-tasks` guidance. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and capability-gated profile adapters.
+Yes. AdsAgent is a tri-channel skill pack. It includes Meta skills, `google-ads-insights`, `tiktok-insights`, and the platform-neutral `agent-scheduled-tasks` guidance. New Meta connections default to `/mcp/v2` with `/mcp` as the legacy fallback. Google Ads and TikTok use their own hosted MCP URLs, discovery tools, account semantics, and capability-gated profile adapters.
 
 ## Can the skill create a scheduled task?
 

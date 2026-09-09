@@ -1,5 +1,9 @@
 # FAQ
 
+## Is the Glama / Docker image the AdsAgent ads MCP?
+
+No. Glama Build → Make Release for this repository deploys **AdsAgent Skill Pack (docs)**: a stdio MCP that lists and reads public `skills/` Markdown plus the hosted URLs from `mcp.json`. It does not implement Meta, Google Ads, or TikTok ads tools and does not proxy OAuth. Production ads MCP remains the hosted HTTP endpoints; clients must authenticate there. See [docs/glama-release.md](glama-release.md).
+
 ## Does this repo include the AdsAgent MCP server config?
 
 **Claude plugin installs:** yes — root `.mcp.json` ships HTTP MCP URLs for Meta,

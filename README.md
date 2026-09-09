@@ -46,13 +46,15 @@ The local helper `scripts/update_reminder.py` compares strict semantic versions 
 - A reliability and safety layer that tells agents when to retry, when to wait, and when to stop.
 - A versioned GitHub distribution for AdsAgent user onboarding and agent behavior guidance.
 - A data-minimization contract for AI agents that should not scan AdsAgent like a raw database.
+- Optionally, a Glama-deployable **AdsAgent Skill Pack (docs)** stdio MCP that lists and reads public `skills/` Markdown. See [docs/glama-release.md](docs/glama-release.md).
 
 ## What This Is Not
 
+- Not the hosted AdsAgent Meta, Google Ads, or TikTok MCP backend. The optional Docker/Glama image only serves this repository's public docs; ads tools remain on the HTTP URLs in `mcp.json` and require AdsAgent OAuth.
 - Not the Anthropic Connectors Directory MCP listing (that is registered separately on the hosted servers).
 - Not a complete MCP tool reference.
 - Not an SDK.
-- Not a local transport relay.
+- Not a local transport relay for ads APIs.
 - Not a disclosure of AdsAgent backend routes, schemas, database tables, or internal diagnostics.
 
 For Claude Code plugin installs, OAuth MCP setup comes from this repo's `.mcp.json`.
@@ -299,9 +301,9 @@ TikTok: https://tiktok.adsagent.md/mcp
 
 ## Important Runtime Rules
 
-- Hosted HTTP MCP only.
+- Hosted HTTP MCP only for ads work.
 - Use `https://adsagent.md/mcp/v2` for new Meta connections; `/mcp` is the legacy fallback.
-- Do not run AdsAgent MCP code locally.
+- Do not run or relay the hosted AdsAgent ads MCP locally. The optional `skill_pack_mcp` image is a docs-only reader of this repository; it is not an ads backend.
 - Do not use a local relay unless the AdsAgent dashboard explicitly says to.
 - Cache connection setup where the client supports it.
 - Keep per-token MCP concurrency bounded.
@@ -331,6 +333,14 @@ TikTok: https://tiktok.adsagent.md/mcp
 - Official repository: https://github.com/adsagents/adsagent-ai-skills
 - Support: support@adsagent.md
 - Public onboarding path: https://adsagent.md/docs/mcp-onboarding
+
+## Glama / Docker docs MCP
+
+The root `Dockerfile` builds **AdsAgent Skill Pack (docs)** — a stdio MCP that
+exposes `list_skills`, `get_skill`, `get_hosted_mcp_urls`, and `get_pack_readme`.
+Glama Build → Make Release scores that docs server. It does **not** replace
+`https://adsagent.md/mcp/v2`, `https://google.adsagent.md/mcp`, or
+`https://tiktok.adsagent.md/mcp`. Details: [docs/glama-release.md](docs/glama-release.md).
 
 ## License
 

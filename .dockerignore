@@ -1,0 +1,17 @@
+.git
+.github
+.cursor
+.claude-plugin
+.cursor-plugin
+.pytest_cache
+**/__pycache__
+**/*.pyc
+tests
+submissions
+scripts
+docs
+assets
+contracts
+.env
+.env.*
+*.log

@@ -32,7 +32,7 @@ AdsAgent tri-channel Claude plugin: hosted OAuth MCP for Meta, Google Ads, and T
 - **`plugin_homepage`**: Anthropic API rejects spaces/control characters. Use exactly `https://adsagent.md/connect` with no leading/trailing spaces. Do not paste two URLs, markdown links, or display names into this field.
 
 - Root `.mcp.json` declares HTTP MCP URLs only (no `Authorization` header).
-- License includes a narrow Anthropic community marketplace mirroring exception (`LICENSE.md`).
+- License is MIT (`LICENSE`).
 - This is separate from Connectors Directory MCP server registration on `adsagent.md`.
 
 ## Does not affect

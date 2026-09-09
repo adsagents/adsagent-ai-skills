@@ -8,6 +8,7 @@ from __future__ import annotations
 from typing import Annotated
 
 from mcp.server import MCPServer
+from pydantic import Field
 
 from skill_pack_mcp import SERVER_INSTRUCTIONS, SERVER_NAME
 from skill_pack_mcp.pack import (
@@ -65,11 +66,22 @@ def list_skills() -> dict:
 def get_skill(
     skill_id: Annotated[
         str,
-        "Skill folder name under skills/, for example meta-insights or adsagent-router.",
+        Field(
+            description=(
+                "Skill folder name under skills/, for example "
+                "meta-insights or adsagent-router."
+            )
+        ),
     ],
     references: Annotated[
         list[str] | None,
-        "Optional skill-local .md filenames to include with SKILL.md, such as query-contract.md. Paths must stay inside that skill folder.",
+        Field(
+            default=None,
+            description=(
+                "Optional skill-local .md filenames to include with SKILL.md, "
+                "such as query-contract.md. Paths must stay inside that skill folder."
+            ),
+        ),
     ] = None,
 ) -> dict:
     """Return one skill's SKILL.md and optional named reference files.

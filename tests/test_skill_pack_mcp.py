@@ -50,10 +50,10 @@ def test_get_skill_rejects_unknown_and_escaping_paths() -> None:
         get_skill(ROOT, "not-a-real-skill")
     with pytest.raises(PackError, match="skill_id"):
         get_skill(ROOT, "../secrets")
-    with pytest.raises(PackError, match="references"):
-        get_skill(ROOT, "meta-insights", references=["../../README.md"])
-    with pytest.raises(PackError, match="references"):
-        get_skill(ROOT, "meta-insights", references=["/etc/passwd"])
+        with pytest.raises(PackError, match="references"):
+            get_skill(ROOT, "meta-insights", references=["../../README.md"])
+        with pytest.raises(PackError, match="references"):
+            get_skill(ROOT, "meta-insights", references=["/etc/passwd"])
 
 
 def test_get_hosted_mcp_urls_matches_public_mcp_json() -> None:
@@ -96,6 +96,8 @@ def test_server_module_is_docs_only_stdio() -> None:
     }
     source = (ROOT / "skill_pack_mcp" / "server.py").read_text(encoding="utf-8")
     assert 'transport="stdio"' in source
+    assert "Skill folder name under skills/" in source
+    assert "skill-local .md filenames" in source
     assert "AdsAgent Skill Pack (docs)" in (
         ROOT / "skill_pack_mcp" / "__init__.py"
     ).read_text(encoding="utf-8")

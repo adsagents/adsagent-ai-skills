@@ -17,37 +17,19 @@ from typing import Any
 
 
 def _encode(message: dict[str, Any]) -> bytes:
-    body = json.dumps(message, separators=(",", ":")).encode("utf-8")
-    return f"Content-Length: {len(body)}\r\n\r\n".encode("ascii") + body
+    # Official mcp 2.x stdio is newline-delimited JSON, not Content-Length.
+    return (json.dumps(message, separators=(",", ":")) + "\n").encode("utf-8")
 
 
 def _read_message(buffer: bytearray) -> dict[str, Any] | None:
-    header_end = buffer.find(b"\r\n\r\n")
-    if header_end == -1:
-        newline = buffer.find(b"\n")
-        if newline == -1:
-            return None
-        line = bytes(buffer[:newline]).strip()
-        if not line:
-            del buffer[: newline + 1]
-            return _read_message(buffer)
-        try:
-            message = json.loads(line.decode("utf-8"))
-        except json.JSONDecodeError:
-            return None
-        del buffer[: newline + 1]
-        return message
-    header = bytes(buffer[:header_end]).decode("ascii", errors="replace")
-    length = 0
-    for raw_line in header.split("\r\n"):
-        if raw_line.lower().startswith("content-length:"):
-            length = int(raw_line.split(":", 1)[1].strip())
-    start = header_end + 4
-    if len(buffer) < start + length:
+    newline = buffer.find(b"\n")
+    if newline == -1:
         return None
-    body = bytes(buffer[start : start + length])
-    del buffer[: start + length]
-    return json.loads(body.decode("utf-8"))
+    line = bytes(buffer[:newline]).strip()
+    del buffer[: newline + 1]
+    if not line:
+        return _read_message(buffer)
+    return json.loads(line.decode("utf-8"))
 
 
 def _pump(stream, buffer: bytearray, stop: threading.Event) -> None:
@@ -130,6 +112,16 @@ def probe(command: list[str], timeout: float) -> dict[str, Any]:
         proc.stdin.flush()
         tools = _wait_response(buffer, 2, timeout)
         return {"initialize": initialize, "tools": tools}
+    except Exception:
+        err = b""
+        if proc.stderr is not None:
+            try:
+                err = proc.stderr.read() or b""
+            except OSError:
+                err = b""
+        if err:
+            sys.stderr.write(err.decode("utf-8", errors="replace"))
+        raise
     finally:
         stop.set()
         try:

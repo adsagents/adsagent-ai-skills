@@ -14,7 +14,9 @@ from pathlib import Path
 from typing import Any
 
 SKILL_ID_RE = re.compile(r"^[a-z0-9-]+$")
-REFERENCE_RE = re.compile(r"^[A-Za-z0-9._-]+(?:/[A-Za-z0-9._-]+)*$")
+REFERENCE_RE = re.compile(
+    r"^[A-Za-z0-9][A-Za-z0-9._-]*(?:/[A-Za-z0-9][A-Za-z0-9._-]*)*$"
+)
 MAX_FILE_BYTES = 128_000
 README_EXCERPT_CHARS = 6_000
 

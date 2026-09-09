@@ -245,28 +245,29 @@ class PublicReleaseContractTests(unittest.TestCase):
         ):
             self.assertIn(term, text)
 
-    def test_proprietary_license_grants_anthropic_directory_mirror_exception(self) -> None:
-        license_text = self._read("LICENSE.md")
+    def test_mit_license_file_is_present(self) -> None:
+        license_text = self._read("LICENSE")
 
-        for term in (
-            "Anthropic Claude Plugin Directory Exception",
-            "anthropics/claude-plugins-community",
-            "does not make this package open source",
+        self.assertIn("MIT License", license_text)
+        self.assertIn("Copyright (c) 2026 adsagents LLC", license_text)
+        self.assertIn("Permission is hereby granted, free of charge", license_text)
+        self.assertNotIn("All rights reserved", license_text)
+
+    def test_plugin_manifests_declare_mit_license(self) -> None:
+        for path in (
+            ".claude-plugin/plugin.json",
+            ".cursor-plugin/plugin.json",
         ):
-            self.assertIn(term, license_text)
+            manifest = json.loads(self._read(path))
+            self.assertEqual(manifest.get("license"), "MIT", path)
 
-    def test_proprietary_license_file_is_present(self) -> None:
-        license_text = self._read("LICENSE.md")
-
-        self.assertIn("All rights reserved", license_text)
-
-    def test_official_identity_and_restricted_use_notice_are_present(self) -> None:
+    def test_official_identity_and_mit_license_notice_are_present(self) -> None:
         public_text = "\n".join(
             self._read(path)
             for path in (
                 "README.md",
                 "SECURITY.md",
-                "LICENSE.md",
+                "LICENSE",
                 "NOTICE.md",
                 ".claude-plugin/plugin.json",
                 ".claude-plugin/marketplace.json",
@@ -279,15 +280,12 @@ class PublicReleaseContractTests(unittest.TestCase):
             "support@adsagent.md",
             "https://github.com/adsagents/adsagent-ai-skills",
             "adsagents LLC",
-            "Proprietary",
-            "redistribute",
-            "mirror",
-            "derivative works",
-            "competing product",
-            "does not grant any additional intellectual-property license",
+            "MIT License",
         ):
             self.assertIn(term, public_text)
         self.assertNotIn("published as private product documentation", public_text)
+        self.assertNotIn("All rights reserved", public_text)
+        self.assertNotIn("LicenseRef-AdsAgent-Proprietary", public_text)
 
 
 if __name__ == "__main__":

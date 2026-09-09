@@ -136,7 +136,7 @@ The external agent contract is: ask clear questions, respect limits, confirm bef
 
 This repository contains only the client-readable behavior pack. AdsAgent server source, credentials, schemas, routing logic, and operational diagnostics are not distributed here.
 
-The package is proprietary and all rights are reserved by adsagents LLC. Public GitHub hosting allows people to view and fork the repository under GitHub's Terms of Service, but a fork or local copy does not grant any additional intellectual-property license except the limited Anthropic Claude plugin directory mirroring rights in [LICENSE.md](LICENSE.md). No other permission is granted to redistribute, mirror, sell, sublicense, publish modified versions, create derivative works, train a competing product from the pack, or represent a fork as official. See [LICENSE.md](LICENSE.md) and [NOTICE.md](NOTICE.md).
+This skill pack is licensed under the MIT License. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md). Official releases come from this repository; a fork or modified package must not imply endorsement, affiliation, or support by adsagents LLC.
 
 ## Example Prompts
 
@@ -334,4 +334,4 @@ TikTok: https://tiktok.adsagent.md/mcp
 
 ## License
 
-All rights reserved. See [LICENSE.md](LICENSE.md).
+MIT. See [LICENSE](LICENSE).

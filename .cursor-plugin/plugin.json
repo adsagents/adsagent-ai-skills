@@ -9,7 +9,7 @@
   },
   "homepage": "https://adsagent.md",
   "repository": "https://github.com/adsagents/adsagent-ai-skills",
-  "license": "LicenseRef-AdsAgent-Proprietary",
+  "license": "MIT",
   "logo": "assets/logo.png",
   "keywords": [
     "adsagent",

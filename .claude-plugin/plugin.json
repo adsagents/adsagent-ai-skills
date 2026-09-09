@@ -11,7 +11,7 @@
   },
   "homepage": "https://adsagent.md",
   "repository": "https://github.com/adsagents/adsagent-ai-skills",
-  "license": "LicenseRef-AdsAgent-Proprietary",
+  "license": "MIT",
   "keywords": [
     "adsagent",
     "mcp",

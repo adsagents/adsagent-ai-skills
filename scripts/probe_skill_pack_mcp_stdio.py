@@ -32,8 +32,8 @@ def _read_message(buffer: bytearray) -> dict[str, Any] | None:
     return json.loads(line.decode("utf-8"))
 
 
-def _pump(stream, buffer: bytearray, stop: threading.Event) -> None:
-    while not stop.is_set():
+def _pump(stream, buffer: bytearray) -> None:
+    while True:
         chunk = stream.read(1)
         if not chunk:
             break
@@ -52,6 +52,11 @@ def _wait_response(
         if message.get("id") == wanted_id:
             return message
     raise TimeoutError(f"timed out waiting for JSON-RPC id={wanted_id}")
+
+
+def _join_readers(*threads: threading.Thread) -> None:
+    for thread in threads:
+        thread.join(timeout=2)
 
 
 def _terminate(proc: subprocess.Popen[bytes]) -> None:
@@ -82,12 +87,11 @@ def probe(command: list[str], timeout: float) -> dict[str, Any]:
     assert proc.stdout is not None
     buffer = bytearray()
     err_buffer = bytearray()
-    stop = threading.Event()
     reader = threading.Thread(
-        target=_pump, args=(proc.stdout, buffer, stop), daemon=True
+        target=_pump, args=(proc.stdout, buffer), daemon=True
     )
     err_reader = threading.Thread(
-        target=_pump, args=(proc.stderr, err_buffer, stop), daemon=True
+        target=_pump, args=(proc.stderr, err_buffer), daemon=True
     )
     reader.start()
     err_reader.start()
@@ -135,12 +139,13 @@ def probe(command: list[str], timeout: float) -> dict[str, Any]:
         return {"initialize": initialize, "tools": tools}
     except Exception:
         _terminate(proc)
+        _join_readers(reader, err_reader)
         if err_buffer:
             sys.stderr.write(bytes(err_buffer).decode("utf-8", errors="replace"))
         raise
     finally:
-        stop.set()
         _terminate(proc)
+        _join_readers(reader, err_reader)
 
 
 def main() -> int:

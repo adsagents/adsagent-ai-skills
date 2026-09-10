@@ -3,6 +3,10 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.68 documents TikTok `creatives_list` default `scope=library` (Meta
+parity) and explicit copy-vs-QuickCreate routing so agents use tenant uploads
+through `campaigns_quick_create` instead of live-ad clone/copy tools.
+
 Version 0.7.67 honors task polling delays and a bounded local waiting budget,
 preserving the task reference instead of resubmitting work. The retry reference
 now reads structured MCP and JSON-RPC error envelopes and selects the largest

@@ -1,7 +1,7 @@
 {
   "name": "adsagent",
   "displayName": "AdsAgent",
-  "version": "0.7.67",
+  "version": "0.7.68",
   "description": "AdsAgent Meta Ads MCP (plus Google Ads & TikTok): hosted MCP connections and behavior skills for safer ad operations.",
   "author": {
     "name": "adsagents LLC",

@@ -15,6 +15,15 @@ def _read(path: str) -> str:
 def test_tiktok_skill_documents_readiness_and_native_append_contract() -> None:
     text = _read("skills/tiktok-insights/SKILL.md")
 
+    channel = _read("skills/tiktok-insights/channel-contract.md")
+    for term in (
+        "scope=library",
+        "copy_ad_clone_structure",
+        "copy_source_media_not_reusable",
+        "no_tenant_creatives",
+    ):
+        assert term in channel
+
     for term in (
         "readiness.create_eligible=true",
         "readiness.reason_code",

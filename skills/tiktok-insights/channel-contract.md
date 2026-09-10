@@ -12,8 +12,10 @@
 
 ## Creative And Create
 
+- Call `creatives_list` first for tenant uploads. Default `scope=library` lists root and all folders (Meta parity); use `scope=root` only for root-only reads. Do not report an empty library when `coverage.page_count>0`; only `coverage.empty_reason=no_tenant_creatives` means the tenant has no files.
 - Use local `creative_id` only with `readiness.create_eligible=true`; inspect `readiness.reason_code`, `readiness.retryable`, and `readiness.next_action`.
 - Send 1..20 requested `verification_pending` IDs once to `creatives_reconcile`. `upload_failed` needs returned remediation and a new explicit upload. Use advertised `creatives_abandon_upload` to remove a cancelled pending attempt, not provider media.
+- New campaigns or ad groups from tenant library files or templates → `campaigns_quick_create` with `creative.creative_id` from `creatives_list`. Do not use `copy_ad_clone_structure` or `copy_ad_quick_copy` for library launches; copy tools read live TikTok ad media and often return `copy_source_media_not_reusable`.
 - Give `campaigns_quick_create` one source. `append_mode=append-campaign` plus `target_campaign_id` creates ad group/ad; `append_mode=append-adgroup` plus `target_adgroup_id` creates ad only.
 - For Smart+ image, the server verifies ownership and maps `creative_info.image_info[].web_uri`. Do not send a CDN image URL, synthesize `CAROUSEL_ADS`, or invent provider CTA, music, or identity IDs.
 - Never supply both target IDs, guess names, use Meta `append-adset`, or replace prepared parents. Show sanitized parents, settings, count, expiry, and `call_to_action_configured`; get explicit approval. Confirm once.
@@ -23,7 +25,7 @@
 
 - Require `mutation_receipts=true` and exact advertised names: `delivery_prepare_tool`, `delivery_confirm_tool`, `operation_get_tool`, budget/bid, copy/clone/recreate prepares and confirms.
 - Read `overview_get_live_configs`; keep configured/effective/operation status, budget, bid, currency, receipt, and metrics distinct. TikTok money is decimal advertiser-currency major units; bid is native `ad_group` scoped.
-- `copy_ad_quick_copy`, `copy_ad_clone_structure`, and `campaigns_recreate_from_task` are same-advertiser only. One approval/task covers 1..20 grouped items with item receipts and disabled initial delivery. Reject cross-advertiser transfer, failed/partial/foreign sources, name matching, and uncertain replay.
+- Copy routing: one source ad → `copy_ad_quick_copy`; campaign/ad group structural clone → `copy_ad_clone_structure` only when the user explicitly asks to clone live TikTok structure; prior task → `campaigns_recreate_from_task`. `copy_ad_quick_copy`, `copy_ad_clone_structure`, and `campaigns_recreate_from_task` are same-advertiser only. One approval/task covers 1..20 grouped items with item receipts and disabled initial delivery. Reject cross-advertiser transfer, failed/partial/foreign sources, name matching, and uncertain replay.
 - Every write is prepare, sanitized review, explicit approval, confirm once, then exact-route recovery.
 
 ## Optimization, MMP, Support

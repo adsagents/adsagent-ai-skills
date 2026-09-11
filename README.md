@@ -166,6 +166,10 @@ More examples are in [docs/examples.md](docs/examples.md).
 
 ## Validation
 
+Release pytest and the validate scripts stay stdlib-only (plus pytest). They
+do not install `mcp`. The optional Glama/Docker docs image installs the pin in
+`skill_pack_mcp/requirements.txt` at image build time only.
+
 Run the local release contract and tests:
 
 ```bash

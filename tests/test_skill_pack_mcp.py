@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import ast
 import json
+import time
 from pathlib import Path
 
 import pytest
+
+from scripts.probe_skill_pack_mcp_stdio import probe
 
 from skill_pack_mcp.pack import (
     DOCS_ONLY_NOTICE,
@@ -50,10 +53,10 @@ def test_get_skill_rejects_unknown_and_escaping_paths() -> None:
         get_skill(ROOT, "not-a-real-skill")
     with pytest.raises(PackError, match="skill_id"):
         get_skill(ROOT, "../secrets")
-        with pytest.raises(PackError, match="references"):
-            get_skill(ROOT, "meta-insights", references=["../../README.md"])
-        with pytest.raises(PackError, match="references"):
-            get_skill(ROOT, "meta-insights", references=["/etc/passwd"])
+    with pytest.raises(PackError, match="references"):
+        get_skill(ROOT, "meta-insights", references=["../../README.md"])
+    with pytest.raises(PackError, match="references"):
+        get_skill(ROOT, "meta-insights", references=["/etc/passwd"])
 
 
 def test_get_hosted_mcp_urls_matches_public_mcp_json() -> None:
@@ -121,6 +124,34 @@ def test_dockerfile_is_stdio_docs_image_without_secrets() -> None:
     assert "TOKEN" not in text
     assert "SECRET" not in text
     assert "contracts" not in text
+
+
+def test_mcp_sdk_pin_is_isolated_from_release_pytest() -> None:
+    agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+    assert "skill_pack_mcp/requirements.txt" in agents
+    assert "install no AdsAgent or MCP runtime" in agents
+    assert not (ROOT / "pyproject.toml").exists()
+    assert not (ROOT / "requirements.txt").exists()
+    assert not list(ROOT.glob("*.lock"))
+    requirements = (ROOT / "skill_pack_mcp" / "requirements.txt").read_text(
+        encoding="utf-8"
+    )
+    assert "mcp==2.2.0" in requirements
+    pack_tree = ast.parse((ROOT / "skill_pack_mcp" / "pack.py").read_text(encoding="utf-8"))
+    imported = set()
+    for node in ast.walk(pack_tree):
+        if isinstance(node, ast.Import):
+            imported.update(alias.name.split(".", 1)[0] for alias in node.names)
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            imported.add(node.module.split(".", 1)[0])
+    assert imported.isdisjoint({"mcp", "httpx", "httpx2", "requests"})
+
+
+def test_stdio_probe_times_out_without_blocking_on_stderr() -> None:
+    started = time.monotonic()
+    with pytest.raises(TimeoutError):
+        probe(["sleep", "30"], timeout=0.4)
+    assert time.monotonic() - started < 5
 
 
 def test_honest_surfaces_say_image_is_not_hosted_backend() -> None:

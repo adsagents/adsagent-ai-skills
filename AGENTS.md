@@ -2,7 +2,13 @@
 
 This is the public AdsAgent tri-channel skill pack (Meta, Google Ads, TikTok)
 consumed by AI agents as a plugin. It ships Markdown skills, contracts, and
-stdlib-only Python validators; there are no runtime dependencies or lock files.
+stdlib-only Python validators. Release pytest and the two validate scripts
+install no AdsAgent or MCP runtime — only pytest when tests run.
+
+The optional Glama/Docker **AdsAgent Skill Pack (docs)** server is the one
+exception: `skill_pack_mcp/requirements.txt` pins `mcp` for container builds
+only. That image is not the hosted ads MCP, must not add ads-tool or OAuth
+dependencies, and must not introduce a root lock file or in-repo `.venv`.
 Never add internal tool catalogs, payload schemas, or backend details here —
 the repository is public.
 

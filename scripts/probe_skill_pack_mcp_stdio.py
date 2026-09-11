@@ -32,8 +32,8 @@ def _read_message(buffer: bytearray) -> dict[str, Any] | None:
     return json.loads(line.decode("utf-8"))
 
 
-def _pump(stream, buffer: bytearray, stop: threading.Event) -> None:
-    while not stop.is_set():
+def _pump(stream, buffer: bytearray) -> None:
+    while True:
         chunk = stream.read(1)
         if not chunk:
             break
@@ -54,6 +54,27 @@ def _wait_response(
     raise TimeoutError(f"timed out waiting for JSON-RPC id={wanted_id}")
 
 
+def _join_readers(*threads: threading.Thread) -> None:
+    for thread in threads:
+        thread.join(timeout=2)
+
+
+def _terminate(proc: subprocess.Popen[bytes]) -> None:
+    if proc.poll() is not None:
+        return
+    try:
+        if proc.stdin is not None:
+            proc.stdin.close()
+    except OSError:
+        pass
+    proc.terminate()
+    try:
+        proc.wait(timeout=3)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        proc.wait(timeout=3)
+
+
 def probe(command: list[str], timeout: float) -> dict[str, Any]:
     proc = subprocess.Popen(
         command,
@@ -65,11 +86,15 @@ def probe(command: list[str], timeout: float) -> dict[str, Any]:
     assert proc.stdin is not None
     assert proc.stdout is not None
     buffer = bytearray()
-    stop = threading.Event()
+    err_buffer = bytearray()
     reader = threading.Thread(
-        target=_pump, args=(proc.stdout, buffer, stop), daemon=True
+        target=_pump, args=(proc.stdout, buffer), daemon=True
+    )
+    err_reader = threading.Thread(
+        target=_pump, args=(proc.stderr, err_buffer), daemon=True
     )
     reader.start()
+    err_reader.start()
     try:
         proc.stdin.write(
             _encode(
@@ -113,27 +138,14 @@ def probe(command: list[str], timeout: float) -> dict[str, Any]:
         tools = _wait_response(buffer, 2, timeout)
         return {"initialize": initialize, "tools": tools}
     except Exception:
-        err = b""
-        if proc.stderr is not None:
-            try:
-                err = proc.stderr.read() or b""
-            except OSError:
-                err = b""
-        if err:
-            sys.stderr.write(err.decode("utf-8", errors="replace"))
+        _terminate(proc)
+        _join_readers(reader, err_reader)
+        if err_buffer:
+            sys.stderr.write(bytes(err_buffer).decode("utf-8", errors="replace"))
         raise
     finally:
-        stop.set()
-        try:
-            proc.stdin.close()
-        except OSError:
-            pass
-        proc.terminate()
-        try:
-            proc.wait(timeout=3)
-        except subprocess.TimeoutExpired:
-            proc.kill()
-            proc.wait(timeout=3)
+        _terminate(proc)
+        _join_readers(reader, err_reader)
 
 
 def main() -> int:

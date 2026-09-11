@@ -5,7 +5,9 @@ description: Use when connecting, authorizing, or verifying AdsAgent hosted MCP 
 
 # AdsAgent Setup
 
-1. Use the dashboard-generated install prompt; never invent endpoints,
+1. For an installed Claude or Cursor plugin, use its bundled OAuth MCP
+   connections. Use the dashboard-generated install prompt only for a manual
+   MCP connection in a client without plugin support. Never invent endpoints,
    credentials, local relays, or stdio setup.
 2. Reconnect the existing transport and re-list tools after a new connection or
    guide/schema version. Do not re-register or replace a bearer solely for a

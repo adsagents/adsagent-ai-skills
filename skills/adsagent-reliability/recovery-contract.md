@@ -44,7 +44,7 @@ For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact
 - `operations_get_context(response_mode=compact)` returns receipt totals, create reconciliation, and anomalous receipts. Use `standard` only when every receipt is required.
 - A failed auxiliary `adimages` receipt marked `workflow_status=recovered_by_url_fallback` is compensated, has no final-Ad impact, and never authorizes retry or a new task.
 - `meta_write_rejected` or `verified_not_created` is eligible only when flags permit. Reuse `verified_created`; keep `meta_write_verification_pending` or `verification_ambiguous` in `operations_get_context`, never replay.
-- TikTok writes require advertised tools and `mutation_receipts=true`; recover on the original route.
+- TikTok approval-backed ad changes require advertised tools and `mutation_receipts=true`; recover on the original route. Direct operations follow their own advertised authorization and result contract, without an invented prepare/confirm pair.
 - Parse backoff from headers, `data`, and `error.data`; see [retry-parser.md](retry-parser.md).
 
 ## Recovery Matrix
@@ -70,7 +70,7 @@ For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact
 | Rejected Meta template direct write, with or without bounded public fields | Stop; show fields if returned; any later template write is a new explicit request. Preserve `support_ref` when present, report when absent, and never infer a hidden schema or replay. |
 | Indeterminate Meta template direct write without task/operation recovery | Never replay. Perform at most one exact-name template read-back when advertised; remain outcome-unknown without authoritative write-bound evidence, then hand off. |
 | `scope_unavailable` | Do not infer permissions. Discover once; retry only if still listed. Never alter permissions. |
-| `fb_user_token_expired` resolved / FB token reconnect succeeded | Expect a bounded `pull_insights` recovery task for that FB user's routed accounts. Do not manually replay a stale session; wait for dashboard/task status or rerun `notifications_scan` if alerts remain open. |
+| `fb_user_token_expired` resolved / FB token reconnect succeeded | Expect a bounded `pull_insights` recovery task for that FB user's routed accounts. Do not manually replay a stale session; check dashboard/task status and use `notifications_list` for remaining alerts. `notifications_scan` updates alerts and may queue external delivery; use it only for a requested or already authorized alert refresh, with that effect clear, never as a passive recovery check. |
 | Advertised profile read missing only from client-local catalog | Use the named native read fallback once; do not file a server-registration claim, reauthorize, or replay a write. |
 
 If retries fail, report the category. Task/operation-backed sent or uncertain

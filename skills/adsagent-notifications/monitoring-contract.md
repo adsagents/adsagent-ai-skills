@@ -6,7 +6,9 @@ the user to dashboard/operator setup. Never expose internal IDs.
 
 ## Inspect
 
-Call `notifications_integrations_list` first. Optional `app_ref` and
+For alert status, use `notifications_list`. For
+integration configuration or monitoring coverage, call
+`notifications_integrations_list` first. Optional `app_ref` and
 `ad_account_id` filters are bounded. Use only masked destinations, public refs,
 and status.
 
@@ -41,6 +43,13 @@ Meta directly:
 - `fb_user_disabled`
 - `fb_user_token_expiring`
 - `fb_user_token_expired`
+
+`notifications_scan` is a direct state-changing operation: it updates or
+resolves alerts and may queue delivery to configured external channels. Use it
+only when an alert refresh is requested or already authorized, making that
+effect clear. A connection check or lingering alert alone is not a request to
+scan or send notifications. Use the read-only notification list for status; do not
+invent a scan prepare/confirm pair or replay an uncertain scan.
 
 Defaults: remaining spend cap <= 50 major units or <= 10 percent; USER-token
 expiry <= 7 days (warning) and already-expired USER tokens (critical);

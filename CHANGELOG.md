@@ -3,6 +3,12 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.69 aligns the setup entrypoint with bundled plugin OAuth and keeps
+the dashboard install prompt as the non-plugin fallback. TikTok guidance
+distinguishes approval-backed ad changes from advertised direct operations.
+Notification status checks stay read-only; an explicitly requested or already
+authorized scan discloses alert changes and possible external delivery.
+
 Version 0.7.67 honors task polling delays and a bounded local waiting budget,
 preserving the task reference instead of resubmitting work. The retry reference
 now reads structured MCP and JSON-RPC error envelopes and selects the largest

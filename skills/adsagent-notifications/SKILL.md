@@ -24,4 +24,4 @@ Read [monitoring-contract.md](monitoring-contract.md) only when explaining
 event coverage, thresholds, channel configuration, webhook subscription, test
 delivery, or recovery.
 
-[Data boundary](../data-boundary.md) applies.
+[Data boundary](data-boundary.md) applies.

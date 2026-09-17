@@ -762,6 +762,11 @@ def main() -> None:
         path = ROOT / "skills" / skill / "SKILL.md"
         if not path.exists():
             fail(f"missing {path.relative_to(ROOT)}")
+        boundary = path.parent / "data-boundary.md"
+        if not boundary.is_file() or boundary.read_bytes() != (
+            ROOT / "skills" / "data-boundary.md"
+        ).read_bytes():
+            fail(f"{skill} must include the current skill-local data boundary")
         frontmatter = parse_skill_frontmatter(path)
         if frontmatter["name"] != skill:
             fail(f"{path.relative_to(ROOT)} name is {frontmatter['name']}, expected {skill}")

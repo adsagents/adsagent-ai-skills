@@ -25,4 +25,4 @@ Read [scheduled-task-contract.md](scheduled-task-contract.md) only when
 designing, creating, updating, debugging, pausing, deleting, or proving a
 scheduled task.
 
-[Data boundary](../data-boundary.md) applies.
+[Data boundary](data-boundary.md) applies.

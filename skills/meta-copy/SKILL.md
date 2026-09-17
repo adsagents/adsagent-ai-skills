@@ -28,4 +28,4 @@ QuickCreate, append, copy, delivery mutation, reconciliation, or recovery.
 Read [template-persistence-contract.md](template-persistence-contract.md) for
 template lifecycle or QuickCreate from uncertain template.
 
-[Data boundary](../data-boundary.md) applies.
+[Data boundary](data-boundary.md) applies.

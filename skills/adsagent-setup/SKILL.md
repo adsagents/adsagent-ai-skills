@@ -22,4 +22,4 @@ description: Use when connecting, authorizing, or verifying AdsAgent hosted MCP 
 Read [setup-contract.md](setup-contract.md) only when installing, reconnecting,
 authorizing a channel, or evaluating a Skill Pack update reminder.
 
-[Data boundary](../data-boundary.md) applies.
+[Data boundary](data-boundary.md) applies.

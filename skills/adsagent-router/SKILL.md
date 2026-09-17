@@ -28,4 +28,4 @@ user names the channel.
 Read [routing-contract.md](routing-contract.md) only when the request remains
 ambiguous, spans channels, or needs a Meta read-versus-write decision.
 
-[Data boundary](../data-boundary.md) applies.
+[Data boundary](data-boundary.md) applies.

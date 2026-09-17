@@ -26,4 +26,4 @@ post-write verification, or export handling.
 Read [product-health-contract.md](product-health-contract.md) for product,
 account, Page, Pixel, or delivery health, blockers, and spend readiness.
 
-[Data boundary](../data-boundary.md) applies.
+[Data boundary](data-boundary.md) applies.

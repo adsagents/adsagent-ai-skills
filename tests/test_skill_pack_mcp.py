@@ -135,3 +135,20 @@ def test_honest_surfaces_say_image_is_not_hosted_backend() -> None:
     glama_json = json.loads((ROOT / "glama.json").read_text(encoding="utf-8"))
     assert glama_json["maintainers"] == ["kimlucky7"]
     assert set(glama_json) <= {"$schema", "maintainers"}
+
+
+@pytest.mark.parametrize(
+    "skill_id",
+    [path.parent.name for path in sorted((ROOT / "skills").glob("*/SKILL.md"))],
+)
+def test_each_skill_serves_its_packaged_data_boundary(skill_id: str) -> None:
+    from scripts.skill_contract import markdown_references
+
+    skill_md = ROOT / "skills" / skill_id / "SKILL.md"
+    references = markdown_references(skill_md)
+    assert "data-boundary.md" in references
+    payload = get_skill(ROOT, skill_id, references=["data-boundary.md"])
+    returned = {item["path"]: item["content"] for item in payload["files"]}
+    assert returned["data-boundary.md"] == (
+        ROOT / "skills" / "data-boundary.md"
+    ).read_text(encoding="utf-8")

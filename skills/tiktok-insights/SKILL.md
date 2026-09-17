@@ -20,3 +20,5 @@ description: Use when reading or changing TikTok Ads, creatives, delivery, optim
 
 Read [channel-contract.md](channel-contract.md) only for pagination, creative
 readiness, QuickCreate/append, receipts, optimization, MMP, or support.
+
+[Data boundary](../data-boundary.md) applies.

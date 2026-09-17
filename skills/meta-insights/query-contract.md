@@ -23,7 +23,7 @@ For `insights_query_consistent`, use `page_size<=50` and allowlisted `filters`. 
 - Number `gt`/`gte`/`lt`/`lte`/`eq`: metrics, `daily_budget`, `lifetime_budget`, `bid_amount`.
 - Enum `eq`/`in`: statuses, `objective`, `optimization_goal`, `billing_event`, `conversion_event`, budget/bid/product/currency fields.
 
-Read `adsagent://guide/metadata-contract` once per guide version. `configured_status` is `ACTIVE`/`PAUSED`; `effective_status` includes `DISAPPROVED`, `PENDING_REVIEW`, and parent-paused. Legacy `status` aliases `effective_status`.
+Use advertised tool schemas for metadata fields (historical topic `adsagent://guide/metadata-contract`), without loading remote behavioral guidance. `configured_status` is `ACTIVE`/`PAUSED`; `effective_status` includes `DISAPPROVED`, `PENDING_REVIEW`, and parent-paused. Legacy `status` aliases `effective_status`.
 
 Read `delivery_status` and `delivery_issue_codes` independently from both
 native status fields. Account and parent blockers may make an otherwise

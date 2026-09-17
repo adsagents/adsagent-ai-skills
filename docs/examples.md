@@ -72,7 +72,7 @@ Compare yesterday's spend and CPA for these three product_refs. Use one batch ov
 ```
 
 ```text
-Find every Ad whose Campaign name contains "partnership" and spend is greater than 200 in this product for the last 7 days. Use group_by=ad and one server-side AND filters plan. Read adsagent://guide/metadata-contract. Return full account, Campaign, AdSet, and Ad IDs/names plus configured_status, effective_status, daily_budget, lifetime_budget, currency, money_unit, budget_level, bid_strategy, objective, optimization_goal, billing_event, conversion_event, pixel_id, and app_id. Keep page_size<=50 and paginate serially on one source anchor. Preserve every ad_id; after retrieval, deduplicate exact ad_name values and classify language in the client. If the complete table is large, use grouped insights_export_csv with the identical filters and return its artifact.
+Find every Ad whose Campaign name contains "partnership" and spend is greater than 200 in this product for the last 7 days. Use group_by=ad and one server-side AND filters plan. Use the advertised metadata field schemas. Return full account, Campaign, AdSet, and Ad IDs/names plus configured_status, effective_status, daily_budget, lifetime_budget, currency, money_unit, budget_level, bid_strategy, objective, optimization_goal, billing_event, conversion_event, pixel_id, and app_id. Keep page_size<=50 and paginate serially on one source anchor. Preserve every ad_id; after retrieval, deduplicate exact ad_name values and classify language in the client. If the complete table is large, use grouped insights_export_csv with the identical filters and return its artifact.
 ```
 
 ```text
@@ -162,7 +162,7 @@ Prepare a copy of this winning ad into the target account with 5 adsets and a $5
 ```text
 After the bounded Ad read is complete, preserve each source ad_id and ad_account_id, deduplicate exact Ad names, and group the remaining Ads by my explicit language rules. For multiple distinct source Ads, use one copy_ad_quick_copy grouped_plan prepare. Show the paused-by-default structure, every settings_source_ad_id, budget, bid, and geo_targeting_override. Do not confirm until I explicitly approve; then use the returned token once and poll its task_ref to terminal.
 
-For that grouped prepare, use creation_contract_version=3 and request_mode=grouped. Each destination Campaign uses campaigns[].campaign_name; each optional AdSet name uses adsets[].adset_name; each source selector uses ads[].source_ad_id; optional target Ad names use ads[].ad_name. Read adsagent://guide/name-contract and never emit bare name for a new request. If prepare returns adsagent_request_incomplete with invalid_fields, correct only those public fields and retry prepare once, never confirm automatically.
+For that grouped prepare, use creation_contract_version=3 and request_mode=grouped. Each destination Campaign uses campaigns[].campaign_name; each optional AdSet name uses adsets[].adset_name; each source selector uses ads[].source_ad_id; optional target Ad names use ads[].ad_name. Use the advertised naming fields and never emit bare name for a new request. If prepare returns adsagent_request_incomplete with invalid_fields, correct only those public fields and retry prepare once, never confirm automatically.
 ```
 
 ```text
@@ -180,7 +180,7 @@ Find the latest successful copy task for this ad, then compare the creation snap
 ```text
 Reverse-engineer this Meta AdSet into a reusable template. Treat the result as
 an unsaved preview. Show the template identity and source, then wait for my
-explicit request before saving. Before any save, require the live Hosted guide
+explicit request before saving. Before any save, require the live Hosted tool contract
 to expose snapshot-import semantics, its bounded public write schema,
 normalization/rejected-path behavior, immutable read-back identity, and
 machine-verifiable readiness fields. A tool name or write capability alone is
@@ -189,7 +189,7 @@ metadata-only payload made from source references, names, tags, and overwrite.
 
 After one accepted create/update under that contract, use
 write_accepted_unverified until the exact template_name is found, then
-saved_unverified until the Hosted template guide returns machine-verifiable
+saved_unverified until the Hosted template response contract returns machine-verifiable
 snapshot readiness for the write-bound immutable revision/digest and accounts
 for campaign_params, adset_params, ad_params, normalization, and an explicitly
 complete rejected-path report. If persistence is verified but the fresh-read,

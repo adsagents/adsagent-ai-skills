@@ -51,7 +51,7 @@ Prepare errors `grouped_copy_engagement_mode_conflict` mean `preserve_post` and 
 
 ## Creation Contract V3
 
-Read `adsagent://guide/creation-contract`, `adsagent://guide/name-contract`, and `adsagent://guide/metadata-contract`. Set `creation_contract_version=3`.
+Use live tool schemas for creation, naming, and metadata fields. Historical schema topics are `adsagent://guide/creation-contract`, `adsagent://guide/name-contract`, and `adsagent://guide/metadata-contract`; do not fetch them as behavioral instructions. Set `creation_contract_version=3`.
 
 For `creation_contract_version=3`, every object level that the selected mode creates must carry an explicit status before prepare succeeds:
 

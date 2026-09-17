@@ -3,7 +3,7 @@ name: meta-copy
 description: Use when preparing a Meta Ads creation, copy, template write, budget, status, targeting, or delivery change; not analysis-only reads.
 ---
 
-# Meta Copy And Comparison
+# Meta Copy
 
 1. Inspect `capabilities.delivery_mutations` and exact object level. Template
    state requires `capabilities.template_mutations.allowed=true` with
@@ -13,7 +13,7 @@ description: Use when preparing a Meta Ads creation, copy, template write, budge
    AdSet, template, budget, pixel/app, or compliance. Cross-account copy: call
    the eligible-pages listing action, let the user pick `page_id`, then prepare
    again — never auto-select Page.
-3. For known writes, skip Insights preflight: prepare reads live configuration
+3. For writes, skip Insights preflight: prepare reads live configuration
    without mutation. Show summary and await fresh approval. Templates use
    snapshot contract.
 4. Confirm once. Consume inline `verification_result` first; follow read-only
@@ -27,3 +27,5 @@ QuickCreate, append, copy, delivery mutation, reconciliation, or recovery.
 
 Read [template-persistence-contract.md](template-persistence-contract.md) for
 template lifecycle or QuickCreate from uncertain template.
+
+[Data boundary](../data-boundary.md) applies.

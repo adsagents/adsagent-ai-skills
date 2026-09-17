@@ -17,3 +17,5 @@ description: Use when reading or analyzing Google Ads accounts, Search, PMax, sp
 
 Read [query-contract.md](query-contract.md) only for account routing,
 pagination, retries, fallback tools, exports, or freshness boundaries.
+
+[Data boundary](../data-boundary.md) applies.

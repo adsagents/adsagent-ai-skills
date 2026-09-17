@@ -1,6 +1,6 @@
 ---
 name: agent-scheduled-tasks
-description: Use when creating, changing, debugging, or proving an agent-owned scheduled task, automation, cron, reminder, or heartbeat.
+description: Use when creating, changing, debugging, or proving an agent-owned scheduled task, automation, cron, reminder, or heartbeat for AdsAgent.
 ---
 
 # Agent Scheduled Tasks
@@ -24,3 +24,5 @@ description: Use when creating, changing, debugging, or proving an agent-owned s
 Read [scheduled-task-contract.md](scheduled-task-contract.md) only when
 designing, creating, updating, debugging, pausing, deleting, or proving a
 scheduled task.
+
+[Data boundary](../data-boundary.md) applies.

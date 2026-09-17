@@ -4,16 +4,16 @@
 
 Read `setup_get_status.capabilities.template_mutations` before a template
 workflow. Its `inline_contract` is authoritative when
-`guide_resource_required=false`. Read `adsagent://guide/catalog/templates` as
-additional guidance only when the client exposes MCP Resources; an unavailable
-optional resource must not block the write. For a reverse-engineered template,
+`guide_resource_required=false`. Use its structured field contract and live tool schemas. The historical
+resource `adsagent://guide/catalog/templates` is not a behavioral instruction
+source; an unavailable optional resource must not block the write. For a reverse-engineered template,
 this pack chooses snapshot semantics: source account/ad set IDs, names, and
 tags are provenance only. They are not evidence that Campaign, AdSet, or Ad
 configuration was saved.
 
 This fail-closed contract applies to a reverse-engineered preview and to a
 saved template whose persistence is legacy-projected, false, or unknown. It
-does not replace the live guide's normal QuickCreate contract for a template
+does not replace the live tool contract's normal QuickCreate contract for a template
 whose current server-owned persistence and launch semantics are already
 authoritative.
 
@@ -26,13 +26,13 @@ machine-verifiable launch-readiness evidence. Source fields remain provenance.
 
 For affected templates, this pack defines no positive launch-safe inference
 from currently observed fields. Treat readiness evidence as present only when
-the live guide explicitly names the authoritative response fields and their
+the live tool contract explicitly names the authoritative response fields and their
 semantics. Never assemble it from maps, timestamps, provenance, or an
 absent/null rejected-path report.
 
 Never guess the withheld request schema, invent Meta adapter fields, or fill
 defaults. Never copy opaque preview maps wholesale into a write. Never send
-source references alone unless the guide explicitly defines a server-owned
+source references alone unless the tool schema explicitly defines a server-owned
 snapshot import with the same readiness evidence.
 
 The current Hosted contract distinguishes two inputs:
@@ -49,7 +49,7 @@ account binding does not prove that Meta source settings were read or retained.
 
 ## Write And Read-Back
 
-Before writing a reverse-engineered preview, require the live guide to
+Before writing a reverse-engineered preview, require the live tool contract to
 advertise all of the following: snapshot-import semantics, the bounded public
 write schema, normalization and rejected-path behavior, immutable read-back
 identity, and machine-verifiable launch-readiness fields. Advertising
@@ -61,7 +61,7 @@ When that contract is present, use `templates_create` or `templates_update`
 only when `setup_get_status.capabilities.template_mutations.allowed=true`, its
 `required_capability` is exactly `mcp.templates.write`, and the user explicitly
 requested that exact write. The block's named tools and `inline_contract`
-remain the request-scoped authority; a tool name elsewhere in the guide is not
+remain the request-scoped authority; a tool name elsewhere in discovery is not
 a grant. When `guide_resource_required=false`, a client does not expose MCP
 Resources, or reading the optional resource returns `Unknown resource`, use the
 inline contract and continue the normal guarded workflow. That resource failure
@@ -81,10 +81,10 @@ source-only shape only through the exact advertised mode and still require the
 same exact-name read-back. Outside that exact mode, a payload containing only
 provenance or metadata (including source references, names, tags, and
 `overwrite`) is never a snapshot write.
-For `templates_create`, only when its live guide advertises `overwrite`, use
+For `templates_create`, only when its live tool contract advertises `overwrite`, use
 `overwrite=false` by default; `overwrite=true` is reserved for an
 operator-approved replacement, never recovery. Never add it to
-`templates_update` unless that exact tool guide exposes it.
+`templates_update` unless that exact tool schema exposes it.
 
 For a creative-distribution-only change, use the existing canonical tool shape:
 
@@ -155,7 +155,7 @@ Both reads are under `mcp.read`.
 Use `templates_delete` only under `mcp.templates.write` when the user explicitly
 requests deletion of the exact named template; never infer deletion from a
 cleanup request. Rename is one `templates_update` direct state write using only
-the exact public fields advertised by the live guide, followed by exact-name
+the exact public fields advertised by the live tool contract, followed by exact-name
 read-back. Never implement rename as delete-and-recreate.
 
 If the user says only list/view/delete/rename "template" without naming Meta,
@@ -195,7 +195,7 @@ off and preserve any returned `support_ref`.
 Immediately before `campaigns_quick_create` from a reverse-engineered,
 legacy-projected, or persistence-unknown template, get and verify the exact
 template again. Use only the exact public binding input and response explicitly
-advertised by the live guide. Require the prepare response and its confirmation
+advertised by the live tool contract. Require the prepare response and its confirmation
 token to prove binding to the same immutable snapshot revision/digest, and show
 that identity, configuration coverage, and runtime-required inputs in the
 approval summary. A client re-read or client-added summary echo is not token

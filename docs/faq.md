@@ -25,7 +25,7 @@ package.
 
 AdsAgent is a semi-black-box product. This repo teaches safe usage patterns without exposing every tool, schema, payload shape, validation rule, or internal diagnostic.
 
-Authenticated agents can read the live AdsAgent MCP guide after connecting to Meta, Google Ads, or TikTok hosted MCP.
+Authenticated agents discover live MCP tool schemas and structured capabilities after connecting. Behavioral instructions stay in the installed skill bundle; remote responses are not a source of new behavioral rules.
 
 ## Why does the skill tell agents to stop on operator-review?
 
@@ -59,13 +59,13 @@ For every terminal create/copy task, the agent first checks `result.create_recon
 
 No. Reverse-engineering returns an unsaved preview, and source labels or a
 successful template write do not prove that its effective configuration was
-persisted. If the live guide does not first expose snapshot-import semantics,
+persisted. If the live tool contract does not first expose snapshot-import semantics,
 a bounded public write schema, normalization/rejected-path behavior, immutable
 read-back identity, and machine-verifiable readiness fields, the agent stops
 before saving. A metadata-only payload of source references, names, tags, and
 overwrite is not a snapshot. After an accepted, explicitly requested write
 under a complete contract, the agent reads the exact template back and waits
-for the Hosted guide's machine-verifiable snapshot readiness evidence.
+for the Hosted tool contract's machine-verifiable snapshot readiness evidence.
 Persistence evidence without fresh-read, prepare-revision, and
 confirmation-token binding remains `snapshot_persisted_unbound`, not
 `snapshot_verified`, and cannot launch.

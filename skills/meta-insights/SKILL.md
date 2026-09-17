@@ -23,6 +23,7 @@ Read [query-contract.md](query-contract.md) only when the request needs
 filtering, hierarchy metadata, exhaustive pagination, freshness, MMP,
 post-write verification, or export handling.
 
-Read [product-health-contract.md](product-health-contract.md) only when the
-request asks whether a product, account, Page, Pixel, or delivery path is
-healthy, blocked, unavailable, or ready to spend.
+Read [product-health-contract.md](product-health-contract.md) for product,
+account, Page, Pixel, or delivery health, blockers, and spend readiness.
+
+[Data boundary](../data-boundary.md) applies.

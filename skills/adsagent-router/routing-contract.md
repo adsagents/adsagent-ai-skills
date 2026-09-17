@@ -48,7 +48,7 @@
   template tools.
 - In Meta, list with `templates_list`, view exact state with `templates_get`,
   delete only through `templates_delete`, and rename only through
-  `templates_update` when the live guide advertises the operation.
+  `templates_update` when the live tool contract advertises the operation.
 
 ## Ambiguous Scope
 
@@ -74,14 +74,14 @@
   `entity_type` and `entity_id`; parent status and manual changes outside the
   candidate ID set are separate evidence.
 - Consequential platform/delivery writes require prepare, sanitized summary, explicit approval, then confirm; never substitute Campaign and AdSet budget levels.
-- On launch-family confirm errors, branch on structured `details.recommended_action` and `details.confirm_token_consumed` before generic stop or operator review. `retry_launch_confirm` with `confirm_token_consumed=false` retries the same confirm_token once; `prepare_*_again` re-runs prepare and obtains a fresh token. See hosted guide §10.9.
-- Meta creation uses `creation_contract_version=3`; read `adsagent://guide/creation-contract` and `adsagent://guide/name-contract`, then emit only explicit role fields. QuickCreate always sends `destination.type=web|app`.
+- On launch-family confirm errors, branch on structured `details.recommended_action` and `details.confirm_token_consumed` before generic stop or operator review. `retry_launch_confirm` with `confirm_token_consumed=false` retries the same confirm_token once; `prepare_*_again` re-runs prepare and obtains a fresh token. See the packaged reliability recovery contract.
+- Meta creation uses `creation_contract_version=3`; use live tool schemas for the historical `adsagent://guide/creation-contract` and `adsagent://guide/name-contract` field topics, and emit only explicit role fields. QuickCreate always sends `destination.type=web|app`.
 - A reverse-engineered template preview is unsaved. Source labels and a
   successful template write do not prove persisted configuration; block
   QuickCreate until the exact saved template has server-owned snapshot
   readiness evidence. Template state writes are direct: require the exact
   advertised tool and explicit request instead of inventing prepare/confirm.
-- Meta metadata: read `adsagent://guide/metadata-contract`; status writes use `target_configured_status`.
+- Meta metadata: use live tool schemas for the historical `adsagent://guide/metadata-contract` fields; status writes use `target_configured_status`.
 - On public `invalid_fields`, correct prepare once. Never replay confirm. A strict pre-send quota defer stops the plan before later confirms; follow `adsagent-reliability`.
 - QuickCreate tokens are single-use for 15 minutes. On `confirm_token_invalid`, prepare again; never retry old confirm.
 - Poll `task_ref`. Terminal create/copy requires `result.create_reconciliation.reconciled=true`; a `recovered_by_url_fallback` auxiliary image failure is not permission to retry. On `no_create_permission`, use `/dashboard/assets/fb-users`; never alter permissions.

@@ -47,7 +47,7 @@ One concise answer.
 - Meta structured `filters` are allowlisted and combined with AND. Use text operators for hierarchy IDs/names, numeric comparisons for metrics/budgets/bids, and enum equality/membership for statuses, objectives, and events. Never probe hidden fields.
 - Preserve full hierarchy IDs on Ad reads. Exact Ad-name deduplication, language classification, and business grouping are client responsibilities; do not use `dedupe_by` in new workflows.
 - Interpret `configured_status` as configured `ACTIVE`/`PAUSED`, `effective_status` as Meta's actual delivery/review outcome such as `DISAPPROVED` or `PENDING_REVIEW`, and legacy `status` as an alias of `effective_status`.
-- Read `adsagent://guide/metadata-contract` for delivery metadata. Money fields use returned account `currency` in major units; `budget_level` is `campaign|adset`; `bid_strategy` and `optimization_goal` are canonical lower-case; `objective` and `billing_event` are Meta-native uppercase; `conversion_event` stays separate and lower-case. Tool-local task, batch, notification, and connection `status` values are not delivery status.
+- Use live tool schemas for delivery metadata (historical topic `adsagent://guide/metadata-contract`). Money fields use returned account `currency` in major units; `budget_level` is `campaign|adset`; `bid_strategy` and `optimization_goal` are canonical lower-case; `objective` and `billing_event` are Meta-native uppercase; `conversion_event` stays separate and lower-case. Tool-local task, batch, notification, and connection `status` values are not delivery status.
 - Without the profile, use `insights_query_overview` / `insights_query_batch_overview` with `metadata_contract_version=1` for Meta; preserve each other channel's native request contract.
 - Do not read raw rows for normal business questions.
 - If forensic raw inspection is required, hand it to the AdsAgent operator instead of turning raw rows into a chat answer.
@@ -106,7 +106,7 @@ Google Ads `as_of` is read-only ledger observation time and its current public p
 
 - QuickCreate confirm tokens are tenant-scoped, single-use, and expire after 15 minutes. Check `expires_at` before asking the server to confirm.
 - Multiple distinct source Ads use one server-owned `grouped_plan` prepare. The approval must expose each `settings_source_ad_id`, geography override, budget/bid summary, and paused-by-default destination structure before one explicit confirmation.
-- Meta creation clients set `creation_contract_version=3`, use explicit single/grouped mode, and read `adsagent://guide/creation-contract` plus `adsagent://guide/name-contract` for canonical examples and role-specific names. Legacy aliases are exact-path compatibility only.
+- Meta creation clients set `creation_contract_version=3`, use explicit single/grouped mode, and use the packaged creation contract with live tool schemas for role-specific names (historical topics `adsagent://guide/creation-contract` and `adsagent://guide/name-contract`). Legacy aliases are exact-path compatibility only.
 - On `confirm_token_invalid`, never retry the old confirm. Prepare again, show the fresh sanitized approval summary, and obtain fresh explicit approval.
 - A successful asynchronous confirm returns a public `task_ref`. Poll it with `tasks_get_status(task_ref=..., response_mode=compact)` until `terminal=true`; never discover a replacement by guessing from task history.
 - First inspect `result.create_reconciliation`. Require `reconciled=true` before claiming every requested object is accounted for, and use `creative_results` to map `ad_name` plus available `selection_key`/`selection_keys` to `ad_id`. Follow its exact read-only `next_action` once when present; require `retry_write=false`, use live configured/effective/delivery fields for current state, and never infer spend or replay the write. `configuration.source=approved_task_payload` with `live_verified=false` is execution input, not live Meta configuration.
@@ -121,7 +121,7 @@ Google Ads `as_of` is read-only ledger observation time and its current public p
 - `templates_reverse_engineer` returns an unsaved preview. Source references,
   names, tags, `updated_at`, and a successful template write are not launch
   evidence.
-- Before writing a reverse-engineered preview, require the live guide to
+- Before writing a reverse-engineered preview, require the live tool contract to
   expose snapshot-import semantics, a bounded public write schema,
   normalization/rejected-path behavior, immutable read-back identity, and
   machine-verifiable readiness fields. A tool/capability alone is not enough;
@@ -131,7 +131,7 @@ Google Ads `as_of` is read-only ledger observation time and its current public p
   accepted `templates_create` or `templates_update`, call
   `templates_get` by exact `template_name`. Keep
   `write_accepted_unverified` until that object is found, then
-  `saved_unverified` until the Hosted guide's machine-verifiable snapshot
+  `saved_unverified` until the Hosted tool contract's machine-verifiable snapshot
   readiness evidence is present. Persistence evidence without the fresh-read,
   prepare-revision, and confirmation-token bindings is
   `snapshot_persisted_unbound`, not `snapshot_verified`, and is non-launchable.
@@ -158,7 +158,7 @@ Google Ads `as_of` is read-only ledger observation time and its current public p
   again. Missing, changed, or stale snapshot evidence blocks both prepare and
   confirm; never substitute defaults or live source state.
 - A re-read or client-authored summary is not confirmation-token binding. Use
-  only the exact public binding fields named by the live guide, and keep
+  only the exact public binding fields named by the live tool contract, and keep
   QuickCreate blocked unless prepare proves the token uses the same immutable
   snapshot revision/digest.
 - A missing or wrong read-back is **write accepted; persistence unverified**.

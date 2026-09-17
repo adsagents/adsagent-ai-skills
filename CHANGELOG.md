@@ -3,6 +3,11 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.70 keeps behavioral instructions inside the installed bundle,
+limits remote responses to task data and tool/capability contracts, and makes
+privacy, support, and channel-specific effects explicit for Claude Directory
+Bundle submissions. Scheduled-task guidance is scoped to AdsAgent workflows.
+
 Version 0.7.69 aligns the setup entrypoint with bundled plugin OAuth and keeps
 the dashboard install prompt as the non-plugin fallback. TikTok guidance
 distinguishes approval-backed ad changes from advertised direct operations.

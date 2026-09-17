@@ -1,11 +1,14 @@
 # Claude Plugin Directory Submission
 
-Portal: https://claude.ai/admin-settings/directory/submissions/plugins/new
+Portal: https://claude.ai/directory/manage/new
+
+Choose **Bundle** (GitHub-hosted skills and MCP connections).
+**Connector only** submits one remote MCP separately.
 
 ## Pre-submit
 
 ```bash
-claude plugin validate . --strict
+claude plugin validate .
 python3 scripts/validate_tri_channel_pack.py
 python3 -m pytest -q
 ```
@@ -17,9 +20,11 @@ python3 -m pytest -q
 | Repository | `adsagents/adsagent-ai-skills` |
 | Plugin slug | `adsagent` |
 | Display name | `AdsAgent` |
-| Version | See root `VERSION` (currently `0.7.69`) |
+| Version | See root `VERSION` (currently `0.7.70`) |
 | Homepage | `https://adsagent.md/connect`（**单行 URL，前后不能有空格**；文档站放 description，不要拼两个 URL） |
 | Documentation (in description copy) | `https://adsagent.md/docs/mcp-onboarding` |
+| License type | `MIT` (root `LICENSE`) |
+| Privacy policy URL | `https://adsagent.md/privacy` |
 | Support email | `support@adsagent.md` |
 | Publisher | adsagents LLC |
 

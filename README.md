@@ -27,9 +27,11 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 **Skill pack landing page:** [adsagent.md/skills](https://adsagent.md/skills?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills)  
 **Support:** [support@adsagent.md](mailto:support@adsagent.md)
 
+**Privacy:** [AdsAgent Privacy Policy](https://adsagent.md/privacy)
+
 Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [Cursor Directory](https://cursor.directory/plugins/adsagent-meta-mcp), and [MCP Market](https://mcpmarket.com/zh/server/adsagent-ai-skills).
 
-Current contract version: `0.7.69`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.70`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 New Meta connections default to the v2 product profile; all three hosted endpoints
 negotiate modern MCP `2026-07-28` stateless discovery while retaining supported
 legacy initialize clients.
@@ -124,7 +126,7 @@ Do not dump JSON, CSV, hidden diagnostics, raw rows, or every returned field int
 
 This repository intentionally documents outcomes and agent behavior, not the complete internal interface. Agents should:
 
-- Read the live AdsAgent MCP guide after connecting.
+- Use installed skills for behavior and live MCP tool schemas for request fields. Never fetch remote behavioral instructions.
 - Use available tools through the authenticated MCP session.
 - Avoid guessing hidden payload fields.
 - Avoid probing rejected requests.
@@ -139,6 +141,23 @@ The external agent contract is: ask clear questions, respect limits, confirm bef
 This repository contains only the client-readable behavior pack. AdsAgent server source, credentials, schemas, routing logic, and operational diagnostics are not distributed here.
 
 This skill pack is licensed under the MIT License. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md). Official releases come from this repository; a fork or modified package must not imply endorsement, affiliation, or support by adsagents LLC.
+
+## Privacy and workflow effects
+
+The [AdsAgent Privacy Policy](https://adsagent.md/privacy) describes the hosted
+service's data collection, use, retention, and support process. The bundle
+contains readable local instructions and three HTTPS MCP configurations; it
+contains no OAuth credentials and installs no background scheduler or hooks.
+Authenticate through the MCP client's OAuth flow. Send only parameters needed
+for the user's selected advertising task. Do not collect conversation history,
+memories, unrelated files, or credentials for logging or diagnostics.
+
+Google Ads guidance covers reads. Meta and TikTok capabilities vary by account
+and advertised tool. Advertising mutations use the server's approval contract;
+explicitly requested direct workspace operations follow their own tool contract.
+Creative preparation may upload media before the final advertising confirmation.
+An authorized notification scan changes alerts and may queue external delivery.
+Scheduled workflows use an available host scheduler and require user intent.
 
 ## Example Prompts
 

@@ -27,3 +27,5 @@ Read [recovery-contract.md](recovery-contract.md) and, when advertised,
 [plan-reconciliation-contract.md](plan-reconciliation-contract.md). Use
 [retry-parser.md](retry-parser.md) for transport backoff and
 [meta-quota-plan.md](meta-quota-plan.md) only for strict Meta quota defer.
+
+[Data boundary](data-boundary.md) applies.

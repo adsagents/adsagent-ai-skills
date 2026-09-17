@@ -12,7 +12,7 @@ description: Use when connecting, authorizing, or verifying AdsAgent hosted MCP 
 2. Reconnect the existing transport and re-list tools after a new connection or
    guide/schema version. Do not re-register or replace a bearer solely for a
    protocol or guide update.
-3. Read the brief guide, run `setup_get_status`, and inspect advertised
+3. Run `setup_get_status` and inspect advertised
    capabilities before any optional workflow.
 4. Report channel readiness, blockers, authorization next action, and local
    Skill Pack update notice separately.
@@ -21,3 +21,5 @@ description: Use when connecting, authorizing, or verifying AdsAgent hosted MCP 
 
 Read [setup-contract.md](setup-contract.md) only when installing, reconnecting,
 authorizing a channel, or evaluating a Skill Pack update reminder.
+
+[Data boundary](data-boundary.md) applies.

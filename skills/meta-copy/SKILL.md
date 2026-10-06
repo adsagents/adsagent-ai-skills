@@ -1,6 +1,6 @@
 ---
 name: meta-copy
-description: Use when creating/copying Meta ads or changing templates, budget, status, targeting, or delivery; exclude analysis-only reads.
+description: Use when preparing a Meta Ads creation, copy, template write, budget, status, targeting, or delivery change; not analysis-only reads.
 ---
 
 # Meta Copy

@@ -5,8 +5,7 @@ description: Use when reading or analyzing Google Ads accounts, Search, PMax, sp
 
 # Google Ads Insights Through AdsAgent
 
-If Google tools or authorization are missing, use `adsagent-setup`, then resume
-this request with its original customer and dates.
+For connection blockers, use `adsagent-setup` and resume this scope.
 
 1. Run `setup_get_status` and inspect the advertised Google capability profile.
 2. Discover accounts, then select one enabled non-manager customer or one

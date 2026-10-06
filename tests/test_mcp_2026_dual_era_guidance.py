@@ -44,9 +44,9 @@ def test_release_identity_and_pinned_service_guides_are_current() -> None:
     assert set(provenance["channels"]) == {"meta", "google", "tiktok"}
 
     expected_guides = {
-        "meta": "2026-08-16.5",
-        "google": "2026-07-29.1",
-        "tiktok": "2026-07-31.8",
+        "meta": "2026-10-06.7",
+        "google": "2026-10-04.1",
+        "tiktok": "2026-10-04.4",
     }
     for channel, guide_version in expected_guides.items():
         manifest = json.loads(_read(f"contracts/manifests/{channel}.json"))

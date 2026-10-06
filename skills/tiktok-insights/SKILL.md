@@ -5,6 +5,9 @@ description: Use when reading or changing TikTok Ads, creatives, delivery, optim
 
 # TikTok Through AdsAgent
 
+If TikTok tools or authorization are missing, use `adsagent-setup`, then resume
+this request. Template readiness is separate from read access.
+
 1. Run `setup_get_status`, then inspect the exact advertised TikTok capability
    names before choosing a read, creative, write, optimization, MMP, or support
    workflow.

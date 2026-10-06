@@ -3,6 +3,16 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.71 guides installed Claude users through only the requested channel:
+client MCP OAuth, provider authorization, account discovery, and initial sync
+remain distinct, with a return to the original task. Meta and TikTok prefer
+their advertised begin/check flow and wait for human completion; Google uses
+an available Meta connection or its own website without requiring a Meta ad
+account. OAuth credentials stay bound to each hosted resource. Current public
+manifests from all three services replace the August snapshots. Retired Meta
+notification configuration is replaced by alert/MCP Events guidance, and
+Google's cached query limits no longer imply that all native writes are absent.
+
 Version 0.7.70 keeps behavioral instructions inside the installed bundle,
 limits remote responses to task data and tool/capability contracts, and makes
 privacy, support, and channel-specific effects explicit for Claude Directory

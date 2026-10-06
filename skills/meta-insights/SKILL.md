@@ -5,8 +5,10 @@ description: Use when reading or analyzing Meta Ads performance, delivery, MMP, 
 
 # Meta Insights Through AdsAgent
 
+For missing tools/authorization, use `adsagent-setup`, then resume this scope.
+
 1. Classify health or performance. Template-dimension reports stay here;
-   direct template lifecycle uses `meta-copy`.
+   template lifecycle uses `meta-copy`.
 2. For product health, call `products_list`, select one public `product_ref`,
    then call `products_get_health`. This path does not require a date range or
    an Insights query.
@@ -16,7 +18,7 @@ description: Use when reading or analyzing Meta Ads performance, delivery, MMP, 
 4. Require complete evidence before totals, filtering, pagination, or a
    decision. Missing scopes stay unknown.
 5. Preserve opaque task and continuation contracts exactly.
-6. Return concise Markdown or the server artifact; never expose raw rows,
+6. Return Markdown or the server artifact; never expose raw rows,
    schemas, diagnostics, or internal errors.
 
 Read [query-contract.md](query-contract.md) only when the request needs

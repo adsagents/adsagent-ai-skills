@@ -1,9 +1,11 @@
 ---
 name: meta-copy
-description: Use when preparing a Meta Ads creation, copy, template write, budget, status, targeting, or delivery change; not analysis-only reads.
+description: Use when creating/copying Meta ads or changing templates, budget, status, targeting, or delivery; exclude analysis-only reads.
 ---
 
 # Meta Copy
+
+Setup blockers: use `adsagent-setup`; then resume.
 
 1. Inspect `capabilities.delivery_mutations` and exact object level. Template
    state requires `capabilities.template_mutations.allowed=true` with
@@ -19,13 +21,13 @@ description: Use when preparing a Meta Ads creation, copy, template write, budge
 4. Confirm once. Consume inline `verification_result` first; follow read-only
    `next_action` while pending. Never replay or switch level, route, mode, or
    permissions.
-5. Reconcile tasks through the matching recovery path. Follow reconciled
+5. Reconcile tasks. Follow reconciled
    create/copy `next_action` once; proves live state, not spend or replay.
 
 Read [creation-and-copy-contract.md](creation-and-copy-contract.md) for
 QuickCreate, append, copy, delivery mutation, reconciliation, or recovery.
 
 Read [template-persistence-contract.md](template-persistence-contract.md) for
-template lifecycle or QuickCreate from uncertain template.
+template lifecycle or uncertain templates.
 
 [Data boundary](data-boundary.md) applies.

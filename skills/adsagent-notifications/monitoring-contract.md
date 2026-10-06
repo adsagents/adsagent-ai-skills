@@ -1,37 +1,24 @@
 # AdsAgent Monitoring Contract
 
-Use only advertised operator-scoped Meta MCP tools. OAuth Safe Mode hides
-credential-taking tools. If absent, do not solicit credentials in chat; direct
-the user to dashboard/operator setup. Never expose internal IDs.
+Use only advertised Meta MCP tools. Current Meta removed notification-channel
+configuration and Meta Ads Webhook setup. This is not an OAuth Safe Mode or
+operator-scoped visibility problem: do not solicit credentials in chat,
+reauthorize for those retired tools, or promise that restricted Settings can
+restore them. Never expose internal IDs.
 
 ## Inspect
 
-For alert status, use `notifications_list`. For
-integration configuration or monitoring coverage, call
-`notifications_integrations_list` first. Optional `app_ref` and
-`ad_account_id` filters are bounded. Use only masked destinations, public refs,
-and status.
+For alert status, use `notifications_list`; for counts, use
+`notifications_summary`. Preserve returned public notification refs and use
+only the advertised status/severity filters and bounded pagination.
 
-Read `monitoring_capabilities` before describing coverage. Runtime truth
-overrides this guide.
+Read `monitoring_capabilities` from the advertised response before describing
+coverage. Missing capability evidence stays unknown.
 
 ## What AdsAgent Monitors
 
-Meta Ads Webhooks are event-driven and per ad account:
-
-- `effective_status` -> `meta_effective_status` after a live entity read
-- `ad_recommendations` -> `meta_ad_recommendation`
-- `with_issues_ad_objects` -> `meta_ad_object_issue`
-- `creative_fatigue` -> `meta_creative_fatigue`
-- `in_process_ad_objects` -> `meta_ad_object_processed`
-- `subscriptions` -> `meta_ads_subscription`
-
-Defaults are `effective_status`, `ad_recommendations`, and
-`with_issues_ad_objects`. App registration is not account subscription; each
-account needs observed subscription state.
-
 Cached asset-health monitoring runs after asset refresh,
-`notifications_scan`, or hourly auto-pull connection checks; it does not call
+or `notifications_scan`; it does not call
 Meta directly:
 
 - `ad_account_status`
@@ -45,7 +32,7 @@ Meta directly:
 - `fb_user_token_expired`
 
 `notifications_scan` is a direct state-changing operation: it updates or
-resolves alerts and may queue delivery to configured external channels. Use it
+resolves alerts and may generate MCP Events for existing subscriptions. Use it
 only when an alert refresh is requested or already authorized, making that
 effect clear. A connection check or lingering alert alone is not a request to
 scan or send notifications. Use the read-only notification list for status; do not
@@ -56,40 +43,39 @@ expiry <= 7 days (warning) and already-expired USER tokens (critical);
 3600-second cooldown. Product ownership and affected ad-account ids are included
 when mapped.
 
-Email, Feishu, and Telegram accept all or one exact `notification_type`, with
-minimum `info`, `warning`, or `critical` severity.
-
 Keep these boundaries explicit:
 
-- Webhooks do not replace Insights pulls.
-- Webhooks do not continuously stream spend or balance metrics.
+- MCP Events do not replace Insights pulls.
+- MCP Events do not continuously stream spend or balance metrics.
 - Balance, Page, and FB User health come from cached asset-health monitoring.
-- `effective_status` webhook events are live-read before AdsAgent emits the
-  verified notification.
 - Monitoring never changes customer permissions.
 
-## Configure
+## Push And Retired Integrations
 
-1. Call `notifications_integration_prepare` with exactly one action.
-2. Show its sanitized summary and warnings. Never repeat credentials,
-   destinations, recipients, tokens, or secrets.
-3. Wait for explicit user approval.
-4. Call `notifications_integration_confirm` once with the returned `confirm_token`.
-5. If a task is returned, poll `tasks_get_status(task_ref)` to terminal state.
+When both server and client advertise MCP Events support, an explicitly
+requested subscription uses the client's supported `events/list` and
+`events/subscribe` flow. These are protocol methods, not tools to invent in
+`tools/call`. Do not create a webhook receiver or scheduler just to enable
+notifications. If the client cannot subscribe, say push is unavailable there
+and offer a bounded alert check; never claim background monitoring is active.
 
-Supported actions are `configure_channel`, `remove_channel`, `test_channel`, `create_meta_app`, `register_meta_app`, `subscribe_meta_account`, and `unsubscribe_meta_account`.
+Events include `notification.created`, `approval.pending`, `approval.expiring`,
+and `task.finished`. Read the relevant detail through `notifications_list`,
+`operations_get_approval`, or `tasks_get_status(task_ref)`. An event is never
+approval: a pending/expiring approval still requires explicit user approval,
+and a finished-task event requires reading its terminal result before claiming
+success. Reuse the packaged reliability contract for task polling.
 
-`test_channel` sends one real external message after confirmation. Prepare is
-not delivery evidence.
+For email, Feishu, Telegram, or Meta Ads Webhook configuration requests, explain
+that the current Meta service no longer offers that integration. Offer MCP
+Events only if supported and relevant; never collect a destination secret or
+send a test message as part of setup.
 
 ## Recovery
 
-- Confirmation tokens expire after 15 minutes and are single-use.
-- Never replay a confirm after success, timeout, transport failure, or uncertain Meta outcome.
-- For uncertain Meta results, re-list with the same filter; do not replay.
-- Correct `invalid_fields` once by preparing again, then obtain fresh approval.
+- Never replay an uncertain scan, acknowledgement, or resolution. Re-read the
+  same alert state before deciding what remains.
 - Preserve any `support_ref` for operator review.
 - Never create, enable, disable, or modify customer FB User permissions.
-- Use only the exact eligible route accepted during prepare.
 - Do not treat provider acceptance as destination delivery proof without
   observed state.

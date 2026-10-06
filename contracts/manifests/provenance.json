@@ -1,34 +1,34 @@
 {
   "channels": {
     "google": {
-      "guide_version": "2026-07-29.1",
+      "guide_version": "2026-10-04.1",
       "manifest_version": 1,
       "service": "google",
-      "sha256": "9086ace7526c8db5917f6e1205c69eb6f1e782ef7c480d091d6f74da0d36d8d3",
+      "sha256": "aaa165795240e5a0a83797bf254873420dc65788d1e6fa6a04f6bde1a4fd0a29",
       "snapshot_path": "contracts/manifests/google.json",
-      "source_path": "contracts/manifests/google.json",
-      "source_revision": "b19bd8503eec4a498895b35084d5a7232bd35ecb",
-      "tool_count": 82
+      "source_path": "docs/mcp/manifests/google-tools.json",
+      "source_revision": "0a73c06ea6980c95ece3fe407c0843124eb9595c",
+      "tool_count": 109
     },
     "meta": {
-      "guide_version": "2026-08-16.5",
+      "guide_version": "2026-10-06.7",
       "manifest_version": 1,
       "service": "meta",
-      "sha256": "522de145c6e83e85887ef400ae633955ff696592d6abda28a0ad5245332b3437",
+      "sha256": "c86295de2c48fc7ace490e9b2823b6f49b9dce6544e26666f29f6100c12884a1",
       "snapshot_path": "contracts/manifests/meta.json",
       "source_path": "docs/mcp/manifests/meta-tools.json",
-      "source_revision": "594d94cc1a7499e4569ea34105d75f45b53775ad",
-      "tool_count": 110
+      "source_revision": "8abb56a88efc171075d71f6d9307252cdf289106",
+      "tool_count": 135
     },
     "tiktok": {
-      "guide_version": "2026-07-31.8",
+      "guide_version": "2026-10-04.4",
       "manifest_version": 1,
       "service": "tiktok",
-      "sha256": "6e80476a590b79b8458f5714651d95161daa5eadc80ec6eddbb1e0d967c37d69",
+      "sha256": "d5245309e297a8c1bbf4b8af1a22077b94da9706f66b81868ed781cea50081c1",
       "snapshot_path": "contracts/manifests/tiktok.json",
-      "source_path": "contracts/manifests/tiktok.json",
-      "source_revision": "b19bd8503eec4a498895b35084d5a7232bd35ecb",
-      "tool_count": 92
+      "source_path": "docs/mcp/manifests/tiktok-tools.json",
+      "source_revision": "8ee716ded2925d16648979465897c5659295b751",
+      "tool_count": 104
     }
   },
   "schema_version": 1

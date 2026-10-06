@@ -10,6 +10,11 @@
 - notification / webhook / email / Feishu / Telegram: `adsagent-notifications`.
 - scheduled task / automation / cron / reminder: `agent-scheduled-tasks`.
 
+If a selected channel lacks tools or platform authorization, hand off to
+`adsagent-setup` with the original task and scope. Connect only the requested
+channel, then resume that specialist. A connection-only request stops after
+the requested status; do not turn it into a reporting intake.
+
 ## Copy Routing
 
 - One ad -> `copy_ad_quick_copy`.
@@ -95,5 +100,5 @@
 - Continue Meta pages with the unchanged cached contract and first-page `min_as_of`; do not rerun page 1 merely to continue. If the server rejects the continuation anchor, discard partial rows and restart page 1 serially.
 - Use the common envelope only for `agent_method_profile.profile_id=adsagent_agent_methods_v1`; otherwise preserve native output.
 - Preserve `support_ref` for unresolved handoff. It is not authorization.
-- Google is a cached read-only ledger. TikTok features are capability-gated; a shared profile does not imply evidence parity.
+- Google Insights uses a cached read-only ledger; separately advertised native writes follow their own approval contract. TikTok features are capability-gated; a shared profile does not imply evidence parity.
 - TikTok append uses native `append-campaign` / `append-adgroup` and `target_adgroup_id`; never translate it to Meta `append-adset`.

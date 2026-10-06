@@ -1,6 +1,6 @@
 ---
 name: adsagent-setup
-description: Use when connecting or authorizing AdsAgent in Claude or another MCP client, or diagnosing channel readiness.
+description: Use when connecting, authorizing, or checking AdsAgent MCP readiness in Claude or another client.
 ---
 
 # AdsAgent Setup

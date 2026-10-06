@@ -1,6 +1,6 @@
 ---
 name: adsagent-notifications
-description: Use when inspecting AdsAgent alerts, requesting an alert refresh, or explaining MCP Events and retired notification integrations.
+description: Use when inspecting AdsAgent notifications, requesting an alert refresh, or explaining MCP Events and retired integrations.
 ---
 
 # AdsAgent Notifications

@@ -134,14 +134,14 @@
     }
   ],
   "digest_algorithm": "sha256",
-  "guide_digest_sha256": "1b149725c252093223a5a0d344e2751ba34427f1342eed6acd60f9ebb467796a",
-  "guide_version": "2026-10-06.7",
+  "guide_digest_sha256": "2f1199c92e02df02c59ccf0daa6d585f45ac3ddc470e6a3d22de718d6176e330",
+  "guide_version": "2026-10-08.2",
   "manifest_resource": "adsagent://guide/tool-manifest",
   "manifest_version": 1,
   "platform": "meta",
   "profile": "v2",
   "server_version": "adsagent-mcp-v1",
-  "tool_count": 135,
+  "tool_count": 140,
   "tools": [
     {
       "access": "read",
@@ -196,7 +196,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "b57939e788f9fffbb9a65ad643e9e767046f7cb4bf1d66ac3f7796cf8aa862b9",
+      "description_digest_sha256": "8caa324f4f2a017016749310f893f57560af06c7b24e1167da3377ad6d08dee5",
       "domain": "accounts",
       "guide_resource": "adsagent://guide/catalog/accounts",
       "name": "accounts_list_linked_accounts",
@@ -306,6 +306,16 @@
     {
       "access": "write",
       "capability_gates": [],
+      "description_digest_sha256": "cbb812aeff6d9fc6907cb97a8397d21dcb1a180a5ef3e491ac846ca1658deed3",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "adsets_prepare_status_change",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "46be272694ffbb4095ff6ba3dfe287580acccf09cdeb6759b4a9854e027de2a4"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
       "description_digest_sha256": "d18a170451b4b2e2ccf7a79e9d729569b6cccae05363d56e29bae56fb857f885",
       "domain": "assets",
       "guide_resource": "adsagent://guide/catalog/assets",
@@ -386,12 +396,42 @@
     {
       "access": "write",
       "capability_gates": [],
+      "description_digest_sha256": "58ff1af46d322cf9a76db66893e67aa348a19384692b2dbad16e8c73cb61100a",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "campaigns_prepare_budget_change",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "310530411207ddcdfaac86cb4c96ef2a0a63fefba47325ba4537b39bd2674276"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "5a159571bf21eb96b4c888905e48debaf57e3cf7d9b1bbd0fe018183ec3a43bf",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "campaigns_prepare_budget_changes",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "e4bdd0d4b37464fad119e42172bd9b3eaf34af58a8c2656378663675b086843f"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
+      "description_digest_sha256": "0e801b0c2de1b486429d11a3d1ab46be7947467ceb90e85d69b794f9826687df",
+      "domain": "overview",
+      "guide_resource": "adsagent://guide/catalog/overview",
+      "name": "campaigns_prepare_status_change",
+      "required_capability": "mcp.optimize.write",
+      "schema_digest_sha256": "9b1e112d7d6e55eb58f49751a119921c9c7eef391627d3e2d3ce5ea73fb8107e"
+    },
+    {
+      "access": "write",
+      "capability_gates": [],
       "description_digest_sha256": "3bd752959080b267db5fc73ec97ae59fef02c5121638f6f8fe4ac4536c142a4d",
       "domain": "campaigns",
       "guide_resource": "adsagent://guide/catalog/campaigns",
       "name": "campaigns_quick_create",
       "required_capability": "mcp.launch.prepare",
-      "schema_digest_sha256": "105a1a7da186cd18daab76bb1cb3a44462c02eb9697a664c1361bfb83ec85fa4"
+      "schema_digest_sha256": "6a2da0e8623626edacc9560ecb222465b65e120a6c19f7febfa7654f87318f14"
     },
     {
       "access": "read",
@@ -411,7 +451,7 @@
       "guide_resource": "adsagent://guide/catalog/campaigns",
       "name": "campaigns_recreate_from_task",
       "required_capability": "mcp.launch.prepare",
-      "schema_digest_sha256": "1c461f171cdf528b5c92450aad5bee23612e25f9c30d8bf6a97258917143e58f"
+      "schema_digest_sha256": "932fec864798791e9a2610c5aef6aed0513f363cc2b51f5aa9864885dd53db2c"
     },
     {
       "access": "read",
@@ -451,7 +491,7 @@
       "guide_resource": "adsagent://guide/catalog/copy_ad",
       "name": "copy_ad_clone_structure",
       "required_capability": "mcp.launch.prepare",
-      "schema_digest_sha256": "eff292b8af2982d737b19ad111a52537e2b523d77764b119dae7a6858e0038cc"
+      "schema_digest_sha256": "1119f5148165604495181603ae7b2de025b6c88900667222d571e2e942d0d008"
     },
     {
       "access": "write",
@@ -461,7 +501,7 @@
       "guide_resource": "adsagent://guide/catalog/copy_ad",
       "name": "copy_ad_quick_copy",
       "required_capability": "mcp.launch.prepare",
-      "schema_digest_sha256": "2ed217431f4e2f7414069fb8b01ca58f980aafa253b9ca1601788dbff6c414ee"
+      "schema_digest_sha256": "f40332a0b0e30b318f15820cb01930a90db391aa5e399a0ccf1ebf2d5f5fbf83"
     },
     {
       "access": "write",
@@ -586,7 +626,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "7ec83231f74e6fdcd7b88350f4271805b8fbf29dd3e00aa72eb0d32bf1bd9bfa",
+      "description_digest_sha256": "b567d275984c9bcc2addc56a56a6ad6dde06ed281aea76a9094603b3c5994c7b",
       "domain": "fb_users",
       "guide_resource": "adsagent://guide/catalog/fb_users",
       "name": "fb_users_list",
@@ -671,7 +711,7 @@
       "guide_resource": "adsagent://guide/catalog/insights",
       "name": "insights_query_batch_overview",
       "required_capability": "mcp.read",
-      "schema_digest_sha256": "9cd732e7cbe4bb3ec436c7e59487e0ebd43cfaf4d0f34c20cfc09a6737eccf21"
+      "schema_digest_sha256": "fc92af92f2d2214f6e8737a95a37e992b6b3a90d60475bfeb62d572097f8cb2d"
     },
     {
       "access": "write",
@@ -691,7 +731,7 @@
       "guide_resource": "adsagent://guide/catalog/insights",
       "name": "insights_query_overview",
       "required_capability": "mcp.read",
-      "schema_digest_sha256": "018bd0f0e9f9902e2728c9867d02a809ce4c56a5105bea011aa1f63859a2d7ea"
+      "schema_digest_sha256": "fceea758d5fa41a6b5bb305ffed8aee1c6e7d13e52eec427db27ae7d051a7702"
     },
     {
       "access": "read",
@@ -796,7 +836,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "5109d4818f4f4e6d161aaea27dbe6dfced652baf3b9916ace6b5c84f4d41b854",
+      "description_digest_sha256": "9d1fe1e658ca6663e97bdd4938b4b518c445a3556308fcee965fb19fb48bd7ec",
       "domain": "interests",
       "guide_resource": "adsagent://guide/catalog/interests",
       "name": "interests_use_targets",
@@ -966,7 +1006,7 @@
     {
       "access": "read",
       "capability_gates": [],
-      "description_digest_sha256": "4997617cdf02f384b18db5a401b4219e05dd46cf4acab86c9d65c0a05ed59eba",
+      "description_digest_sha256": "fbbc5de94ad5eaaacd38c9673521c8ad48f3d50cab521a7712cd562c58fea541",
       "domain": "notifications",
       "guide_resource": "adsagent://guide/catalog/notifications",
       "name": "notifications_summary",
@@ -1011,7 +1051,7 @@
       "guide_resource": "adsagent://guide/catalog/operations",
       "name": "operations_get_approval",
       "required_capability": "mcp.read",
-      "schema_digest_sha256": "bbd9a7390c3b99cf21ffc29d730b80a73c728b4714f90b9585eb0c680f84ce21"
+      "schema_digest_sha256": "a8e1519f30803ad22ab3609a59ea86b76d908255ed8206a3e253def0ad8c90c6"
     },
     {
       "access": "read",
@@ -1270,6 +1310,16 @@
     {
       "access": "read",
       "capability_gates": [],
+      "description_digest_sha256": "2fed84bbaebb88939c938383c12f44506b1e44e4450e44ed0a8103b8435c9573",
+      "domain": "insights",
+      "guide_resource": "adsagent://guide/catalog/insights",
+      "name": "render_ads_console",
+      "required_capability": "mcp.read",
+      "schema_digest_sha256": "0628f72107a82e608f4171000137395b63ab9598fffed6dcebcaa287cbd9ba21"
+    },
+    {
+      "access": "read",
+      "capability_gates": [],
       "description_digest_sha256": "6cc1e2f1e4941d586c7925bf68559897e8dde56fd5f1031e9bfbaf28aaaeb282",
       "domain": "insights",
       "guide_resource": "adsagent://guide/catalog/insights",
@@ -1290,7 +1340,7 @@
     {
       "access": "write",
       "capability_gates": [],
-      "description_digest_sha256": "bc27b7560336f36113f760b1e25089b39c5a36b378ddf2fcdee5fb46515fcafd",
+      "description_digest_sha256": "4a2173c281c53d327a8beadd2b0b376b97c87e761d0b5f6f6fc36543f7121883",
       "domain": "setup",
       "guide_resource": "adsagent://guide/catalog/setup",
       "name": "setup_begin_channel_connect",
@@ -1405,7 +1455,7 @@
       "guide_resource": "adsagent://guide/catalog/tasks",
       "name": "tasks_get_create_detail",
       "required_capability": "mcp.read",
-      "schema_digest_sha256": "14447181050e22f79d54c9164123ebc7a6f584e15c905eb7ac4213837be59909"
+      "schema_digest_sha256": "8bead93f2711301a342c45d02d2a83d25b42d13d652cb7e7813c92e16cddff30"
     },
     {
       "access": "read",
@@ -1508,5 +1558,5 @@
       "schema_digest_sha256": "e1985b687bc0778ea741792cb353d344ff1d9585f87809853995543747ccf060"
     }
   ],
-  "toolset_revision": "sha256:18c03194c1e38f16dade71c431c8a7f473a58ba47b4d34847f743dbf0b2db0dd"
+  "toolset_revision": "sha256:3965cc841531434421a03ceea9bcb341183fb49786a582ac1da995f33bc5a839"
 }

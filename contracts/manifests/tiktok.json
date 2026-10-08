@@ -84,8 +84,8 @@
     "optimization_list_decisions",
     "optimization_prepare_action"
   ],
-  "guide_version": "2026-10-04.4",
-  "manifest_fingerprint": "7e8bb455a34078e1e48f8ec1996de0eea016e6799dea43f25ff7907908c58065",
+  "guide_version": "2026-10-07.1",
+  "manifest_fingerprint": "affd6a26417b1e5221d3ebe19535141d86c50238d99c0bda16736227f800a242",
   "manifest_resource": "tiktok-adsagent://guide/tool-manifest",
   "manifest_version": 1,
   "oauth_scope_semantics": "consent_hint_only",
@@ -2701,7 +2701,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "c366a9148857316e2ffa50a2f7607489af72c03395b385e1d03874f5fbe79643",
+      "description_digest_sha256": "96a904c5013e3a17208841f5b42d2963849b476c12a8d8fff33213ef6e843f74",
       "domain": "live_config",
       "effect": "none",
       "name": "overview_get_live_configs",
@@ -2870,7 +2870,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "4c354864ed579c316518f0d84f385e4e3d69fb287d2336ef5b243af5e13d3ce2",
+      "description_digest_sha256": "7d0159311cce07696b7546e5b8e683fbcddb7e0bf3749dd11ee2dcf0c83556fc",
       "domain": "setup",
       "effect": "none",
       "name": "setup_get_status",
@@ -3094,7 +3094,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "968f389c915bb56179e01d5580e02a832add55152c10c6a544f7c3aa6a4ff2f8",
+      "description_digest_sha256": "605ccddcf08f4632049f6de1533547cdac1e4338c0d18abacac673463b95410f",
       "domain": "tasks",
       "effect": "none",
       "name": "tasks_latest",

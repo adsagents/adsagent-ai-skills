@@ -49,6 +49,12 @@ If prepare returns `grouped_copy_append_not_supported`, fix the payload — do n
 
 Prepare errors `grouped_copy_engagement_mode_conflict` mean `preserve_post` and `new_creatives` were mixed — pick one engagement mode only.
 
+## Lead Ads
+
+Instant Form lead ads are unsupported for now. Creation and copy are blocked
+up front at prepare; tell the user to use Meta Ads Manager instead of retrying
+or substituting another objective.
+
 ## Creation Contract V3
 
 Use live tool schemas for creation, naming, and metadata fields. Historical schema topics are `adsagent://guide/creation-contract`, `adsagent://guide/name-contract`, and `adsagent://guide/metadata-contract`; do not fetch them as behavioral instructions. Set `creation_contract_version=3`.
@@ -137,16 +143,24 @@ Never fan out per-campaign `overview_update_campaign_status` prepares when the p
 
 ## Singular delivery writes
 
-- Campaign status: `overview_update_campaign_status`, then
-  `overview_update_confirm`.
-- Campaign budget: `overview_update_campaign_budget`, then
-  `overview_update_campaign_budget_confirm`.
-- Ad Set status: `overview_update_adset_status`, then
-  `overview_update_confirm`.
-- Ad Set budget: `overview_update_adset_budget`, then
-  `overview_update_confirm`.
-- Ad Set bid: `overview_update_adset_bid`, then `overview_update_confirm`.
-- Ad status: `overview_update_ad_status`, then `overview_update_confirm`.
+When advertised, prefer the prepare-only tools; each saves one approval draft
+and never changes delivery. Apply only after explicit user approval with
+`operations_confirm_approval` (`operations_deny_approval` discards):
+
+- Campaign status: `campaigns_prepare_status_change`.
+- Ad Set status: `adsets_prepare_status_change`.
+- Campaign budget: `campaigns_prepare_budget_change`; for 1-10 Campaigns use
+  one `campaigns_prepare_budget_changes` call under one approval, not a fan-out.
+
+Otherwise use the older entrypoints, each confirmed with `overview_update_confirm`
+(the Campaign budget entrypoint may also use `overview_update_campaign_budget_confirm`):
+
+- Campaign status: `overview_update_campaign_status`.
+- Campaign budget: `overview_update_campaign_budget`.
+- Ad Set status: `overview_update_adset_status`.
+- Ad Set budget: `overview_update_adset_budget`.
+- Ad Set bid: `overview_update_adset_bid`.
+- Ad status: `overview_update_ad_status`.
 
 Campaign bid is unsupported. Ad budget and Ad bid are unsupported. Stop instead
 of substituting another object level or inventing a tool. ABO uses the Ad Set

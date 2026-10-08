@@ -138,3 +138,9 @@ Recover task-backed uncertainty with
 `operations_get_context`; never repeat writes.
 
 Keep Meta and MMP distinct. Poll exports with `tasks_get_status(..., response_mode=compact)` to terminal. Read `result.artifact`; HTTP GET `download_url` byte-for-byte. Never redact, rebuild, decode, truncate, or substitute it. `artifact_status=expired` or an absent URL requires a new explicit export. Return the link, never raw CSV. Output concise Markdown.
+
+When the client advertises render tools (`render_performance_report`,
+`render_ad_previews`, `render_ads_console`), they only display already-read
+data in an interactive widget; they never change Meta and are not approval or
+evidence. Use `render_ads_console` for a console view when advertised and fall
+back to Markdown if the client cannot render widgets.

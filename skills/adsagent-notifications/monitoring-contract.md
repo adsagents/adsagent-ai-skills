@@ -52,6 +52,7 @@ Keep these boundaries explicit:
 
 ## Push And Retired Integrations
 
+`notifications_summary` also lists the push events a client can subscribe to.
 When both server and client advertise MCP Events support, an explicitly
 requested subscription uses the client's supported `events/list` and
 `events/subscribe` flow. These are protocol methods, not tools to invent in

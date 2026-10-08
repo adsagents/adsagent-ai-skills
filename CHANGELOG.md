@@ -12,6 +12,10 @@ account. OAuth credentials stay bound to each hosted resource. Current public
 manifests from all three services replace the August snapshots. Retired Meta
 notification configuration is replaced by alert/MCP Events guidance, and
 Google's cached query limits no longer imply that all native writes are absent.
+Pins are refreshed to Meta `2026-10-08.2`, Google `2026-10-04.1` (113 tools),
+and TikTok `2026-10-07.1`. Meta guidance now covers unsupported lead-ad
+creation/copy, prepare-only status and budget tools confirmed through
+operations approvals, and the `render_ads_console` widget.
 
 Version 0.7.70 keeps behavioral instructions inside the installed bundle,
 limits remote responses to task data and tool/capability contracts, and makes

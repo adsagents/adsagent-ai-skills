@@ -39,6 +39,7 @@ INLINE_CODE_IDENTIFIER_RE = re.compile(
 )
 TOOL_PREFIXES = (
     "accounts_",
+    "adsets_",
     "assets_",
     "campaigns_",
     "connections_",

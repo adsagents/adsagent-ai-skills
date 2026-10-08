@@ -131,6 +131,22 @@
           "required_capability": "mcp.optimize.write"
         },
         {
+          "name": "campaigns_prepare_status_change",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "adsets_prepare_status_change",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "campaigns_prepare_budget_change",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "campaigns_prepare_budget_changes",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
           "name": "overview_update_campaign_budget",
           "capability_gate": "delivery_mutations",
           "required_capability": "mcp.optimize.write"

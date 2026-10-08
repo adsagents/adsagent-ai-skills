@@ -5,6 +5,9 @@ description: Use when reading or changing TikTok Ads, creatives, delivery, optim
 
 # TikTok Through AdsAgent
 
+For connection blockers, use `adsagent-setup`. Template readiness is separate
+from read access.
+
 1. Run `setup_get_status`, then inspect the exact advertised TikTok capability
    names before choosing a read, creative, write, optimization, MMP, or support
    workflow.

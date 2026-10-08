@@ -5,7 +5,7 @@ These examples are safe natural-language prompts. They intentionally do not disc
 ## Setup
 
 ```text
-Install or refresh AdsAgent MCP using the prompt I copied from Settings -> MCP Access. After reconnecting, verify setup status.
+I installed AdsAgent in Claude. Help me connect Google Ads, complete any missing browser authorization, and continue my campaign report for yesterday. Keep the same account and date scope after setup.
 ```
 
 ```text
@@ -145,7 +145,7 @@ For Google Ads page 2 and later, use the returned opaque continuation with the u
 ```
 
 ```text
-Treat the current Google Ads Hosted MCP profile as a read-only ledger. Internal receipt handling does not expose public mutation tools; do not invent prepare, confirm, operation-get, or config verification calls when setup_get_status does not advertise them.
+Treat Google Ads Insights as a cached read-only ledger. Native write capabilities are separate: use only their advertised prepare, approval, confirm, and receipt contracts. Do not infer mutation-aware freshness or live configuration verification from a native write receipt.
 ```
 
 ## Meta Copy And Comparison

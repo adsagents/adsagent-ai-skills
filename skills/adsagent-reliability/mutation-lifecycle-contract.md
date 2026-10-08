@@ -32,8 +32,7 @@ When advertised, prefer ref-first confirm and recovery:
 | Recover task context | `operations_get_context` | `task_ref` |
 
 Legacy confirm tools remain callable (`launch_confirm`, `launch_deny`,
-`overview_update_confirm`, `overview_update_deny`,
-`notifications_integration_confirm`, `notifications_integration_deny`) through
+`overview_update_confirm`, `overview_update_deny`) through
 the documented compatibility window. Use them only when the client cannot select
 the preferred tools; never treat them as durable recovery.
 

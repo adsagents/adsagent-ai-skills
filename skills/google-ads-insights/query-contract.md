@@ -12,7 +12,21 @@ Use Google Ads fields and tools only.
 
 ## Freshness Boundary
 
-Google is a read-only ledger; report `as_of` as observation time. Its public profile accepts only `consistency=cached` and does not advertise require_fresh, mutation receipts, since-launch, product refresh, public mutation tools, or live config verification. Internal receipt handling does not add a public MCP write capability.
+Google Insights uses a read-only ledger; report `as_of` as observation time.
+Its common query profile accepts only `consistency=cached` and
+does not advertise require_fresh, common mutation receipts, since-launch, product
+refresh, or live config verification. This limits the query profile, not the
+whole Google MCP service. The read profile does not add a public MCP write capability;
+native writes can be advertised independently.
+
+This skill covers analysis. If the user requests a Google change, discover
+the exact native tool and its capability gates; never substitute Meta tools
+or conclude that all Google writes are unavailable from the read profile.
+An advertised prepare/confirm flow requires a sanitized before/after summary,
+explicit user approval, and one confirmation before expiry. Preserve the
+returned receipt and original connection/login-customer route; recover an
+uncertain outcome only through its advertised readback, never by replaying
+the write. Native receipts do not imply common mutation-aware freshness.
 
 ## Query Pattern
 

@@ -100,7 +100,7 @@ Bulk Meta Ad writes may be split into configurable sequential AdsAgent chunks. T
 
 Use `insights_query_consistent(..., after_mutation_ref=mutation_ref)` only for requested post-write metrics. `metrics_observed_after_mutation` does not verify delivery configuration. Poll queued work with `tasks_get_status(task_ref=...)`.
 
-Google Ads `as_of` is read-only ledger observation time and its current public profile accepts only `consistency=cached`; internal receipt handling does not expose public mutation tools. TikTok may advertise `require_fresh`, task refs, since-launch reads, and mutation receipts independently; age-only freshness or immediate write success is not mutation verification. Use TikTok prepare/confirm/recovery tools only when their names and `mutation_receipts=true` are advertised, and recover on the exact original tenant, advertiser, and authorization route without replay.
+Google Ads `as_of` is read-only ledger observation time and its common query profile accepts only `consistency=cached`. Separately advertised native write receipts do not add common mutation-aware freshness or live verification to Insights. TikTok may advertise `require_fresh`, task refs, since-launch reads, and mutation receipts independently; age-only freshness or immediate write success is not mutation verification. Use TikTok prepare/confirm/recovery tools only when their names and `mutation_receipts=true` are advertised, and recover on the exact original tenant, advertiser, and authorization route without replay.
 
 ## Meta Creation Confirmation
 

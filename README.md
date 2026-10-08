@@ -31,7 +31,7 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 
 Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [Cursor Directory](https://cursor.directory/plugins/adsagent-meta-mcp), and [MCP Market](https://mcpmarket.com/zh/server/adsagent-ai-skills).
 
-Current contract version: `0.7.70`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.71`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 New Meta connections default to the v2 product profile; all three hosted endpoints
 negotiate modern MCP `2026-07-28` stateless discovery while retaining supported
 legacy initialize clients.
@@ -67,16 +67,51 @@ the manual fallback:
 AdsAgent dashboard -> Settings -> MCP Access -> Copy install prompt
 ```
 
-Use that copied prompt only when you are not installing the Claude plugin bundle.
-This repository teaches agent behavior after the MCP connection exists.
+Use that copied prompt only for a manual connection when the account exposes
+MCP Access. Installed Claude plugins already include the three URLs. The setup
+skill guides users from a missing connection through authorization to their
+original advertising task.
+
+## Connect After Installing
+
+Start with the channel you need. Installing the skill pack does not authorize
+an advertising account, and a Meta task does not require Google or TikTok setup.
+
+| Client | Connect the requested channel |
+| --- | --- |
+| Claude web, Desktop, or Cowork | Open Settings -> Connectors and use the installed AdsAgent connection's Connect action. If only skills were installed, add a custom connector using the hosted URL below. Complete browser OAuth. |
+| Claude Code | Open `/mcp` and authenticate the requested bundled server. Reuse an existing connection. |
+| Cursor | Authenticate the requested bundled server in MCP settings. |
+| Other MCP clients | Add the requested hosted HTTP URL with OAuth, or use the account's dashboard install prompt. |
+
+| Channel | Hosted MCP URL |
+| --- | --- |
+| Meta | `https://adsagent.md/mcp/v2` |
+| Google Ads | `https://google.adsagent.md/mcp` |
+| TikTok | `https://tiktok.adsagent.md/mcp` |
+
+Then ask: **"Check my Google Ads connection and help me finish any missing
+authorization, then show yesterday's campaign performance."** Substitute your
+channel and task. AdsAgent checks that channel, supplies a browser link when
+needed, waits for you to finish, and resumes the same task. For a connection
+check alone, it reports the result without starting a report.
+
+Each server has its own OAuth authorization. Use the same AdsAgent login in
+the browser and client; never copy an OAuth token between the three URLs.
+Platform authorization and initial asset/history sync are separate steps;
+"connected" does not mean history is loaded or ads are ready to launch.
+
+Claude connection controls are documented in the official
+[custom connector guide](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp)
+and [Claude Code MCP guide](https://code.claude.com/docs/en/mcp).
 
 ## Included Skills
 
 | Skill | Purpose |
 | --- | --- |
 | `adsagent-router` | Route AdsAgent requests to setup, reliability, insights, or copy workflows. |
-| `adsagent-setup` | Connect through the AdsAgent dashboard install prompt and verify Meta, Google Ads, or TikTok readiness. |
-| `adsagent-notifications` | Inspect and safely configure notification channels and Meta Ads Webhooks. |
+| `adsagent-setup` | Connect the requested MCP, complete platform authorization, verify usable account scope, and resume the original task. |
+| `adsagent-notifications` | Inspect alerts, request an alert refresh, and explain supported MCP Events or retired integrations. |
 | `adsagent-reliability` | Respect retry, backoff, session refresh, and concurrency limits. |
 | `agent-scheduled-tasks` | Design, create, verify, update, pause, and delete agent-owned scheduled tasks without confusing reminders with execution proof. |
 | `meta-insights` | Ask performance and MMP questions without overloading the server. |
@@ -134,7 +169,9 @@ This repository intentionally documents outcomes and agent behavior, not the com
 - Use the smallest safe data plan before making calls.
 - Prefer grouped summaries and cleaned breakdowns over raw rows.
 
-The external agent contract is: ask clear questions, respect limits, confirm before writes, and use dashboard-provided onboarding.
+The external agent contract is: ask clear questions, respect limits, follow
+advertised approval requirements, and use client OAuth plus returned platform
+authorization links.
 
 ## Official Source And Rights
 
@@ -156,7 +193,9 @@ Google Ads guidance covers reads. Meta and TikTok capabilities vary by account
 and advertised tool. Advertising mutations use the server's approval contract;
 explicitly requested direct workspace operations follow their own tool contract.
 Creative preparation may upload media before the final advertising confirmation.
-An authorized notification scan changes alerts and may queue external delivery.
+An authorized notification scan changes alerts and may generate MCP Events
+for existing subscriptions. Current Meta no longer configures email, Feishu,
+Telegram, or Meta Ads Webhooks through this pack.
 Scheduled workflows use an available host scheduler and require user intent.
 
 ## Example Prompts
@@ -260,7 +299,8 @@ Start a fresh Claude Code session after installing or updating.
 }
 ```
 
-After install, authenticate each MCP server shown in `/mcp` (Meta, Google, TikTok).
+After install, authenticate only the MCP servers needed for your task. In
+Claude Code use `/mcp`; in Claude web/Desktop or Cowork use Settings -> Connectors.
 Do not add `headers.Authorization` to `.mcp.json`; OAuth must remain the auth path.
 
 ### Migrating from legacy plugin slugs
@@ -302,7 +342,8 @@ git clone https://github.com/adsagents/adsagent-ai-skills.git ~/.codex/skills/ad
 Those clients still need a separate MCP connection (dashboard install prompt or
 Connectors Directory). The plugin path is the one-step skills + MCP bundle.
 
-Then open AdsAgent only if you need dashboard OAuth/token setup for non-plugin clients:
+For a manual client, use hosted OAuth or, when available to your account,
+AdsAgent's dashboard install prompt:
 
 ```text
 Settings -> MCP Access -> Copy install prompt

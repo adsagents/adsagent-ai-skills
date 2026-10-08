@@ -14,12 +14,39 @@ from this marketplace for the skills + MCP bundle.
 `mcp.json` ship the same HTTP MCP URLs. Install from the AdsAgent skill-pack repo
 when listed on Cursor Marketplace, or add the hosted Meta URL via Cursor MCP settings.
 
-**Other clients / MCP-only fallback:** the dashboard-generated install prompt
-under Settings -> MCP Access -> Copy install prompt stays authoritative when you
-are not using the Claude plugin bundle.
+**Other clients / MCP-only fallback:** add the requested hosted HTTP URL with
+OAuth, or use Settings -> MCP Access -> Copy install prompt when that page is
+available to your account. Claude web/Desktop users can add a custom connector
+in Settings -> Connectors.
 
 Anthropic Connectors Directory MCP registration is separate from this plugin
 package.
+
+## I installed the Claude skills. Why are my ad accounts missing?
+
+Skills, client MCP OAuth, and advertising-platform authorization are separate.
+In Claude web/Desktop or Cowork, connect the requested server in Settings ->
+Connectors; in Claude Code use `/mcp`. If the client installed only skills,
+add that channel's hosted HTTP URL from the README. Do not reinstall a working
+connector or require all three channels for a single-channel task.
+
+Once tools are available, the agent checks that server's `setup_get_status`.
+Meta and TikTok expose a begin/check browser flow. Google authorization can
+start through an already-connected Meta MCP under the same AdsAgent account,
+or [Google Ads Settings](https://google.adsagent.md/dashboard/settings) without
+a Meta advertising connection. The agent waits for you to finish and checks
+the original connection. It never asks you to paste tokens or OAuth codes.
+
+Initial asset sync, reporting history, and creation permissions can still be
+pending after authorization. The agent reports those separately and resumes
+your original task when its required scope is available.
+
+## Can I still configure email, Feishu, Telegram, or Meta Ads Webhooks?
+
+Current Meta removed those integration tools. Alert reads and explicitly
+requested refreshes remain available. MCP Events can deliver updates only
+when both server and client support subscriptions; installing this skill
+does not activate push. An event is neither approval nor proof of task success.
 
 ## Why not publish the full tool list?
 

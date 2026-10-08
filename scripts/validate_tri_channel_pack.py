@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.70"
+VERSION = "0.7.71"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -814,7 +814,11 @@ def main() -> None:
             "legacy fallback",
             "https://google.adsagent.md/mcp",
             "https://tiktok.adsagent.md/mcp",
-            "same AdsAgent bearer / OAuth identity",
+            "resource-bound",
+            "never copy a bearer",
+            "setup_begin_channel_connect",
+            "setup_check_channel_connect",
+            "Do not poll OAuth automatically",
             "connections_create_intent(channel=",
             "central-auth identity",
             "Do not use email fallback",
@@ -826,24 +830,18 @@ def main() -> None:
         "adsagent-notifications",
         notifications,
         [
-            "notifications_integrations_list",
-            "operator-scoped",
-            "OAuth Safe Mode",
+            "notifications_list",
+            "notifications_summary",
             "do not solicit credentials in chat",
-            "notifications_integration_prepare",
-            "notifications_integration_confirm",
+            "Current Meta removed",
+            "events/list",
+            "events/subscribe",
+            "An event is never",
             "tasks_get_status(task_ref)",
             "explicit user approval",
-            "test_channel",
-            "one real external message",
-            "single-use",
             "Never replay",
-            "notifications_integrations_list",
-            "invalid_fields",
-            "fresh approval",
             "support_ref",
             "Never create, enable, disable, or modify customer FB User permissions",
-            "exact eligible route",
             "provider acceptance",
         ],
     )

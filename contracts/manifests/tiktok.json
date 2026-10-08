@@ -1,15 +1,15 @@
 {
   "access_counts": {
-    "read": 43,
-    "write": 49
+    "read": 50,
+    "write": 54
   },
   "action_class_counts": {
-    "confirm": 8,
-    "prepare": 12,
-    "read": 43,
-    "write": 29
+    "confirm": 10,
+    "prepare": 14,
+    "read": 50,
+    "write": 30
   },
-  "default_tool_count": 66,
+  "default_tool_count": 79,
   "digest_algorithm": "sha256",
   "gate_definitions": {
     "agent_method_profile": {
@@ -56,7 +56,7 @@
       ]
     }
   },
-  "gated_tool_count": 26,
+  "gated_tool_count": 25,
   "gated_tool_names": [
     "bid_confirm",
     "bid_prepare",
@@ -79,29 +79,28 @@
     "mmp_insights_query_product_event_summary",
     "notifications_list",
     "notifications_mark_read",
-    "operations_get",
     "optimization_dismiss_decision",
     "optimization_evaluate",
     "optimization_list_decisions",
     "optimization_prepare_action"
   ],
-  "guide_version": "2026-07-31.8",
-  "manifest_fingerprint": "bdcaff16160af775f4d566f784802a24b320b4e3e885140e5dc4ae7b6578cdce",
+  "guide_version": "2026-10-07.1",
+  "manifest_fingerprint": "affd6a26417b1e5221d3ebe19535141d86c50238d99c0bda16736227f800a242",
   "manifest_resource": "tiktok-adsagent://guide/tool-manifest",
   "manifest_version": 1,
   "oauth_scope_semantics": "consent_hint_only",
   "phase_counts": {
-    "confirm": 8,
-    "direct": 29,
-    "prepare": 12,
-    "read": 43
+    "confirm": 10,
+    "direct": 30,
+    "prepare": 14,
+    "read": 50
   },
   "platform": "tiktok",
   "profile": "all_public_policies",
-  "schema_fingerprint": "3216d7702623f38cef63c13d45267e276067b61cdf653fe80805aa1f38a09d4a",
+  "schema_fingerprint": "ad3469bfe85df1fed2fa6e716c7f16349616ead33c4004eb9aad4993d3d8d176",
   "server_version": "tiktok-adsagent-mcp-v1",
   "source": "hosted_mcp_registry",
-  "tool_count": 92,
+  "tool_count": 104,
   "tools": [
     {
       "access": "read",
@@ -117,7 +116,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "3c6bf57f3616c1209dddf906ab73c584e83004ab53e1b0e98d84e2be88c9a1a3",
+      "description_digest_sha256": "be907d5b95ac0fb3a48c4440fb65f0d22e386387b350bdc45531aaa09bc85e54",
       "domain": "assets",
       "effect": "none",
       "name": "assets_list_ad_accounts",
@@ -145,7 +144,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "3ca1427d2e2a77d593b8c7574e317c30f02217f1e36f2402f1ffa39f71f88fa1",
+      "description_digest_sha256": "22709e12e9aa1a7fb0594fed4a2343e804fbe44c8496ebe9f4a3fd6948810752",
       "domain": "assets",
       "effect": "none",
       "name": "assets_list_apps",
@@ -155,8 +154,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "5d1488239d45942545635fc4172632ee35bb508e921276e2d48b4cd2b44c432d",
-      "schema_property_count": 3,
+      "schema_digest_sha256": "e0a334f40bab06ad5ff911920a2b7bd8bdc24e45bf16e049954f61421d81cf82",
+      "schema_property_count": 5,
       "schema_required_count": 0
     },
     {
@@ -173,7 +172,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "09ace75f8c6f09091a0d6d382deb79eb722b5f0f903392020a95eaaba416dd51",
+      "description_digest_sha256": "4a7a38aab85c68b0951380f40ee56b8cd531a3f4f8b4b5c799816dafbe8d885a",
       "domain": "assets",
       "effect": "none",
       "name": "assets_list_business_centers",
@@ -201,7 +200,35 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "defbd3c65bedd3a20b5ad14dd80e6f09604c1e35124b48f5ec20678b181f34f3",
+      "description_digest_sha256": "fffc7d6890863c8be6a9f84714ff5316ec712e67c9e6fae4a2487ce11806b04a",
+      "domain": "assets",
+      "effect": "none",
+      "name": "assets_list_cta_portfolios",
+      "phase": "read",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.read",
+      "required_oauth_scopes": [
+        "mcp"
+      ],
+      "schema_digest_sha256": "5b463276fd1b230b5b0b024e928e395d4276ed8e10ef81934dd5ff38f1170fa7",
+      "schema_property_count": 5,
+      "schema_required_count": 1
+    },
+    {
+      "access": "read",
+      "action_class": "read",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
+        "core"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [],
+      "description_digest_sha256": "d75ce7e0a165fd5751439578ef4c8aa003778aabf5e6182a5c93d3aed5953b4a",
       "domain": "assets",
       "effect": "none",
       "name": "assets_list_identities",
@@ -211,8 +238,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "efda74714ec537d699361ce7270666797b39368ca567e5c58bc7611f652b5bef",
-      "schema_property_count": 3,
+      "schema_digest_sha256": "d756c881c216fc30fc916c2c7e8e5621966757cbec3adfa94e00a2e98a91e112",
+      "schema_property_count": 5,
       "schema_required_count": 0
     },
     {
@@ -229,7 +256,35 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "d33b918aba3c2fa01bbda235ececb00455c9ea0e1f49b2886acb7c137d2f82e6",
+      "description_digest_sha256": "46967b0afb21ce2d2718f6996f6b53eda7a0d631be44f3f7cfc63c8ec879febe",
+      "domain": "assets",
+      "effect": "none",
+      "name": "assets_list_music",
+      "phase": "read",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.read",
+      "required_oauth_scopes": [
+        "mcp"
+      ],
+      "schema_digest_sha256": "bc6f4ea2033b73d827ff4bd2e7b2bc2fa8da5e9d81282437131d8e9e85164496",
+      "schema_property_count": 4,
+      "schema_required_count": 2
+    },
+    {
+      "access": "read",
+      "action_class": "read",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
+        "core"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [],
+      "description_digest_sha256": "cff8a42fcb801075517eb89df6b01dfb5ad332cb20b8ad2229e5671636fae285",
       "domain": "assets",
       "effect": "none",
       "name": "assets_list_pixels",
@@ -239,8 +294,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "d40b70660e0e275d70dc052b177c1d5f3dc7fe7bb27c9af0a0637df97dcceb19",
-      "schema_property_count": 3,
+      "schema_digest_sha256": "bd3c1aaf74226a8e3fc7a413317c1ad504131bc32083e39e51df5217a96631ef",
+      "schema_property_count": 5,
       "schema_required_count": 0
     },
     {
@@ -257,7 +312,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "fd694c592871e4f8182e1652a6d3cfebda86e38b8603fbf9efa027d97570b934",
+      "description_digest_sha256": "07799d817b0fec62839052c958052cd7d15a8d3f01d2ad420f141c205c1613da",
       "domain": "assets",
       "effect": "none",
       "name": "assets_list_shops",
@@ -285,7 +340,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "fb883ba531a5549dc1a24d06f230747099d4df9dd80e111fd320c28568e94a48",
+      "description_digest_sha256": "2d0dee11e27c834a18a4b055faca782bd2a1dc75bf290ea0e4e525a6a509b6b2",
       "domain": "assets",
       "effect": "none",
       "name": "assets_list_tt_accounts",
@@ -297,6 +352,76 @@
       ],
       "schema_digest_sha256": "08b43293b69661fb8bafc569e7c827c5fb327413833228dbeca519f572a722c3",
       "schema_property_count": 3,
+      "schema_required_count": 0
+    },
+    {
+      "access": "read",
+      "action_class": "read",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
+        "core"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [],
+      "description_digest_sha256": "3ed0f071cbaf69073503cd43f3ba5641247203c710600371206d57996aa8de30",
+      "domain": "assets",
+      "effect": "none",
+      "name": "assets_lookup_business_links",
+      "phase": "read",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.read",
+      "required_oauth_scopes": [
+        "mcp"
+      ],
+      "schema_digest_sha256": "f6e938573b901fb2e39707e1f1d88c9b7dc9f00f9eb40f6b074ea558780c2d23",
+      "schema_property_count": 8,
+      "schema_required_count": 0
+    },
+    {
+      "access": "read",
+      "action_class": "read",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
+        "native_api"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [
+        {
+          "argument": "operation",
+          "operator": "in",
+          "required_durable_capability": "mcp.operator",
+          "required_oauth_scopes": [
+            "mcp",
+            "mcp.operator"
+          ],
+          "values": [
+            "auth_advertiser_get",
+            "subscription_get"
+          ]
+        }
+      ],
+      "description_digest_sha256": "5e8b7a0b83d39ec94b165a82fd1fb8a912c793a1220376399a2cd4e1e0c72b4c",
+      "domain": "assets",
+      "effect": "none",
+      "name": "assets_query_native",
+      "phase": "read",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.read",
+      "required_oauth_scopes": [
+        "mcp"
+      ],
+      "schema_digest_sha256": "48a06584ad879f74b2de514b44a8e406fa6eea2b7fc55ef927c414f8c9c77fff",
+      "schema_property_count": 12,
       "schema_required_count": 0
     },
     {
@@ -313,7 +438,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "cc7504b1ca346cc0c565385d8d59a299c2ac41dabe7993c8d490575d0147b2d9",
+      "description_digest_sha256": "96f2328a69bc45dad417e3a0c0e976c8dcdc23ae0ba9463786076a37af7995d2",
       "domain": "assets",
       "effect": "adsagent_state",
       "name": "assets_refresh_all",
@@ -321,7 +446,8 @@
       "required_capability": "mcp_authenticated",
       "required_durable_capability": "mcp.assets.refresh",
       "required_oauth_scopes": [
-        "mcp"
+        "mcp",
+        "mcp.assets.refresh"
       ],
       "schema_digest_sha256": "315e151beb5b0bb491ea5eeecb744ef1c71b8e3222ae164ef90b1923b9cb3834",
       "schema_property_count": 0,
@@ -504,6 +630,34 @@
       "schema_required_count": 7
     },
     {
+      "access": "read",
+      "action_class": "read",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
+        "native_api"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [],
+      "description_digest_sha256": "4cb67db05c870e708f157a7fdcd1cf71a52c68b0948a4137b260d63faaed7afa",
+      "domain": "campaigns",
+      "effect": "none",
+      "name": "campaigns_query_native",
+      "phase": "read",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.read",
+      "required_oauth_scopes": [
+        "mcp"
+      ],
+      "schema_digest_sha256": "48a06584ad879f74b2de514b44a8e406fa6eea2b7fc55ef927c414f8c9c77fff",
+      "schema_property_count": 12,
+      "schema_required_count": 0
+    },
+    {
       "access": "write",
       "action_class": "prepare",
       "advertised_by_default": true,
@@ -517,7 +671,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "5609abb9eea68072e64410831eadc36ea60cb5234cd2f42a86198859e6efc729",
+      "description_digest_sha256": "e801fbf369b2b0fe2cff182a79cc71d1644b721e9ce375a10ec20af3d301309c",
       "domain": "campaigns",
       "effect": "draft_only",
       "name": "campaigns_quick_create",
@@ -527,8 +681,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "e2b1ce7e90badec7cead12fcaf277ca9936240bf7d126542fbf12be9d14422b0",
-      "schema_property_count": 14,
+      "schema_digest_sha256": "17f2204f408eed04c49c0285b6674c6e86ab77e682fd43b0ce2b15a231875f1d",
+      "schema_property_count": 294,
       "schema_required_count": 1
     },
     {
@@ -545,7 +699,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "e528413c6afbe1c54ca70c9354d4f0870e5da8f9e897b52e048f032382cbd0d7",
+      "description_digest_sha256": "4adba976da8a1b6b4deae5ec3416595d42bfd9f6f852d47a9e83ea117597db7a",
       "domain": "campaigns",
       "effect": "draft_only",
       "name": "campaigns_quick_create_batch",
@@ -555,8 +709,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "5c5171b7ecb4d66210aad8e3efd35ef3cbb324e215fc12a4944332f4d25675ee",
-      "schema_property_count": 13,
+      "schema_digest_sha256": "e513e8757d0cedbd7011d669afed789fc8fedf449400f774bb28e3ca68e16a7f",
+      "schema_property_count": 186,
       "schema_required_count": 2
     },
     {
@@ -573,7 +727,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "2d59d2c568a760f84287c154300bc7786f586d41bda3586dac2e8387ae2a2e54",
+      "description_digest_sha256": "ce43ad44cea7d30d479ba890330d36eacca0502d56fcdf56aea1f4cb6f98c5c6",
       "domain": "campaigns",
       "effect": "provider_mutation",
       "name": "campaigns_quick_create_confirm",
@@ -601,7 +755,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "db69f27399592df879b9bf2084dddb963fcba4e1342e0ae089ef235917a27520",
+      "description_digest_sha256": "f6d094d434662e38f19246369439a5df4831e885b8af03138fc15e883f658839",
       "domain": "campaigns",
       "effect": "adsagent_state",
       "name": "campaigns_quick_create_deny",
@@ -644,7 +798,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "f9eacaa2a756f890164a9cd23f42c68f1556e6a85777976147c80540ef2f5e79",
+      "description_digest_sha256": "ab019832af389d6e2de1d8f46f58372c39a4f5a123343d387cd08d87d374b5c1",
       "domain": "campaigns",
       "effect": "provider_mutation",
       "name": "campaigns_recreate_confirm",
@@ -687,7 +841,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "298b0cbc72f32b53b23d717223752662408e57bce6d534f4cfa37a07db9a3051",
+      "description_digest_sha256": "041df5beca17c44c0037108ec496babe32b4dd70808231c704820ee103cb6f72",
       "domain": "campaigns",
       "effect": "adsagent_state",
       "name": "campaigns_recreate_deny",
@@ -730,7 +884,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "058c88a687cb2dff1d569ecc69bce35b7856da515e1a69323c3f9b8f79619c14",
+      "description_digest_sha256": "37643523f39712d62115f6489af0fdf39c38aa3ec7b8383832340d41462ca5dc",
       "domain": "campaigns",
       "effect": "draft_only",
       "name": "campaigns_recreate_from_task",
@@ -740,8 +894,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "1b9e59ff30d7e278ab5e64655f55a0efc91396c1f2e46cd1bb2ba7573c1783b0",
-      "schema_property_count": 1,
+      "schema_digest_sha256": "ded0d5b65caf7029fc241c667d48adfaec51e3c2e1a240954996b7e3f1733bc0",
+      "schema_property_count": 4,
       "schema_required_count": 1
     },
     {
@@ -773,7 +927,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "def58f8f6ab7d12dede5e0a72856f2ad81506a573504c67e5837c320cb677152",
+      "description_digest_sha256": "4e5660c867a4a896a27aa3f82f234a77dbe5d4d582b4781bf69d7eadf8dae7a4",
       "domain": "copy",
       "effect": "draft_only",
       "name": "copy_ad_clone_structure",
@@ -783,8 +937,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "048a9a0b7c2c5cd9602825daabd6138f166ec6dc82bda4d05de991a1e89e7d5a",
-      "schema_property_count": 4,
+      "schema_digest_sha256": "aacabce74de60cbad3affb9b89cac50e753770b016c2df7a86cd0ef48739ce82",
+      "schema_property_count": 7,
       "schema_required_count": 1
     },
     {
@@ -816,7 +970,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "f1f246b25d97a8f11461b93271eb52d0407b878c2b237f0d96955b5d2b1b353e",
+      "description_digest_sha256": "34d62f4289fd14a927cd3b995234a2db44a7ddab8b0285a84a8108123a43beeb",
       "domain": "copy",
       "effect": "provider_mutation",
       "name": "copy_ad_clone_structure_confirm",
@@ -859,7 +1013,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "827ff105413723c1b32748d957954d720aaf5da403956dcf24954f55ff0f0d53",
+      "description_digest_sha256": "50ae9be207fadd939c2cb425840bef5323b248bfa1747a2cb79513cb0234cd7d",
       "domain": "copy",
       "effect": "adsagent_state",
       "name": "copy_ad_clone_structure_deny",
@@ -902,7 +1056,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "775178a43ccab6b907e16975aca9f197a3b6786745f146acf018e17904c73389",
+      "description_digest_sha256": "3367063dda049062bd6984bd9175a2d22b4ad1ae9903716c74f921b4fc7d232d",
       "domain": "copy",
       "effect": "draft_only",
       "name": "copy_ad_quick_copy",
@@ -912,8 +1066,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "1adee2a9b30b8d4744ea96f37d736c4a57f88697455964f499c9c734a5d1ad4e",
-      "schema_property_count": 9,
+      "schema_digest_sha256": "74901f3397dcf4169a42f0a05c97544f13e8381e6ba02586ceca9f99d811c7ce",
+      "schema_property_count": 12,
       "schema_required_count": 1
     },
     {
@@ -945,7 +1099,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "249ed6e78eef08aad9670cdd23b4862597b3067fe3a2dd1a39f1c05b28dbac34",
+      "description_digest_sha256": "b4b59209b61dfec6b4899aa3f9945a927cefd702205c49db6dce8e357a6f9ca7",
       "domain": "copy",
       "effect": "provider_mutation",
       "name": "copy_ad_quick_copy_confirm",
@@ -988,7 +1142,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "6ecdb832c83579734d9fdb00a2fc1f87847ea05221a337707ede1706fd258832",
+      "description_digest_sha256": "34d4788fec7fb305d8a24038732f178fd1cdf92a2e400c9aa1317211568c2f0d",
       "domain": "copy",
       "effect": "adsagent_state",
       "name": "copy_ad_quick_copy_deny",
@@ -1187,7 +1341,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "6f64566bd7fa50e16bd0df78a592222b167e792d0561a4cccc2e486ded78884a",
+      "description_digest_sha256": "b0fdbf1b83bceb0152857f6b8e29b00879dc6920bdefaf42c19cb4e5807b4bc2",
       "domain": "creatives",
       "effect": "none",
       "name": "creatives_list",
@@ -1197,8 +1351,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "7181886130e6a6a9d2aa7fb296739b9833b02873609efdf4eca3157199cad704",
-      "schema_property_count": 7,
+      "schema_digest_sha256": "9434db029ff6fbe0f849fe60f99db54f60302ad67bfeda660b1b7ae7bcb36654",
+      "schema_property_count": 8,
       "schema_required_count": 0
     },
     {
@@ -1215,7 +1369,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "e02d21a4ec05ab602657f9cc982c8b30a8dc2a44f07425db1cfe02fa74013f67",
+      "description_digest_sha256": "62403b2c22dad7d65e037de897615a1982e105f37160e1145c5cc1b4354740d8",
       "domain": "creatives",
       "effect": "none",
       "name": "creatives_list_folders",
@@ -1227,6 +1381,47 @@
       ],
       "schema_digest_sha256": "f10f151b76dfc6caa52aac756520a9db867b48c4b8a72b927dec5b760e8c4ee7",
       "schema_property_count": 1,
+      "schema_required_count": 0
+    },
+    {
+      "access": "read",
+      "action_class": "read",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
+        "native_api"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [
+        {
+          "argument": "operation",
+          "operator": "in",
+          "required_durable_capability": "mcp.operator",
+          "required_oauth_scopes": [
+            "mcp",
+            "mcp.operator"
+          ],
+          "values": [
+            "tto_oauth2_tcm_get"
+          ]
+        }
+      ],
+      "description_digest_sha256": "5fa544ee414656c73bc7d84246e21529c0a40848e47659e6be8e683efe2c13d4",
+      "domain": "creatives",
+      "effect": "none",
+      "name": "creatives_query_native",
+      "phase": "read",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.read",
+      "required_oauth_scopes": [
+        "mcp"
+      ],
+      "schema_digest_sha256": "48a06584ad879f74b2de514b44a8e406fa6eea2b7fc55ef927c414f8c9c77fff",
+      "schema_property_count": 12,
       "schema_required_count": 0
     },
     {
@@ -1445,7 +1640,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "9e6cd11b8180b494c83ceb98baa78ac59d3f4621adf7b4a3621a2b41c57e401f",
+      "description_digest_sha256": "6ac5ebe3cd8aa3dce33fea5f9fd6881fed70eb10069d610726ba8714d679ed1b",
       "domain": "insights",
       "effect": "none",
       "name": "insights_export_csv",
@@ -1530,7 +1725,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "9fc088bc2a764e3df08cff4dd80740e13c94bc8eea58dbc4bd0d6d0e446af0cd",
+      "description_digest_sha256": "f797d9b764651fce6cfdc5b817541e089c796fd53979ebdcc7eace9cb928d771",
       "domain": "insights",
       "effect": "none",
       "name": "insights_query_batch_overview",
@@ -1642,13 +1837,41 @@
         "always": true
       },
       "advertisement_groups": [
+        "native_api"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [],
+      "description_digest_sha256": "849126ad2a1b6c3d31884aa0cbf13f214ae74663bdaefb6956c0a8301e9c3d71",
+      "domain": "insights",
+      "effect": "none",
+      "name": "insights_query_native",
+      "phase": "read",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.read",
+      "required_oauth_scopes": [
+        "mcp"
+      ],
+      "schema_digest_sha256": "48a06584ad879f74b2de514b44a8e406fa6eea2b7fc55ef927c414f8c9c77fff",
+      "schema_property_count": 12,
+      "schema_required_count": 0
+    },
+    {
+      "access": "read",
+      "action_class": "read",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
         "core"
       ],
       "capability_gates": [
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "cc0ceffb62da8adff0e5e1b26e36e8932868740d1f41e6d90fc816181caeedba",
+      "description_digest_sha256": "cc4be88b8bfe9650c872d6ac6cc1c9bea7aa4e12f27dddf212d0d6c0dba6883b",
       "domain": "insights",
       "effect": "none",
       "name": "insights_query_overview",
@@ -2178,58 +2401,43 @@
       "schema_required_count": 1
     },
     {
-      "access": "read",
-      "action_class": "read",
-      "advertised_by_default": false,
+      "access": "write",
+      "action_class": "confirm",
+      "advertised_by_default": true,
       "advertisement_gate_expression": {
-        "any_of": [
-          {
-            "all_of": [
-              {
-                "equals": true,
-                "gate": "agent_method_profile"
-              },
-              {
-                "equals": false,
-                "gate": "delivery_receipts"
-              },
-              {
-                "equals": true,
-                "gate": "copy_receipts"
-              }
-            ]
-          },
-          {
-            "all_of": [
-              {
-                "equals": true,
-                "gate": "agent_method_profile"
-              },
-              {
-                "equals": false,
-                "gate": "delivery_receipts"
-              },
-              {
-                "equals": true,
-                "gate": "management_receipts"
-              }
-            ]
-          },
-          {
-            "all_of": [
-              {
-                "equals": true,
-                "gate": "agent_method_profile"
-              },
-              {
-                "equals": true,
-                "gate": "delivery_receipts"
-              }
-            ]
-          }
-        ]
+        "always": true
       },
       "advertisement_groups": [
+        "native_api"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [],
+      "description_digest_sha256": "514f3ba113285c0ab58f28788e4f117cbfe0f9448a144941ae45c9ce005c15c4",
+      "domain": "operations",
+      "effect": "provider_mutation",
+      "name": "operations_confirm_native",
+      "phase": "confirm",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.operator",
+      "required_oauth_scopes": [
+        "mcp",
+        "mcp.operator"
+      ],
+      "schema_digest_sha256": "a60f997f43c06dbb227855b3b444121174904525703ed04ddc7dadae122061dd",
+      "schema_property_count": 1,
+      "schema_required_count": 1
+    },
+    {
+      "access": "read",
+      "action_class": "read",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
+        "native_api_receipts",
         "operation_receipt_with_delivery",
         "operation_receipt_fallback"
       ],
@@ -2241,19 +2449,48 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "4799405bb85932b681874944f3ced1d0b9305a67174e868be3edd7aa69f38983",
+      "description_digest_sha256": "fe34ff2a150c6317406e8bab64821b13d70f33ca76b3834f258373fd356a0364",
       "domain": "operations",
       "effect": "none",
       "name": "operations_get",
       "phase": "read",
-      "required_capability": "capabilities.agent_method_profile.mutation_receipts",
+      "required_capability": "mcp_authenticated",
       "required_durable_capability": "mcp.read",
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "a9a3bafb2519cf21db58b15827c0a689a6e0d925985b456c39dbd0f8d1133dd8",
+      "schema_digest_sha256": "f5ead7952337d7d05560013183d91281cd38d2efabde8f14728adfda4925ab65",
       "schema_property_count": 2,
       "schema_required_count": 0
+    },
+    {
+      "access": "write",
+      "action_class": "prepare",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
+        "native_api"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [],
+      "description_digest_sha256": "1ee6690b4679dbff7cf68c355341f865d57b758e1a2d8e4593448a02e9fa5cbd",
+      "domain": "operations",
+      "effect": "draft_only",
+      "name": "operations_prepare_native",
+      "phase": "prepare",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.operator",
+      "required_oauth_scopes": [
+        "mcp",
+        "mcp.operator"
+      ],
+      "schema_digest_sha256": "ffa51eb64091980d33b27cc8de06cecdf75fa1b71302f575043f6db6826c7e98",
+      "schema_property_count": 8,
+      "schema_required_count": 3
     },
     {
       "access": "write",
@@ -2464,7 +2701,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "7c66e074e64cf9d06cdab3383a56c7b9d4e9617cdebb913d27294063c36abb2a",
+      "description_digest_sha256": "96a904c5013e3a17208841f5b42d2963849b476c12a8d8fff33213ef6e843f74",
       "domain": "live_config",
       "effect": "none",
       "name": "overview_get_live_configs",
@@ -2474,8 +2711,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "edaf038c642655e31a7ca784fe8398abe2c6c59806afc7d190df638cba7c0f9b",
-      "schema_property_count": 4,
+      "schema_digest_sha256": "d56f56cb40f1eafd11d6edc4ebd3dbbe6ec69a75f32ea463d0dbeff47a2e0fe7",
+      "schema_property_count": 5,
       "schema_required_count": 4
     },
     {
@@ -2520,7 +2757,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "b6cde4316661d87b72dd917e0bb6f7bce8a575a1910e802f2def335d9db08d0c",
+      "description_digest_sha256": "b0b1d44f3134284b03402051cde65c47218b7d3af7b9e68c938c0f9572289626",
       "domain": "products",
       "effect": "none",
       "name": "products_get_top_campaigns",
@@ -2564,6 +2801,62 @@
       "schema_required_count": 0
     },
     {
+      "access": "write",
+      "action_class": "prepare",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
+        "core"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [],
+      "description_digest_sha256": "330e64370f968d180d71cbd6023c3962703a29c14f816474bcd276268c0c68d2",
+      "domain": "setup",
+      "effect": "draft_only",
+      "name": "setup_begin_channel_connect",
+      "phase": "prepare",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.read",
+      "required_oauth_scopes": [
+        "mcp"
+      ],
+      "schema_digest_sha256": "0047bfb6dfb2f2de49cb918aa313f1fc3c53d76106c535357077c71f99b147d0",
+      "schema_property_count": 1,
+      "schema_required_count": 1
+    },
+    {
+      "access": "write",
+      "action_class": "write",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
+        "core"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [],
+      "description_digest_sha256": "7529a297d442419a51cdec904d2567645687e153587be2c372c8e7c083c7ad9d",
+      "domain": "setup",
+      "effect": "adsagent_state",
+      "name": "setup_check_channel_connect",
+      "phase": "direct",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.read",
+      "required_oauth_scopes": [
+        "mcp"
+      ],
+      "schema_digest_sha256": "763ca89dd9530ca3efe63ce0270d2efbbc5f93dc83830d313f4f04d67cba359d",
+      "schema_property_count": 2,
+      "schema_required_count": 2
+    },
+    {
       "access": "read",
       "action_class": "read",
       "advertised_by_default": true,
@@ -2577,7 +2870,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "4c354864ed579c316518f0d84f385e4e3d69fb287d2336ef5b243af5e13d3ce2",
+      "description_digest_sha256": "7d0159311cce07696b7546e5b8e683fbcddb7e0bf3749dd11ee2dcf0c83556fc",
       "domain": "setup",
       "effect": "none",
       "name": "setup_get_status",
@@ -2590,6 +2883,34 @@
       "schema_digest_sha256": "f98ff9d3763451202973734f5cc99e6adfaabc30adc984ea1041311aaed53851",
       "schema_property_count": 0,
       "schema_required_count": 0
+    },
+    {
+      "access": "write",
+      "action_class": "confirm",
+      "advertised_by_default": true,
+      "advertisement_gate_expression": {
+        "always": true
+      },
+      "advertisement_groups": [
+        "campaign_create"
+      ],
+      "capability_gates": [
+        "mcp_authenticated"
+      ],
+      "conditional_oauth_scopes": [],
+      "description_digest_sha256": "24d60390558ae6df0ae9fd0e1aec5520091a91a5744d6578d23a12793352f2b6",
+      "domain": "campaigns",
+      "effect": "provider_mutation",
+      "name": "spark_ads_authorize_codes",
+      "phase": "confirm",
+      "required_capability": "mcp_authenticated",
+      "required_durable_capability": "mcp.launch.confirm",
+      "required_oauth_scopes": [
+        "mcp"
+      ],
+      "schema_digest_sha256": "48a83800b5ab7b7784c23e60e878db4651702471cf6feb3b63dd1dfbe1eb1376",
+      "schema_property_count": 3,
+      "schema_required_count": 3
     },
     {
       "access": "read",
@@ -2605,7 +2926,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "8c840c257b669309167ba4683daa7385a67a7badf49329bafdf792092b7e5a5c",
+      "description_digest_sha256": "a8f1d95ddb59bdea60a630dd7e63ea9fddb80824741ef23c14ad32c4a71d46bc",
       "domain": "campaigns",
       "effect": "none",
       "name": "spark_ads_list_posts",
@@ -2745,7 +3066,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "16248fca92b7d06bb256226d0d45eb5b5d12c4381b9f82a244016015301b6951",
+      "description_digest_sha256": "818a9db1dbd36974176357c3c025c17e5a3dd7793aa3746b168bd90cfd7ffe5d",
       "domain": "tasks",
       "effect": "none",
       "name": "tasks_get_status",
@@ -2773,7 +3094,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "831dd0adfd36839b6adcd2b06ae458ee6cd2535c54dbe1c25a0c84322bb23dba",
+      "description_digest_sha256": "605ccddcf08f4632049f6de1533547cdac1e4338c0d18abacac673463b95410f",
       "domain": "tasks",
       "effect": "none",
       "name": "tasks_latest",
@@ -2801,7 +3122,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "269911b6bd49cf3f044447d99c943b1af16029d74c06d6542f6f1e6808f70d54",
+      "description_digest_sha256": "606d2d47dbb539857465d7f6282b92d133cb50ef9ecca29b1cef4f81a9928058",
       "domain": "tasks",
       "effect": "none",
       "name": "tasks_list",
@@ -2811,8 +3132,8 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "5dcbc5c2bbbdacf74a5f3014ff682337d4326b910a993fed090d5a57e651745d",
-      "schema_property_count": 2,
+      "schema_digest_sha256": "d8b8ff27966f9e264b3e4c730501bd424532a45ad648b2e6c1dca14c5e727649",
+      "schema_property_count": 4,
       "schema_required_count": 0
     },
     {
@@ -2857,7 +3178,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "194fef5df894d373afc2d718f0a766cd465977538e041e7e11d37f50eb287906",
+      "description_digest_sha256": "036b242f0a564ab177c86873e6c067cdbb5f0ae92b12916067a3b4dc379ed3d6",
       "domain": "templates",
       "effect": "adsagent_state",
       "name": "templates_create",
@@ -2913,7 +3234,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "793c97da6bbfd218a747ee23991f1895efdccad15807124f59b62b53c999c10d",
+      "description_digest_sha256": "fd6eb95f634e9dd33d5377bc24b562cc345d8304533e1c79ed532d6ab0833f22",
       "domain": "templates",
       "effect": "none",
       "name": "templates_get",
@@ -2923,9 +3244,9 @@
       "required_oauth_scopes": [
         "mcp"
       ],
-      "schema_digest_sha256": "f1fe37b67c08ea6a4ca082c92885651562e6604e7423e7f16693f37f2ac34e7a",
-      "schema_property_count": 1,
-      "schema_required_count": 1
+      "schema_digest_sha256": "c5cef496f7e8e551b6de9630cd78e41e6d5f0b767b1e405e4f6bcc9622bf493d",
+      "schema_property_count": 2,
+      "schema_required_count": 0
     },
     {
       "access": "read",
@@ -2969,7 +3290,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "646aa519d4712d7c7adc328a9b9549999501b77e1a2126028bf51abe6919efd3",
+      "description_digest_sha256": "361f1fb8b8ef4fe368fafc40d1ff4a8fbc05bba286ebdd719de3bc4807c043f9",
       "domain": "templates",
       "effect": "none",
       "name": "templates_reverse_engineer",
@@ -2997,7 +3318,7 @@
         "mcp_authenticated"
       ],
       "conditional_oauth_scopes": [],
-      "description_digest_sha256": "119cb2b1628ce7f7cc05ec4e0f638a6ec382156ad2f5561bd8840f1e0a91adbb",
+      "description_digest_sha256": "154076f7e089958e4e58a1e98b4e1206f101386bda3d21e287ceed78ef3212a7",
       "domain": "templates",
       "effect": "adsagent_state",
       "name": "templates_update",
@@ -3145,7 +3466,8 @@
       "required_capability": "mcp_authenticated",
       "required_durable_capability": "mcp.assets.refresh",
       "required_oauth_scopes": [
-        "mcp"
+        "mcp",
+        "mcp.assets.refresh"
       ],
       "schema_digest_sha256": "976846904d61cb2d3e2d9fa1b9392df0a376c8ab9710d8c1b7b700883ebef7b2",
       "schema_property_count": 1,

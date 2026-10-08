@@ -5,6 +5,8 @@ description: Use when reading or analyzing Google Ads accounts, Search, PMax, sp
 
 # Google Ads Insights Through AdsAgent
 
+For connection blockers, use `adsagent-setup` and resume this scope.
+
 1. Run `setup_get_status` and inspect the advertised Google capability profile.
 2. Discover accounts, then select one enabled non-manager customer or one
    ordered batch of explicit customers. Never analyze an MCC as spend scope.

@@ -1,6 +1,6 @@
 ---
 name: adsagent-setup
-description: Use when connecting, authorizing, or checking AdsAgent MCP readiness in Claude or another client.
+description: Use when connecting, authorizing, or checking AdsAgent MCP readiness in Claude, ChatGPT, or another client.
 ---
 
 # AdsAgent Setup

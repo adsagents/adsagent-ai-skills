@@ -6,6 +6,7 @@
 | --- | --- | --- |
 | **Claude plugin** (this repo) | Behavior skills + root `.mcp.json` HTTP MCP URLs | `adsagent@adsagent` from marketplace `adsagent` |
 | **Cursor plugin** (this repo) | Behavior skills + root `mcp.json` HTTP MCP URLs | `.cursor-plugin/plugin.json` when installed from Cursor Marketplace |
+| **ChatGPT / Codex plugin** (this repo) | Behavior skills + root `.mcp.json` HTTP MCP URLs; this skill is the onboarding skill | `.codex-plugin/plugin.json` |
 | **Anthropic Connectors Directory** | Hosted MCP server listing only | Registered separately on `adsagent.md` services — not this plugin package |
 | **Dashboard install prompt** | Manual MCP-only fallback for non-plugin clients | Settings -> MCP Access -> Copy install prompt |
 
@@ -21,7 +22,10 @@ Claude chat user. Organization-managed connectors may need an administrator
 to enable them.
 
 For Claude Code, use `/mcp` to authenticate the selected bundled server. For
-Cursor, use its MCP connection settings. Reuse an existing AdsAgent connector;
+Cursor, use its MCP connection settings. For ChatGPT or Codex plugin installs,
+complete the client's sign-in prompt for the requested bundled server; ChatGPT
+may start this skill right after install, before any task exists; then ask
+which channel to connect (Setup Flow step 1). Reuse an existing AdsAgent connector;
 installing skills alone does not prove its tools are available in this chat.
 
 For other manual clients, use the dashboard-generated install prompt when

@@ -3,6 +3,15 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.72 adds a ChatGPT/Codex plugin manifest
+(`.codex-plugin/plugin.json`) following OpenAI's plugin format and MCP
+Extensions plugin onboarding: it reuses `skills/` and the root `.mcp.json`
+OAuth HTTP servers, declares `adsagent-setup` as the post-install
+`onboardingSkill`, and adds listing metadata plus monochrome SVG icons. Setup
+guidance adds the ChatGPT/Codex sign-in step; with no task after install, it
+asks once which channel to connect. The pack validator checks the new manifest's version,
+paths, onboarding skill, MCP servers, and listing limits.
+
 Version 0.7.71 guides installed Claude users through only the requested channel:
 client MCP OAuth, provider authorization, account discovery, and initial sync
 remain distinct, with a return to the original task. Meta and TikTok prefer

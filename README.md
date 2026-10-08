@@ -10,6 +10,7 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 
 - **Claude plugin:** `claude plugin marketplace add adsagents/adsagent-ai-skills` then `claude plugin install adsagent@adsagent`
 - **Cursor plugin:** install AdsAgent from Cursor Marketplace (this repo's `.cursor-plugin/` + `mcp.json`)
+- **ChatGPT / Codex plugin:** `codex plugin marketplace add adsagents/adsagent-ai-skills` then `codex plugin add adsagent@adsagent` (this repo's `.codex-plugin/` + `.mcp.json`; see [ChatGPT and Codex plugin](#chatgpt-and-codex-plugin))
 - **Dashboard fallback:** AdsAgent dashboard -> Settings -> MCP Access -> Copy install prompt (clients without plugin support)
 
 **Distribution split (important):**
@@ -18,6 +19,7 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 | --- | --- | --- |
 | **Claude plugin** (self-hosted marketplace) | Skills + root `.mcp.json` HTTP MCP URLs (OAuth) | Yes |
 | **Cursor plugin** (marketplace manifest) | Skills + `mcp.json` HTTP MCP URLs (OAuth) | Yes |
+| **ChatGPT / Codex plugin** (`.codex-plugin/plugin.json`) | Skills + `.mcp.json` HTTP MCP URLs (OAuth) + onboarding skill | Yes |
 | **Anthropic Connectors Directory** | Hosted MCP server listing only | No — separate submission on `adsagent.md` services |
 
 **Official GitHub repo:** [github.com/adsagents/adsagent-ai-skills](https://github.com/adsagents/adsagent-ai-skills)
@@ -31,7 +33,7 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 
 Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [Cursor Directory](https://cursor.directory/plugins/adsagent-meta-mcp), and [MCP Market](https://mcpmarket.com/zh/server/adsagent-ai-skills).
 
-Current contract version: `0.7.71`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.72`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 New Meta connections default to the v2 product profile; all three hosted endpoints
 negotiate modern MCP `2026-07-28` stateless discovery while retaining supported
 legacy initialize clients.
@@ -82,6 +84,7 @@ an advertising account, and a Meta task does not require Google or TikTok setup.
 | Claude web, Desktop, or Cowork | Open Settings -> Connectors and use the installed AdsAgent connection's Connect action. If only skills were installed, add a custom connector using the hosted URL below. Complete browser OAuth. |
 | Claude Code | Open `/mcp` and authenticate the requested bundled server. Reuse an existing connection. |
 | Cursor | Authenticate the requested bundled server in MCP settings. |
+| ChatGPT or Codex plugin | After install, the `adsagent-setup` onboarding skill asks which channel to connect; complete the sign-in prompt for that bundled server. |
 | Other MCP clients | Add the requested hosted HTTP URL with OAuth, or use the account's dashboard install prompt. |
 
 | Channel | Hosted MCP URL |
@@ -314,7 +317,16 @@ claude plugin uninstall --scope user adsagent-ai-skills@adsagent-ai-skills
 claude plugin uninstall --scope user adsagent-meta-ai-skills@adsagent-meta-ai-skills
 ```
 
-### Codex CLI
+### ChatGPT and Codex plugin
+
+`.codex-plugin/plugin.json` packages AdsAgent in the OpenAI plugin format used
+by ChatGPT and Codex: the same `skills/`, the three hosted OAuth HTTP servers
+from `.mcp.json`, listing metadata, and
+`extensions["com.openai"].onboardingSkill` pointing at `adsagent-setup`.
+After install, ChatGPT runs that skill to connect the channel you choose
+(Meta, Google Ads, or TikTok) and verify readiness with `setup_get_status`.
+Public ChatGPT directory listing goes through OpenAI's plugin submission
+review; until then, install from this repository's marketplace:
 
 ```bash
 codex plugin marketplace add adsagents/adsagent-ai-skills

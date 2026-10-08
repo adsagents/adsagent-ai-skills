@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.71"
+VERSION = "0.7.72"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -659,6 +659,116 @@ def validate_retry_parser_reference(source: str) -> None:
         fail("retry-parser.md must return None when no delay is available")
 
 
+CODEX_PLUGIN_MANIFEST = ".codex-plugin/plugin.json"
+CODEX_ONBOARDING_SKILL = "./skills/adsagent-setup/SKILL.md"
+CODEX_EXPECTED_MCP_URLS = {
+    "https://adsagent.md/mcp/v2",
+    "https://google.adsagent.md/mcp",
+    "https://tiktok.adsagent.md/mcp",
+}
+CODEX_REQUIRED_INTERFACE = (
+    "displayName",
+    "shortDescription",
+    "longDescription",
+    "developerName",
+    "category",
+    "capabilities",
+    "composerIcon",
+    "logo",
+)
+CODEX_LISTING_URLS = ("websiteURL", "privacyPolicyURL", "termsOfServiceURL")
+
+
+def _codex_path(field: str, value: object, *, directory: bool = False) -> Path:
+    if not isinstance(value, str) or not value.startswith("./"):
+        fail(f"{CODEX_PLUGIN_MANIFEST} {field} must be a ./-prefixed path")
+    resolved = (ROOT / value).resolve()
+    if ROOT.resolve() not in resolved.parents and resolved != ROOT.resolve():
+        fail(f"{CODEX_PLUGIN_MANIFEST} {field} must stay inside the plugin root")
+    exists = resolved.is_dir() if directory else resolved.is_file()
+    if not exists:
+        fail(f"{CODEX_PLUGIN_MANIFEST} {field} points to missing {value}")
+    return resolved
+
+
+def validate_codex_plugin(expected_mcp: dict) -> None:
+    """Validate the ChatGPT/Codex plugin manifest (OpenAI plugin format)."""
+    path = ROOT / CODEX_PLUGIN_MANIFEST
+    if not path.exists():
+        fail(f"missing {CODEX_PLUGIN_MANIFEST}")
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    if manifest.get("name") != "adsagent":
+        fail(f"{CODEX_PLUGIN_MANIFEST} name must be adsagent")
+    if manifest.get("version") != VERSION:
+        fail(
+            f"{CODEX_PLUGIN_MANIFEST} version is "
+            f"{manifest.get('version')}, expected {VERSION}"
+        )
+
+    skills_dir = _codex_path("skills", manifest.get("skills"), directory=True)
+    for skill in REQUIRED_SKILLS:
+        if not (skills_dir / skill / "SKILL.md").is_file():
+            fail(f"{CODEX_PLUGIN_MANIFEST} skills directory lacks {skill}")
+
+    onboarding = (
+        manifest.get("extensions", {}).get("com.openai", {}).get("onboardingSkill")
+    )
+    if onboarding != CODEX_ONBOARDING_SKILL:
+        fail(
+            f"{CODEX_PLUGIN_MANIFEST} onboardingSkill must be "
+            f"{CODEX_ONBOARDING_SKILL}"
+        )
+    _codex_path("onboardingSkill", onboarding)
+
+    mcp_path = _codex_path("mcpServers", manifest.get("mcpServers"))
+    try:
+        codex_mcp = json.loads(mcp_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        fail(f"{CODEX_PLUGIN_MANIFEST} mcpServers file is not valid JSON: {exc}")
+    servers = codex_mcp.get("mcpServers")
+    if not isinstance(servers, dict) or servers != expected_mcp.get("mcpServers"):
+        fail(f"{CODEX_PLUGIN_MANIFEST} mcpServers must match .mcp.json")
+    urls = {config.get("url") for config in servers.values()}
+    if urls != CODEX_EXPECTED_MCP_URLS:
+        fail(f"{CODEX_PLUGIN_MANIFEST} mcpServers must declare the three hosted URLs")
+    for name, config in servers.items():
+        if config.get("type") != "http":
+            fail(f"{CODEX_PLUGIN_MANIFEST} server {name} must use type http")
+        if "headers" in config or "Authorization" in json.dumps(config):
+            fail(f"{CODEX_PLUGIN_MANIFEST} server {name} must not embed bearer headers")
+
+    interface = manifest.get("interface")
+    if not isinstance(interface, dict):
+        fail(f"{CODEX_PLUGIN_MANIFEST} missing interface")
+    for field in CODEX_REQUIRED_INTERFACE:
+        if not interface.get(field):
+            fail(f"{CODEX_PLUGIN_MANIFEST} interface.{field} is required")
+    if interface["displayName"] != "AdsAgent":
+        fail(f"{CODEX_PLUGIN_MANIFEST} interface.displayName must be AdsAgent")
+    if len(interface["shortDescription"]) > 30:
+        fail(f"{CODEX_PLUGIN_MANIFEST} interface.shortDescription exceeds 30 chars")
+    if len(interface["longDescription"]) > 4000:
+        fail(f"{CODEX_PLUGIN_MANIFEST} interface.longDescription exceeds 4000 chars")
+    prompts = interface.get("defaultPrompt", [])
+    if (
+        not isinstance(prompts, list)
+        or len(prompts) > 3
+        or len(set(prompts)) != len(prompts)
+        or any(not isinstance(p, str) or len(p) > 128 or "@" in p for p in prompts)
+    ):
+        fail(
+            f"{CODEX_PLUGIN_MANIFEST} interface.defaultPrompt must hold at most "
+            "three unique prompts of 128 chars without @mentions"
+        )
+    for field in CODEX_LISTING_URLS:
+        value = interface.get(field)
+        if not isinstance(value, str) or not value.startswith("https://"):
+            fail(f"{CODEX_PLUGIN_MANIFEST} interface.{field} must be an https URL")
+    for field in ("composerIcon", "logo", "logoDark"):
+        if field in interface:
+            _codex_path(f"interface.{field}", interface[field])
+
+
 def main() -> None:
     version = read("VERSION").strip()
     if version != VERSION:
@@ -747,6 +857,8 @@ def main() -> None:
         fail("missing assets/logo.png")
     if cursor_plugin.get("logo") != "assets/logo.png":
         fail(".cursor-plugin/plugin.json logo must be assets/logo.png")
+
+    validate_codex_plugin(mcp)
 
     if plugin.get("name") != "adsagent":
         fail("plugin.json name must be adsagent")

@@ -1,0 +1,48 @@
+{
+  "name": "adsagent",
+  "version": "0.7.72",
+  "description": "AdsAgent tri-channel plugin: hosted MCP connections (Meta, Google Ads, TikTok) plus behavior skills for safer ad operations.",
+  "author": {
+    "name": "adsagents LLC",
+    "email": "support@adsagent.md",
+    "url": "https://adsagent.md"
+  },
+  "homepage": "https://adsagent.md",
+  "repository": "https://github.com/adsagents/adsagent-ai-skills",
+  "license": "MIT",
+  "keywords": [
+    "adsagent",
+    "mcp",
+    "meta-ads",
+    "google-ads",
+    "tiktok-ads",
+    "advertising",
+    "campaign-insights"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/adsagent-setup/SKILL.md"
+    }
+  },
+  "interface": {
+    "displayName": "AdsAgent",
+    "shortDescription": "Meta, Google & TikTok ads",
+    "longDescription": "Analyze and manage Meta, Google Ads, and TikTok advertising through AdsAgent's hosted MCP servers. Connect each channel with OAuth, read spend, delivery, and conversion performance, and prepare campaign, budget, and status changes that apply only after you review and approve them.",
+    "developerName": "adsagents LLC",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "websiteURL": "https://adsagent.md",
+    "privacyPolicyURL": "https://adsagent.md/privacy",
+    "termsOfServiceURL": "https://adsagent.md/terms",
+    "defaultPrompt": [
+      "Show yesterday's Meta spend by campaign",
+      "Compare last week's Google Ads campaign performance",
+      "Connect my TikTok Ads account and check readiness"
+    ],
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/icon.svg",
+    "logoDark": "./assets/icon-dark.svg"
+  }
+}

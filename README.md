@@ -105,6 +105,14 @@ Claude connection controls are documented in the official
 [custom connector guide](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp)
 and [Claude Code MCP guide](https://code.claude.com/docs/en/mcp).
 
+## Official MCP Registry manifests
+
+Three separate hosted-server manifests and the publication runbook live in
+[registry/README.md](registry/README.md). These files are publication candidates;
+their presence does not mean the services are published or accepted into the
+GitHub MCP Registry. The public guides and connection configurations are MIT;
+the hosted advertising backends are proprietary.
+
 ## Included Skills
 
 | Skill | Purpose |

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.adsagents/adsagent-google-ads",
+  "title": "AdsAgent Google Ads",
+  "description": "Read and analyze Google Ads accounts, campaigns, Search and Performance Max reporting.",
+  "repository": {
+    "url": "https://github.com/adsagents/adsagent-ai-skills",
+    "source": "github"
+  },
+  "websiteUrl": "https://adsagent.md/connect",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://google.adsagent.md/mcp"
+    }
+  ]
+}

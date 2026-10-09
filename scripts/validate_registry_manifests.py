@@ -6,6 +6,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json"
 CHANNELS = {"meta": "meta", "google-ads": "google", "tiktok": "tiktok"}
+REPOSITORIES = {
+    "meta": "https://github.com/kimlucky7/smartads",
+    "google": "https://github.com/adsagents/google-adsagent",
+    "tiktok": "https://github.com/kimlucky7/tiktok-adsagent",
+}
 
 
 def main():
@@ -21,12 +26,12 @@ def main():
             data = json.loads(path.read_text())
             checks = {
                 "schema": data.get("$schema") == SCHEMA,
-                "name": data.get("name") == f"io.github.adsagents/adsagent-{slug}",
+                "name": data.get("name") == f"md.adsagent/{channel}-mcp",
                 "description": isinstance(data.get("description"), str)
                     and 1 <= len(data["description"]) <= 100,
                 "version": isinstance(data.get("version"), str) and bool(data["version"]),
                 "repository": data.get("repository") == {
-                    "url": "https://github.com/adsagents/adsagent-ai-skills", "source": "github"},
+                    "url": REPOSITORIES[channel], "source": "github"},
                 "remote-only": "packages" not in data,
                 "OAuth URL parity": all(data.get("remotes") == [{
                     "type": "streamable-http", "url": client[channel]["url"]}]

@@ -1,14 +1,14 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.adsagents/adsagent-tiktok",
-  "title": "AdsAgent TikTok Ads",
-  "description": "Analyze TikTok Ads performance and prepare approval-backed creative and campaign workflows.",
+  "name": "md.adsagent/tiktok-mcp",
+  "description": "Hosted TikTok ads MCP with OAuth, bounded reads, and prepare/confirm writes.",
+  "title": "AdsAgent — TikTok Ads MCP",
   "repository": {
-    "url": "https://github.com/adsagents/adsagent-ai-skills",
+    "url": "https://github.com/kimlucky7/tiktok-adsagent",
     "source": "github"
   },
-  "websiteUrl": "https://adsagent.md/connect",
   "version": "1.0.0",
+  "websiteUrl": "https://tiktok.adsagent.md",
   "remotes": [
     {
       "type": "streamable-http",

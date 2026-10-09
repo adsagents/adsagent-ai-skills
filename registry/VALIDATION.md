@@ -1,49 +1,59 @@
-# Preparation evidence — 2026-10-09
+# Registry verification evidence — 2026-10-09
 
-Status: **prepared, not published**. No successful official Registry API record
-has been observed for these candidates. No new OAuth grant or persistent
-publisher credential was created. No advertising backend was deployed.
+Status: **three existing publications verified**, not newly published by this PR.
+The manifest snapshots reproduce the Registry's existing `server` objects for
+`md.adsagent/meta-mcp`, `md.adsagent/google-mcp` and `md.adsagent/tiktok-mcp`.
 
-## Passed locally
+## Online evidence
 
-- All three `server.json` files pass the official `2025-12-11` JSON Schema,
-  using Python 3.12 and `jsonschema==4.26.0` with `Draft7Validator` and
-  `FormatChecker`. The schema was read from official upstream commit
-  `970df037919faa70456dde08c295473002d850e5`, file
-  `internal/validators/schemas/2025-12-11.json`.
-- `python scripts/validate_registry_manifests.py`: all three manifests match
-  both existing client configurations and have no package or static auth header.
+- All six reads (each exact `1.0.0` and `latest`) returned HTTP 200 with
+  `status: "active"` and `isLatest: true`. Publication dates are 2026-08-18;
+  exact timestamps and public API links are in [README.md](README.md).
+- Search `?search=adsagent&limit=100` returned four entries with no next cursor:
+  the three domain entries and unrelated `io.github.nowork-studio/adsagent`.
+  The latter is deprecated and points to another product, `adsagent.org`.
+- The initially proposed `io.github.adsagents/adsagent-{meta,google-ads,tiktok}`
+  names each returned genuine HTTP 404. They are not needed: the domain entries
+  already cover these exact endpoints. Do not create duplicates.
+- Official `mcp-publisher` **1.8.1**, build
+  `f52dc8525a441a3abf5fedc9912152d95af5aab1`, validates all three reconciled
+  snapshots online successfully. The release archive SHA256 matched the official
+  checksum: `a06c9096dcb9727c13555b6be26c7effa707b01f06a4c561ba7a3635443cf2cc`.
+- Unauthenticated GETs to all three MCP URLs returned HTTP 401 with
+  `WWW-Authenticate` protected-resource discovery. All three resource discovery
+  documents returned HTTP 200 with the expected resource URL. Their common
+  authorization server `https://adsagent.md` returned HTTP 200 discovery,
+  advertising authorization-code flow and PKCE `S256`.
+- No OAuth registration, authorization, token exchange or authenticated
+  advertising operation was performed. These checks establish public endpoint
+  and discovery reachability, not authenticated advertising functionality.
+
+The older cloud environment's CONNECT 403 is superseded by these successful
+checks in the refreshed environment. No network settings were changed. Initial
+search timeouts were followed by a successful normal request; no policy refusal
+was bypassed.
+
+## Local checks
+
+- `python scripts/validate_registry_manifests.py`: passed for all three snapshots
+  and both existing OAuth client configurations.
 - Repository pytest suite: **219 passed, 2 subtests passed**.
 - `scripts/validate_tri_channel_pack.py`: passed.
 - `scripts/validate_public_tool_manifests.py`: all three channels passed.
 - `git diff --check`: passed.
 
-The repository-required checks used `uv run --no-project --managed-python
---python 3.12` (with `pytest==9.0.2` for tests). Because the cloud home is
-read-only, `UV_CACHE_DIR` and `UV_PYTHON_INSTALL_DIR` pointed to temporary
-writable directories; no in-repository virtual environment was created.
+Repository checks used `uv run --no-project --managed-python --python 3.12`
+(with `pytest==9.0.2` for tests), temporary writable UV cache/Python directories,
+and no in-repository virtual environment. Snapshot JSON was compared with the
+live API `server` objects, including published repository links and descriptions.
 
-## Blocked checks and publication prerequisites
+## Remaining boundaries
 
-- Official `mcp-publisher` **1.8.1**, build commit
-  `f52dc8525a441a3abf5fedc9912152d95af5aab1`, was downloaded from the official
-  release. Running `validate <manifest>` for **each of the three manifests**
-  reached the validation request but failed with
-  `Post "https://registry.modelcontextprotocol.io/v0/validate": Forbidden`.
-  This is not a successful online validation.
-- Registry duplicate search and exact-name readback were unavailable through
-  the current network path. No conclusion that a name is unused can be drawn.
-- Public endpoint reachability checks were also rejected by the network proxy
-  before reaching the three hosts. Endpoints are supported by committed public
-  README/client configuration evidence, not a successful live transport check.
-- No existing publisher token was present at the official current token path or
-  repository legacy path. Git repository access is not Registry authentication.
-  The owner must authorize/perform a new publisher OAuth flow if a suitable
-  already authorized identity is unavailable.
+No existing publisher token was found at the official current or checkout legacy
+path; no new credentials or grants were created. Future updates require an
+authorized `adsagent.md` domain publisher and a new metadata version. GitHub Owner
+login does not grant this domain namespace. Existing `1.0.0` must not be republished.
 
-Next: restore access to the official Registry and public MCP hosts, perform
-online validation and duplicate checks, then authorize publisher login with an
-eligible `adsagents` organization Owner and follow [the runbook](README.md).
-Report exact-version and latest `active` records only after successful readback.
-The draft PR is for review only; merge and GitHub directory acceptance remain
-separate steps. Do not repeat existing directory-review outreach.
+GitHub first-time directory review remains pending (ticket **166275**). No email
+or additional submission was sent. Registry publication is not GitHub acceptance.
+The skills/docs/config are MIT; hosted advertising backends remain proprietary.

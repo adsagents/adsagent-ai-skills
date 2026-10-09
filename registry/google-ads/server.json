@@ -1,14 +1,14 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.adsagents/adsagent-google-ads",
-  "title": "AdsAgent Google Ads",
-  "description": "Read and analyze Google Ads accounts, campaigns, Search and Performance Max reporting.",
+  "name": "md.adsagent/google-mcp",
+  "description": "Hosted Google Ads MCP with OAuth, bounded reads, and prepare/confirm writes.",
+  "title": "AdsAgent — Google Ads MCP",
   "repository": {
-    "url": "https://github.com/adsagents/adsagent-ai-skills",
+    "url": "https://github.com/adsagents/google-adsagent",
     "source": "github"
   },
-  "websiteUrl": "https://adsagent.md/connect",
   "version": "1.0.0",
+  "websiteUrl": "https://google.adsagent.md",
   "remotes": [
     {
       "type": "streamable-http",

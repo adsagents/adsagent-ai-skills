@@ -1,95 +1,108 @@
-# AdsAgent hosted MCP Registry publication
+# AdsAgent hosted MCP Registry records
 
-These are three independent **remote-only publication candidates** for the
-[official MCP Registry](https://registry.modelcontextprotocol.io/). Committing
-or validating these files does not publish them. GitHub MCP Registry inclusion
-is a separate, manually reviewed process; official Registry publication does
-not guarantee GitHub inclusion.
+These manifests are snapshots of three existing remote-only entries in the
+[official MCP Registry](https://registry.modelcontextprotocol.io/), published on
+**2026-08-18**. Each exact `1.0.0` record and `latest` record returned HTTP 200,
+`status: "active"` and `isLatest: true` on 2026-10-09. This PR records those
+publications; it does not publish or replace them.
 
-| Manifest | Proposed Registry name | OAuth MCP endpoint |
+| Manifest | Existing Registry name | OAuth MCP endpoint | Published at (UTC) |
+| --- | --- | --- | --- |
+| [Meta](meta/server.json) | `md.adsagent/meta-mcp` | `https://adsagent.md/mcp/v2` | 2026-08-18T06:06:05.853855Z |
+| [Google Ads](google-ads/server.json) | `md.adsagent/google-mcp` | `https://google.adsagent.md/mcp` | 2026-08-18T07:54:07.279685Z |
+| [TikTok](tiktok/server.json) | `md.adsagent/tiktok-mcp` | `https://tiktok.adsagent.md/mcp` | 2026-08-18T07:54:07.988395Z |
+
+GitHub first-time MCP directory inclusion is a separate manual review and remains
+pending (support ticket **166275**). Official Registry publication does not mean
+GitHub has accepted the submission. Do not send duplicate outreach.
+
+Each manifest reproduces the API's `server` object: name, title, description,
+repository, website URL, version, schema and Streamable HTTP remote. Registry
+`_meta` status/timestamps are evidence recorded here, not fields to publish in
+`server.json`. Root `mcp.json` and `.mcp.json` remain client configurations.
+The optional docs-only Docker/Glama MCP is a separate product surface.
+
+## Public wording and rights
+
+The published titles and descriptions are:
+
+| Name | Title | Description |
 | --- | --- | --- |
-| [Meta](meta/server.json) | `io.github.adsagents/adsagent-meta` | `https://adsagent.md/mcp/v2` |
-| [Google Ads](google-ads/server.json) | `io.github.adsagents/adsagent-google-ads` | `https://google.adsagent.md/mcp` |
-| [TikTok](tiktok/server.json) | `io.github.adsagents/adsagent-tiktok` | `https://tiktok.adsagent.md/mcp` |
+| `md.adsagent/meta-mcp` | AdsAgent — Meta Ads MCP | Hosted Meta ads MCP with OAuth, bounded reads, and prepare/confirm writes. |
+| `md.adsagent/google-mcp` | AdsAgent — Google Ads MCP | Hosted Google Ads MCP with OAuth, bounded reads, and prepare/confirm writes. |
+| `md.adsagent/tiktok-mcp` | AdsAgent — TikTok Ads MCP | Hosted TikTok ads MCP with OAuth, bounded reads, and prepare/confirm writes. |
 
-Each entry has one Streamable HTTP remote, no installable package, and no static
-authentication headers. Root `mcp.json` and `.mcp.json` remain the client/plugin
-configurations. The optional docs-only Docker/Glama MCP is a separate product
-surface and must not be published as any of these hosted advertising servers.
+These descriptions quote existing Registry metadata. They do not expand the
+permissions of the installed skills. In particular, the current
+[Google Ads skill](../skills/google-ads-insights/SKILL.md) supports read/analysis
+workflows; a Registry description mentioning writes does not authorize a write.
+For all channels, use advertised capabilities and explicit user approval for
+advertising changes.
 
-## Public capabilities and rights
+The published repository links are retained exactly:
 
-Descriptions are supported by the public skills:
+- Meta: `https://github.com/kimlucky7/smartads`
+- Google Ads: `https://github.com/adsagents/google-adsagent`
+- TikTok: `https://github.com/kimlucky7/tiktok-adsagent`
 
-- Meta: [performance analysis](../skills/meta-insights/SKILL.md) and
-  [approval-backed ad copy](../skills/meta-copy/SKILL.md).
-- Google Ads: [account, Search, PMax and performance reads](../skills/google-ads-insights/SKILL.md).
-  This entry makes no Google advertising write claim.
-- TikTok: [performance, creative and campaign workflows](../skills/tiktok-insights/SKILL.md).
-  Availability depends on the authenticated account and advertised capabilities;
-  approval-backed advertising changes require user review and confirmation.
+Recording those links does not claim public access or an open-source backend.
+The skills, documentation, connection configurations and manifest snapshots in
+this repository are covered by [MIT](../LICENSE). The hosted Meta, Google Ads
+and TikTok backend implementations are **proprietary**. This repository grants
+no license to those backends, trademarks or customer data. See [NOTICE.md](../NOTICE.md),
+[privacy](https://adsagent.md/privacy) and [support](mailto:support@adsagent.md).
 
-The manifest `repository` points to this **public guide and connection-config
-repository**, following the remote-guide pattern used by
-[Figma](https://github.com/figma/mcp-server-guide/blob/main/server.json).
-It does not contain the hosted server implementations. Public skills, docs,
-connection configurations and these manifests are covered by [MIT](../LICENSE).
-Hosted Meta, Google Ads and TikTok backend implementations are **proprietary**;
-this repository grants no license to them, trademarks or customer data. See
-[NOTICE.md](../NOTICE.md), [privacy](https://adsagent.md/privacy), and
-[support](mailto:support@adsagent.md).
+## Documentation changes versus future metadata updates
 
-`1.0.0` is the initial Registry metadata revision for each independent entry,
-not the skill-pack VERSION or a claim about a backend build. Advance the
-appropriate entry's version when publishing changed metadata. Do not reset an
-already published version or treat a skill-pack version bump as a backend release.
+This PR only records current public metadata and adds verification guidance.
+It makes no Registry update. Do not overwrite or republish the existing `1.0.0`.
+Do not create duplicate `io.github.adsagents/*` entries for these endpoints.
+
+Documentation explanations, verification dates and license-boundary notes can
+change here without publishing. Any future change to published titles,
+descriptions, repository URLs, website URLs, remotes or other server metadata
+requires a separately reviewed metadata diff and a new version on the **existing**
+entry. For example, pointing repository links to this public guide, using
+`https://adsagent.md/connect` as the website, or narrowing the Google description
+to the installed read-only skill would change published metadata. None of those
+changes is proposed for publication by this snapshot PR.
+
+`1.0.0` is the existing Registry metadata version, not the skill-pack VERSION or
+a backend build. A skill-pack version bump does not release a backend.
 
 ## Connect with OAuth
 
-1. Add only the needed channel's URL above to an OAuth-capable remote MCP client,
-   or use the existing Claude/Cursor plugin configuration. Start at
-   [AdsAgent Connect](https://adsagent.md/connect) for client onboarding.
-2. Use the client's Connect/Authenticate action and complete browser OAuth with
-   your AdsAgent login. Each server has its own OAuth authorization. Do not paste
-   tokens into manifests or copy a token between hosts.
-3. Ask AdsAgent to check the selected channel's connection and complete any
-   missing advertising-platform authorization. Platform authorization, usable
-   account scope and initial history sync are separate from client MCP OAuth.
-4. Resume the intended task once the selected account is ready. Installing this
-   guide or seeing a Registry listing does not authorize an advertising account.
+1. Add the needed channel's endpoint to an OAuth-capable remote MCP client, or
+   use the existing plugin configuration. Start at [AdsAgent Connect](https://adsagent.md/connect).
+2. Use the client's Connect/Authenticate action. Each protected resource requires
+   its own appropriate authorization; never copy tokens between hosts. All three
+   currently advertise `https://adsagent.md` as their authorization server.
+3. Check the channel's connection and complete missing advertising-platform
+   authorization. Platform access, account scope and history sync are separate
+   from client MCP OAuth and Registry publisher authentication.
+4. Resume the task only when the selected account is ready. A listing does not
+   authorize an advertising account.
 
-Examples: “Show yesterday's Meta campaign performance”; “Analyze Google Ads
-Search and PMax performance for my selected customer”; “Show TikTok advertiser
-performance, then prepare a campaign change for my review.”
+## Domain publisher identity
 
-## Publisher identity and prerequisites
+Follow the [official authentication guidance](https://github.com/modelcontextprotocol/registry/blob/main/docs/modelcontextprotocol-io/authentication.mdx).
+`md.adsagent/*` is the reverse-DNS namespace for `adsagent.md`. Updates require an
+identity authorized for that domain namespace, using the official domain-based
+DNS or HTTP authentication flow. The public record does not reveal which method
+or operator was used for the original publication.
 
-Use [official authentication guidance](https://github.com/modelcontextprotocol/registry/blob/main/docs/modelcontextprotocol-io/authentication.mdx).
-The proposed namespace requires a GitHub identity entitled to publish under
-`io.github.adsagents/*`. Current upstream guidance requires an **Owner** of the
-`adsagents` organization for GitHub OAuth/PAT organization publishing; repository
-write access alone is insufficient. Verify the namespace granted at login.
-Never fall back silently to a personal namespace or an unrelated product name.
+GitHub Owner membership and `mcp-publisher login github` authorize GitHub
+namespaces, not these domain entries. Repository write access is also insufficient.
+Reuse an existing authorized domain publisher/operator. If none is available,
+stop before authentication and obtain explicit owner authorization for the
+chosen domain-proof/signing setup. Do not create credentials, change DNS or HTTP
+proof files, add CI secrets, or retrieve secrets from another environment.
+This PR installs no publication automation and requires no new authorization.
 
-Registry publisher authentication is separate from end-user AdsAgent OAuth.
-Reuse a suitable already authorized publisher identity only. If none exists,
-stop and ask the owner to perform/approve the official browser device flow:
-
-```sh
-mcp-publisher login github
-```
-
-Do not start a new OAuth grant, create/configure a persistent token, or add CI
-secrets without owner approval. Do not retrieve credentials from other machines.
-No automatic publication workflow is installed by this change. GitHub Actions
-OIDC is an optional future setup requiring separately reviewed configuration.
-
-## Validate and check for duplicates before publishing
+## Validate and inspect existing records
 
 Install the official [mcp-publisher CLI](https://github.com/modelcontextprotocol/registry/blob/main/docs/modelcontextprotocol-io/quickstart.mdx)
-and record its version. These manifests use schema `2025-12-11` from the
-[current remote-server documentation](https://modelcontextprotocol.io/registry/remote-servers).
-From the repository root:
+and record its version. From the repository root:
 
 ```sh
 python scripts/validate_registry_manifests.py
@@ -98,64 +111,42 @@ mcp-publisher validate registry/google-ads/server.json
 mcp-publisher validate registry/tiktok/server.json
 ```
 
-The official CLI validation calls the Registry API and needs network access, but
-not publisher login. Local consistency checks or offline JSON-schema validation
-are not a replacement for that online check. Run the repository checks in
-[AGENTS.md](../AGENTS.md) as well.
+CLI validation calls the Registry API without publisher login. Run the checks in
+[AGENTS.md](../AGENTS.md) too. Validation does not publish anything.
 
-Before first publication, query the official API:
+Query for duplicates and follow every URL-encoded `metadata.nextCursor`:
 
 ```sh
 curl --fail-with-body 'https://registry.modelcontextprotocol.io/v0.1/servers?search=adsagent&limit=100'
 ```
 
-Follow every `metadata.nextCursor` (URL-encoded in the `cursor` parameter),
-inspect names, repository URLs and remote URLs, and check each proposed name's
-`/versions/latest` route below. A genuine 404 means that exact name was absent;
-a timeout, proxy denial or 5xx does not. Reuse an existing official entry if the
-same AdsAgent service is already listed, and choose a new version if needed.
-The unrelated `io.github.nowork-studio/adsagent` / `adsagent.org` is not this
-product and must not be claimed or modified. If duplicate checks are unavailable,
-stop before publication.
+Inspect names, repository URLs and remote URLs. The unrelated
+`io.github.nowork-studio/adsagent` / `adsagent.org` belongs to another product and
+must not be claimed or modified. A timeout or proxy denial is not evidence of
+absence. The three existing AdsAgent entries above should be reused.
 
-## Publish, then read back each result
-
-Use the reviewed manifest commit. The manifests are metadata-only: publication
-requires no backend deployment and technically does not require a merge. For
-public review, preferably make the reviewed files reachable on the default branch
-first, through a separately authorized merge; a draft PR is not a merged release.
-Do not merge as part of the current preparation task.
-
-After online validation, duplicate checks and authorized login succeed:
+Read both the exact version and latest record for each existing name:
 
 ```sh
-mcp-publisher publish registry/meta/server.json
-mcp-publisher publish registry/google-ads/server.json
-mcp-publisher publish registry/tiktok/server.json
+for channel in meta google tiktok; do
+  for version in 1.0.0 latest; do
+    curl --fail-with-body "https://registry.modelcontextprotocol.io/v0.1/servers/md.adsagent%2F${channel}-mcp/versions/${version}"
+  done
+done
 ```
 
-Run one publish at a time. After each success, read both its exact version and
-latest record before continuing. For example, for Meta:
+Compare the returned `server` object with the corresponding snapshot. Inspect
+`_meta["io.modelcontextprotocol.registry/official"]` for status, `isLatest` and
+publication time; these can change after this verification date.
 
-```sh
-curl --fail-with-body 'https://registry.modelcontextprotocol.io/v0.1/servers/io.github.adsagents%2Fadsagent-meta/versions/1.0.0'
-curl --fail-with-body 'https://registry.modelcontextprotocol.io/v0.1/servers/io.github.adsagents%2Fadsagent-meta/versions/latest'
-```
+- [Meta latest](https://registry.modelcontextprotocol.io/v0.1/servers/md.adsagent%2Fmeta-mcp/versions/latest)
+- [Google Ads latest](https://registry.modelcontextprotocol.io/v0.1/servers/md.adsagent%2Fgoogle-mcp/versions/latest)
+- [TikTok latest](https://registry.modelcontextprotocol.io/v0.1/servers/md.adsagent%2Ftiktok-mcp/versions/latest)
 
-Repeat using `adsagent-google-ads` and `adsagent-tiktok`. Check the returned
-`server.name`, `server.version`, `server.repository` and `server.remotes` against
-the reviewed file, and check `_meta["io.modelcontextprotocol.registry/official"]`
-for `status: "active"` and `isLatest: true`. Record the manifest commit, CLI
-version, publication time, both API URLs and returned metadata for each entry.
-If publication times out or returns an ambiguous error, read back first; do not
-blindly retry or bump versions. Report partial success per channel.
-
-These are **expected readback routes**, not evidence of existing listings:
-
-- [Meta latest](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.adsagents%2Fadsagent-meta/versions/latest)
-- [Google Ads latest](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.adsagents%2Fadsagent-google-ads/versions/latest)
-- [TikTok latest](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.adsagents%2Fadsagent-tiktok/versions/latest)
-
-Only after all three readbacks succeed should the operator report them as
-published and use their real records for the existing GitHub directory review.
-Do not resubmit outreach or represent pending manual review as acceptance.
+For a separately authorized future update, first review the new-version diff,
+validate it online, check current records and confirm domain publisher authority.
+Publish one entry at a time through the official CLI, then read its new exact
+version and latest record before continuing. If the response is ambiguous, read
+back before retrying. Never run publish against these unchanged `1.0.0` snapshots.
+No merge, Registry publication, backend deployment or GitHub outreach is part of
+this documentation reconciliation.

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "md.adsagent/meta-mcp",
+  "description": "Hosted Meta ads MCP with OAuth, bounded reads, and prepare/confirm writes.",
+  "title": "AdsAgent — Meta Ads MCP",
+  "repository": {
+    "url": "https://github.com/kimlucky7/smartads",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "websiteUrl": "https://adsagent.md",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://adsagent.md/mcp/v2"
+    }
+  ]
+}

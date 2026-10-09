@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "md.adsagent/google-mcp",
+  "description": "Hosted Google Ads MCP with OAuth, bounded reads, and prepare/confirm writes.",
+  "title": "AdsAgent — Google Ads MCP",
+  "repository": {
+    "url": "https://github.com/adsagents/google-adsagent",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "websiteUrl": "https://google.adsagent.md",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://google.adsagent.md/mcp"
+    }
+  ]
+}

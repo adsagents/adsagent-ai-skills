@@ -28,4 +28,6 @@ jobs:
             --manifest meta=contracts/manifests/meta.json \
             --manifest google=contracts/manifests/google.json \
             --manifest tiktok=contracts/manifests/tiktok.json
+      - name: Check hosted Registry manifest consistency
+        run: python scripts/validate_registry_manifests.py
       - run: python -m pytest -q

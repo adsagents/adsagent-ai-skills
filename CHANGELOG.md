@@ -3,6 +3,11 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.72 guides agents to retain a model-visible support reference and
+report repeated failures or disputed data under the channel's consent policy.
+Reporting remains observational, idempotent, and free of conversation text,
+raw parameters, credentials and provider responses. It never authorizes replay.
+
 Version 0.7.71 guides installed Claude users through only the requested channel:
 client MCP OAuth, provider authorization, account discovery, and initial sync
 remain distinct, with a return to the original task. Meta and TikTok prefer

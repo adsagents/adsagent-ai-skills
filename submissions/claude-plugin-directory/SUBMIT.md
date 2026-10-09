@@ -20,7 +20,7 @@ python3 -m pytest -q
 | Repository | `adsagents/adsagent-ai-skills` |
 | Plugin slug | `adsagent` |
 | Display name | `AdsAgent` |
-| Version | See root `VERSION` (currently `0.7.71`) |
+| Version | See root `VERSION` (currently `0.7.72`) |
 | Homepage | `https://adsagent.md/connect`（**单行 URL，前后不能有空格**；文档站放 description，不要拼两个 URL） |
 | Documentation (in description copy) | `https://adsagent.md/docs/mcp-onboarding` |
 | License type | `MIT` (root `LICENSE`) |

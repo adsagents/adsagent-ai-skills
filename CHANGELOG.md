@@ -3,6 +3,13 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.73 declares the hosted privacy policy in the Claude plugin manifest
+and replaces the general product devbox bootstrap with repository-local Python
+validation setup. Cloud images must provide uv; the bundled setup no longer
+downloads and executes shell installers, installs unused shims, or changes
+shell profiles and system links. Directory review notes explain the OAuth-only
+MCP configuration and the retained display-only Cursor logo.
+
 Version 0.7.72 guides agents to retain a model-visible support reference and
 report repeated failures or disputed data under the channel's consent policy.
 Reporting remains observational, idempotent, and free of conversation text,

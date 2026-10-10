@@ -9,3 +9,6 @@ build/
 __pycache__/
 .pytest_cache/
 *.py[cod]
+
+# Shared product bootstrap is not part of this public plugin.
+/scripts/devbox/

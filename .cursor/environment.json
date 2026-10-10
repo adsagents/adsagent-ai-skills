@@ -1,4 +1,4 @@
 {
   "name": "adsagent-ai-skills",
-  "install": "bash scripts/devbox/cloud-agent-install.sh"
+  "install": "bash scripts/cloud-agent-setup.sh"
 }

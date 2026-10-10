@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.72"
+VERSION = "0.7.73"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -676,6 +676,8 @@ def main() -> None:
 
     plugin = json.loads(read(".claude-plugin/plugin.json"))
     marketplace = json.loads(read(".claude-plugin/marketplace.json"))
+    if plugin.get("privacyPolicyUrl") != "https://adsagent.md/privacy":
+        fail("plugin.json must link the hosted AdsAgent privacy policy")
     if plugin.get("version") != VERSION:
         fail(f"plugin.json version is {plugin.get('version')}, expected {VERSION}")
     if marketplace.get("metadata", {}).get("version") != VERSION:

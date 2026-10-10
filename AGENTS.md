@@ -18,7 +18,7 @@ Bump `VERSION` and `CHANGELOG.md` together when skill content changes.
 
 Applies to Cursor Cloud Agents and Codex cloud agents working in this
 repository (environment: `.cursor/environment.json` →
-`scripts/devbox/cloud-agent-install.sh`). The owner does not review or merge
+`scripts/cloud-agent-setup.sh`). The owner does not review or merge
 by hand; this section is the standing authorization that lets a cloud agent
 take a change from task to `main` on its own. It does **not** extend to
 anything in the "still forbidden" list.

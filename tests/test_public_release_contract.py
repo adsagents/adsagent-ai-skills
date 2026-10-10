@@ -150,6 +150,24 @@ class PublicReleaseContractTests(unittest.TestCase):
         cursor_mcp = json.loads(self._read("mcp.json"))
         self.assertEqual(cursor_mcp, claude_mcp)
 
+    def test_validator_rejects_missing_or_wrong_privacy_policy(self) -> None:
+        read = validate_tri_channel_pack.read
+        for privacy_url in (None, "https://example.com/privacy"):
+            with self.subTest(privacy_url=privacy_url):
+                def missing_policy(path: str) -> str:
+                    text = read(path)
+                    if path == ".claude-plugin/plugin.json":
+                        manifest = json.loads(text)
+                        manifest.pop("privacyPolicyUrl", None)
+                        if privacy_url is not None:
+                            manifest["privacyPolicyUrl"] = privacy_url
+                        return json.dumps(manifest)
+                    return text
+
+                with patch.object(validate_tri_channel_pack, "read", missing_policy):
+                    with self.assertRaises(SystemExit):
+                        validate_tri_channel_pack.main()
+
     def test_cursor_plugin_manifest_declares_skills_and_mcp(self) -> None:
         manifest = json.loads(self._read(".cursor-plugin/plugin.json"))
         self.assertEqual(manifest.get("name"), "adsagent")

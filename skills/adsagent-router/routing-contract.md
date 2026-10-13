@@ -57,7 +57,8 @@ the requested status; do not turn it into a reporting intake.
 
 ## Ambiguous Scope
 
-1. Read setup.
+1. Select and bind the OAuth connection using
+   [connection-routing.md](connection-routing.md), then read setup on that link.
 2. Inspect `setup_get_status.capabilities`; capability truth overrides guessed cross-platform parity.
 3. Discover accounts.
 4. Ask for scope and dates.

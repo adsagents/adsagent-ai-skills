@@ -5,6 +5,8 @@ description: Use when connecting, authorizing, or checking AdsAgent MCP readines
 
 # AdsAgent Setup
 
+Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
+
 1. Keep the user's task. Reuse existing connections; connect only the
    requested channel.
 2. Distinguish client MCP OAuth, platform authorization, account scope,
@@ -17,5 +19,3 @@ description: Use when connecting, authorizing, or checking AdsAgent MCP readines
    OAuth automatically or copy credentials between servers.
 5. Recheck readiness and resume the original task. For setup-only requests,
    report status and stop. Never change customer permissions.
-
-[Data boundary](data-boundary.md) applies.

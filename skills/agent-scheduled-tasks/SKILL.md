@@ -5,6 +5,8 @@ description: Use when creating, changing, debugging, or proving an agent-owned s
 
 # Agent Scheduled Tasks
 
+Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
+
 1. Classify the job as reminder/heartbeat, auditable execution, or
    consequential execution.
 2. Resolve timezone, cadence, destination, stable scope, allowed tools,
@@ -24,5 +26,3 @@ description: Use when creating, changing, debugging, or proving an agent-owned s
 Read [scheduled-task-contract.md](scheduled-task-contract.md) only when
 designing, creating, updating, debugging, pausing, deleting, or proving a
 scheduled task.
-
-[Data boundary](data-boundary.md) applies.

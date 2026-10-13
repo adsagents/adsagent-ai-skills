@@ -3,6 +3,15 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.74 binds multi-tenant OAuth workflows to their selected client
+connection through prepare, approval, confirm, task polling, continuation and
+permitted retry. New flows select an explicitly chosen account, a uniquely
+verified object owner, or the sole available connection; ambiguous or incomplete
+ownership needs an account choice. Every skill ships the routing contract, and
+scheduled runs retain each channel's connection. A stdlib client-adapter guard
+validates routing and restorable handle context without dispatching tools or
+handling credentials. Hosted clients must integrate the guard to enforce it.
+
 Version 0.7.73 declares the hosted privacy policy in the Claude plugin manifest
 and replaces the general product devbox bootstrap with repository-local Python
 validation setup. Cloud images must provide uv; the bundled setup no longer

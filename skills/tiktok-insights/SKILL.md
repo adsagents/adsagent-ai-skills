@@ -5,6 +5,8 @@ description: Use when reading or changing TikTok Ads, creatives, delivery, optim
 
 # TikTok Through AdsAgent
 
+Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
+
 For connection blockers, use `adsagent-setup`. Template readiness is separate
 from read access.
 
@@ -23,5 +25,3 @@ from read access.
 
 Read [channel-contract.md](channel-contract.md) only for pagination, creative
 readiness, QuickCreate/append, receipts, optimization, MMP, or support.
-
-[Data boundary](data-boundary.md) applies.

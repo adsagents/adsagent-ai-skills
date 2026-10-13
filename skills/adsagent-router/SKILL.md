@@ -1,12 +1,14 @@
 ---
 name: adsagent-router
-description: Use when an AdsAgent request is ambiguous or spans channels and needs one specialized workflow selected.
+description: Use when an AdsAgent request is ambiguous, spans channels, or needs an OAuth tenant choice.
 ---
 
 # AdsAgent Router
 
-Do not use this router when one channel and one workflow are already clear.
-Load only the matching specialized skill:
+Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
+
+Use this router for ambiguous workflows or OAuth tenants; otherwise load
+the matching specialized skill:
 
 - ambiguous or cross-channel request: stay here long enough to decompose it;
 - connection/readiness: `adsagent-setup`;
@@ -19,13 +21,10 @@ Load only the matching specialized skill:
 - notification integration: `adsagent-notifications`;
 - agent-owned schedule or automation: `agent-scheduled-tasks`.
 
-For an ambiguous request, discover only enough scope to ask one clarifying
-question. For a cross-channel request, execute one channel plan at a time and
-preserve each channel's native capability and evidence contract.
-An unqualified list/view/delete/rename-template request is ambiguous until the
-user names the channel.
+For ambiguity, discover enough scope to ask one clarifying
+question. Execute cross-channel plans serially, preserving each channel's
+native capability and evidence contract.
+Unqualified template lifecycle requests require a channel choice.
 
 Read [routing-contract.md](routing-contract.md) only when the request remains
 ambiguous, spans channels, or needs a Meta read-versus-write decision.
-
-[Data boundary](data-boundary.md) applies.

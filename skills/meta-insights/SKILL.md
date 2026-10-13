@@ -3,9 +3,11 @@ name: meta-insights
 description: Use when reading or analyzing Meta Ads performance, delivery, MMP, cohorts, exports, or reports where templates are an analysis dimension.
 ---
 
-# Meta Insights Through AdsAgent
+# Meta Insights
 
-For missing tools/authorization, use `adsagent-setup`, then resume this scope.
+Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
+
+Missing tools/authorization: use `adsagent-setup`, then resume.
 
 1. Classify health or performance. Template-dimension reports stay here;
    template lifecycle uses `meta-copy`.
@@ -18,8 +20,8 @@ For missing tools/authorization, use `adsagent-setup`, then resume this scope.
 4. Require complete evidence before totals, filtering, pagination, or a
    decision. Missing scopes stay unknown.
 5. Preserve opaque task and continuation contracts exactly.
-6. Return Markdown or the server artifact; never expose raw rows,
-   schemas, diagnostics, or internal errors.
+6. Return Markdown or server artifacts; hide raw rows,
+   schemas, diagnostics, and internal errors.
 
 Read [query-contract.md](query-contract.md) only when the request needs
 filtering, hierarchy metadata, exhaustive pagination, freshness, MMP,
@@ -27,5 +29,3 @@ post-write verification, or export handling.
 
 Read [product-health-contract.md](product-health-contract.md) for product,
 account, Page, Pixel, or delivery health, blockers, and spend readiness.
-
-[Data boundary](data-boundary.md) applies.

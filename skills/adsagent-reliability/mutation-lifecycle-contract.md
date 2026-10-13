@@ -62,6 +62,10 @@ Persist when advertised: `tool_name`, `schema_version`, `approval_ref`,
 `plan_digest`, `mutation_ref`, `upload_ref`, `task_ref`, `expiry`. Handles are
 not interchangeable across tools or tenants.
 
+Persist their workflow's hosted resource, `link_id`, and `profile_id` as well.
+Resolve approvals, confirm, poll, recover, and retry using that binding, as
+specified in [connection-routing.md](connection-routing.md).
+
 ## Dual-Stack Rules
 
 1. Read `setup_get_status.capabilities` before advanced writes. Capability

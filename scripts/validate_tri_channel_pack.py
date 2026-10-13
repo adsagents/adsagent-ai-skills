@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.73"
+VERSION = "0.7.74"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -769,6 +769,11 @@ def main() -> None:
             ROOT / "skills" / "data-boundary.md"
         ).read_bytes():
             fail(f"{skill} must include the current skill-local data boundary")
+        routing = path.parent / "connection-routing.md"
+        if not routing.is_file() or routing.read_bytes() != (
+            ROOT / "skills" / "connection-routing.md"
+        ).read_bytes():
+            fail(f"{skill} must include the current skill-local connection routing")
         frontmatter = parse_skill_frontmatter(path)
         if frontmatter["name"] != skill:
             fail(f"{path.relative_to(ROOT)} name is {frontmatter['name']}, expected {skill}")

@@ -5,6 +5,8 @@ description: Use when inspecting AdsAgent notifications, requesting an alert ref
 
 # AdsAgent Notifications
 
+Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
+
 1. For Meta alert status, use `notifications_list` or `notifications_summary`.
    Inspect returned monitoring capabilities before describing coverage.
 2. Current Meta MCP no longer configures email, Feishu, Telegram, or Meta Ads
@@ -21,5 +23,3 @@ description: Use when inspecting AdsAgent notifications, requesting an alert ref
 
 Read [monitoring-contract.md](monitoring-contract.md) only when explaining
 event coverage, thresholds, retired integrations, push support, or recovery.
-
-[Data boundary](data-boundary.md) applies.

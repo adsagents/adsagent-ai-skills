@@ -31,7 +31,7 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 
 Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [Cursor Directory](https://cursor.directory/plugins/adsagent-meta-mcp), and [MCP Market](https://mcpmarket.com/zh/server/adsagent-ai-skills).
 
-Current contract version: `0.7.73`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.74`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 
 For contributor cloud environments, provision `uv` in the image and run the
 bundled `bash scripts/cloud-agent-setup.sh`; see
@@ -102,6 +102,14 @@ check alone, it reports the result without starting a report.
 
 Each server has its own OAuth authorization. Use the same AdsAgent login in
 the browser and client; never copy an OAuth token between the three URLs.
+
+For multiple OAuth tenants on one server, each workflow retains its selected
+connection through approval, confirmation, task queries and retries. Selection
+uses an explicit account choice, uniquely verified object ownership, or the
+sole available connection; ambiguous choices need one account question. See
+[multi-tenant routing](docs/faq.md#how-are-multiple-oauth-tenants-selected) for
+the installed policy and optional client-adapter dispatch guard.
+
 Platform authorization and initial asset/history sync are separate steps;
 "connected" does not mean history is loaded or ads are ready to launch.
 

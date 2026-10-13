@@ -138,6 +138,25 @@ Markdown. The default shape is: answer, scope, compact results table, notes, and
 
 Yes, if AdsAgent exposes both the sanitized creation snapshot and the current live platform snapshot through the authenticated MCP session. The agent should not assume task history equals current platform state because humans may edit campaigns directly in the ad platform.
 
+## How are multiple OAuth tenants selected?
+
+Each workflow retains its connection through approval, confirmation, task
+queries and retries. A new workflow uses your explicit account choice, a
+uniquely verified object owner, or the sole connection for the requested
+channel. When several tenants can satisfy the request, or discovery is
+incomplete, the agent asks which account to use. Connection names such as
+Primary are not automatic defaults. Different workflows can run on different
+tenants without changing a global current account.
+
+The installed skills specify this behavior. A client that exposes `link_id`
+must carry it through every call; other clients keep the same MCP transport.
+The pack has no tool-execution hook. Adapters controlling dispatch can enforce
+the policy with [connection_routing_guard.py](../scripts/connection_routing_guard.py),
+using adapter-owned workflow context persisted beside approval/task handles.
+An unavailable or identity-changed connection stops its workflow instead of
+falling back to another tenant. See the packaged
+[connection routing contract](../skills/connection-routing.md).
+
 ## What if the AI client reports a temporary MCP connection failure?
 
 The client should respect AdsAgent's recovery contract:

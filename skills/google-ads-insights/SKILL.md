@@ -3,7 +3,9 @@ name: google-ads-insights
 description: Use when reading or analyzing Google Ads accounts, Search, PMax, spend, conversions, campaigns, keywords, or assets through AdsAgent.
 ---
 
-# Google Ads Insights Through AdsAgent
+# Google Ads Insights
+
+Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
 
 For connection blockers, use `adsagent-setup` and resume this scope.
 
@@ -19,5 +21,3 @@ For connection blockers, use `adsagent-setup` and resume this scope.
 
 Read [query-contract.md](query-contract.md) only for account routing,
 pagination, retries, fallback tools, exports, or freshness boundaries.
-
-[Data boundary](data-boundary.md) applies.

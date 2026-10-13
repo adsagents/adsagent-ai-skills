@@ -5,7 +5,9 @@ description: Use when preparing a Meta Ads creation, copy, template write, budge
 
 # Meta Copy
 
-Setup blockers: use `adsagent-setup`; then resume.
+Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
+
+Setup blockers: `adsagent-setup`.
 
 1. Inspect `capabilities.delivery_mutations` and exact object level. Template
    state requires `capabilities.template_mutations.allowed=true` with
@@ -25,9 +27,7 @@ Setup blockers: use `adsagent-setup`; then resume.
    create/copy `next_action` once; proves live state, not spend or replay.
 
 Read [creation-and-copy-contract.md](creation-and-copy-contract.md) for
-QuickCreate, append, copy, delivery mutation, reconciliation, or recovery.
+creation, copy, delivery, or recovery.
 
 Read [template-persistence-contract.md](template-persistence-contract.md) for
 template lifecycle or uncertain templates.
-
-[Data boundary](data-boundary.md) applies.

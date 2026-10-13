@@ -1,5 +1,9 @@
 # AdsAgent Recovery Contract
 
+Preserve the failed call's workflow connection through every recovery branch.
+Read [connection-routing.md](connection-routing.md) before retry or task/approval
+recovery; a missing handle on another tenant is not proof of expiry.
+
 ## Query Plan
 
 Use server-side batch.

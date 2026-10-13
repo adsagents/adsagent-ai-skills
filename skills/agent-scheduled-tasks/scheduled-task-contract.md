@@ -18,6 +18,7 @@ Before creating, determine:
 - IANA timezone, cadence, start boundary, and enabled state;
 - destination: existing thread, new task, channel, or artifact;
 - stable scope and allowed tools;
+- the hosted resource, bound `link_id`, and stable `profile_id` for each channel;
 - expected output, append-only run log location, and failure target;
 - bounded retry policy and stop conditions.
 
@@ -39,6 +40,11 @@ Write the scheduled prompt as a deterministic entrypoint: state the goal, scope,
 Do not claim success from a saved schedule, notification, nearby data pull, or chat response. Require scheduler evidence and, for tool jobs, downstream evidence. A useful execution record includes scheduled/start/finish times, stable scope, downstream task refs, evaluated and matched counts, outcome, and append-only run log reference.
 
 ## AdsAgent Jobs
+
+Restore each channel's retained connection binding before the first call of
+every run. Persist downstream task/approval handles with that binding; see
+[connection-routing.md](connection-routing.md). Missing or changed connections
+stop the run without selecting another tenant.
 
 Read `setup_get_status.capabilities` once per run. Use stable public refs and server-side batch; never fan out. Trust an Insights decision only when the relevant result reports `complete=true`; poll a returned `task_ref` to terminal before reevaluating.
 

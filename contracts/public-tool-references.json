@@ -40,10 +40,6 @@
         {"name": "operations_get"},
         {"name": "operations_get_approval"},
         {
-          "name": "operations_confirm_approval",
-          "required_capability": "mcp.launch.confirm"
-        },
-        {
           "name": "operations_deny_approval",
           "required_capability": "mcp.launch.confirm"
         },
@@ -238,7 +234,7 @@
         },
         {
           "name": "tasks_cancel",
-          "required_capability": "mcp.operator"
+          "required_capability": "mcp.read"
         },
         {"name": "notifications_scan"}
       ]

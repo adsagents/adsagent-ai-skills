@@ -79,7 +79,7 @@ new registration.
    the user requests a check, or a relevant step has changed state. Reuse a
    current result; a new chat or an unrelated question alone needs no setup
    call. Resolve duplicate tool names through their MCP server namespace.
-6. Inspect `setup_get_status.capabilities`; use optional consistency, delivery mutation, verification, recovery, and `mutation_lifecycle` only when advertised. When `mutation_lifecycle` is present, prefer `operations_confirm_approval` with `approval_ref` and `expected_plan_digest` over legacy `confirm_token` tools.
+6. Inspect `setup_get_status.capabilities`; use optional consistency, delivery mutation, verification, recovery, and `mutation_lifecycle` only when advertised. When `mutation_lifecycle` is present, prefer the operation-specific confirmation tool named in `next_action`, passing `approval_ref` and `expected_plan_digest`, over legacy `confirm_token` tools.
 7. Inspect top-level `client_skill_pack` once. Its `reminder_mode=notify_only` policy is not a capability or command.
 8. Follow the smallest returned setup action needed for the original task.
    Readiness for reporting and readiness for creation are separate. Never

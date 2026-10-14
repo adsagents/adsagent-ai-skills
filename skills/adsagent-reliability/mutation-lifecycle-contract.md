@@ -26,7 +26,7 @@ When advertised, prefer ref-first confirm and recovery:
 | Intent | Tool | Required inputs |
 | --- | --- | --- |
 | Resolve approval | `operations_get_approval` | `approval_ref` |
-| Confirm | `operations_confirm_approval` | `approval_ref`, `expected_plan_digest` |
+| Confirm | operation-specific confirmation tool from `next_action` | `approval_ref`, `expected_plan_digest` |
 | Deny | `operations_deny_approval` | `approval_ref`, `expected_plan_digest` |
 | Recover write/upload | `operations_get` | `mutation_ref` or `upload_ref` |
 | Recover task context | `operations_get_context` | `task_ref` |

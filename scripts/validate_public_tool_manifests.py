@@ -63,6 +63,7 @@ TOOL_PREFIXES = (
     "templates_",
 )
 NON_TOOL_IDENTIFIERS = {
+    "ads_eligible",
     "ads_per_adset",
     "insights_export",
     "insights_query_contract",

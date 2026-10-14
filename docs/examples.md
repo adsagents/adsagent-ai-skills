@@ -236,7 +236,7 @@ Create a daily AdsAgent monitoring task for this product_ref. Use a versioned ru
 ## Meta Durable Refs (Phase 6)
 
 ```text
-After setup_get_status, if capabilities.mutation_lifecycle is advertised, persist approval_ref and plan_digest from every prepare. After I explicitly approve, confirm with operations_confirm_approval using approval_ref and expected_plan_digest — never rebuild the write JSON from chat memory. If I lose the chat turn, recover with operations_get_approval(approval_ref=...) or operations_get(mutation_ref=...) exactly; legacy confirm_token tools are compatibility-only, not primary recovery.
+After setup_get_status, if capabilities.mutation_lifecycle is advertised, persist approval_ref and plan_digest from every prepare. After I explicitly approve, confirm with the operation-specific confirmation tool named in next_action, using approval_ref and expected_plan_digest — never rebuild the write JSON from chat memory. If I lose the chat turn, recover with operations_get_approval(approval_ref=...) or operations_get(mutation_ref=...) exactly; legacy confirm_token tools are compatibility-only, not primary recovery.
 ```
 
 ```text

@@ -145,7 +145,7 @@ Never fan out per-campaign `overview_update_campaign_status` prepares when the p
 
 When advertised, prefer the prepare-only tools; each saves one approval draft
 and never changes delivery. Apply only after explicit user approval with
-`operations_confirm_approval` (`operations_deny_approval` discards):
+the operation-specific confirmation tool named in the prepare result's `next_action` (`operations_deny_approval` discards):
 
 - Campaign status: `campaigns_prepare_status_change`.
 - Ad Set status: `adsets_prepare_status_change`.

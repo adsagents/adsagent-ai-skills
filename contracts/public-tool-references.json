@@ -40,10 +40,6 @@
         {"name": "operations_get"},
         {"name": "operations_get_approval"},
         {
-          "name": "operations_confirm_approval",
-          "required_capability": "mcp.launch.confirm"
-        },
-        {
           "name": "operations_deny_approval",
           "required_capability": "mcp.launch.confirm"
         },
@@ -147,6 +143,18 @@
           "required_capability": "mcp.optimize.write"
         },
         {
+          "name": "adsets_prepare_budget_change",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "adsets_prepare_bid_change",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "ads_prepare_status_change",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
           "name": "overview_update_campaign_budget",
           "capability_gate": "delivery_mutations",
           "required_capability": "mcp.optimize.write"
@@ -226,7 +234,7 @@
         },
         {
           "name": "tasks_cancel",
-          "required_capability": "mcp.operator"
+          "required_capability": "mcp.read"
         },
         {"name": "notifications_scan"}
       ]

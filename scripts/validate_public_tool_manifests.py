@@ -39,6 +39,7 @@ INLINE_CODE_IDENTIFIER_RE = re.compile(
 )
 TOOL_PREFIXES = (
     "accounts_",
+    "ads_",
     "adsets_",
     "assets_",
     "campaigns_",
@@ -62,6 +63,8 @@ TOOL_PREFIXES = (
     "templates_",
 )
 NON_TOOL_IDENTIFIERS = {
+    "ads_eligible",
+    "ads_per_adset",
     "insights_export",
     "insights_query_contract",
     "optimization_goal",

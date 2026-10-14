@@ -38,13 +38,13 @@ def test_release_identity_and_pinned_service_guides_are_current() -> None:
     release = json.loads(_read("release-manifest.json"))
     provenance = json.loads(_read("contracts/manifests/provenance.json"))
 
-    assert version == "0.7.74"
+    assert version == "0.7.75"
     assert release["version"] == version
     assert release["tag"] == f"v{version}"
     assert set(provenance["channels"]) == {"meta", "google", "tiktok"}
 
     expected_guides = {
-        "meta": "2026-10-08.2",
+        "meta": "2026-10-14.3",
         "google": "2026-10-04.1",
         "tiktok": "2026-10-07.1",
     }

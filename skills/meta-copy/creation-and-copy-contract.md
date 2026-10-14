@@ -145,12 +145,15 @@ Never fan out per-campaign `overview_update_campaign_status` prepares when the p
 
 When advertised, prefer the prepare-only tools; each saves one approval draft
 and never changes delivery. Apply only after explicit user approval with
-`operations_confirm_approval` (`operations_deny_approval` discards):
+the operation-specific confirmation tool named in the prepare result's `next_action` (`operations_deny_approval` discards):
 
 - Campaign status: `campaigns_prepare_status_change`.
 - Ad Set status: `adsets_prepare_status_change`.
 - Campaign budget: `campaigns_prepare_budget_change`; for 1-10 Campaigns use
   one `campaigns_prepare_budget_changes` call under one approval, not a fan-out.
+- Ad Set budget: `adsets_prepare_budget_change`.
+- Ad Set bid: `adsets_prepare_bid_change`.
+- Ad status: `ads_prepare_status_change`.
 
 Otherwise use the older entrypoints, each confirmed with `overview_update_confirm`
 (the Campaign budget entrypoint may also use `overview_update_campaign_budget_confirm`):

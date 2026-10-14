@@ -3,6 +3,16 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.75 names the prepare-only Meta delivery tools for Ad Set budget
+(`adsets_prepare_budget_change`), Ad Set bid (`adsets_prepare_bid_change`) and
+Ad status (`ads_prepare_status_change`) alongside the existing campaign and
+Ad Set status prepares; the older `overview_update_*` entrypoints remain
+callable for cached clients. Confirmation guidance now names the
+operation-specific confirmation tool from `next_action` instead of the
+retired generic approval executor. The Meta public manifest pin refreshes to
+guide `2026-10-14.3` (smartads `afc698920`, 176 tools); Google (`2026-10-04.1`)
+and TikTok (`2026-10-07.1`) pins are unchanged.
+
 Version 0.7.74 binds multi-tenant OAuth workflows to their selected client
 connection through prepare, approval, confirm, task polling, continuation and
 permitted retry. New flows select an explicitly chosen account, a uniquely

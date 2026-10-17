@@ -16,6 +16,12 @@ _SETUP = re.compile(
     r"连接|安装|鉴权|授权|重新注册",
     re.IGNORECASE,
 )
+_DIAGNOSIS = re.compile(
+    r"\b(?:deep diagnosis|diagnosis|diagnostic|account health check|"
+    r"health check|account audit|audit)\b|"
+    r"深度诊断|诊断|体检|审计|账户检查",
+    re.IGNORECASE,
+)
 _SCHEDULED = re.compile(
     r"\b(?:scheduled task|schedule|automation|cron|heartbeat|reminder)\b|"
     r"定时任务|自动任务|提醒|心跳",
@@ -639,6 +645,10 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
     ]
     named_channels = [name for name, matched in channel_matches if matched]
 
+    # Diagnosis wins over scheduling and channel routes: a request to put
+    # a diagnosis on a schedule must land on the skill that refuses it.
+    if _DIAGNOSIS.search(prompt):
+        return ("adsagent-diagnosis",)
     if _SCHEDULED.search(prompt):
         return ("agent-scheduled-tasks",)
     if _NOTIFICATIONS.search(prompt):

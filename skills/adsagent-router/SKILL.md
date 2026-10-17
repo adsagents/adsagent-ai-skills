@@ -8,7 +8,7 @@ description: Use when an AdsAgent request is ambiguous, spans channels, or needs
 Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
 
 Use this router for ambiguous workflows or OAuth tenants; otherwise load
-the matching specialized skill:
+the matching skill:
 
 - ambiguous or cross-channel request: stay here long enough to decompose it;
 - connection/readiness: `adsagent-setup`;
@@ -20,13 +20,14 @@ the matching specialized skill:
 - Google Ads: `google-ads-insights` (read), `google-ads-create`, `google-ads-manage`;
   TikTok: `tiktok-insights`;
 - any prepare/confirm write, `needs_input`, or amount refusal: `adsagent-approvals`;
+- deep diagnosis / audit / account health check: `adsagent-diagnosis`;
 - notification integration: `adsagent-notifications`;
 - agent-owned schedule or automation: `agent-scheduled-tasks`.
 
-For ambiguity, discover enough scope to ask one clarifying
+For ambiguity, discover enough to ask one clarifying
 question. Execute cross-channel plans serially, preserving each channel's
-native capability and evidence contract.
+capability and evidence contract.
 Unqualified template lifecycle requests require a channel choice.
 
-Read [routing-contract.md](routing-contract.md) only when the request remains
-ambiguous, spans channels, or needs a Meta read-versus-write decision.
+Read [routing-contract.md](routing-contract.md) only when ambiguous,
+cross-channel, or a Meta read-versus-write decision.

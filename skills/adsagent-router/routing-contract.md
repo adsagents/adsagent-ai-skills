@@ -9,6 +9,7 @@
 - setup / connect / OAuth / MCP token: `adsagent-setup`.
 - notification / webhook / email / Feishu / Telegram: `adsagent-notifications`.
 - scheduled task / automation / cron / reminder: `agent-scheduled-tasks`.
+- deep diagnosis / audit / account health check / 诊断 / 体检 / 审计 / 账户检查: `adsagent-diagnosis`, even when the user names one channel or asks for it on a schedule; diagnosis runs are user-triggered only.
 
 If a selected channel lacks tools or platform authorization, hand off to
 `adsagent-setup` with the original task and scope. Connect only the requested

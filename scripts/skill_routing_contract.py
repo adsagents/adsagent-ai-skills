@@ -280,6 +280,15 @@ _META_TEMPLATE_NAMING = re.compile(
 )
 _CLAUSE_BREAK = re.compile(r"[.!?;:,\n。！？；：，]")
 _ADSAGENT = re.compile(r"\badsagent\b", re.IGNORECASE)
+_GOOGLE_CREATE = re.compile(
+    r"\b(?:create|launch|build|set up)\b|创建|新建",
+    re.IGNORECASE,
+)
+_GOOGLE_MANAGE = re.compile(
+    r"\b(?:pause|resume|enable|change|update|edit|raise|lower|increase|"
+    r"decrease|remove|apply)\b|暂停|恢复|修改|调整|删除",
+    re.IGNORECASE,
+)
 
 
 def _bounded_template_suffix(
@@ -691,6 +700,10 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             return ("meta-copy",)
         return ("meta-insights",)
     if named_channels == ["google"]:
+        if _GOOGLE_CREATE.search(prompt):
+            return ("google-ads-create",)
+        if _GOOGLE_MANAGE.search(prompt):
+            return ("google-ads-manage",)
         return ("google-ads-insights",)
     if named_channels == ["tiktok"]:
         return ("tiktok-insights",)

@@ -20,8 +20,7 @@ class MutationLifecyclePhase6GuidanceTests(unittest.TestCase):
             "operations_deny_approval",
             "expected_plan_digest",
             "upload_ref",
-            "launch_confirm",
-            "compatibility window",
+            "next_action",
         ):
             self.assertIn(term, text)
 
@@ -30,13 +29,12 @@ class MutationLifecyclePhase6GuidanceTests(unittest.TestCase):
             ROOT, "skills/adsagent-reliability/mutation-lifecycle-contract.md"
         )
         for term in (
-            "Phase 5 complete",
+            "Direct-Write Receipt Families",
             "templates_create",
             "products_save_funnel_events",
             "mmp_connect",
             "fb_users_update_permissions",
             "tasks_cancel",
-            "2026-08-14.13",
         ):
             self.assertIn(term, text)
 

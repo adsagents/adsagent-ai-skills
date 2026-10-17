@@ -16,7 +16,7 @@ from skill_contract import (
 )
 from validate_public_tool_manifests import (
     ManifestValidationError,
-    validate_committed_manifests,
+    validate_offline,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,6 +32,9 @@ REQUIRED_SKILLS = {
     "meta-copy",
     "google-ads-insights",
     "tiktok-insights",
+    "google-ads-create",
+    "google-ads-manage",
+    "adsagent-approvals",
 }
 MAX_SKILL_WORDS = 180
 MAX_SKILL_BYTES = 1_600
@@ -162,7 +165,6 @@ REQUIRED_REPO_TERMS = [
     "invalid_fields",
     "rerun prepare once",
     "settings_source_ad_id",
-    "cgb_confirm_*",
     "support@adsagent.md",
     "https://github.com/adsagents/adsagent-ai-skills",
     "result.failures.items",
@@ -217,6 +219,34 @@ FORBIDDEN_REPO_TERMS = [
     "only " + "Meta",
     "Meta " + "package",
 ]
+
+PUBLIC_SAFETY_PATTERNS = {
+    "private repository name": re.compile(
+        r"kimlucky7/|\bsmartads\b|tiktok-adsagent|adsagent-marketing|grok-bot-box",
+        re.IGNORECASE,
+    ),
+    "internal host or tooling": re.compile(
+        r"ci-hel1|docs/internal|DEV_BOX|sync-vendored|release_local|deploy\.sh|wrangler",
+    ),
+    "risk-control number": re.compile(
+        r"<=\s*\d+\s*(?:major units?|percent)|\b\d+-second cooldown",
+        re.IGNORECASE,
+    ),
+}
+PUBLIC_SAFETY_PATHS = (
+    "skills",
+    "docs",
+    "contracts",
+    "submissions",
+    ".github",
+    "README.md",
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "SECURITY.md",
+    "NOTICE.md",
+    ".gitignore",
+)
+PUBLIC_SAFETY_SUFFIXES = {".md", ".json", ".yml", ".yaml", ".txt", ".py", ""}
 
 ROUTER_TERMS = [
     "Meta / Facebook / FB / Page / pixel / campaign copy",
@@ -449,7 +479,6 @@ META_COPY_TERMS = [
     "diagnostics_complete",
     "source_ad_id",
     "settings_source_ad_id",
-    "cgb_confirm_*",
     "paused-by-default",
     "adsagent://guide/metadata-contract",
     "target_configured_status",
@@ -473,7 +502,6 @@ META_COPY_TERMS = [
     "overview_update_adset_budget",
     "overview_update_confirm",
     "overview_update_campaign_budget",
-    "overview_update_campaign_budget_confirm",
     "Never substitute",
     "destination.type=web|app",
     "creatives_list(created_from=<inclusive>, created_to=<exclusive>)",
@@ -488,9 +516,87 @@ META_COPY_TERMS = [
 ]
 
 
+APPROVALS_TERMS = [
+    "needs_input",
+    "next_action",
+    "validate_only",
+    "amount-guard refusal",
+    "money_change_exceeds_guard",
+    "over_cap",
+    "Never split",
+    "approval_plan_prepare",
+    "approval_plan_get",
+    "operations_get",
+    "google_ads_mutation_receipt_get",
+    "Never replay",
+    "support_ref",
+]
+
+GOOGLE_CREATE_TERMS = [
+    "google_ads_creation_capabilities_get",
+    "google_ads_geo_targets_suggest",
+    "google_ads_quick_create_prepare",
+    "google_ads_pmax_create_prepare",
+    "needs_input",
+    "worldwide",
+    "test_account",
+    "Video campaigns are read-only",
+    "next_action",
+]
+
+GOOGLE_MANAGE_TERMS = [
+    "google_ads_budget_update_prepare",
+    "google_ads_status_pause_prepare",
+    "google_ads_entity_update_prepare",
+    "google_ads_mutation_receipt_get",
+    "test_account",
+    "next_action",
+    "adsagent-approvals",
+]
+
+META_UPDATE_TERMS = [
+    "entities_prepare_update",
+    "ads_get_copy",
+    "validate_only",
+    "money_change_exceeds_guard",
+    "needs_input",
+    "next_action",
+    "operations_get",
+]
+
+
 def fail(message: str) -> None:
     print(f"FAIL: {message}")
     sys.exit(1)
+
+
+def iter_public_safety_files() -> list[Path]:
+    files: list[Path] = []
+    for relative in PUBLIC_SAFETY_PATHS:
+        path = ROOT / relative
+        if path.is_dir():
+            files.extend(
+                item
+                for item in sorted(path.rglob("*"))
+                if item.is_file() and item.suffix in PUBLIC_SAFETY_SUFFIXES
+            )
+        elif path.is_file():
+            files.append(path)
+    own = Path(__file__).resolve()
+    return [item for item in files if item.resolve() != own]
+
+
+def assert_public_safe() -> None:
+    """Fail on private repository names, internal tooling, and risk-control numbers."""
+    for path in iter_public_safety_files():
+        text = path.read_text(encoding="utf-8")
+        for label, pattern in PUBLIC_SAFETY_PATTERNS.items():
+            match = pattern.search(text)
+            if match:
+                fail(
+                    f"{path.relative_to(ROOT)} contains {label}: "
+                    f"{match.group(0)!r}"
+                )
 
 
 def read(path: str) -> str:
@@ -804,6 +910,10 @@ def main() -> None:
         read_bundle("google-ads-insights"),
         GOOGLE_TERMS,
     )
+    assert_terms("adsagent-approvals", read_bundle("adsagent-approvals"), APPROVALS_TERMS)
+    assert_terms("google-ads-create", read_bundle("google-ads-create"), GOOGLE_CREATE_TERMS)
+    assert_terms("google-ads-manage", read_bundle("google-ads-manage"), GOOGLE_MANAGE_TERMS)
+    assert_terms("meta-copy update contract", read("skills/meta-copy/update-contract.md"), META_UPDATE_TERMS)
     assert_terms(
         "tiktok-insights",
         read_bundle("tiktok-insights"),
@@ -951,11 +1061,17 @@ def main() -> None:
     )
 
     try:
-        manifest_messages = validate_committed_manifests(root=ROOT)
+        manifest_messages = validate_offline(root=ROOT)
     except ManifestValidationError as exc:
         fail(str(exc))
     for message in manifest_messages:
         print(message)
+
+    assert_public_safe()
+
+    for client in ("ChatGPT", "Claude", "Codex", "Cursor"):
+        if client not in readme:
+            fail(f"README must name supported client {client}")
 
     print("PASS: tri-channel skill pack contract satisfied")
 

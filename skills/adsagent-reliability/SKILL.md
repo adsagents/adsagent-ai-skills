@@ -22,6 +22,7 @@ Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
 6. After two failures or disputed data, follow
    [support-reporting.md](support-reporting.md) with the latest `support_ref`.
 7. Stop on unclassified, permission, or operator-review outcomes.
+   `needs_input` and amount refusals are not failures: `adsagent-approvals`.
 8. Legacy recovery requires a negotiated legacy protocol;
    MCP `2026-07-28` is stateless.
 
@@ -29,4 +30,4 @@ Read [recovery-contract.md](recovery-contract.md); when advertised,
 [mutation-lifecycle-contract.md](mutation-lifecycle-contract.md) and
 [plan-reconciliation-contract.md](plan-reconciliation-contract.md). Use
 [retry-parser.md](retry-parser.md) for backoff and
-[meta-quota-plan.md](meta-quota-plan.md) for strict Meta quota defer.
+[meta-quota-plan.md](meta-quota-plan.md) for Meta quota defer.

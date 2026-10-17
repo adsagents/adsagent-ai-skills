@@ -7,7 +7,7 @@ description: Use when preparing a Meta Ads creation, copy, template write, budge
 
 Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
 
-Setup blockers: `adsagent-setup`.
+Setup: `adsagent-setup`. Approvals and errors: `adsagent-approvals`.
 
 1. Inspect `capabilities.delivery_mutations` and exact object level. Template
    state requires `capabilities.template_mutations.allowed=true` with
@@ -23,11 +23,8 @@ Setup blockers: `adsagent-setup`.
 4. Confirm once. Consume inline `verification_result` first; follow read-only
    `next_action` while pending. Never replay or switch level, route, mode, or
    permissions.
-5. Reconcile tasks. Follow reconciled
-   create/copy `next_action` once; proves live state, not spend or replay.
+5. Reconcile tasks. Follow reconciled create/copy `next_action` once.
 
 Read [creation-and-copy-contract.md](creation-and-copy-contract.md) for
-creation, copy, delivery, or recovery.
-
-Read [template-persistence-contract.md](template-persistence-contract.md) for
-template lifecycle or uncertain templates.
+creation, copy, delivery, or recovery; [update-contract.md](update-contract.md)
+to change existing entities or Ad copy; [templates](template-persistence-contract.md).

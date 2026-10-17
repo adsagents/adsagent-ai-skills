@@ -34,8 +34,9 @@ The published titles and descriptions are:
 
 These descriptions quote existing Registry metadata. They do not expand the
 permissions of the installed skills. In particular, the current
-[Google Ads skill](../skills/google-ads-insights/SKILL.md) supports read/analysis
-workflows; a Registry description mentioning writes does not authorize a write.
+[Google Ads skills](../skills/google-ads-insights/SKILL.md) split reading (`google-ads-insights`)
+from writing (`google-ads-create`, `google-ads-manage`); every write needs prepare, explicit
+approval, and confirm, and a Registry description mentioning writes does not authorize one.
 For all channels, use advertised capabilities and explicit user approval for
 advertising changes.
 

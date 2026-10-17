@@ -32,6 +32,9 @@
     "./skills/meta-insights",
     "./skills/meta-copy",
     "./skills/google-ads-insights",
-    "./skills/tiktok-insights"
+    "./skills/tiktok-insights",
+    "./skills/adsagent-approvals",
+    "./skills/google-ads-create",
+    "./skills/google-ads-manage"
   ]
 }

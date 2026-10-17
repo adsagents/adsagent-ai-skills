@@ -21,9 +21,8 @@ def test_meta_copy_uses_explicit_delivery_permission_and_budget_paths():
         "reconnect",
         "re-list tools",
         "overview_update_adset_budget",
-        "overview_update_confirm",
         "overview_update_campaign_budget",
-        "overview_update_campaign_budget_confirm",
+        "next_action",
         "Never substitute",
         "support_ref",
     ):
@@ -108,7 +107,6 @@ def test_meta_delivery_write_matrix_stops_on_unsupported_object_fields():
         "Ad status: `overview_update_ad_status`",
         "Campaign bid is unsupported",
         "Ad budget and Ad bid are unsupported",
-        "`overview_update_confirm`",
-        "`overview_update_campaign_budget_confirm`",
+        "(`overview_update_confirm`)",
     ):
         assert required in text

@@ -38,10 +38,9 @@ effect clear. A connection check or lingering alert alone is not a request to
 scan or send notifications. Use the read-only notification list for status; do not
 invent a scan prepare/confirm pair or replay an uncertain scan.
 
-Defaults: remaining spend cap <= 50 major units or <= 10 percent; USER-token
-expiry <= 7 days (warning) and already-expired USER tokens (critical);
-3600-second cooldown. Product ownership and affected ad-account ids are included
-when mapped.
+Alert thresholds and repeat cooldowns are configured by the service. Read what
+applies from `notifications_summary`; never state, assume, or promise a number.
+Product ownership and affected ad-account ids are included when mapped.
 
 Keep these boundaries explicit:
 

@@ -3,7 +3,7 @@
 > Human-facing reference. Agent workflows load the bounded contracts linked
 > from the selected file under `skills/`.
 
-AdsAgent is intentionally operated as a semi-black-box MCP product across Meta, Google Ads, and TikTok.
+AdsAgent is a hosted MCP product across Meta, Google Ads, and TikTok. Its tool names are public: every connected client can list them, and the skills in this repository name the tools they use. What stays private is how the service is built and enforced.
 
 The agent-facing contract should help users succeed without exposing the internal implementation details that make the system easy to clone, probe, or misuse.
 
@@ -26,8 +26,9 @@ The skill pack may describe:
 
 The skill pack should not disclose:
 
-- Complete MCP tool catalogs.
-- Complete request or response schemas.
+- Tool descriptions and complete request or response schemas (tool names are public).
+- Risk-control and rate-limit numbers: amount-guard limits, monitoring thresholds, quotas, and cooldowns.
+- Private repository names, commit or pull-request numbers, and internal document paths.
 - Backend routes.
 - Database tables.
 - Internal validation categories.
@@ -88,8 +89,10 @@ The server must still enforce:
 
 Never rely on docs alone to protect the backend.
 
+The amount guard refuses budget, bid, and cap changes that the service judges unsafe. A refusal is final for that request: agents explain it, never retry the same amount, never split the change into smaller steps, and never name or guess a limit. The same rule applies to every channel; see the `adsagent-approvals` skill.
+
 Agents never enable or modify customer permissions automatically. Permission changes remain an explicit human action in the AdsAgent dashboard.
 
-For Meta delivery changes, `setup_get_status.capabilities.delivery_mutations` is authoritative. When denied, follow its `permission_action`; after the user explicitly enables dashboard-token access or reauthorizes OAuth with `mcp.optimize.write`, reconnect and re-list tools. ABO uses `overview_update_adset_budget` with `overview_update_confirm`; CBO uses `overview_update_campaign_budget` with `overview_update_campaign_budget_confirm`. Never substitute budget levels.
+For Meta delivery changes, `setup_get_status.capabilities.delivery_mutations` is authoritative. When denied, follow its `permission_action`; after the user explicitly enables dashboard-token access or reauthorizes OAuth with `mcp.optimize.write`, reconnect and re-list tools. ABO uses `overview_update_adset_budget`; CBO uses `overview_update_campaign_budget`; confirm with the tool the prepare result names in `next_action`. Never substitute budget levels.
 
 Agent-owned schedules remain owned by the Agent platform. The skill pack teaches safe configuration and verification; it does not host cron, wake an Agent, or turn reminder-only jobs into execution guarantees.

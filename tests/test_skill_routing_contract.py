@@ -108,7 +108,7 @@ def test_skill_entrypoints_are_small_and_reference_details() -> None:
         assert len(files) >= 2, name
         assert len(bundle) > size, name
 
-    assert total_bytes <= 12_000
+    assert total_bytes <= 16_000
 
 
 def test_reference_graphs_stay_inside_skills_and_are_bounded() -> None:

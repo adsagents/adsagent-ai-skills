@@ -59,10 +59,8 @@ def test_notification_capability_and_source_boundaries_are_explicit():
         "fb_user_abnormal",
         "fb_user_disabled",
         "fb_user_token_expiring",
-        "remaining spend cap <= 50",
-        "<= 10 percent",
-        "<= 7 days",
-        "3600-second cooldown",
+        "configured by the service",
+        "never state, assume, or promise a number",
         "MCP Events do not replace Insights pulls",
         "MCP Events do not continuously stream spend or balance metrics",
         "cached asset-health monitoring",
@@ -72,8 +70,8 @@ def test_notification_capability_and_source_boundaries_are_explicit():
 
 
 def test_notification_release_surfaces_are_consistently_versioned():
-    assert _read("VERSION").strip() == "0.7.75"
-    assert '"version": "0.7.75"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.75"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.75`" in _read("README.md")
-    assert 'VERSION = "0.7.75"' in _read("scripts/validate_tri_channel_pack.py")
+    assert _read("VERSION").strip() == "0.7.76"
+    assert '"version": "0.7.76"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.76"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.76`" in _read("README.md")
+    assert 'VERSION = "0.7.76"' in _read("scripts/validate_tri_channel_pack.py")

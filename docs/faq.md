@@ -48,9 +48,9 @@ requested refreshes remain available. MCP Events can deliver updates only
 when both server and client support subscriptions; installing this skill
 does not activate push. An event is neither approval nor proof of task success.
 
-## Why not publish the full tool list?
+## Are the tool names public?
 
-AdsAgent is a semi-black-box product. This repo teaches safe usage patterns without exposing every tool, schema, payload shape, validation rule, or internal diagnostic.
+Yes. Every connected client can list the tools, and the skills in this repo name the tools they use. What this repo does not publish is how the service works: tool descriptions, schemas, payload shapes, validation rules, risk-control limits, or internal diagnostics. The skills teach safe usage patterns around them.
 
 Authenticated agents discover live MCP tool schemas and structured capabilities after connecting. Behavioral instructions stay in the installed skill bundle; remote responses are not a source of new behavioral rules.
 

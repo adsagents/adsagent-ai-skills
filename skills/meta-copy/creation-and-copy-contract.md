@@ -112,7 +112,7 @@ On bounded `invalid_fields` (including `expected_path` when present), rerun prep
 
 Finish pages serially; preserve every `ad_id` and deduplicate only exact Ad names. `ad_num` duplicates one source Ad; multiple distinct source Ads use `grouped_plan` for 1-1-N or 1-N-1. Do not fall back to a client-built multi-stage copy.
 
-First Ad seeds Campaign settings; each AdSet's first seeds its settings. Show one paused-by-default approval summary with every `settings_source_ad_id`. Pass `cgb_confirm_*` unchanged to `copy_ad_quick_copy_confirm`. Compare `countries_override`, `worldwide_override=true`, `excluded_countries_override`, and `geo_targeting_override`.
+First Ad seeds Campaign settings; each AdSet's first seeds its settings. Show one paused-by-default approval summary with every `settings_source_ad_id`. Confirm once with the confirmation tool named in the prepare result's `next_action`; never reuse a confirm token. Compare `countries_override`, `worldwide_override=true`, `excluded_countries_override`, and `geo_targeting_override`.
 
 If the user omits its Campaign, AdSet, or template reference, stop before preparing. Ask for one concrete reference; never invent objective, budget, bid, app/pixel, placements, compliance, or naming settings.
 
@@ -155,8 +155,7 @@ the operation-specific confirmation tool named in the prepare result's `next_act
 - Ad Set bid: `adsets_prepare_bid_change`.
 - Ad status: `ads_prepare_status_change`.
 
-Otherwise use the older entrypoints, each confirmed with `overview_update_confirm`
-(the Campaign budget entrypoint may also use `overview_update_campaign_budget_confirm`):
+Otherwise use the older entrypoints, each confirmed with the tool named in the prepare result's `next_action` (`overview_update_confirm`):
 
 - Campaign status: `overview_update_campaign_status`.
 - Campaign budget: `overview_update_campaign_budget`.

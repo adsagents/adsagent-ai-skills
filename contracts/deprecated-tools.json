@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "description": "Tool names the services have deprecated. Skills and docs must not reference them. Names and public replacement only.",
+  "tools": {
+    "campaigns_quick_create_confirm": {
+      "channel": "meta",
+      "deprecated_since": "2026-08-06",
+      "remove_after": "2026-11-04",
+      "replacement": "launch_confirm"
+    },
+    "campaigns_quick_create_deny": {
+      "channel": "meta",
+      "deprecated_since": "2026-08-06",
+      "remove_after": "2026-11-04",
+      "replacement": "launch_deny"
+    },
+    "campaigns_recreate_confirm": {
+      "channel": "meta",
+      "deprecated_since": "2026-08-06",
+      "remove_after": "2026-11-04",
+      "replacement": "launch_confirm"
+    },
+    "campaigns_recreate_deny": {
+      "channel": "meta",
+      "deprecated_since": "2026-08-06",
+      "remove_after": "2026-11-04",
+      "replacement": "launch_deny"
+    },
+    "copy_ad_clone_structure_confirm": {
+      "channel": "meta",
+      "deprecated_since": "2026-08-06",
+      "remove_after": "2026-11-04",
+      "replacement": "launch_confirm"
+    },
+    "copy_ad_clone_structure_deny": {
+      "channel": "meta",
+      "deprecated_since": "2026-08-06",
+      "remove_after": "2026-11-04",
+      "replacement": "launch_deny"
+    },
+    "copy_ad_quick_copy_confirm": {
+      "channel": "meta",
+      "deprecated_since": "2026-08-06",
+      "remove_after": "2026-11-04",
+      "replacement": "launch_confirm"
+    },
+    "copy_ad_quick_copy_deny": {
+      "channel": "meta",
+      "deprecated_since": "2026-08-06",
+      "remove_after": "2026-11-04",
+      "replacement": "launch_deny"
+    },
+    "overview_update_campaign_budget_confirm": {
+      "channel": "meta",
+      "deprecated_since": "2026-08-06",
+      "remove_after": "2026-11-04",
+      "replacement": "overview_update_confirm"
+    },
+    "overview_update_campaign_budget_deny": {
+      "channel": "meta",
+      "deprecated_since": "2026-08-06",
+      "remove_after": "2026-11-04",
+      "replacement": "overview_update_deny"
+    }
+  }
+}

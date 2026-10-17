@@ -1,6 +1,6 @@
 # AdsAgent Mutation Lifecycle Contract
 
-Version: `0.3` (pairs with smartads #131 Phase 5 complete + Phase 6 — guide `2026-08-14.13+`)
+Version: `0.4` (pairs with the hosted guide from `2026-08` onward)
 
 The hosted MCP service owns canonical payloads, immutable plans, approval
 state, dispatch reservations, and recovery. The Skill Pack is a thin policy
@@ -31,12 +31,11 @@ When advertised, prefer ref-first confirm and recovery:
 | Recover write/upload | `operations_get` | `mutation_ref` or `upload_ref` |
 | Recover task context | `operations_get_context` | `task_ref` |
 
-Legacy confirm tools remain callable (`launch_confirm`, `launch_deny`,
-`overview_update_confirm`, `overview_update_deny`) through
-the documented compatibility window. Use them only when the client cannot select
-the preferred tools; never treat them as durable recovery.
+Confirm and deny with the tool named in the prepare result's `next_action`;
+never pick a confirmation tool from memory, and never treat a confirmation
+tool as durable recovery.
 
-## Direct-Write Receipt Families (Phase 5 complete)
+## Direct-Write Receipt Families
 
 These idempotent writes return `mutation_ref` (or `upload_ref` for creative
 uploads) without a separate approval step. Async refresh, pull, and export

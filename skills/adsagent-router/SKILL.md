@@ -17,7 +17,9 @@ the matching specialized skill:
   template is a grouping, filter, or comparison dimension: `meta-insights`;
   known-entity status, budget, or bid change and a direct Meta
   create/copy/template-object lifecycle request: `meta-copy`;
-- Google Ads: `google-ads-insights`; TikTok: `tiktok-insights`;
+- Google Ads: `google-ads-insights` (read), `google-ads-create`, `google-ads-manage`;
+  TikTok: `tiktok-insights`;
+- any prepare/confirm write, `needs_input`, or amount refusal: `adsagent-approvals`;
 - notification integration: `adsagent-notifications`;
 - agent-owned schedule or automation: `agent-scheduled-tasks`.
 

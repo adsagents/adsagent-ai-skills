@@ -44,7 +44,7 @@ Before making a Meta budget decision, check setup_get_status.capabilities. If ad
 ```
 
 ```text
-Before changing a Meta budget, inspect capabilities.delivery_mutations. If denied, follow permission_action and wait for the user; never change permissions. After reconnect, use overview_update_adset_budget plus overview_update_confirm for ABO, or overview_update_campaign_budget plus overview_update_campaign_budget_confirm for CBO. Never substitute budget levels.
+Before changing a Meta budget, inspect capabilities.delivery_mutations. If denied, follow permission_action and wait for the user; never change permissions. After reconnect, use overview_update_adset_budget for ABO or overview_update_campaign_budget for CBO, and confirm with the tool the prepare result names in next_action. Never substitute budget levels.
 ```
 
 ```text

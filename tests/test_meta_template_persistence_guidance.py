@@ -188,15 +188,12 @@ def test_unactionable_template_validation_never_probes_or_replays():
         assert term in guidance
 
 
-def test_template_tools_are_registered_with_hosted_capabilities():
+def test_template_tools_are_registered_with_expected_capabilities():
     contract = json.loads(_read("contracts/public-tool-references.json"))
     registered_tools = {
         entry["name"]: entry
         for entry in contract["channels"]["meta"]["tools"]
     }
-    manifest = json.loads(_read("contracts/manifests/meta.json"))
-    hosted_tools = {entry["name"]: entry for entry in manifest["tools"]}
-
     expected = {
         "templates_reverse_engineer": "mcp.read",
         "templates_create": "mcp.templates.write",
@@ -207,15 +204,10 @@ def test_template_tools_are_registered_with_hosted_capabilities():
     }
     for name, capability in expected.items():
         assert registered_tools[name]["required_capability"] == capability
-        assert hosted_tools[name]["required_capability"] == capability
-        assert (
-            hosted_tools[name]["guide_resource"]
-            == "adsagent://guide/catalog/templates"
-        )
 
 
 def test_meta_template_persistence_release_is_consistently_versioned():
-    expected = "0.7.75"
+    expected = "0.7.76"
     assert _read("VERSION").strip() == expected
     assert f'"version": "{expected}"' in _read(".claude-plugin/plugin.json")
     assert f'"version": "{expected}"' in _read(

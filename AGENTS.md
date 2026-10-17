@@ -3,8 +3,9 @@
 This is the public AdsAgent tri-channel skill pack (Meta, Google Ads, TikTok)
 consumed by AI agents as a plugin. It ships Markdown skills, contracts, and
 stdlib-only Python validators; there are no runtime dependencies or lock files.
-Never add internal tool catalogs, payload schemas, or backend details here —
-the repository is public.
+Tool names are public; never add tool descriptions, payload schemas, risk-control
+numbers, private repository names, or backend details here — the repository is
+public.
 
 ## Validation
 
@@ -12,36 +13,15 @@ the repository is public.
 - `uv run --no-project --managed-python --python 3.12 python scripts/validate_tri_channel_pack.py`
 - `uv run --no-project --managed-python --python 3.12 python scripts/validate_public_tool_manifests.py`
 
-Bump `VERSION` and `CHANGELOG.md` together when skill content changes.
+`scripts/check_drift.py` compares the skills with the services' current public
+tool manifests. It only warns (see `docs/drift-check.md`); it is not a merge gate.
 
-## Cloud Agent delivery (owner standing authorization, 2026-09-04)
+## Changes
 
-Applies to Cursor Cloud Agents and Codex cloud agents working in this
-repository (environment: `.cursor/environment.json` →
-`scripts/cloud-agent-setup.sh`). The owner does not review or merge
-by hand; this section is the standing authorization that lets a cloud agent
-take a change from task to `main` on its own. It does **not** extend to
-anything in the "still forbidden" list.
-
-1. Finish the task, then run every check below. Everything that passed on
-   `main` must still pass; do not skip, mark, or delete failing tests to get
-   green.
-2. Open one PR per logical change with a short imperative title and a body
-   that states what changed and pastes the check results.
-3. If Bugbot review is enabled on the PR, wait for it and address every
-   comment, then re-run the checks.
-4. Squash-merge into `main` yourself. Report the PR link, the merge SHA, and
-   the check results. (This repo is a skill pack with no deployment; unlike the
-   product repos it is not released by the box, so merging is the last step.)
-
-Still forbidden for cloud agents, without exception: deploying or releasing
-(`release_local.sh`, `deploy.sh`, `wrangler deploy`), connecting to the VPS,
-touching Cloudflare, Supabase production data, or any secret, and creating an
-in-repo `.venv`. Releases happen on the shared dev box with explicit operator
-authorization (see `docs/internal/DEV_BOX_RUNBOOK.md` in adsagent-marketing).
-
-Checks for this repository:
-
-- the three validation commands above
-- `CHANGELOG.md` and `VERSION` updated when any file under `skills/` or
-  `contracts/` changed
+- One PR per logical change, with a short imperative title and a body that states
+  what changed and pastes the check results.
+- Do not skip, mark, or delete failing tests to get green.
+- Releases are batched. Feature PRs add their notes under `Unreleased` in
+  `CHANGELOG.md` and do not touch `VERSION`; a release batch bumps `VERSION`,
+  the manifests that mirror it, and the changelog together.
+- Never force-add generated bootstrap files or in-repo virtual environments.

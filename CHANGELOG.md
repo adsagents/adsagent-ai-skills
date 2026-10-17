@@ -3,6 +3,28 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Version 0.7.76 is the stage 1 safety release:
+
+- Meta: removed the two deprecated confirmation tools from guidance. Every confirm
+  now uses the tool named in the prepare result's `next_action`. Added the unified
+  update tool, ad copy read and edit, dry-run (`validate_only`) rejections, amount
+  guard, and `needs_input` handling.
+- New skills: `google-ads-create`, `google-ads-manage` (location and language are
+  required; real writes only on test accounts in test flows) and the cross-channel
+  `adsagent-approvals`.
+- Public-safety cleanup: removed risk-control numbers, private repository names and
+  commit numbers, and internal workflow text; `docs/safety.md` now says tool names
+  are public. The README lists ChatGPT, Claude, Codex, and Cursor.
+- Replaced the frozen tool-manifest snapshots and provenance lock with a warn-only
+  drift check against the services' current public tool-name manifests
+  (`scripts/check_drift.py`). Only warnings are tolerated in CI: exit 1 from
+  `block-removed` mode fails the job.
+- The approval contract now covers approval-backed writes only; direct operations
+  such as TikTok `creatives_abandon_upload` and `support_report_error` keep their
+  own contract. The routing contract classifies Google prompts by object and read
+  intent, and new write tools record their expected capability in the drift
+  reference.
+
 Version 0.7.75 names the prepare-only Meta delivery tools for Ad Set budget
 (`adsets_prepare_budget_change`), Ad Set bid (`adsets_prepare_bid_change`) and
 Ad status (`ads_prepare_status_change`) alongside the existing campaign and
@@ -10,8 +32,8 @@ Ad Set status prepares; the older `overview_update_*` entrypoints remain
 callable for cached clients. Confirmation guidance now names the
 operation-specific confirmation tool from `next_action` instead of the
 retired generic approval executor. The Meta public manifest pin refreshes to
-guide `2026-10-14.3` (smartads `afc698920`, 176 tools); Google (`2026-10-04.1`)
-and TikTok (`2026-10-07.1`) pins are unchanged.
+guide `2026-10-14.3`; Google (`2026-10-04.1`) and TikTok (`2026-10-07.1`) pins
+are unchanged.
 
 Version 0.7.74 binds multi-tenant OAuth workflows to their selected client
 connection through prepare, approval, confirm, task polling, continuation and

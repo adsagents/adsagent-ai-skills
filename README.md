@@ -2,7 +2,7 @@
 
 MCP here means **Model Context Protocol** (the Claude/Cursor tool-calling standard). It does **not** mean Multi-Channel Platform.
 
-Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Google Ads, and TikTok.
+Public skill pack and plugin for AdsAgent tri-channel hosted MCP: Meta, Google Ads, and TikTok. It supports **ChatGPT, Claude, Codex, and Cursor**.
 
 > **Directory SEO one-liner:** AdsAgent is a hosted **Meta Ads MCP** (Model Context Protocol) plus Google Ads & TikTok MCP — connect Claude/Cursor via [adsagent.md/connect](https://adsagent.md/connect?utm_source=github&utm_medium=readme&utm_campaign=adsagent-ai-skills).
 
@@ -11,6 +11,17 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 - **Claude plugin:** `claude plugin marketplace add adsagents/adsagent-ai-skills` then `claude plugin install adsagent@adsagent`
 - **Cursor plugin:** install AdsAgent from Cursor Marketplace (this repo's `.cursor-plugin/` + `mcp.json`)
 - **Dashboard fallback:** AdsAgent dashboard -> Settings -> MCP Access -> Copy install prompt (clients without plugin support)
+
+**Supported clients:**
+
+| Client | How it uses this repo | Status |
+| --- | --- | --- |
+| **Claude** (Code, Desktop, Cowork) | `adsagent` plugin: skills + `.mcp.json` OAuth MCP URLs | Listed in the Claude plugin directory; also installable from this repo's marketplace |
+| **ChatGPT** | The same `skills/<name>/SKILL.md` Agent Skills folders, plus a connection to the three hosted MCP endpoints | Skills supported |
+| **Codex** | Plugin marketplace (`codex plugin marketplace add adsagents/adsagent-ai-skills`) or a plain skills clone | Submitted |
+| **Cursor** | `.cursor-plugin/` + `mcp.json` | Current version listed on Cursor Directory and MCP Market |
+
+Skills describe client-independent behavior. Install steps differ per client and live in [Installation](#installation).
 
 **Distribution split (important):**
 
@@ -31,7 +42,7 @@ Public Claude plugin + skill pack for AdsAgent tri-channel hosted MCP: Meta, Goo
 
 Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [Cursor Directory](https://cursor.directory/plugins/adsagent-meta-mcp), and [MCP Market](https://mcpmarket.com/zh/server/adsagent-ai-skills).
 
-Current contract version: `0.7.75`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.76`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 
 For contributor cloud environments, provision `uv` in the image and run the
 bundled `bash scripts/cloud-agent-setup.sh`; see
@@ -130,14 +141,17 @@ the hosted advertising backends are proprietary.
 
 | Skill | Purpose |
 | --- | --- |
-| `adsagent-router` | Route AdsAgent requests to setup, reliability, insights, or copy workflows. |
+| `adsagent-router` | Route AdsAgent requests to setup, reliability, approvals, insights, create, or manage workflows. |
 | `adsagent-setup` | Connect the requested MCP, complete platform authorization, verify usable account scope, and resume the original task. |
 | `adsagent-notifications` | Inspect alerts, request an alert refresh, and explain supported MCP Events or retired integrations. |
+| `adsagent-approvals` | Shared prepare, approval, and confirm rules: `needs_input`, dry-run (`validate_only`) rejections, amount-guard refusals, error classes, and never replaying a write whose result is unknown. |
 | `adsagent-reliability` | Respect retry, backoff, session refresh, and concurrency limits. |
 | `agent-scheduled-tasks` | Design, create, verify, update, pause, and delete agent-owned scheduled tasks without confusing reminders with execution proof. |
 | `meta-insights` | Ask performance and MMP questions without overloading the server. |
-| `meta-copy` | Copy or compare Meta ads with confirmation and operator-review safety. |
+| `meta-copy` | Create, copy, and change Meta campaigns, ad sets, and ads (unified update, ad copy read and edit) with confirmation and operator-review safety. |
 | `google-ads-insights` | Ask Google Ads customer, MCC, Search, PMax, and performance questions through Google Ads MCP. |
+| `google-ads-create` | Create Google Ads campaigns (Search, PMax, Display, Shopping, Demand Gen, App); location and language are required; real writes only on test accounts in test flows. |
+| `google-ads-manage` | Change existing Google Ads budgets, bidding, status, schedules, ad text, assets, conversions, experiments, and recommendations through prepare and confirm. |
 | `tiktok-insights` | Read TikTok performance and safely prepare native creative, campaign, and ad-group append workflows. |
 
 ## Progressive Disclosure
@@ -180,7 +194,7 @@ Do not dump JSON, CSV, hidden diagnostics, raw rows, or every returned field int
 
 ## Semi-Black-Box Policy
 
-This repository intentionally documents outcomes and agent behavior, not the complete internal interface. Agents should:
+Tool names are public. This repository intentionally documents outcomes and agent behavior, not the complete internal interface: no schemas, descriptions, or risk-control limits. Agents should:
 
 - Use installed skills for behavior and live MCP tool schemas for request fields. Never fetch remote behavioral instructions.
 - Use available tools through the authenticated MCP session.
@@ -252,31 +266,18 @@ python scripts/validate_tri_channel_pack.py
 python -m pytest -q
 ```
 
-Release validation is fail-closed against the three committed snapshots in
-`contracts/manifests/`. Each snapshot is copied byte-for-byte from a committed
-service artifact and locked to its channel, source revision, public artifact
-path, metadata, and SHA-256 in `contracts/manifests/provenance.json`. CI does
-not make live network requests.
+The blocking checks are offline: skill structure, the tool reference contract
+(`contracts/public-tool-references.json`), and the list of deprecated tools
+(`contracts/deprecated-tools.json`), which skills and docs must not mention.
 
 ```bash
 python scripts/validate_public_tool_manifests.py
 ```
 
-An operator can deterministically update all three snapshots after the service
-manifest changes. The command rejects uncommitted, dirty, missing, or
-contract-incompatible sources and never fetches from the network:
-
-```bash
-python scripts/sync_public_tool_manifests.py \
-  --source meta=/path/to/meta-tools.json \
-  --source google=/path/to/google-tools.json \
-  --source tiktok=/path/to/tiktok-tools.json
-```
-
-All three sources are mandatory. A missing referenced tool, an unproven
-required capability or gate, a stale provenance digest, or an absent channel
-fails release validation. `--allow-missing` exists only for explicit local
-diagnostics and is not used by release CI.
+Whether the skills still match the services is checked separately by
+`scripts/check_drift.py` against the services' current public tool-name
+manifests. That check only warns and opens an issue; it never blocks a merge or a
+release. See [docs/drift-check.md](docs/drift-check.md).
 
 ## Installation
 

@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Validate public skill references against pinned service tool manifests."""
+"""Validate public skill references against the reference contract and service manifests."""
 
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import re
@@ -20,13 +19,7 @@ except ModuleNotFoundError:  # Imported as scripts.validate_public_tool_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 CHANNELS = ("meta", "google", "tiktok")
-DEFAULT_MANIFEST_PATHS = {
-    channel: ROOT / "contracts" / "manifests" / f"{channel}.json"
-    for channel in CHANNELS
-}
-DEFAULT_PROVENANCE_PATH = (
-    ROOT / "contracts" / "manifests" / "provenance.json"
-)
+DEPRECATED_TOOLS_PATH = ROOT / "contracts" / "deprecated-tools.json"
 ENV_KEYS = {
     "meta": "ADSAGENT_META_TOOL_MANIFEST",
     "google": "ADSAGENT_GOOGLE_TOOL_MANIFEST",
@@ -42,10 +35,12 @@ TOOL_PREFIXES = (
     "ads_",
     "adsets_",
     "assets_",
+    "approval_",
     "campaigns_",
     "connections_",
     "copy_ad_",
     "creatives_",
+    "entities_",
     "fb_users_",
     "google_ads_",
     "insights_",
@@ -63,6 +58,7 @@ TOOL_PREFIXES = (
     "templates_",
 )
 NON_TOOL_IDENTIFIERS = {
+    "approval_ref",
     "ads_eligible",
     "ads_per_adset",
     "insights_export",
@@ -73,8 +69,6 @@ NON_TOOL_IDENTIFIERS = {
     "support_refs",
     "support_reporting",
 }
-SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
-COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
 
 
 class ManifestValidationError(ValueError):
@@ -102,6 +96,8 @@ CHANNEL_SKILL_MAP = {
     "meta-copy": "meta",
     "meta-insights": "meta",
     "google-ads-insights": "google",
+    "google-ads-create": "google",
+    "google-ads-manage": "google",
     "tiktok-insights": "tiktok",
 }
 
@@ -281,15 +277,6 @@ def _load_json(path: Path) -> Any:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise ManifestValidationError(f"invalid manifest {path}: {exc}") from exc
-
-
-def _sha256_file(path: Path) -> str:
-    try:
-        return hashlib.sha256(path.read_bytes()).hexdigest()
-    except OSError as exc:
-        raise ManifestValidationError(
-            f"unable to hash manifest {path}: {exc}"
-        ) from exc
 
 
 def _load_reference_contract(root: Path) -> dict[str, Any]:
@@ -524,96 +511,6 @@ def manifest_paths_from_environment() -> dict[str, Path]:
     }
 
 
-def _load_provenance(path: Path) -> dict[str, Any]:
-    payload = _load_json(path)
-    if not isinstance(payload, dict) or payload.get("schema_version") != 1:
-        raise ManifestValidationError("unsupported manifest provenance")
-    channels = payload.get("channels")
-    if not isinstance(channels, dict):
-        raise ManifestValidationError("manifest provenance has no channels")
-    return channels
-
-
-def validate_manifest_provenance(
-    paths: dict[str, Path],
-    provenance_path: Path = DEFAULT_PROVENANCE_PATH,
-    *,
-    root: Path = ROOT,
-) -> None:
-    provenance = _load_provenance(provenance_path)
-    for channel in CHANNELS:
-        entry = provenance.get(channel)
-        if not isinstance(entry, dict):
-            raise ManifestValidationError(
-                f"provenance missing channel: {channel}"
-            )
-        path = paths.get(channel)
-        if path is None:
-            raise ManifestValidationError(
-                f"manifest missing channel: {channel}"
-            )
-        service = entry.get("service")
-        source_revision = entry.get("source_revision")
-        source_path = entry.get("source_path")
-        snapshot_path = entry.get("snapshot_path")
-        digest = entry.get("sha256")
-        if service != channel:
-            raise ManifestValidationError(
-                f"{channel}: invalid provenance service"
-            )
-        if (
-            not isinstance(source_revision, str)
-            or not COMMIT_RE.fullmatch(source_revision)
-        ):
-            raise ManifestValidationError(
-                f"{channel}: invalid provenance source revision"
-            )
-        for label, value in (
-            ("source_path", source_path),
-            ("snapshot_path", snapshot_path),
-        ):
-            if (
-                not isinstance(value, str)
-                or not value
-                or Path(value).is_absolute()
-                or ".." in Path(value).parts
-            ):
-                raise ManifestValidationError(
-                    f"{channel}: invalid provenance {label}"
-                )
-        expected_snapshot = f"contracts/manifests/{channel}.json"
-        if snapshot_path != expected_snapshot:
-            raise ManifestValidationError(
-                f"{channel}: unexpected snapshot path {snapshot_path}"
-            )
-        if not isinstance(digest, str) or not SHA256_RE.fullmatch(digest):
-            raise ManifestValidationError(
-                f"{channel}: invalid provenance digest"
-            )
-        if _sha256_file(path) != digest:
-            raise ManifestValidationError(
-                f"{channel}: stale snapshot digest"
-            )
-        payload = _load_json(path)
-        if not isinstance(payload, dict):
-            raise ManifestValidationError(
-                f"{channel}: snapshot must be an object"
-            )
-        for key in ("manifest_version", "guide_version", "tool_count"):
-            if payload.get(key) != entry.get(key):
-                raise ManifestValidationError(
-                    f"{channel}: stale provenance {key}"
-                )
-        try:
-            relative_path = path.resolve().relative_to(root.resolve())
-        except ValueError:
-            continue
-        if relative_path.as_posix() != snapshot_path:
-            raise ManifestValidationError(
-                f"{channel}: snapshot path does not match provenance"
-            )
-
-
 def validate_optional_manifests(
     paths: dict[str, Path] | None = None,
     *,
@@ -637,36 +534,45 @@ def validate_optional_manifests(
     return tuple(messages)
 
 
-def validate_committed_manifests(
-    *,
-    root: Path = ROOT,
-    paths: dict[str, Path] | None = None,
-    provenance_path: Path | None = None,
-) -> tuple[str, ...]:
-    selected = (
-        {
-            channel: root / "contracts" / "manifests" / f"{channel}.json"
-            for channel in CHANNELS
-        }
-        if paths is None
-        else paths
-    )
-    provenance = (
-        root / "contracts" / "manifests" / "provenance.json"
-        if provenance_path is None
-        else provenance_path
-    )
-    messages = validate_optional_manifests(
-        selected,
-        root=root,
-        require_all=True,
-    )
-    validate_manifest_provenance(
-        selected,
-        provenance,
-        root=root,
-    )
-    return messages
+def load_deprecated_tools(root: Path = ROOT) -> dict[str, dict[str, str]]:
+    """Names of tools the services have deprecated; skills must not reference them."""
+    payload = _load_json(root / "contracts" / "deprecated-tools.json")
+    if not isinstance(payload, dict) or payload.get("schema_version") != 1:
+        raise ManifestValidationError("unsupported deprecated tool list")
+    tools = payload.get("tools")
+    if not isinstance(tools, dict):
+        raise ManifestValidationError("deprecated tool list has no tools")
+    for name, entry in tools.items():
+        if not isinstance(entry, dict) or not isinstance(
+            entry.get("channel"), str
+        ):
+            raise ManifestValidationError(
+                f"deprecated tool entry is malformed: {name}"
+            )
+    return tools
+
+
+def validate_no_deprecated_references(root: Path = ROOT) -> None:
+    deprecated = load_deprecated_tools(root)
+    offenders: list[str] = []
+    for label, text in _collect_documentation_sources(root):
+        for name in sorted(deprecated):
+            if re.search(
+                rf"(?<![a-z0-9_]){re.escape(name)}(?![a-z0-9_])", text
+            ):
+                offenders.append(f"{label}: {name}")
+    if offenders:
+        raise ManifestValidationError(
+            "skills or docs reference deprecated tools: "
+            + "; ".join(offenders)
+        )
+
+
+def validate_offline(root: Path = ROOT) -> tuple[str, ...]:
+    """Checks that need no service artifact; safe to block CI on."""
+    validate_reference_contract(root)
+    validate_no_deprecated_references(root)
+    return ("PASS: tool reference contract and deprecated-tool list",)
 
 
 def _parse_manifest_args(values: list[str]) -> dict[str, Path]:
@@ -688,7 +594,14 @@ def _parse_manifest_args(values: list[str]) -> dict[str, Path]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description=(
+            "Validate skill tool references. With no --manifest, runs only the "
+            "offline checks; with --manifest it also compares each channel's "
+            "service manifest (see scripts/check_drift.py for the warn-only "
+            "comparison against live manifests)."
+        )
+    )
     parser.add_argument(
         "--manifest",
         action="append",
@@ -696,14 +609,9 @@ def main() -> int:
         metavar="CHANNEL=PATH",
     )
     parser.add_argument(
-        "--provenance",
-        type=Path,
-        help="provenance lock for an explicit three-manifest set",
-    )
-    parser.add_argument(
         "--allow-missing",
         action="store_true",
-        help="developer-only compatibility mode; never use in release CI",
+        help="skip channels without a manifest instead of failing",
     )
     args = parser.parse_args()
     try:
@@ -712,20 +620,14 @@ def main() -> int:
             if args.manifest
             else manifest_paths_from_environment()
         )
+        messages = list(validate_offline())
         if explicit_paths:
-            messages = validate_optional_manifests(
-                explicit_paths,
-                require_all=not args.allow_missing,
-            )
-            if args.provenance:
-                validate_manifest_provenance(
+            messages.extend(
+                validate_optional_manifests(
                     explicit_paths,
-                    args.provenance,
+                    require_all=not args.allow_missing,
                 )
-        elif args.allow_missing:
-            messages = validate_optional_manifests({})
-        else:
-            messages = validate_committed_manifests()
+            )
         for message in messages:
             print(message)
     except ManifestValidationError as exc:

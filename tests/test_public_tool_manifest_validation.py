@@ -1,9 +1,6 @@
 from __future__ import annotations
 
-import hashlib
 import json
-import subprocess
-import sys
 from pathlib import Path
 
 import pytest
@@ -12,7 +9,9 @@ from scripts.validate_public_tool_manifests import (
     CHANNELS,
     ManifestValidationError,
     documented_tool_names,
-    validate_committed_manifests,
+    load_deprecated_tools,
+    validate_no_deprecated_references,
+    validate_offline,
     validate_documented_tool_names,
     validate_manifest,
     validate_optional_manifests,
@@ -21,7 +20,6 @@ from scripts.validate_public_tool_manifests import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST_DIR = ROOT / "contracts" / "manifests"
 
 
 def _contract() -> dict:
@@ -60,35 +58,6 @@ def _write_json(path: Path, payload: object) -> None:
     )
 
 
-def _copy_real_manifest_set(tmp_path: Path) -> tuple[dict[str, Path], Path]:
-    paths: dict[str, Path] = {}
-    for channel in CHANNELS:
-        destination = tmp_path / "contracts" / "manifests" / f"{channel}.json"
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        destination.write_bytes((MANIFEST_DIR / f"{channel}.json").read_bytes())
-        paths[channel] = destination
-    provenance_path = tmp_path / "contracts" / "manifests" / "provenance.json"
-    provenance_path.write_bytes(
-        (MANIFEST_DIR / "provenance.json").read_bytes()
-    )
-    return paths, provenance_path
-
-
-def _refresh_provenance(
-    provenance_path: Path,
-    channel: str,
-    manifest_path: Path,
-) -> None:
-    provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    entry = provenance["channels"][channel]
-    entry["sha256"] = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
-    entry["manifest_version"] = manifest["manifest_version"]
-    entry["guide_version"] = manifest["guide_version"]
-    entry["tool_count"] = manifest["tool_count"]
-    _write_json(provenance_path, provenance)
-
-
 def _tool(payload: dict, name: str) -> dict:
     return next(item for item in payload["tools"] if item["name"] == name)
 
@@ -125,14 +94,6 @@ def test_developer_compatibility_mode_is_explicitly_optional() -> None:
     )
 
 
-def test_committed_real_manifests_pass_fail_closed_validation() -> None:
-    assert validate_committed_manifests(root=ROOT) == (
-        "PASS: meta public tool manifest",
-        "PASS: google public tool manifest",
-        "PASS: tiktok public tool manifest",
-    )
-
-
 @pytest.mark.parametrize("channel", CHANNELS)
 def test_valid_public_manifest_passes(
     tmp_path: Path,
@@ -162,149 +123,6 @@ def test_gate_normalization_accepts_singular_and_list_formats(
     _write_json(path, payload)
 
     validate_manifest("tiktok", path, root=ROOT)
-
-
-def test_real_manifest_tool_removal_breaks_release_validation(
-    tmp_path: Path,
-) -> None:
-    paths, provenance_path = _copy_real_manifest_set(tmp_path)
-    payload = json.loads(paths["meta"].read_text(encoding="utf-8"))
-    payload["tools"] = [
-        item
-        for item in payload["tools"]
-        if item["name"] != "overview_get_live_configs"
-    ]
-    payload["tool_count"] = len(payload["tools"])
-    _write_json(paths["meta"], payload)
-    _refresh_provenance(provenance_path, "meta", paths["meta"])
-
-    with pytest.raises(
-        ManifestValidationError,
-        match="overview_get_live_configs",
-    ):
-        validate_committed_manifests(
-            root=ROOT,
-            paths=paths,
-            provenance_path=provenance_path,
-        )
-
-
-def test_real_tool_without_expected_gate_breaks_release_validation(
-    tmp_path: Path,
-) -> None:
-    paths, provenance_path = _copy_real_manifest_set(tmp_path)
-    payload = json.loads(paths["meta"].read_text(encoding="utf-8"))
-    entry = _tool(payload, "overview_update_adset_budget")
-    entry.pop("capability_gate", None)
-    entry.pop("gate", None)
-    entry["capability_gates"] = [
-        gate
-        for gate in entry.get("capability_gates", [])
-        if gate != "delivery_mutations"
-    ]
-    _write_json(paths["meta"], payload)
-    _refresh_provenance(provenance_path, "meta", paths["meta"])
-
-    with pytest.raises(ManifestValidationError, match="gate mismatch"):
-        validate_committed_manifests(
-            root=ROOT,
-            paths=paths,
-            provenance_path=provenance_path,
-        )
-
-
-def test_ci_command_rejects_real_manifest_with_removed_gate(
-    tmp_path: Path,
-) -> None:
-    paths, provenance_path = _copy_real_manifest_set(tmp_path)
-    payload = json.loads(paths["meta"].read_text(encoding="utf-8"))
-    entry = _tool(payload, "overview_update_adset_budget")
-    entry.pop("capability_gate", None)
-    entry.pop("gate", None)
-    entry["capability_gates"] = [
-        gate
-        for gate in entry.get("capability_gates", [])
-        if gate != "delivery_mutations"
-    ]
-    _write_json(paths["meta"], payload)
-    _refresh_provenance(provenance_path, "meta", paths["meta"])
-
-    command = [
-        sys.executable,
-        "scripts/validate_public_tool_manifests.py",
-        "--provenance",
-        str(provenance_path),
-    ]
-    for channel in CHANNELS:
-        command.extend(
-            ["--manifest", f"{channel}={paths[channel]}"]
-        )
-    result = subprocess.run(
-        command,
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-
-    assert result.returncode == 1
-    assert "capability gate mismatch" in result.stderr
-    assert "overview_update_adset_budget" in result.stderr
-
-
-def test_real_manifest_required_capability_drift_breaks_release_validation(
-    tmp_path: Path,
-) -> None:
-    paths, provenance_path = _copy_real_manifest_set(tmp_path)
-    payload = json.loads(paths["meta"].read_text(encoding="utf-8"))
-    entry = _tool(payload, "campaigns_quick_create")
-    entry["required_capability"] = "mcp.read"
-    _write_json(paths["meta"], payload)
-    _refresh_provenance(provenance_path, "meta", paths["meta"])
-
-    with pytest.raises(
-        ManifestValidationError,
-        match="required capability mismatch",
-    ):
-        validate_committed_manifests(
-            root=ROOT,
-            paths=paths,
-            provenance_path=provenance_path,
-        )
-
-
-def test_changed_snapshot_without_lock_update_is_stale(
-    tmp_path: Path,
-) -> None:
-    paths, provenance_path = _copy_real_manifest_set(tmp_path)
-    paths["google"].write_bytes(paths["google"].read_bytes() + b"\n")
-
-    with pytest.raises(
-        ManifestValidationError,
-        match="stale snapshot digest",
-    ):
-        validate_committed_manifests(
-            root=ROOT,
-            paths=paths,
-            provenance_path=provenance_path,
-        )
-
-
-def test_missing_real_snapshot_breaks_release_validation(
-    tmp_path: Path,
-) -> None:
-    paths, provenance_path = _copy_real_manifest_set(tmp_path)
-    del paths["tiktok"]
-
-    with pytest.raises(
-        ManifestValidationError,
-        match="manifest missing channel: tiktok",
-    ):
-        validate_committed_manifests(
-            root=ROOT,
-            paths=paths,
-            provenance_path=provenance_path,
-        )
 
 
 def test_wrong_channel_identity_fails(tmp_path: Path) -> None:
@@ -379,15 +197,61 @@ def test_explicit_missing_manifest_path_fails(tmp_path: Path) -> None:
         validate_manifest("google", tmp_path / "missing.json", root=ROOT)
 
 
-def test_ci_invokes_three_pinned_manifests_without_skip_mode() -> None:
-    workflow = (ROOT / ".github/workflows/validate.yml").read_text(
-        encoding="utf-8"
+def test_offline_validation_has_no_snapshot_dependency() -> None:
+    assert validate_offline(ROOT) == (
+        "PASS: tool reference contract and deprecated-tool list",
+    )
+    assert not (ROOT / "contracts" / "manifests").exists()
+
+
+def test_deprecated_tools_are_named_but_not_referenced() -> None:
+    deprecated = load_deprecated_tools(ROOT)
+
+    assert "copy_ad_quick_copy_confirm" in deprecated
+    assert "overview_update_campaign_budget_confirm" in deprecated
+    validate_no_deprecated_references(ROOT)
+    referenced = {
+        tool["name"]
+        for channel in _contract()["channels"].values()
+        for tool in channel["tools"]
+    }
+    assert referenced.isdisjoint(deprecated)
+
+
+def test_reference_to_deprecated_tool_fails(tmp_path: Path) -> None:
+    root = tmp_path
+    (root / "contracts").mkdir()
+    (root / "skills" / "meta-copy").mkdir(parents=True)
+    (root / "contracts" / "deprecated-tools.json").write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "tools": {"old_confirm_tool": {"channel": "meta"}},
+            }
+        ),
+        encoding="utf-8",
     )
 
-    for channel in CHANNELS:
-        assert (
-            f"--manifest {channel}=contracts/manifests/{channel}.json"
-            in workflow
-        )
-    assert "--provenance contracts/manifests/provenance.json" in workflow
-    assert "--allow-missing" not in workflow
+    import scripts.validate_public_tool_manifests as module
+
+    original = module._collect_documentation_sources
+    module._collect_documentation_sources = lambda _root: [
+        ("meta-copy", "Confirm with old_confirm_tool now.")
+    ]
+    try:
+        with pytest.raises(
+            ManifestValidationError, match="deprecated tools"
+        ):
+            validate_no_deprecated_references(root)
+    finally:
+        module._collect_documentation_sources = original
+
+
+def test_new_write_skills_are_in_the_reference_contract() -> None:
+    channels = _contract()["channels"]
+
+    assert "google-ads-create" in channels["google"]["skill_bundles"]
+    assert "google-ads-manage" in channels["google"]["skill_bundles"]
+    assert "adsagent-approvals" in channels["meta"]["skill_bundles"]
+    names = {tool["name"] for tool in channels["meta"]["tools"]}
+    assert {"entities_prepare_update", "ads_get_copy"} <= names

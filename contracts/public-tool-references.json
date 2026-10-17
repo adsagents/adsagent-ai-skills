@@ -7,21 +7,44 @@
         "adsagent-reliability",
         "meta-insights",
         "meta-copy",
-        "adsagent-notifications"
+        "adsagent-notifications",
+        "adsagent-approvals"
       ],
       "tools": [
-        {"name": "setup_get_status"},
-        {"name": "setup_begin_channel_connect", "required_capability": "mcp.read"},
-        {"name": "setup_check_channel_connect", "required_capability": "mcp.read"},
-        {"name": "setup_check_facebook_connect", "required_capability": "mcp.read"},
-        {"name": "connections_check_intent", "required_capability": "mcp.read"},
-        {"name": "notifications_list", "required_capability": "mcp.read"},
-        {"name": "notifications_summary", "required_capability": "mcp.read"},
+        {
+          "name": "setup_get_status"
+        },
+        {
+          "name": "setup_begin_channel_connect",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "setup_check_channel_connect",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "setup_check_facebook_connect",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "connections_check_intent",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "notifications_list",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "notifications_summary",
+          "required_capability": "mcp.read"
+        },
         {
           "name": "connections_create_intent",
           "required_capability": "mcp.read"
         },
-        {"name": "products_list"},
+        {
+          "name": "products_list"
+        },
         {
           "name": "products_get_health",
           "required_capability": "mcp.read"
@@ -30,20 +53,40 @@
           "name": "assets_list_pages",
           "required_capability": "mcp.read"
         },
-        {"name": "accounts_list_linked_accounts"},
-        {"name": "insights_query_overview"},
-        {"name": "insights_query_batch_overview"},
-        {"name": "insights_query_consistent"},
-        {"name": "insights_export_csv"},
-        {"name": "tasks_get_status"},
-        {"name": "operations_get_context"},
-        {"name": "operations_get"},
-        {"name": "operations_get_approval"},
+        {
+          "name": "accounts_list_linked_accounts"
+        },
+        {
+          "name": "insights_query_overview"
+        },
+        {
+          "name": "insights_query_batch_overview"
+        },
+        {
+          "name": "insights_query_consistent"
+        },
+        {
+          "name": "insights_export_csv"
+        },
+        {
+          "name": "tasks_get_status"
+        },
+        {
+          "name": "operations_get_context"
+        },
+        {
+          "name": "operations_get"
+        },
+        {
+          "name": "operations_get_approval"
+        },
         {
           "name": "operations_deny_approval",
           "required_capability": "mcp.launch.confirm"
         },
-        {"name": "overview_get_live_configs"},
+        {
+          "name": "overview_get_live_configs"
+        },
         {
           "name": "overview_update_ad_status",
           "required_capability": "mcp.optimize.write"
@@ -72,9 +115,12 @@
           "name": "products_delivery_pause_deny",
           "required_capability": "mcp.optimize.write"
         },
-        {"name": "copy_ad_quick_copy"},
-        {"name": "copy_ad_quick_copy_confirm"},
-        {"name": "copy_ad_clone_structure"},
+        {
+          "name": "copy_ad_quick_copy"
+        },
+        {
+          "name": "copy_ad_clone_structure"
+        },
         {
           "name": "campaigns_recreate_from_task",
           "required_capability": "mcp.launch.prepare"
@@ -87,7 +133,9 @@
           "name": "campaigns_reconcile_campaign_plan",
           "required_capability": "mcp.read"
         },
-        {"name": "creatives_list"},
+        {
+          "name": "creatives_list"
+        },
         {
           "name": "templates_reverse_engineer",
           "required_capability": "mcp.read"
@@ -123,10 +171,6 @@
           "required_capability": "mcp.optimize.write"
         },
         {
-          "name": "overview_update_deny",
-          "required_capability": "mcp.optimize.write"
-        },
-        {
           "name": "campaigns_prepare_status_change",
           "required_capability": "mcp.optimize.write"
         },
@@ -156,11 +200,6 @@
         },
         {
           "name": "overview_update_campaign_budget",
-          "capability_gate": "delivery_mutations",
-          "required_capability": "mcp.optimize.write"
-        },
-        {
-          "name": "overview_update_campaign_budget_confirm",
           "capability_gate": "delivery_mutations",
           "required_capability": "mcp.optimize.write"
         },
@@ -236,46 +275,323 @@
           "name": "tasks_cancel",
           "required_capability": "mcp.read"
         },
-        {"name": "notifications_scan"}
+        {
+          "name": "notifications_scan"
+        },
+        {
+          "name": "entities_prepare_update"
+        },
+        {
+          "name": "ads_get_copy"
+        },
+        {
+          "name": "ads_replace_creative_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "ads_replace_page_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "ads_update_copy_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "ads_update_url_prepare",
+          "required_capability": "mcp.optimize.write"
+        }
       ]
     },
     "google": {
       "skill_bundles": [
         "adsagent-setup",
         "adsagent-reliability",
-        "google-ads-insights"
+        "google-ads-insights",
+        "google-ads-create",
+        "google-ads-manage",
+        "adsagent-approvals"
       ],
       "tools": [
-        {"name": "setup_get_status"},
-        {"name": "google_ads_accounts_list"},
-        {"name": "insights_query_consistent"},
-        {"name": "google_ads_insights_overview_query"},
-        {"name": "google_ads_insights_overview_batch"},
-        {"name": "tasks_get_status"}
+        {
+          "name": "setup_get_status"
+        },
+        {
+          "name": "google_ads_accounts_list"
+        },
+        {
+          "name": "insights_query_consistent"
+        },
+        {
+          "name": "google_ads_insights_overview_query"
+        },
+        {
+          "name": "google_ads_insights_overview_batch"
+        },
+        {
+          "name": "tasks_get_status"
+        },
+        {
+          "name": "approval_plan_confirm"
+        },
+        {
+          "name": "approval_plan_deny"
+        },
+        {
+          "name": "approval_plan_get"
+        },
+        {
+          "name": "approval_plan_prepare"
+        },
+        {
+          "name": "google_ads_mutation_receipt_get",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "google_ads_mutation_reconcile",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "google_ads_ad_group_create_prepare",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "google_ads_asset_requirements_get",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "google_ads_asset_upload_prepare",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "google_ads_campaign_create_prepare",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "google_ads_creation_capabilities_get",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "google_ads_geo_targets_suggest",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "google_ads_keyword_create_prepare",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "google_ads_keyword_historical_metrics",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "google_ads_keyword_ideas_generate",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "google_ads_keyword_themes",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "google_ads_pmax_create_prepare",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "google_ads_quick_create_prepare",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "google_ads_responsive_search_ad_create_prepare",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "google_ads_youtube_asset_prepare",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "google_ads_ad_status_update_prepare"
+        },
+        {
+          "name": "google_ads_ad_text_update_prepare"
+        },
+        {
+          "name": "google_ads_asset_group_link_prepare"
+        },
+        {
+          "name": "google_ads_asset_group_unlink_prepare"
+        },
+        {
+          "name": "google_ads_asset_group_update_prepare"
+        },
+        {
+          "name": "google_ads_asset_inventory_list",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "google_ads_asset_link_prepare",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "google_ads_asset_unlink_prepare",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "google_ads_bidding_update_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "google_ads_budget_update_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "google_ads_campaign_dates_update_prepare"
+        },
+        {
+          "name": "google_ads_conversion_action_create_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "google_ads_conversion_action_remove_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "google_ads_conversion_action_update_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "google_ads_copy_ad_prepare",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "google_ads_entity_remove_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "google_ads_entity_update_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "google_ads_experiment_create_prepare"
+        },
+        {
+          "name": "google_ads_experiment_halt_prepare"
+        },
+        {
+          "name": "google_ads_experiment_initiate_prepare"
+        },
+        {
+          "name": "google_ads_experiment_promote_prepare"
+        },
+        {
+          "name": "google_ads_experiment_schedule_prepare"
+        },
+        {
+          "name": "google_ads_experiment_state",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "google_ads_extension_asset_create_prepare",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
+          "name": "google_ads_management_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "google_ads_negative_keyword_add_prepare"
+        },
+        {
+          "name": "google_ads_negative_location_add_prepare"
+        },
+        {
+          "name": "google_ads_portfolio_target_update_prepare"
+        },
+        {
+          "name": "google_ads_recommendation_apply_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "google_ads_recommendation_dismiss_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "google_ads_recommendations_list",
+          "required_capability": "mcp.read"
+        },
+        {
+          "name": "google_ads_retail_tree_replace_prepare"
+        },
+        {
+          "name": "google_ads_schedule_replace_prepare"
+        },
+        {
+          "name": "google_ads_shared_budget_update_prepare"
+        },
+        {
+          "name": "google_ads_status_enable_prepare",
+          "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "google_ads_status_pause_prepare",
+          "required_capability": "mcp.optimize.write"
+        }
       ]
     },
     "tiktok": {
       "skill_bundles": [
         "adsagent-setup",
         "adsagent-reliability",
-        "tiktok-insights"
+        "tiktok-insights",
+        "adsagent-approvals"
       ],
       "tools": [
-        {"name": "setup_get_status"},
-        {"name": "setup_begin_channel_connect", "capability_gate": "mcp_authenticated", "required_capability": "mcp_authenticated"},
-        {"name": "setup_check_channel_connect", "capability_gate": "mcp_authenticated", "required_capability": "mcp_authenticated"},
-        {"name": "insights_query_consistent"},
-        {"name": "insights_query_overview"},
-        {"name": "insights_query_batch_overview"},
-        {"name": "tasks_get_status"},
-        {"name": "creatives_reconcile"},
-        {"name": "creatives_abandon_upload"},
-        {"name": "campaigns_quick_create"},
-        {"name": "operations_get"},
-        {"name": "overview_get_live_configs"},
-        {"name": "copy_ad_quick_copy"},
-        {"name": "copy_ad_clone_structure"},
-        {"name": "campaigns_recreate_from_task"},
+        {
+          "name": "setup_get_status"
+        },
+        {
+          "name": "setup_begin_channel_connect",
+          "capability_gate": "mcp_authenticated",
+          "required_capability": "mcp_authenticated"
+        },
+        {
+          "name": "setup_check_channel_connect",
+          "capability_gate": "mcp_authenticated",
+          "required_capability": "mcp_authenticated"
+        },
+        {
+          "name": "insights_query_consistent"
+        },
+        {
+          "name": "insights_query_overview"
+        },
+        {
+          "name": "insights_query_batch_overview"
+        },
+        {
+          "name": "tasks_get_status"
+        },
+        {
+          "name": "creatives_reconcile"
+        },
+        {
+          "name": "creatives_abandon_upload"
+        },
+        {
+          "name": "campaigns_quick_create"
+        },
+        {
+          "name": "operations_get"
+        },
+        {
+          "name": "overview_get_live_configs"
+        },
+        {
+          "name": "copy_ad_quick_copy"
+        },
+        {
+          "name": "copy_ad_clone_structure"
+        },
+        {
+          "name": "campaigns_recreate_from_task"
+        },
         {
           "name": "optimization_evaluate",
           "capability_gate": "optimization",
@@ -310,6 +626,18 @@
           "name": "support_get_report_status",
           "capability_gate": "mcp_authenticated",
           "required_capability": "mcp_authenticated"
+        },
+        {
+          "name": "approval_plan_confirm"
+        },
+        {
+          "name": "approval_plan_deny"
+        },
+        {
+          "name": "approval_plan_get"
+        },
+        {
+          "name": "approval_plan_prepare"
         }
       ]
     }

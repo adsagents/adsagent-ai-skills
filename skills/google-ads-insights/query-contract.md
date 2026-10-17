@@ -7,7 +7,7 @@ Use Google Ads fields and tools only.
 1. Run `setup_get_status` before analysis.
 2. Inspect `setup_get_status.capabilities.agent_method_profile` before choosing a query tool.
 3. Discover accessible Google Ads accounts with `google_ads_accounts_list`.
-4. Choose an `enabled`, `non-manager` account; never analyze an MCC as a spend account.
+4. Choose an `enabled`, `non-manager` account; never analyze an MCC as a spend account. A test account (marked `test_account`) is also usable even when its status reads CLOSED.
 5. Verify named customer IDs, and report customer/date/grouping.
 
 ## Freshness Boundary
@@ -19,8 +19,8 @@ refresh, or live config verification. This limits the query profile, not the
 whole Google MCP service. The read profile does not add a public MCP write capability;
 native writes can be advertised independently.
 
-This skill covers analysis. If the user requests a Google change, discover
-the exact native tool and its capability gates; never substitute Meta tools
+This skill covers analysis. For a Google change use `google-ads-create` (new
+campaigns) or `google-ads-manage` (existing ones); never substitute Meta tools
 or conclude that all Google writes are unavailable from the read profile.
 An advertised prepare/confirm flow requires a sanitized before/after summary,
 explicit user approval, and one confirmation before expiry. Preserve the

@@ -280,6 +280,62 @@ _META_TEMPLATE_NAMING = re.compile(
 )
 _CLAUSE_BREAK = re.compile(r"[.!?;:,\n。！？；：，]")
 _ADSAGENT = re.compile(r"\badsagent\b", re.IGNORECASE)
+_GOOGLE_CREATE_VERB = (
+    r"create|launch|build|set up|add|创建|新建"
+)
+_GOOGLE_MANAGE_VERB = (
+    r"pause|resume|enable|change|update|edit|raise|lower|increase|"
+    r"decrease|remove|apply|暂停|恢复|修改|调整|删除"
+)
+_GOOGLE_CREATE = re.compile(
+    r"\b(?:create|launch|build|set up)\b|创建|新建",
+    re.IGNORECASE,
+)
+_GOOGLE_MANAGE = re.compile(
+    rf"\b(?:{_GOOGLE_MANAGE_VERB})\b|暂停|恢复|修改|调整|删除",
+    re.IGNORECASE,
+)
+# Objects documented only in google-ads-manage, even when the verb is "create".
+_GOOGLE_MANAGE_OBJECT = re.compile(
+    r"\b(?:conversion actions?|negative (?:keywords?|locations?)|"
+    r"(?:bid|bidding) strateg(?:y|ies)|portfolio|shared budgets?|"
+    r"asset groups?|experiments?|recommendations?|ad schedules?|"
+    r"retail tree|extension assets?)\b|转化操作|否定关键词|出价策略|"
+    r"素材组|实验|建议",
+    re.IGNORECASE,
+)
+_GOOGLE_READ_INTENT = re.compile(
+    r"\b(?:how (?:much|many)|what|which|why|when|show|summari[sz]e|"
+    r"report|analy[sz]e|compare|trend|breakdown|list|spend|cost|"
+    r"performance)\b|多少|分析|报告|汇总|对比|趋势|为什么|花费|表现",
+    re.IGNORECASE,
+)
+_GOOGLE_WRITE_IMPERATIVE = re.compile(
+    rf"(?:^\W*|\b(?:please|to|and|then|can you|could you|help me)\s+)"
+    rf"(?:{_GOOGLE_CREATE_VERB}|{_GOOGLE_MANAGE_VERB})\b"
+    rf"|(?:帮我|请|把|用 AdsAgent|用AdsAgent)\s*(?:{_GOOGLE_CREATE_VERB}|{_GOOGLE_MANAGE_VERB})"
+    rf"|^\W*(?:{_GOOGLE_CREATE_VERB}|{_GOOGLE_MANAGE_VERB})|把.*?(?:调整|修改|暂停|恢复|删除)",
+    re.IGNORECASE,
+)
+
+
+def _google_route(prompt: str) -> str:
+    """Route by requested object and read intent, not by a bare verb."""
+    if _GOOGLE_READ_INTENT.search(prompt) and not _GOOGLE_WRITE_IMPERATIVE.search(
+        prompt
+    ):
+        return "google-ads-insights"
+    if _GOOGLE_MANAGE_OBJECT.search(prompt) and re.search(
+        r"\badd\b", prompt, re.IGNORECASE
+    ):
+        return "google-ads-manage"
+    if _GOOGLE_CREATE.search(prompt):
+        if _GOOGLE_MANAGE_OBJECT.search(prompt):
+            return "google-ads-manage"
+        return "google-ads-create"
+    if _GOOGLE_MANAGE.search(prompt):
+        return "google-ads-manage"
+    return "google-ads-insights"
 
 
 def _bounded_template_suffix(
@@ -691,7 +747,7 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
             return ("meta-copy",)
         return ("meta-insights",)
     if named_channels == ["google"]:
-        return ("google-ads-insights",)
+        return (_google_route(prompt),)
     if named_channels == ["tiktok"]:
         return ("tiktok-insights",)
     if template_tool:

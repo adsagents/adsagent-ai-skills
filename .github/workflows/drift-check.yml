@@ -1,0 +1,63 @@
+name: Skill Pack Drift Check
+
+# Advisory only: compares the skills with the services' published tool-name
+# manifests and opens (or updates) one issue when they differ. It never gates a
+# merge or a release. Policy: contracts/drift-policy.json. Docs: docs/drift-check.md.
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [mcp-manifest-published]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: drift-check
+  cancel-in-progress: false
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+      - name: Compare skills with the published tool manifests
+        id: drift
+        env:
+          ADSAGENT_DRIFT_SOURCE_META: ${{ vars.ADSAGENT_DRIFT_SOURCE_META }}
+          ADSAGENT_DRIFT_SOURCE_GOOGLE: ${{ vars.ADSAGENT_DRIFT_SOURCE_GOOGLE }}
+          ADSAGENT_DRIFT_SOURCE_TIKTOK: ${{ vars.ADSAGENT_DRIFT_SOURCE_TIKTOK }}
+          ADSAGENT_DRIFT_GITHUB_TOKEN: ${{ secrets.ADSAGENT_DRIFT_READ_TOKEN }}
+        run: |
+          set +e
+          python scripts/check_drift.py --report drift-report.md
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          cat drift-report.md >> "$GITHUB_STEP_SUMMARY" 2>/dev/null
+          # 10 means warnings only; in warn mode drift never turns this job red.
+          if [ "$code" -eq 10 ]; then
+            code=0
+          fi
+          exit "$code"
+      - name: Open or update the drift issue
+        if: always() && (steps.drift.outputs.code == '10' || steps.drift.outputs.code == '1')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="Skill pack drift detected"
+          gh label create drift --color FBCA04 \
+            --description "Skills differ from the services' tool manifests" 2>/dev/null || true
+          number=$(gh issue list --label drift --state open --limit 1 \
+            --json number --jq '.[0].number // empty')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body-file drift-report.md
+          else
+            gh issue create --title "$title" --label drift --body-file drift-report.md
+          fi

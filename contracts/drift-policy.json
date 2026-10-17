@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "mode": "warn",
+  "notes": "warn: report only, never block. block-removed: exit 1 when a skill references a tool the service no longer lists. Planned to switch two weeks after the first scheduled run."
+}

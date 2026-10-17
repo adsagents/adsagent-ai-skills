@@ -1038,5 +1038,20 @@
     "id": "google_raise_budget_zh",
     "prompt": "把 Google Ads 的预算调整到更高。",
     "expected": ["google-ads-manage"]
+  },
+  {
+    "id": "google_create_conversion_action",
+    "prompt": "Use AdsAgent to create a Google Ads conversion action for purchases.",
+    "expected": ["google-ads-manage"]
+  },
+  {
+    "id": "google_spend_increase_read",
+    "prompt": "How much did Google Ads spend increase yesterday?",
+    "expected": ["google-ads-insights"]
+  },
+  {
+    "id": "google_add_negative_keyword",
+    "prompt": "Add a negative keyword to my Google Ads campaign.",
+    "expected": ["google-ads-manage"]
   }
 ]

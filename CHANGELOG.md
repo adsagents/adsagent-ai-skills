@@ -17,7 +17,13 @@ Version 0.7.76 is the stage 1 safety release:
   are public. The README lists ChatGPT, Claude, Codex, and Cursor.
 - Replaced the frozen tool-manifest snapshots and provenance lock with a warn-only
   drift check against the services' current public tool-name manifests
-  (`scripts/check_drift.py`).
+  (`scripts/check_drift.py`). Only warnings are tolerated in CI: exit 1 from
+  `block-removed` mode fails the job.
+- The approval contract now covers approval-backed writes only; direct operations
+  such as TikTok `creatives_abandon_upload` and `support_report_error` keep their
+  own contract. The routing contract classifies Google prompts by object and read
+  intent, and new write tools record their expected capability in the drift
+  reference.
 
 Version 0.7.75 names the prepare-only Meta delivery tools for Ad Set budget
 (`adsets_prepare_budget_change`), Ad Set bid (`adsets_prepare_bid_change`) and

@@ -1,6 +1,6 @@
 # AdsAgent Approval And Protection Contract
 
-Applies to every write on Meta, Google Ads, and TikTok. Channel skills add which tools to call; this contract decides what to do with the answers.
+Applies to approval-backed writes on Meta, Google Ads, and TikTok: changes whose tools return a prepare result with a `next_action`. Direct operations that the channel skill says follow their own contract (for example TikTok `creatives_abandon_upload` and `support_report_error`) are not covered; do not invent a prepare or confirm step for them. Channel skills add which tools to call; this contract decides what to do with the answers.
 
 ## Prepare, Approve, Confirm
 

@@ -220,4 +220,4 @@ def test_ci_no_longer_compares_against_frozen_snapshots() -> None:
     assert "contracts/manifests" not in workflow
     assert "--provenance" not in workflow
     assert "check_drift.py" in workflow
-    assert "continue-on-error: true" in workflow
+    assert "continue-on-error" not in workflow

@@ -26,8 +26,7 @@ jobs:
       - name: Check hosted Registry manifest consistency
         run: python scripts/validate_registry_manifests.py
       - run: python -m pytest -q
-      - name: Drift check (advisory, never blocks)
-        continue-on-error: true
+      - name: Drift check (warnings never block; exit 1 blocks in block-removed mode)
         env:
           ADSAGENT_DRIFT_SOURCE_META: ${{ vars.ADSAGENT_DRIFT_SOURCE_META }}
           ADSAGENT_DRIFT_SOURCE_GOOGLE: ${{ vars.ADSAGENT_DRIFT_SOURCE_GOOGLE }}
@@ -38,6 +37,9 @@ jobs:
           code=$?
           if [ "$code" -eq 10 ]; then
             echo "::warning::Skills differ from the services' published tool manifests; see the report above."
+            code=0
+          elif [ "$code" -eq 2 ]; then
+            echo "::warning::A tool manifest source could not be read; drift was not checked."
             code=0
           fi
           exit "$code"

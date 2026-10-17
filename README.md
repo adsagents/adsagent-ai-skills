@@ -269,7 +269,8 @@ python -m pytest -q
 
 Releases are published tag-first: create the git tag and GitHub release,
 then point `release-manifest.json` on main at that tag. The tag check above
-fails while the referenced tag is unpublished, because sync clients fetch
+passes only when the tag is published on origin, the tagged tree carries
+that version, and the GitHub release exists, because sync clients fetch
 the tagged manifest and would otherwise fail with 404.
 
 The blocking checks are offline: skill structure, the tool reference contract

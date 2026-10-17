@@ -133,6 +133,6 @@ def test_readme_names_all_supported_clients() -> None:
     assert "Supported clients" in readme
 
 
-def test_version_is_not_bumped_by_this_stage() -> None:
-    assert _read("VERSION").strip() == "0.7.75"
-    assert "Unreleased" in _read("CHANGELOG.md")
+def test_version_matches_changelog_release() -> None:
+    assert _read("VERSION").strip() == "0.7.76"
+    assert "Version 0.7.76" in _read("CHANGELOG.md")

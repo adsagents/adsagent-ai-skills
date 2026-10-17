@@ -3,7 +3,7 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
-## Unreleased (stage 1, released with the next batch)
+Version 0.7.76 is the stage 1 safety release:
 
 - Meta: removed the two deprecated confirmation tools from guidance. Every confirm
   now uses the tool named in the prepare result's `next_action`. Added the unified
@@ -17,8 +17,7 @@ The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
   are public. The README lists ChatGPT, Claude, Codex, and Cursor.
 - Replaced the frozen tool-manifest snapshots and provenance lock with a warn-only
   drift check against the services' current public tool-name manifests
-  (`scripts/check_drift.py`). `VERSION` is unchanged: versions are bumped once per
-  release batch.
+  (`scripts/check_drift.py`).
 
 Version 0.7.75 names the prepare-only Meta delivery tools for Ad Set budget
 (`adsets_prepare_budget_change`), Ad Set bid (`adsets_prepare_bid_change`) and

@@ -1053,5 +1053,30 @@
     "id": "google_add_negative_keyword",
     "prompt": "Add a negative keyword to my Google Ads campaign.",
     "expected": ["google-ads-manage"]
+  },
+  {
+    "id": "deep_diagnosis_zh",
+    "prompt": "给我的广告账户做一次深度诊断。",
+    "expected": ["adsagent-diagnosis"]
+  },
+  {
+    "id": "account_health_check",
+    "prompt": "Run an account health check on my AdsAgent accounts.",
+    "expected": ["adsagent-diagnosis"]
+  },
+  {
+    "id": "meta_account_audit_diagnosis",
+    "prompt": "Audit my Meta Ads account with a deep diagnosis.",
+    "expected": ["adsagent-diagnosis"]
+  },
+  {
+    "id": "diagnosis_report_read",
+    "prompt": "Show me my latest diagnosis report.",
+    "expected": ["adsagent-diagnosis"]
+  },
+  {
+    "id": "scheduled_diagnosis_lands_on_diagnosis",
+    "prompt": "Schedule a weekly account health check.",
+    "expected": ["adsagent-diagnosis"]
   }
 ]

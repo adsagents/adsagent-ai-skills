@@ -9,6 +9,15 @@ tag is published on origin, the tagged tree carries that version, and the
 GitHub release behind `release_url` exists. A local-only tag or a tag on the
 wrong commit no longer passes.
 
+Unreleased: new cross-channel `adsagent-diagnosis` skill for the
+user-triggered deep diagnosis. It teaches when to call the `diagnosis_*`
+tools (user request or clear 诊断 / 体检 / 审计 / 账户检查 intent, never
+on a schedule), the status-confirm-run flow that spends the window's one
+run, how to explain a structured report without inventing numbers, and
+how to route recommendations through the same-channel prepare and
+approval path. Router, routing contract, deterministic routing model,
+and validator register the new skill.
+
 Version 0.7.76 is the stage 1 safety release:
 
 - Meta: removed the two deprecated confirmation tools from guidance. Every confirm

@@ -35,6 +35,7 @@
     "./skills/tiktok-insights",
     "./skills/adsagent-approvals",
     "./skills/google-ads-create",
-    "./skills/google-ads-manage"
+    "./skills/google-ads-manage",
+    "./skills/adsagent-diagnosis"
   ]
 }

@@ -3,6 +3,12 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+Unreleased: the release-manifest tag check
+(`scripts/validate_release_manifest_tag.py`) passes only when the referenced
+tag is published on origin, the tagged tree carries that version, and the
+GitHub release behind `release_url` exists. A local-only tag or a tag on the
+wrong commit no longer passes.
+
 Version 0.7.76 is the stage 1 safety release:
 
 - Meta: removed the two deprecated confirmation tools from guidance. Every confirm

@@ -263,8 +263,15 @@ Run the local release contract and tests:
 
 ```bash
 python scripts/validate_tri_channel_pack.py
+python scripts/validate_release_manifest_tag.py
 python -m pytest -q
 ```
+
+Releases are published tag-first: create the git tag and GitHub release,
+then point `release-manifest.json` on main at that tag. The tag check above
+passes only when the tag is published on origin, the tagged tree carries
+that version, and the GitHub release exists, because sync clients fetch
+the tagged manifest and would otherwise fail with 404.
 
 The blocking checks are offline: skill structure, the tool reference contract
 (`contracts/public-tool-references.json`), and the list of deprecated tools

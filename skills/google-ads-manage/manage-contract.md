@@ -1,6 +1,8 @@
 # Google Ads Manage Contract
 
-Use Google Ads fields and tools only. No generic mutate or raw GAQL write exists; every write is a named prepare followed by the confirmation tool the prepare result names in `next_action`.
+Use Google Ads fields and tools only. No generic mutate or raw GAQL write exists. Use the confirmation tool named in the prepare result.
+
+For same-kind budget, status or bid changes in one customer, prefer an advertised batch prepare. Show accepted and excluded rows together and confirm the batch once. Existing shared-budget and portfolio operations remain atomic; do not split them into campaign rows. Only advertised tools and schemas are available.
 
 ## Tools By Change
 
@@ -25,7 +27,7 @@ Use the specific tool when one exists; the generic entity and management tools a
 
 - Name the customer, the entity, and the exact before/after in the approval summary. Money values carry their currency; never compare amounts across currencies.
 - A budget or bidding change rejected by the amount guard is a stop, not a retry: see `adsagent-approvals`.
-- Do not reconfirm a failed, expired, confirmed, or uncertain draft. Approvals are tenant-bound, payload-bound, and single-use.
+- Legacy drafts are tenant-bound, payload-bound, and single-use. Batch recovery can resume proven-unsent rows under the unchanged digest and expiry, as described in `adsagent-approvals`; uncertain and completed rows never replay.
 - Removal and conversion-action removal are destructive: ask for an explicit, separate confirmation of the removal itself.
 - Stored asset inventory is read with `google_ads_asset_inventory_list`; `asset_inventory_not_synced` means unknown, never zero.
 

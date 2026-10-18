@@ -32,7 +32,7 @@
 - Require `mutation_receipts=true` and exact advertised names: `delivery_prepare_tool`, `delivery_confirm_tool`, `operation_get_tool`, budget/bid, copy/clone/recreate prepares and confirms.
 - Read `overview_get_live_configs`; keep configured/effective/operation status, budget, bid, currency, receipt, and metrics distinct. TikTok money is decimal advertiser-currency major units; bid is native `ad_group` scoped.
 - `copy_ad_quick_copy`, `copy_ad_clone_structure`, and `campaigns_recreate_from_task` are same-advertiser only. One approval/task covers 1..20 grouped items with item receipts and disabled initial delivery. Reject cross-advertiser transfer, failed/partial/foreign sources, name matching, and uncertain replay.
-- These approval-backed ad changes use prepare, sanitized review, explicit approval, confirm once, then exact-route recovery.
+- Same-kind delivery, budget or bid changes use one advertised batch, with accepted and excluded rows shown together. Use the confirmation tool named in the prepare result and the live schema for exact fields. Uncertain rows never replay; a separate proven-unsent tail follows `adsagent-approvals` only within the same digest and original expiry.
 - Direct operations such as `creatives_abandon_upload` and `support_report_error` use their advertised authorization and result contract. Execute only within the user's request; do not seek an unadvertised prepare/confirm pair. Preserve the returned task, operation, or support reference and use only its advertised status/recovery tool; never replay an uncertain write.
 
 ## Optimization, MMP, Support

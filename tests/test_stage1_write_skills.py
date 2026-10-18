@@ -61,12 +61,14 @@ def test_approvals_skill_covers_shared_protection_rules() -> None:
         "Never split one change",
         "never state a threshold",
         "Never replay",
-        "Do not call confirm again",
+        "Legacy drafts are not reconfirmed",
+        "Never resend the uncertain row",
+        "proven-unsent tail",
     ):
         assert term.lower() in text.lower(), term
 
 
-def test_confirmation_tools_come_from_next_action_only() -> None:
+def test_confirmation_tools_come_from_prepare_results() -> None:
     names = (
         "google-ads-create",
         "google-ads-manage",
@@ -77,6 +79,7 @@ def test_confirmation_tools_come_from_next_action_only() -> None:
     text += _read("skills/meta-copy/update-contract.md")
 
     assert "next_action" in text
+    assert "confirmation tool named in the prepare result" in text
     assert not re.search(r"`google_ads_[a-z_]+_confirm`", text)
     assert "copy_ad_quick_copy_confirm" not in text
     assert "overview_update_campaign_budget_confirm" not in text
@@ -134,5 +137,5 @@ def test_readme_names_all_supported_clients() -> None:
 
 
 def test_version_matches_changelog_release() -> None:
-    assert _read("VERSION").strip() == "0.7.78"
-    assert "Version 0.7.78" in _read("CHANGELOG.md")
+    assert _read("VERSION").strip() == "0.7.79"
+    assert "Version 0.7.79" in _read("CHANGELOG.md")

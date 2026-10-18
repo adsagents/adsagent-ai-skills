@@ -15,9 +15,9 @@ from read access.
    workflow.
 2. For reads, use one aggregate query or server batch and preserve completeness,
    source snapshot, route, and continuation.
-3. For approval-backed ad changes, use the advertised prepare/confirm/recovery
-   tools, sanitized review, fresh explicit approval, one confirm, and exact-route
-   recovery. For direct operations such as `support_report_error` or
+3. Prefer one advertised batch for same-kind delivery, budget or bid changes.
+   Follow `adsagent-approvals` for accepted/excluded rows, explicit approval,
+   one confirm and exact-route recovery. For direct operations such as `support_report_error` or
    `creatives_abandon_upload`, follow the exact advertised tool contract and
    user authorization; do not invent a prepare/confirm pair.
 4. Never translate Meta object names or semantics into TikTok.

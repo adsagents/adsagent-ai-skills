@@ -81,6 +81,7 @@ the requested status; do not turn it into a reporting intake.
   `entity_type` and `entity_id`; parent status and manual changes outside the
   candidate ID set are separate evidence.
 - Consequential platform/delivery writes require prepare, sanitized summary, explicit approval, then confirm; never substitute Campaign and AdSet budget levels.
+- For same-kind changes to several entities in one account, prefer the advertised batch prepare. Show accepted and excluded rows, obtain one agreement and confirm once. `adsagent-approvals` defines bounded recovery of unchanged, proven-unsent rows.
 - On launch-family confirm errors, branch on structured `details.recommended_action` and `details.confirm_token_consumed` before generic stop or operator review. `retry_launch_confirm` with `confirm_token_consumed=false` retries the same confirm_token once; `prepare_*_again` re-runs prepare and obtains a fresh token. See the packaged reliability recovery contract.
 - Meta creation uses `creation_contract_version=3`; use live tool schemas for the historical `adsagent://guide/creation-contract` and `adsagent://guide/name-contract` field topics, and emit only explicit role fields. QuickCreate always sends `destination.type=web|app`.
 - A reverse-engineered template preview is unsaved. Source labels and a
@@ -89,7 +90,7 @@ the requested status; do not turn it into a reporting intake.
   readiness evidence. Template state writes are direct: require the exact
   advertised tool and explicit request instead of inventing prepare/confirm.
 - Meta metadata: use live tool schemas for the historical `adsagent://guide/metadata-contract` fields; status writes use `target_configured_status`.
-- On public `invalid_fields`, correct prepare once. Never replay confirm. A strict pre-send quota defer stops the plan before later confirms; follow `adsagent-reliability`.
+- On public `invalid_fields`, correct prepare once. Never replay sent or uncertain writes. A strict pre-send quota defer stops the plan before later confirms; `adsagent-reliability` distinguishes advertised batch continuation from legacy quota plans.
 - QuickCreate tokens are single-use for 15 minutes. On `confirm_token_invalid`, prepare again; never retry old confirm.
 - Poll `task_ref`. Terminal create/copy requires `result.create_reconciliation.reconciled=true`; a `recovered_by_url_fallback` auxiliary image failure is not permission to retry. On `no_create_permission`, use `/dashboard/assets/fb-users`; never alter permissions.
 - Meta delivery confirms may return inline `verification_result`; consume it

@@ -64,6 +64,10 @@ On `snapshot_expired` or continuation replay rejection, restart at page 1 with t
 
 If Google Ads MCP returns `429` with `mcp_fanout_detected`, do not backoff-retry the same call. Switch to the profile batch shape or native batch overview tool.
 
+## Name Lookup
+
+To find campaigns, ad groups, or ads by name, call `entities_lookup_by_name`, then prepare the change from `prepare_groups`.
+
 ## User-Facing Output
 
 Return Markdown with a direct answer, customer/date/grouping, compact metrics table, `as_of`, completeness, and rows shown versus total. Do not dump raw JSON, diagnostics, schemas, or every field.

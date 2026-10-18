@@ -81,6 +81,7 @@ the requested status; do not turn it into a reporting intake.
   `entity_type` and `entity_id`; parent status and manual changes outside the
   candidate ID set are separate evidence.
 - Consequential platform/delivery writes require prepare, sanitized summary, explicit approval, then confirm; never substitute Campaign and AdSet budget levels.
+- For same-kind changes to several entities in one account, prefer the advertised batch prepare. Show accepted and excluded rows, obtain one agreement and confirm once. `adsagent-approvals` defines bounded recovery of unchanged, proven-unsent rows.
 - On launch-family confirm errors, branch on structured `details.recommended_action` and `details.confirm_token_consumed` before generic stop or operator review. `retry_launch_confirm` with `confirm_token_consumed=false` retries the same confirm_token once; `prepare_*_again` re-runs prepare and obtains a fresh token. See the packaged reliability recovery contract.
 - Meta creation uses `creation_contract_version=3`; use live tool schemas for the historical `adsagent://guide/creation-contract` and `adsagent://guide/name-contract` field topics, and emit only explicit role fields. QuickCreate always sends `destination.type=web|app`.
 - A reverse-engineered template preview is unsaved. Source labels and a

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Prefer one same-kind batch approval for multiple entities. Keep exclusions visible and distinguish frozen uncertain rows from resumable unsent rows. Atomic and legacy approvals retain their existing contracts.
+
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 

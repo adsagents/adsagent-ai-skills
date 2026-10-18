@@ -10,8 +10,8 @@ Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
 Connection blockers: `adsagent-setup`. Prepare, approval, and error rules: `adsagent-approvals`. New campaigns: `google-ads-create`.
 
 1. Read the current state first with an insights read; name the exact customer and entity.
-2. Pick the matching prepare tool from the contract. One prepare is one change; never fan out.
-3. Show the before/after summary, wait for explicit approval, then confirm once with the tool named in `next_action`.
+2. Pick the matching prepare tool. For same-kind budgets, statuses or bids in one customer, prefer its advertised `items` batch instead of per-entity prepares.
+3. Show accepted and excluded rows, wait for explicit approval, then confirm once with the returned `confirm_tool`, or the tool named in a legacy result's `next_action`.
 4. Location and language stay required whenever targeting is created or replaced.
 5. Real writes belong only to test accounts in a test flow: see the contract.
 

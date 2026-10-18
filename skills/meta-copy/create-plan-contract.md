@@ -4,6 +4,8 @@ For performance-based creative selection, use `creatives_top` with the user's
 account or product, time window and metric. Its rankings use cached observations;
 show the reported age and coverage limits. Keep the returned creative references.
 Do not repeatedly list a creative library to compute the ranking yourself.
+If the user only asks for "good" creatives, disclose an advertised default metric
+or ask which metric to use; do not present a chosen metric as the user's choice.
 
 Pass country and language names as the user said them. The server resolves them;
 show any ambiguity for the user to choose. All languages requires an explicit

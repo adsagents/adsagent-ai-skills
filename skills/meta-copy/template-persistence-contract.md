@@ -152,6 +152,9 @@ then use exact-name `templates_get` before QuickCreate or any conclusion about
 snapshot readiness. A list row with `migration_state.persisted=false` is still
 discoverable, but the bounded summary did not certify its stored snapshot.
 Both reads are under `mcp.read`.
+An already completed exact-name read for the same unchanged template can satisfy
+this step. The immediate reread rules below still apply to reverse-engineered,
+legacy or unknown persistence.
 Use `templates_delete` only under `mcp.templates.write` when the user explicitly
 requests deletion of the exact named template; never infer deletion from a
 cleanup request. Rename is one `templates_update` direct state write using only

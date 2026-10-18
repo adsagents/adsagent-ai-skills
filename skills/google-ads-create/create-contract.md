@@ -7,6 +7,10 @@ Use Google Ads fields and tools only. Never substitute Meta or TikTok tools.
 1. `setup_get_status`, then `google_ads_accounts_list`. Choose one customer whose account list entry is usable and is not a manager.
 2. `google_ads_creation_capabilities_get(customer_id)` states which campaign types, writer access, and route this customer can create. Switches, writer access, a create route, and the budget ceiling are checked separately from provider eligibility; an unavailable type is a stop, not something to work around.
 
+These are readiness requirements, not mandatory repeated calls. Reuse current
+verified evidence for the same connection and customer; refresh it if the scope,
+permissions or advertised validity changes, or a response requests a refresh.
+
 ## Location And Language Are Required
 
 Search and Performance Max creation both require an explicit location and language choice. Without them the server answers `needs_input`; it never builds a worldwide campaign, and neither should you.

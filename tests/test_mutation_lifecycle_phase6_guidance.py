@@ -54,7 +54,7 @@ class MutationLifecyclePhase6GuidanceTests(unittest.TestCase):
         self.assertIn("upload_ref", text)
 
     def test_version_bumped_to_0760(self) -> None:
-        self.assertEqual(read_contract(ROOT, "VERSION").strip(), "0.7.78")
+        self.assertEqual(read_contract(ROOT, "VERSION").strip(), "0.7.79")
 
 
 if __name__ == "__main__":

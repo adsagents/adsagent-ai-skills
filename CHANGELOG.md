@@ -1,8 +1,12 @@
 # Changelog
 
-## Unreleased
+## 0.7.79 - 2026-10-18
 
-- Prefer one same-kind batch approval for multiple entities. Keep exclusions visible and distinguish frozen uncertain rows from resumable unsent rows. Advertised batch continuation retains the original agreement; legacy quota recovery still requires fresh approval. Exact fields come from the live schema. Atomic and legacy approvals retain their existing contracts.
+Version 0.7.79 prefers one same-kind batch approval for multiple entities.
+Keep exclusions visible and distinguish frozen uncertain rows from resumable
+unsent rows. Advertised batch continuation retains the original agreement;
+legacy quota recovery still requires fresh approval. Exact fields come from
+the live schema. Atomic and legacy approvals retain their existing contracts.
 
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.

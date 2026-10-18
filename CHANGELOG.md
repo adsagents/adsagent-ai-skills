@@ -9,6 +9,16 @@ tag is published on origin, the tagged tree carries that version, and the
 GitHub release behind `release_url` exists. A local-only tag or a tag on the
 wrong commit no longer passes.
 
+Insights skills no longer call a template an analysis dimension. A template is
+a saved ad-creation object. Meta product scope stays the public `product_ref`
+from `products_list`; sparse funnel counts come from `products_get_funnel_values`,
+and a missing key is not zero. `products_get_top_campaigns` ranks spend for
+that same ref. TikTok cards use `products_list`; pass that `product_ref` as
+`product_id` to `products_get_actions` and `products_get_top_campaigns`.
+Google cards use `google_ads_product_cards_list`. None of the three overview
+tools group by template, and TikTok and Google do not advertise a funnel-values
+read.
+
 Version 0.7.76 is the stage 1 safety release:
 
 - Meta: removed the two deprecated confirmation tools from guidance. Every confirm

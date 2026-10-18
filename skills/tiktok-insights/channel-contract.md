@@ -10,6 +10,14 @@
 - The opaque continuation is single-use. Preserve tenant, advertiser, authorization route, dates, grouping, filters, order, page size, and source snapshot. Never add Meta `min_as_of`. On `snapshot_expired` or replay rejection, restart identical page 1 serially.
 - On 503 `dependency_unavailable` with no `task_ref`, honor `retry_after_seconds`/Retry-After and retry the identical bounded read once. For 429 fan-out, use one batch; immediate write success is not mutation verification or `config_verified_live`; age-only data is limited.
 
+## Product Cards And Templates
+
+- `products_list` returns TikTok product cards. Pass each public `product_ref` as `product_id` to `products_get_actions` and `products_get_top_campaigns`.
+- `products_get_actions` lists MMP event-name candidates. It is not a dated funnel report. `products_get_top_campaigns` ranks that card's campaigns by spend.
+- This channel does not advertise a product-health read or a funnel-values read. Do not call the Meta product tools for those questions. A missing count is unknown, not zero.
+- `templates_list` lists saved ad-creation templates. Do not group, filter, or total insights by template. When a row includes `product_link`, that is the saved card link, not a breakdown.
+- Overview and batch reads do not take `product_ref`. Do not add it.
+
 ## Creative And Create
 
 - Use local `creative_id` only with `readiness.create_eligible=true`; inspect `readiness.reason_code`, `readiness.retryable`, and `readiness.next_action`.

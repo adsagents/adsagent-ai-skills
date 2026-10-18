@@ -23,5 +23,9 @@ from read access.
 4. Never translate Meta object names or semantics into TikTok.
 5. Return compact evidence and the next safe action, never raw JSON.
 
+`templates_list` lists saved ad-creation templates. It is not an insights
+breakdown. Product cards come from `products_list`.
+
 Read [channel-contract.md](channel-contract.md) only for pagination, creative
-readiness, QuickCreate/append, receipts, optimization, MMP, or support.
+readiness, QuickCreate/append, receipts, optimization, MMP, product cards, or
+support.

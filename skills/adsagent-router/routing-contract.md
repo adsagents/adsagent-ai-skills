@@ -37,11 +37,11 @@ the requested status; do not turn it into a reporting intake.
   order is not significant (`performance and archived templates` equals
   `archived and performance templates`).
 - Route reports, dashboards, charts, campaign lists, comparisons, and analyses
-  to `meta-insights` when templates are a grouping, filter, subject, or
-  performance dimension rather than the lifecycle object. This includes
-  relation clauses such as "a report summarizing Meta template spend", "Meta
-  campaigns based on templates", or "a dashboard visualizing Meta template
-  performance".
+  to `meta-insights` when a template is mentioned but is not the lifecycle
+  object. A saved template is an ad-creation object. Do not group, filter, or
+  total by it. This includes relation clauses such as "a report summarizing
+  Meta template spend", "Meta campaigns based on templates", or "a dashboard
+  visualizing Meta template performance".
 - Bind a direct-template override to the same Meta-qualified clause. An email,
   document, or other non-Meta template mentioned elsewhere in a compound
   request must not capture the Meta workflow.

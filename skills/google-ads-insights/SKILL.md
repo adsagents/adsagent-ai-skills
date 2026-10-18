@@ -19,5 +19,9 @@ For connection blockers, use `adsagent-setup` and resume this scope.
 5. Report concise Markdown with `as_of`; unavailable or incomplete data is
    unknown, never zero.
 
+`google_ads_templates_list` lists saved ad-creation templates. It is not an
+insights breakdown. Product cards use `google_ads_product_cards_list`.
+
 Read [query-contract.md](query-contract.md) only for account routing,
-pagination, retries, fallback tools, exports, or freshness boundaries.
+pagination, retries, fallback tools, exports, product cards, or freshness
+boundaries.

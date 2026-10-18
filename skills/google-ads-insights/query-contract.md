@@ -10,6 +10,13 @@ Use Google Ads fields and tools only.
 4. Choose an `enabled`, `non-manager` account; never analyze an MCC as a spend account. A test account (marked `test_account`) is also usable even when its status reads CLOSED.
 5. Verify named customer IDs, and report customer/date/grouping.
 
+## Product Cards And Templates
+
+- List product cards with `google_ads_product_cards_list`. `date_from` and `date_to` are required. This list is not an insights breakdown.
+- When a card includes `product_card.product_ref`, that public id is only for a destination app or URL card. Do not treat another row as that id.
+- `google_ads_templates_list` lists saved ad-creation templates. Do not group, filter, or total insights by template. When a row includes `product_link`, that is the saved card link, not a breakdown.
+- `google_ads_insights_overview_query` and `google_ads_insights_overview_batch` do not take a product card or a template as a breakdown. This channel has no funnel-values read. A missing funnel count is unknown, not zero.
+
 ## Freshness Boundary
 
 Google Insights uses a read-only ledger; report `as_of` as observation time.

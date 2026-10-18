@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.76"
+VERSION = "0.7.77"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -35,6 +35,7 @@ REQUIRED_SKILLS = {
     "google-ads-create",
     "google-ads-manage",
     "adsagent-approvals",
+    "adsagent-diagnosis",
 }
 MAX_SKILL_WORDS = 180
 MAX_SKILL_BYTES = 1_600
@@ -532,6 +533,32 @@ APPROVALS_TERMS = [
     "support_ref",
 ]
 
+DIAGNOSIS_TERMS = [
+    "diagnosis_get_status",
+    "diagnosis_run",
+    "diagnosis_get_report",
+    "diagnosis_list_reports",
+    "diagnosis_prepare_recommendation",
+    "diagnosis_update_schedule",
+    "acknowledge_credit_use=true",
+    "needs_confirmation",
+    "diagnosis_not_in_plan",
+    "diagnosis_runs_exhausted",
+    "diagnosis_in_progress",
+    "billing_read_only",
+    "recommendation_other_channel",
+    "recommendation_stale",
+    "recommendation_not_actionable",
+    "score_drivers",
+    "email_summary",
+    "诊断",
+    "体检",
+    "审计",
+    "账户检查",
+    "Never run a diagnosis on a schedule",
+    "A prepare changes nothing by itself",
+]
+
 GOOGLE_CREATE_TERMS = [
     "google_ads_creation_capabilities_get",
     "google_ads_geo_targets_suggest",
@@ -911,6 +938,7 @@ def main() -> None:
         GOOGLE_TERMS,
     )
     assert_terms("adsagent-approvals", read_bundle("adsagent-approvals"), APPROVALS_TERMS)
+    assert_terms("adsagent-diagnosis", read_bundle("adsagent-diagnosis"), DIAGNOSIS_TERMS)
     assert_terms("google-ads-create", read_bundle("google-ads-create"), GOOGLE_CREATE_TERMS)
     assert_terms("google-ads-manage", read_bundle("google-ads-manage"), GOOGLE_MANAGE_TERMS)
     assert_terms("meta-copy update contract", read("skills/meta-copy/update-contract.md"), META_UPDATE_TERMS)

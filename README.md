@@ -42,7 +42,7 @@ Skills describe client-independent behavior. Install steps differ per client and
 
 Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [Cursor Directory](https://cursor.directory/plugins/adsagent-meta-mcp), and [MCP Market](https://mcpmarket.com/zh/server/adsagent-ai-skills).
 
-Current contract version: `0.7.76`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.77`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 
 For contributor cloud environments, provision `uv` in the image and run the
 bundled `bash scripts/cloud-agent-setup.sh`; see
@@ -146,6 +146,7 @@ the hosted advertising backends are proprietary.
 | `adsagent-notifications` | Inspect alerts, request an alert refresh, and explain supported MCP Events or retired integrations. |
 | `adsagent-approvals` | Shared prepare, approval, and confirm rules: `needs_input`, dry-run (`validate_only`) rejections, amount-guard refusals, error classes, and never replaying a write whose result is unknown. |
 | `adsagent-reliability` | Respect retry, backoff, session refresh, and concurrency limits. |
+| `adsagent-diagnosis` | Run a user-requested deep diagnosis (account health check) across channels, explain the structured report, and route its recommendations through prepare and approval. |
 | `agent-scheduled-tasks` | Design, create, verify, update, pause, and delete agent-owned scheduled tasks without confusing reminders with execution proof. |
 | `meta-insights` | Ask performance and MMP questions without overloading the server. |
 | `meta-copy` | Create, copy, and change Meta campaigns, ad sets, and ads (unified update, ad copy read and edit) with confirmation and operator-review safety. |

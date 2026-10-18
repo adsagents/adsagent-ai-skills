@@ -134,5 +134,5 @@ def test_readme_names_all_supported_clients() -> None:
 
 
 def test_version_matches_changelog_release() -> None:
-    assert _read("VERSION").strip() == "0.7.76"
-    assert "Version 0.7.76" in _read("CHANGELOG.md")
+    assert _read("VERSION").strip() == "0.7.77"
+    assert "Version 0.7.77" in _read("CHANGELOG.md")

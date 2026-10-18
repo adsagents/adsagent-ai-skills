@@ -3,11 +3,26 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
-Unreleased: the release-manifest tag check
+## 0.7.77 - 2026-10-18
+
+Version 0.7.77 adds deep diagnosis guidance and the published-tag release check.
+
+The release-manifest tag check
 (`scripts/validate_release_manifest_tag.py`) passes only when the referenced
 tag is published on origin, the tagged tree carries that version, and the
 GitHub release behind `release_url` exists. A local-only tag or a tag on the
 wrong commit no longer passes.
+
+New cross-channel `adsagent-diagnosis` skill for the
+user-triggered deep diagnosis. It teaches when to call the `diagnosis_*`
+tools (user request or clear 诊断 / 体检 / 审计 / 账户检查 intent, never
+on a schedule), the status-confirm-run flow that spends the window's one
+run, how to explain a structured report without inventing numbers, and
+how to route recommendations through the same-channel prepare and
+approval path. Router, routing contract, deterministic routing model,
+and validator register the new skill.
+
+## 0.7.76
 
 Version 0.7.76 is the stage 1 safety release:
 

@@ -15,8 +15,9 @@ from read access.
    workflow.
 2. For reads, use one aggregate query or server batch and preserve completeness,
    source snapshot, route, and continuation.
-3. For approval-backed ad changes, use the advertised prepare/confirm/recovery
-   tools, sanitized review, fresh explicit approval, one confirm, and exact-route
+3. For same-kind delivery, budget or bid changes to several entities, prefer one
+   advertised batch. Show accepted and excluded rows and obtain one explicit agreement.
+   Approval and unsent-row recovery follow `adsagent-approvals`, with one confirm and exact-route
    recovery. For direct operations such as `support_report_error` or
    `creatives_abandon_upload`, follow the exact advertised tool contract and
    user authorization; do not invent a prepare/confirm pair.

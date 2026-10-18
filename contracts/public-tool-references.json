@@ -46,8 +46,14 @@
           "name": "products_list"
         },
         {
+          "name": "products_get_funnel_values"
+        },
+        {
           "name": "products_get_health",
           "required_capability": "mcp.read"
+        },
+        {
+          "name": "products_get_top_campaigns"
         },
         {
           "name": "assets_list_pages",
@@ -328,6 +334,12 @@
           "name": "google_ads_insights_overview_batch"
         },
         {
+          "name": "google_ads_product_cards_list"
+        },
+        {
+          "name": "google_ads_templates_list"
+        },
+        {
           "name": "tasks_get_status"
         },
         {
@@ -555,6 +567,18 @@
           "name": "setup_check_channel_connect",
           "capability_gate": "mcp_authenticated",
           "required_capability": "mcp_authenticated"
+        },
+        {
+          "name": "products_get_actions"
+        },
+        {
+          "name": "products_get_top_campaigns"
+        },
+        {
+          "name": "products_list"
+        },
+        {
+          "name": "templates_list"
         },
         {
           "name": "insights_query_consistent"

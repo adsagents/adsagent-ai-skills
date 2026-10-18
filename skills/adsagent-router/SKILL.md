@@ -13,10 +13,10 @@ the matching skill:
 - ambiguous or cross-channel request: stay here long enough to decompose it;
 - connection/readiness: `adsagent-setup`;
 - transport, retry, partial, or queued failure: `adsagent-reliability`;
-- Meta performance/inventory read, including reports or dashboards where a
-  template is a grouping, filter, or comparison dimension: `meta-insights`;
-  known-entity status, budget, or bid change and a direct Meta
-  create/copy/template-object lifecycle request: `meta-copy`;
+- Meta performance or inventory read: `meta-insights`. A saved template is
+  an ad-creation object, not an insights breakdown. known-entity status,
+  budget, or bid change and a direct Meta create/copy/template lifecycle
+  request: `meta-copy`;
 - Google Ads: `google-ads-insights` (read), `google-ads-create`, `google-ads-manage`;
   TikTok: `tiktok-insights`;
 - any prepare/confirm write, `needs_input`, or amount refusal: `adsagent-approvals`;

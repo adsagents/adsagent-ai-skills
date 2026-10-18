@@ -1,6 +1,6 @@
 ---
 name: meta-insights
-description: Use when reading or analyzing Meta Ads performance, delivery, MMP, cohorts, exports, or reports where templates are an analysis dimension.
+description: Use when reading or analyzing Meta Ads performance, delivery, MMP, cohorts, or exports.
 ---
 
 # Meta Insights
@@ -9,8 +9,8 @@ Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
 
 Missing tools/authorization: use `adsagent-setup`, then resume.
 
-1. Classify health or performance. Template-dimension reports stay here;
-   template lifecycle uses `meta-copy`.
+1. Classify health or performance. A saved template is an ad-creation object
+   in `meta-copy`, not an insights breakdown. Do not group or total by it.
 2. For product health, call `products_list`, select one public `product_ref`,
    then call `products_get_health`. This path does not require a date range or
    an Insights query.

@@ -3,6 +3,12 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+## Unreleased
+
+Insights skills treat templates as saved ad-creation objects. Product-card
+queries name registered channel tools. Meta funnel counts distinguish missing
+values from zero. Google and TikTok guidance does not advertise funnel reads.
+
 ## 0.7.77 - 2026-10-18
 
 Version 0.7.77 adds deep diagnosis guidance and the published-tag release check.

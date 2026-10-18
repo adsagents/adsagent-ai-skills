@@ -3,6 +3,10 @@
 For performance-based creative selection, use `creatives_top` with the user's
 account or product, time window and metric. Its rankings use cached observations;
 show the reported age and coverage limits. Keep the returned creative references.
+Use only selections marked eligible for creation in `groups`. If the ranking
+reports that a selection cannot be used by the available creation tool, explain
+the limit and choose a supported source with the user. Keep the account's allowed
+media sources unchanged; ranking alone does not make a selection usable.
 Do not repeatedly list a creative library to compute the ranking yourself.
 If the user only asks for "good" creatives, disclose an advertised default metric
 or ask which metric to use; do not present a chosen metric as the user's choice.

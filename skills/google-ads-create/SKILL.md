@@ -11,7 +11,7 @@ Connection blockers: `adsagent-setup`. Prepare, approval, and error rules: `adsa
 
 1. Run `setup_get_status`, discover accounts, and pick one usable customer.
 2. Call `google_ads_creation_capabilities_get` before planning; plan only what it allows.
-3. Location and language are required. Find ids with `google_ads_geo_targets_suggest`, let the user choose, and never create a worldwide campaign. Missing values return `needs_input`: ask, then prepare again.
+3. Location and language are required. Pass the user's country and language names; the server resolves them. Never create a worldwide campaign. For `needs_input`, ask for the missing choice, then prepare again.
 4. Prepare one paused graph, show the summary, wait for explicit approval, then confirm once.
 5. Real writes belong only to test accounts in a test flow: see the contract.
 

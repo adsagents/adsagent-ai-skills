@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Use country and language names for creation. Keep requested media groups in one approval, revise supported draft choices, and append missing groups after a resolved partial result. Meta creative rankings use cached evidence with visible freshness and coverage.
+
 - Prefer one same-kind batch approval for multiple entities. Keep exclusions visible and distinguish frozen uncertain rows from resumable unsent rows. Atomic and legacy approvals retain their existing contracts.
 
 Version history for the AdsAgent tri-channel skill pack.

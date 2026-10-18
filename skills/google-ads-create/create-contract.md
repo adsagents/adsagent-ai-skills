@@ -9,11 +9,14 @@ Use Google Ads fields and tools only. Never substitute Meta or TikTok tools.
 
 ## Location And Language Are Required
 
-Search and Performance Max creation both require location ids and language ids. Without them the server answers `needs_input`; it never builds a worldwide campaign, and neither should you.
+Search and Performance Max creation both require an explicit location and language choice. Without them the server answers `needs_input`; it never builds a worldwide campaign, and neither should you.
 
 1. Ask the user which countries or regions and which languages they want.
-2. Resolve location ids with `google_ads_geo_targets_suggest`; show the matches and let the user pick. Never choose a location or language on the user's behalf and never default to "all".
-3. Pass the chosen ids, show the approval summary (it lists locations and exclusions), and confirm only after explicit approval.
+2. Pass the user's country and language names to the creation tool; the server resolves and validates them. Never choose a location or language on the user's behalf and never default to "all". Use all languages only when the user explicitly requests it.
+3. When a place is ambiguous, show the returned names and levels and ask the user to choose. `google_ads_geo_targets_suggest` can help explore places; do not turn its results into a separate code-conversion task.
+4. Show the approval summary, including locations, exclusions and languages, and confirm only after explicit approval.
+
+For keyword creation, ask for a missing match type. Pass the user's exact, phrase or broad match choice by name; do not silently select broad match.
 
 ## Choosing The Tool
 

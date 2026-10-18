@@ -3,6 +3,11 @@
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
 
+## Unreleased
+
+- Tell each channel skill to find campaigns, ad groups, and ads by name with
+  `entities_lookup_by_name`, then prepare from `prepare_groups`.
+
 ## 0.7.78 - 2026-10-18
 
 Version 0.7.78 corrects product-card and template guidance.

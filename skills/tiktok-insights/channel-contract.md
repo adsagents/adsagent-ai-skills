@@ -27,6 +27,10 @@
 - Never supply both target IDs, guess names, use Meta `append-adset`, or replace prepared parents. Show sanitized parents, settings, count, expiry, and `call_to_action_configured`; get explicit approval. Confirm once.
 - Use `task_ref` only for `tasks_get_status`. Use canonical `operation_ref` only for `operations_get` on the original route. `failed_proven` needs corrected input, new prepare, and fresh approval. Never replay; reconnect the MCP transport after Hosted schema release.
 
+## Name Lookup
+
+To find campaigns, ad groups, or ads by name, call `entities_lookup_by_name`, then prepare the change from `prepare_groups`.
+
 ## Receipt Workflows
 
 - Require `mutation_receipts=true` and exact advertised names: `delivery_prepare_tool`, `delivery_confirm_tool`, `operation_get_tool`, budget/bid, copy/clone/recreate prepares and confirms.

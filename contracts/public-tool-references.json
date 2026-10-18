@@ -288,6 +288,10 @@
           "name": "entities_prepare_update"
         },
         {
+          "name": "entities_lookup_by_name",
+          "required_capability": "mcp.read"
+        },
+        {
           "name": "ads_get_copy"
         },
         {
@@ -544,6 +548,10 @@
         {
           "name": "google_ads_status_pause_prepare",
           "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "entities_lookup_by_name",
+          "required_capability": "mcp.read"
         }
       ]
     },
@@ -662,6 +670,10 @@
         },
         {
           "name": "approval_plan_prepare"
+        },
+        {
+          "name": "entities_lookup_by_name",
+          "required_capability": "mcp.read"
         }
       ]
     }

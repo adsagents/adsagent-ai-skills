@@ -13,8 +13,8 @@ Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
    gates. Wait for `poll_after_ms` before each task poll and stop at terminal;
    retain task refs at deadlines; never resubmit.
    Never infer a retry from prose alone.
-3. Retry only bounded reads or operations explicitly proven not sent. Never
-   replay a confirm or parallelize recovery.
+3. Retry bounded reads or advertised proven-unsent recovery. Never replay
+   sent or uncertain writes; recover serially.
 4. Use terminal results. Preserve completeness, receipts,
    continuation, and `support_ref` boundaries.
 5. For reconciled Meta create/copy, follow read-only

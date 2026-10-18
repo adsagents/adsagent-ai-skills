@@ -36,7 +36,7 @@ For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact
   structured `mcp_session_not_found` response. Never
   invent protocol/session headers, re-register, or replace a bearer solely
   because the guide or protocol changed.
-- Retry only reads/idempotent operations; never parallel-retry or replay confirm.
+- Retry only bounded reads or proven-unsent writes under their live recovery contract; never parallel-retry or replay sent or uncertain writes.
 - After a Meta delivery confirm, consume inline `verification` and
   `verification_result` first. Follow `next_action` to
   `overview_get_live_configs` only while verification remains pending. A local
@@ -65,10 +65,10 @@ For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact
 | Launch confirm: `recommended_action=retry_launch_confirm` and `confirm_token_consumed=false` | Retry the same `launch_confirm` once with the same confirm_token. Do not re-prepare first. |
 | Launch confirm: `recommended_action=prepare_again` / `prepare_quick_create_again` or used/expired token | Re-run prepare, show the fresh summary, obtain approval, confirm with the new token. Never replay the old token. |
 | Launch confirm: `operator_review_required=true` without `retry_launch_confirm` | Stop; preserve `support_ref`. Do not replay confirm or infer retry from message text. |
-| `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, `operator_review_required=false` | STOP before later confirms; preserve `completed_mutations`/`not_sent_mutations`/`remaining_mutations`/`safe_resume_from`/`support_refs`; wait; re-prepare unchanged remainder; fresh approval. See [meta-quota-plan.md](meta-quota-plan.md). |
+| `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, `operator_review_required=false` | STOP before later confirms; preserve receipts and wait. Use advertised batch continuation only within the unchanged approval and original expiry; legacy quota plans instead re-prepare the unchanged remainder with fresh approval and new tokens. Select the applicable path in [meta-quota-plan.md](meta-quota-plan.md). |
 | `no_create_permission` | Send the user to `/dashboard/assets/fb-users`, then prepare again. |
 | Prepare call: `adsagent_request_incomplete` + `invalid_fields` | Correct only the advertised public fields (including any `expected_path`) and prepare once; on repeat preserve any returned `support_ref`. |
-| `approval_ref` present and `capabilities.mutation_lifecycle` advertised | Resolve with `operations_get_approval(approval_ref=...)`; show the same summary and `plan_digest`; obtain fresh explicit approval; confirm once with the operation-specific confirmation tool named in `next_action` (approval_ref=..., expected_plan_digest=...). Never regenerate the payload. |
+| `approval_ref` present and `capabilities.mutation_lifecycle` advertised | Resolve with `operations_get_approval`; show the same summary. Advertised batch continuation keeps the original agreement only for unchanged, proven-unsent rows under the same digest and original expiry, as defined in `adsagent-approvals`. Otherwise obtain fresh explicit approval before confirming a pending approval. Use the operation-specific confirmation tool named in the result and its live schema. Never regenerate the payload or resend completed or uncertain rows. |
 | Lost `mutation_ref` or `upload_ref` after a direct write | Call `operations_get` with the exact ref before any retry; never replay from chat memory. |
 | Legacy hosted service without durable lifecycle | Follow [mutation-lifecycle-contract.md](mutation-lifecycle-contract.md) dual-stack rules: keep bounded prepare/token flow; never claim ref-first recovery restored the original plan. |
 | Rejected Meta template direct write, with or without bounded public fields | Stop; show fields if returned; any later template write is a new explicit request. Preserve `support_ref` when present, report when absent, and never infer a hidden schema or replay. |

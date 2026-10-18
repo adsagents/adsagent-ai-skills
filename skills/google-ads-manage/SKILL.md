@@ -10,7 +10,7 @@ Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
 Connection blockers: `adsagent-setup`. Prepare, approval, and error rules: `adsagent-approvals`. New campaigns: `google-ads-create`.
 
 1. Read the current state first with an insights read; name the exact customer and entity.
-2. For same-kind budgets, statuses or bids in one customer, prefer an advertised `items` batch.
+2. For same-kind budgets, statuses or bids in one customer, prefer an advertised batch.
 3. Show accepted and excluded rows, obtain explicit approval, then confirm once with the returned tool.
 4. Location and language stay required whenever targeting is created or replaced.
 5. Real writes belong only to test accounts in a test flow: see the contract.

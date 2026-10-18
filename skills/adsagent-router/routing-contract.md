@@ -90,7 +90,7 @@ the requested status; do not turn it into a reporting intake.
   readiness evidence. Template state writes are direct: require the exact
   advertised tool and explicit request instead of inventing prepare/confirm.
 - Meta metadata: use live tool schemas for the historical `adsagent://guide/metadata-contract` fields; status writes use `target_configured_status`.
-- On public `invalid_fields`, correct prepare once. Never replay confirm. A strict pre-send quota defer stops the plan before later confirms; follow `adsagent-reliability`.
+- On public `invalid_fields`, correct prepare once. Never replay sent or uncertain writes. A strict pre-send quota defer stops the plan before later confirms; `adsagent-reliability` distinguishes advertised batch continuation from legacy quota plans.
 - QuickCreate tokens are single-use for 15 minutes. On `confirm_token_invalid`, prepare again; never retry old confirm.
 - Poll `task_ref`. Terminal create/copy requires `result.create_reconciliation.reconciled=true`; a `recovered_by_url_fallback` auxiliary image failure is not permission to retry. On `no_create_permission`, use `/dashboard/assets/fb-users`; never alter permissions.
 - Meta delivery confirms may return inline `verification_result`; consume it

@@ -39,6 +39,49 @@ def _call_is_remote_client(node: ast.Call) -> bool:
     return Path(constants[0]).name in {"git", "curl"}
 
 
+def _joined(*parts: str) -> str:
+    return "".join(parts)
+
+
+def _banned_environment_fragments() -> tuple[str, ...]:
+    """Fragments directory review treats as process-environment access.
+
+    Pieces stay split in this source so the check does not contain the
+    assembled spellings.
+    """
+    env_name = _joined("env", "iron")
+    return (
+        _joined("os.", env_name),
+        _joined("get", "env"),
+        _joined(env_name, ".get"),
+        _joined(env_name, "["),
+        _joined("put", "env"),
+        _joined("set", "env"),
+    )
+
+
+def _python_reads_process_environment(tree: ast.AST) -> bool:
+    env_name = _joined("env", "iron")
+    names = {
+        env_name,
+        _joined("get", "env"),
+        _joined("put", "env"),
+        _joined("set", "env"),
+    }
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Attribute) and node.attr in names:
+            return True
+        if isinstance(node, ast.Name) and node.id in names:
+            return True
+        if (
+            isinstance(node, ast.Subscript)
+            and isinstance(node.value, ast.Attribute)
+            and node.value.attr == env_name
+        ):
+            return True
+    return False
+
+
 class PublicReleaseContractTests(unittest.TestCase):
     def _read(self, relative_path: str) -> str:
         return read_contract(ROOT, relative_path)
@@ -305,7 +348,7 @@ class PublicReleaseContractTests(unittest.TestCase):
         self.assertNotIn("All rights reserved", license_text)
 
     def test_repository_does_not_forward_credential_environment(self) -> None:
-        forwarded = "*" + "*os.environ"
+        banned = tuple(fragment.casefold() for fragment in _banned_environment_fragments())
         token_name = "ADSAGENT_DRIFT_GITHUB_" + "TOKEN"
         asset_suffixes = {
             "." + ext
@@ -333,46 +376,20 @@ class PublicReleaseContractTests(unittest.TestCase):
                 text = path.read_text(encoding="utf-8")
             except UnicodeDecodeError:
                 continue
-            if forwarded in text or token_name in text:
+            folded = text.casefold()
+            if token_name in text or any(fragment in folded for fragment in banned):
                 offenders.append(str(path.relative_to(ROOT)))
         self.assertEqual(offenders, [])
 
-    def test_network_code_does_not_read_process_environment(self) -> None:
-        network_roots = {"urllib", "requests", "http", "httpx", "socket"}
+    def test_python_sources_do_not_read_process_environment(self) -> None:
         offenders: list[str] = []
-        tag_script = self._read("scripts/validate_release_manifest_tag.py")
-        self.assertNotIn("os.environ", tag_script)
-        self.assertNotIn("getenv", tag_script)
         for path in ROOT.rglob("*.py"):
             if any(
                 part in {".git", "__pycache__", ".pytest_cache"} for part in path.parts
             ):
                 continue
             tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-            imported: set[str] = set()
-            reads_environment = False
-            runs_remote_client = False
-            for node in ast.walk(tree):
-                if isinstance(node, ast.Import):
-                    imported.update(
-                        alias.name.split(".", 1)[0] for alias in node.names
-                    )
-                elif isinstance(node, ast.ImportFrom) and node.module:
-                    imported.add(node.module.split(".", 1)[0])
-                elif isinstance(node, ast.Attribute) and node.attr in {
-                    "environ",
-                    "getenv",
-                }:
-                    reads_environment = True
-                elif isinstance(node, ast.Name) and node.id in {"environ", "getenv"}:
-                    reads_environment = True
-                elif isinstance(node, ast.Call):
-                    runs_remote_client = runs_remote_client or _call_is_remote_client(
-                        node
-                    )
-            if reads_environment and (
-                not imported.isdisjoint(network_roots) or runs_remote_client
-            ):
+            if _python_reads_process_environment(tree):
                 offenders.append(str(path.relative_to(ROOT)))
         self.assertEqual(offenders, [])
 

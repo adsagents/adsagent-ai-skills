@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import subprocess
 import sys
 import threading
@@ -55,9 +54,15 @@ def _wait_response(
     raise TimeoutError(f"timed out waiting for JSON-RPC id={wanted_id}")
 
 
-def _child_env() -> dict[str, str]:
-    allowed = ("PATH", "HOME", "TMPDIR", "LANG", "LC_ALL")
-    return {key: os.environ[key] for key in allowed if os.environ.get(key)}
+# Literal environment for the docker or local stdio child. Nothing is copied
+# from this process.
+CHILD_ENV = {
+    "PATH": "/usr/local/bin:/usr/bin:/bin",
+    "HOME": "/tmp",
+    "TMPDIR": "/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+}
 
 
 def probe(command: list[str], timeout: float) -> dict[str, Any]:
@@ -67,7 +72,7 @@ def probe(command: list[str], timeout: float) -> dict[str, Any]:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         bufsize=0,
-        env=_child_env(),
+        env=dict(CHILD_ENV),
     )
     assert proc.stdin is not None
     assert proc.stdout is not None
@@ -153,7 +158,7 @@ def main() -> int:
     parser.add_argument(
         "--cmd",
         nargs=argparse.REMAINDER,
-        help="local command after --cmd, e.g. --cmd python -m skill_pack_mcp",
+        help="local command after --cmd, e.g. --cmd python -m skill_pack_mcp --root .",
     )
     parser.add_argument("--timeout", type=float, default=20.0)
     args = parser.parse_args()

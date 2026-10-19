@@ -17,8 +17,8 @@ public.
 Skills live only in `skills/`. `.claude-plugin/marketplace.json` sets the
 `adsagent` source to `./`. Directory review scans this whole repository.
 Claude, Cursor, Codex, and Glama all read that root. Do not add a second
-skill tree, and do not read credential environment variables in this
-repository.
+skill tree, and do not read the process environment in this repository.
+Pass paths as arguments.
 
 ## Changes
 

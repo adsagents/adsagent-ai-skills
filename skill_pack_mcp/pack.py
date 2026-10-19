@@ -8,7 +8,6 @@ hosted services.
 from __future__ import annotations
 
 import json
-import os
 import re
 from pathlib import Path
 from typing import Any
@@ -36,11 +35,30 @@ class PackError(ValueError):
     """Raised when a requested skill-pack path is missing or unsafe."""
 
 
-def default_root() -> Path:
-    override = os.environ.get("SKILL_PACK_ROOT")
-    if override:
-        return Path(override).expanduser().resolve()
+# Set by `python -m skill_pack_mcp` before this package's server module is imported.
+_root_override: str | None = None
+
+
+def set_root_override(value: str | None) -> None:
+    """Choose the skill-pack root for the stdio server."""
+    global _root_override
+    _root_override = value
+
+
+def package_root() -> Path:
+    """Directory that contains this package, its skills/, and VERSION."""
     return Path(__file__).resolve().parents[1]
+
+
+def resolve_root(override: str | None) -> Path:
+    """Return ``override`` when it is non-empty, otherwise :func:`package_root`."""
+    if override is None or override.strip() == "":
+        return package_root()
+    return Path(override).expanduser().resolve()
+
+
+def default_root() -> Path:
+    return resolve_root(_root_override)
 
 
 def read_version(root: Path) -> str:

@@ -33,13 +33,15 @@ or deploying this image is not a substitute for that connection.
 
 | File | Role |
 | --- | --- |
-| [`glama.json`](../glama.json) | Glama ownership claim. The published schema (`https://glama.ai/mcp/schemas/server.json`) allows only `maintainers`. Name, description, and Docker form fields are set in the Glama admin UI — use **AdsAgent Skill Pack (docs)** and the wording above. |
-| [`Dockerfile`](../Dockerfile) | Slim Python image, public files only, non-root `app` user, `CMD ["python", "-m", "skill_pack_mcp"]` on stdio. |
-| [`skill_pack_mcp/`](../skill_pack_mcp/) | Stdlib pack reader plus official `mcp` SDK stdio wrapper. |
+| [`glama.json`](../glama.json) | Glama ownership claim. The published schema (`https://glama.ai/mcp/schemas/server.json`) allows only `maintainers`. It does not select the process command. Name, description, and Docker form fields are set in the Glama admin UI — use **AdsAgent Skill Pack (docs)** and the wording above. |
+| [`Dockerfile`](../Dockerfile) | Slim Python image, public files only, non-root `app` user, stdio command `python -m skill_pack_mcp --root /app`. |
+| [`skill_pack_mcp/`](../skill_pack_mcp/) | Stdlib pack reader plus official `mcp` SDK stdio wrapper. `--root` selects the pack directory; the default is the directory that contains this package. |
 
 If Glama generates its own image instead of using this `Dockerfile`, point
 build at `pip install -r skill_pack_mcp/requirements.txt` and CMD
-`["python", "-m", "skill_pack_mcp"]`. No environment secrets are required.
+`["python", "-m", "skill_pack_mcp", "--root", "/app"]`. That argument is the
+image workdir, which holds `skills/`, `VERSION`, and `mcp.json`. No secrets
+are required.
 
 ## Local container check
 

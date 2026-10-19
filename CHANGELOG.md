@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.83 - 2026-10-19
+
+Version 0.7.83 removes process-environment reads from this repository.
+
+Directory review scans every file. The skill-pack root, update-reminder
+cache directory, and public manifest paths are arguments. The docs MCP
+image starts with `python -m skill_pack_mcp --root /app`. The stdio probe
+gives its child a fixed literal environment. The release-tag check is
+unchanged: git still uses a fixed PATH and `GIT_TERMINAL_PROMPT=0`.
+
 ## 0.7.82 - 2026-10-19
 
 Version 0.7.82 keeps the release-tag check from reading the process environment.

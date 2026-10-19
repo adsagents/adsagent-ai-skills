@@ -3,7 +3,6 @@ from __future__ import annotations
 import importlib.util
 import io
 import json
-import os
 import stat
 import sys
 import tempfile
@@ -56,12 +55,11 @@ class UpdateReminderTests(unittest.TestCase):
     def test_reminder_is_suppressed_for_interval_and_new_version_is_immediate(self) -> None:
         start = datetime(2026, 7, 12, tzinfo=timezone.utc)
         with tempfile.TemporaryDirectory() as cache_root:
-            with mock.patch.dict(
-                os.environ,
-                {"XDG_CACHE_HOME": cache_root},
-                clear=False,
-            ), mock.patch.object(self.helper, "_now_utc", return_value=start):
-                first = self.helper.evaluate_update("0.7.0", "0.7.1", "0.7.0", 24)
+            cache_dir = Path(cache_root)
+            with mock.patch.object(self.helper, "_now_utc", return_value=start):
+                first = self.helper.evaluate_update(
+                    "0.7.0", "0.7.1", "0.7.0", 24, cache_dir=cache_dir
+                )
 
             self.assertEqual(
                 first,
@@ -86,20 +84,16 @@ class UpdateReminderTests(unittest.TestCase):
             )
 
             self.helper._SESSION_REMINDERS.clear()
-            with mock.patch.dict(
-                os.environ,
-                {"XDG_CACHE_HOME": cache_root},
-                clear=False,
-            ), mock.patch.object(
+            with mock.patch.object(
                 self.helper,
                 "_now_utc",
                 return_value=start + timedelta(hours=1),
             ):
                 repeated = self.helper.evaluate_update(
-                    "0.7.0", "0.7.1", "0.7.0", 24
+                    "0.7.0", "0.7.1", "0.7.0", 24, cache_dir=cache_dir
                 )
                 newer = self.helper.evaluate_update(
-                    "0.7.0", "0.7.2", "0.7.0", 24
+                    "0.7.0", "0.7.2", "0.7.0", 24, cache_dir=cache_dir
                 )
 
             self.assertEqual(repeated["should_remind"], False)
@@ -109,17 +103,13 @@ class UpdateReminderTests(unittest.TestCase):
             )
 
             self.helper._SESSION_REMINDERS.clear()
-            with mock.patch.dict(
-                os.environ,
-                {"XDG_CACHE_HOME": cache_root},
-                clear=False,
-            ), mock.patch.object(
+            with mock.patch.object(
                 self.helper,
                 "_now_utc",
                 return_value=start + timedelta(hours=26),
             ):
                 after_interval = self.helper.evaluate_update(
-                    "0.7.0", "0.7.2", "0.7.0", 24
+                    "0.7.0", "0.7.2", "0.7.0", 24, cache_dir=cache_dir
                 )
             self.assertEqual(after_interval["should_remind"], True)
 
@@ -132,23 +122,20 @@ class UpdateReminderTests(unittest.TestCase):
         self.assertEqual(second, {"status": "update_available", "should_remind": False})
 
     def test_invalid_input_continues_silently_without_cache_write(self) -> None:
-        with tempfile.TemporaryDirectory() as cache_root, mock.patch.dict(
-            os.environ,
-            {"XDG_CACHE_HOME": cache_root},
-            clear=False,
-        ):
-            result = self.helper.evaluate_update("unknown", "0.7.1", "0.7.0", 24)
+        with tempfile.TemporaryDirectory() as cache_root:
+            result = self.helper.evaluate_update(
+                "unknown", "0.7.1", "0.7.0", 24, cache_dir=Path(cache_root)
+            )
 
         self.assertEqual(result, {"status": "unknown", "should_remind": False})
         self.assertFalse((Path(cache_root) / "adsagent-ai-skills").exists())
 
     def test_oversized_or_non_regular_cache_is_ignored(self) -> None:
         start = datetime(2026, 7, 12, tzinfo=timezone.utc)
-        with tempfile.TemporaryDirectory() as cache_root, mock.patch.dict(
-            os.environ,
-            {"XDG_CACHE_HOME": cache_root},
-            clear=False,
-        ), mock.patch.object(self.helper, "_now_utc", return_value=start):
+        with tempfile.TemporaryDirectory() as cache_root, mock.patch.object(
+            self.helper, "_now_utc", return_value=start
+        ):
+            cache_dir = Path(cache_root)
             cache_path = (
                 Path(cache_root)
                 / "adsagent-ai-skills"
@@ -157,14 +144,14 @@ class UpdateReminderTests(unittest.TestCase):
             cache_path.parent.mkdir(parents=True)
             cache_path.write_text("x" * 4097, encoding="utf-8")
             oversized = self.helper.evaluate_update(
-                "0.7.0", "0.7.1", "0.7.0", 24
+                "0.7.0", "0.7.1", "0.7.0", 24, cache_dir=cache_dir
             )
 
             self.helper._SESSION_REMINDERS.clear()
             cache_path.unlink()
             cache_path.symlink_to(Path(cache_root) / "missing-target")
             symlinked = self.helper.evaluate_update(
-                "0.7.0", "0.7.2", "0.7.0", 24
+                "0.7.0", "0.7.2", "0.7.0", 24, cache_dir=cache_dir
             )
 
         self.assertEqual(

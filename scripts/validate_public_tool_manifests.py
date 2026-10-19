@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
 import sys
 from pathlib import Path
@@ -20,11 +19,6 @@ except ModuleNotFoundError:  # Imported as scripts.validate_public_tool_manifest
 ROOT = Path(__file__).resolve().parents[1]
 CHANNELS = ("meta", "google", "tiktok")
 DEPRECATED_TOOLS_PATH = ROOT / "contracts" / "deprecated-tools.json"
-ENV_KEYS = {
-    "meta": "ADSAGENT_META_TOOL_MANIFEST",
-    "google": "ADSAGENT_GOOGLE_TOOL_MANIFEST",
-    "tiktok": "ADSAGENT_TIKTOK_TOOL_MANIFEST",
-}
 MAX_MANIFEST_BYTES = 2_000_000
 MAX_MANIFEST_DEPTH = 32
 INLINE_CODE_IDENTIFIER_RE = re.compile(
@@ -503,14 +497,6 @@ def validate_manifest(
         raise ManifestValidationError(f"{channel}: {'; '.join(details)}")
 
 
-def manifest_paths_from_environment() -> dict[str, Path]:
-    return {
-        channel: Path(value).expanduser()
-        for channel, key in ENV_KEYS.items()
-        if (value := os.environ.get(key))
-    }
-
-
 def validate_optional_manifests(
     paths: dict[str, Path] | None = None,
     *,
@@ -518,7 +504,7 @@ def validate_optional_manifests(
     require_all: bool = False,
 ) -> tuple[str, ...]:
     validate_reference_contract(root)
-    selected = manifest_paths_from_environment() if paths is None else paths
+    selected = {} if paths is None else paths
     messages: list[str] = []
     for channel in CHANNELS:
         path = selected.get(channel)
@@ -597,9 +583,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Validate skill tool references. With no --manifest, runs only the "
-            "offline checks; with --manifest it also compares each channel's "
-            "local service manifest. Live drift comparison runs outside this "
-            "repository."
+            "offline checks. Repeat --manifest CHANNEL=PATH to compare a local "
+            "service manifest. Live drift comparison runs outside this "
+            "repository. Paths come from these arguments."
         )
     )
     parser.add_argument(
@@ -616,9 +602,7 @@ def main() -> int:
     args = parser.parse_args()
     try:
         explicit_paths = (
-            _parse_manifest_args(args.manifest)
-            if args.manifest
-            else manifest_paths_from_environment()
+            _parse_manifest_args(args.manifest) if args.manifest else {}
         )
         messages = list(validate_offline())
         if explicit_paths:

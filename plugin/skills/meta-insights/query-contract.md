@@ -148,3 +148,7 @@ When the client advertises render tools (`render_performance_report`,
 data in an interactive widget; they never change Meta and are not approval or
 evidence. Use `render_ads_console` for a console view when advertised and fall
 back to Markdown if the client cannot render widgets.
+
+## Name Lookup
+
+To find campaigns, ad groups, or ads by name, call `entities_lookup_by_name`, then prepare the change from `prepare_groups`.

@@ -1,10 +1,16 @@
 # Changelog
 
-## Unreleased
+## 0.7.80 - 2026-10-19
+
+Version 0.7.80 points name lookup at `entities_lookup_by_name` and
+`prepare_groups`.
+
+Each channel skill finds campaigns, ad groups, and ads by name with
+`entities_lookup_by_name`, then prepares from `prepare_groups`.
 
 Claude plugin directory review scans `plugin/`. That directory is generated
 from `skills/`, `.mcp.json`, and `.claude-plugin/plugin.json`. The marketplace
-entry `adsagent` sets `source` to `./plugin`.
+entry `adsagent` keeps the name `adsagent` and sets `source` to `./plugin`.
 
 ## 0.7.79 - 2026-10-18
 
@@ -16,11 +22,6 @@ the live schema. Atomic and legacy approvals retain their existing contracts.
 
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
-
-## Unreleased
-
-- Tell each channel skill to find campaigns, ad groups, and ads by name with
-  `entities_lookup_by_name`, then prepare from `prepare_groups`.
 
 ## 0.7.78 - 2026-10-18
 

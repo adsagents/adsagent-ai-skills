@@ -42,7 +42,7 @@ One concise answer.
 - When `setup_get_status.capabilities.agent_method_profile.profile_id=adsagent_agent_methods_v1`, use one `insights_query_consistent` call with root `query_contract_version=1` and exactly one `scope` or one ordered `scopes` batch up to advertised `max_scopes`.
 - In profile mode, preserve result order and trust only top-level `complete=true` plus every result's `status` and `query_contract`; shared tool names do not imply shared freshness or write evidence.
 - For queued consistency reads, poll the advertised task tool with `response_mode=compact`; Meta uses `tasks_get_status(response_mode=compact)`. Consume the bounded terminal `result` directly when task/result completion and platform source-anchor checks pass; do not rerun page 1 merely to continue. TikTok requires `source_anchor == result.source_snapshot`.
-- A paginated page 1 must be complete. Meta page 2 and later keep `consistency=cached`, `query_contract_version=1`, `require_complete_range=true`, scope, date window, timezone, grouping, filters, sorting, and page size unchanged; increment only `page`. Set `min_as_of` to task `result.meta.source_observed_at`, or for an immediate complete response use the corresponding scope overview's `query_contract.coverage.source_observed_at`. A single overview is at `data`; ordered batch overviews are at `data.items[].result`. Preserve each overview's `meta.inventory_anchor`; with multiple scopes use the earliest first-page source anchor. On a rejected continuation anchor, discard all partial rows and restart page 1 serially with the original query.
+- A paginated page 1 must be complete. Meta page 2 and later keep `consistency=cached` or `fresh_if_available`, `query_contract_version=1`, `require_complete_range=true`, scope, date window, timezone, grouping, filters, sorting, and page size unchanged; increment only `page`. Read the data as-of time (`source_observed_at`) on each page. Live Insights refresh is not open (实时刷新未开放). A single overview is at `data`; ordered batch overviews are at `data.items[].result`. Preserve each overview's `meta.inventory_anchor`. On a rejected continuation anchor, discard all partial rows and restart page 1 serially with the original query.
 - Google and TikTok later pages use only their returned opaque continuation through the advertised continuation path. Preserve the exact original platform route, scope, dates, grouping, filters, order, page size, and source snapshot. TikTok continuations are single-use. Never send Meta `min_as_of` to Google or TikTok, and never parallelize pages from one snapshot.
 - Meta structured `filters` are allowlisted and combined with AND. Use text operators for hierarchy IDs/names, numeric comparisons for metrics/budgets/bids, and enum equality/membership for statuses, objectives, and events. Never probe hidden fields.
 - Preserve full hierarchy IDs on Ad reads. Exact Ad-name deduplication, language classification, and business grouping are client responsibilities; do not use `dedupe_by` in new workflows.
@@ -72,7 +72,7 @@ Report the server's exact evidence kind:
 | `metrics_observed_after_mutation` | Metrics source is later than the accepted `mutation_ref`. |
 | `config_verified_live` | Delivery configuration was read live from the platform. |
 
-For Meta decisions, use `insights_query_consistent(consistency=require_fresh)` only when `setup_get_status.capabilities` advertises it. Stop on `verification_pending`, `data_not_fresh`, unknown launch date, or `complete=false`.
+For Meta decisions, read the stored ledger with `consistency=cached` or `consistency=fresh_if_available` and use the data as-of time. Live Insights refresh is not open (实时刷新未开放). Stop on `verification_pending`, `data_not_fresh`, unknown launch date, or `complete=false`.
 
 After an approved Meta delivery confirm, consume top-level `verification` and
 `verification_result` first. Inline `evidence_kind=config_verified_live` is
@@ -89,8 +89,8 @@ For a terminal reconciled Meta create/copy task, follow
 `result.create_reconciliation.next_action` exactly once when present. It is a
 bounded read of the created Ads and must have `retry_write=false`. Use its live
 configured/effective/delivery fields for current delivery state, not spend.
-`mutation_coverage` applies only to metrics reads that supplied
-`after_mutation_ref`; it never proves live delivery.
+`mutation_coverage` never proves live delivery. Post-write metrics are the
+cached ledger and its as-of time.
 
 Write recovery is receipt-driven and typed. Follow each failure item's `automatic_retry_allowed`, `manual_new_task_allowed`, and `operator_review_required`; only `manual_new_task_allowed=true` permits a newly prepared task with fresh approval. Pending or ambiguous writes require context recovery and a stop; `verified_created` supplies recovered IDs. No state authorizes replaying the original task or confirmation token.
 
@@ -98,7 +98,7 @@ Bulk Meta Ad writes may be split into configurable sequential AdsAgent chunks. T
 
 `mcp_meta_quota_deferred` is a narrower pre-send contract. Recover only when `request_sent=false`, `safe_to_retry=true`, and `operator_review_required=false`. On the first match, stop the entire mutation loop before any later confirm. Preserve `completed_mutations`, receipts, and `support_refs`; classify only the current item under `not_sent_mutations`, keep untouched later work under `remaining_mutations`, and set `safe_resume_from`. Honor the largest `retry_after_seconds` plus jitter. Re-prepare only the exact unchanged `not_sent_mutations + remaining_mutations`, show one fresh consolidated approval, and resume serially. Never repeat completed work or reuse the old confirm token. A sent or uncertain write remains operation-recovery only.
 
-Use `insights_query_consistent(..., after_mutation_ref=mutation_ref)` only for requested post-write metrics. `metrics_observed_after_mutation` does not verify delivery configuration. Poll queued work with `tasks_get_status(task_ref=...)`.
+Requested post-write metrics are a cached ledger read and its as-of time. `metrics_observed_after_mutation` does not verify delivery configuration. Live Insights refresh is not open. Poll queued work with `tasks_get_status(task_ref=...)`.
 
 Google Ads `as_of` is read-only ledger observation time and its common query profile accepts only `consistency=cached`. Separately advertised native write receipts do not add common mutation-aware freshness or live verification to Insights. TikTok may advertise `require_fresh`, task refs, since-launch reads, and mutation receipts independently; age-only freshness or immediate write success is not mutation verification. Use TikTok prepare/confirm/recovery tools only when their names and `mutation_receipts=true` are advertised, and recover on the exact original tenant, advertiser, and authorization route without replay.
 

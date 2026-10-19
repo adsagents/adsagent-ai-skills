@@ -183,8 +183,8 @@ or request fresh Insights merely to check status.
 
 Claim an exact zero only when the common Insights result has
 `metrics_evidence.zero_proven=true`. Otherwise say no metrics were observed and
-the exact amount is unproven. `mutation_coverage` is relevant only when the
-metrics request supplied `after_mutation_ref`; it never proves live delivery.
+the exact amount is unproven. `mutation_coverage` never proves live delivery. Post-write metrics are the
+cached ledger and its as-of time. Live Insights refresh is not open.
 
 Report `result.failures.items` `code`, `message`, and `next_action`; never expose a raw Meta error or retry the unchanged write. `recovered_by_url_fallback` is compensated and never permits retry or a new task. Only `manual_new_task_allowed=true` permits a new task with fresh approval. Stop on `failures.unclassified_count>0`.
 

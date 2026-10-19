@@ -48,15 +48,15 @@ Before changing a Meta budget, inspect capabilities.delivery_mutations. If denie
 ```
 
 ```text
-If a Meta require_fresh read queues work, poll tasks_get_status with response_mode=compact. On a complete terminal result, use that result directly and do not rerun page 1 merely to continue. For later pages preserve every filter and pin min_as_of to the first-page source_observed_at; use the earliest source anchor for multiple scopes.
+If a Meta cached read queues work, poll tasks_get_status with response_mode=compact. On a complete terminal result, use that result directly and do not rerun page 1 merely to continue. For later pages preserve every filter and read source_observed_at as the data as-of time. Live Insights refresh is not open (实时刷新未开放).
 ```
 
 ```text
-For an exhaustive Meta result, require a complete first page. Continue page 2 and later serially with consistency=cached, query_contract_version=1, require_complete_range=true, the identical scope/window/timezone/grouping/filters/sort/page_size, and the first-page min_as_of anchor. Do not rerun page 1 merely to continue or start a refresh during continuation. If the server rejects the continuation anchor, discard all partial rows and restart page 1 serially with the original query.
+For an exhaustive Meta result, require a complete first page. Continue page 2 and later serially with consistency=cached, query_contract_version=1, require_complete_range=true, and the identical scope/window/timezone/grouping/filters/sort/page_size. Do not rerun page 1 merely to continue. Live Insights refresh is not open (实时刷新未开放). If the server rejects the continuation anchor, discard all partial rows and restart page 1 serially with the original query.
 ```
 
 ```text
-After I approve this Meta delivery change, consume inline verification and verification_result first. If config_verified_live is present, report the verified result without a second tool call. Only while verification remains pending, call the returned next_action exactly; expect overview_get_live_configs with typed entities and mutation_ref. If the local client cannot select that read after mutation_applied=true, preserve mutation_ref and report applied-but-pending; do not reauthorize, replace the bearer, or repeat the write. Use operations_get_context if interrupted. If I also ask for post-write metrics, use after_mutation_ref separately; it does not verify delivery configuration.
+After I approve this Meta delivery change, consume inline verification and verification_result first. If config_verified_live is present, report the verified result without a second tool call. Only while verification remains pending, call the returned next_action exactly; expect overview_get_live_configs with typed entities and mutation_ref. If the local client cannot select that read after mutation_applied=true, preserve mutation_ref and report applied-but-pending; do not reauthorize, replace the bearer, or repeat the write. Use operations_get_context if interrupted. If I also ask for post-write metrics, read the cached ledger and its as-of time; that does not verify delivery configuration.
 ```
 
 ```text

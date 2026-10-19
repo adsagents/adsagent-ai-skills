@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+Meta Insights live refresh is not open. Agents read the stored ledger with
+`consistency=cached` or `consistency=fresh_if_available` and use the data
+as-of time. The skill no longer tells agents to send a strict refresh,
+`min_as_of`, or `after_mutation_ref`.
+
 ## 0.7.83 - 2026-10-19
 
 Version 0.7.83 removes process-environment reads from this repository.

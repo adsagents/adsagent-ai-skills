@@ -36,7 +36,8 @@ class MutationVerificationGuidanceTests(unittest.TestCase):
             )
         )
 
-        self.assertIn("after_mutation_ref", text)
+        self.assertIn("cached ledger", text)
+        self.assertIn("实时刷新未开放", text)
         self.assertIn("post-write metrics", text)
         self.assertIn("does not verify delivery configuration", text)
         self.assertNotIn("verify with `after_mutation_ref", text)

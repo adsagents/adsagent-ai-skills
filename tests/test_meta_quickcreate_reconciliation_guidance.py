@@ -90,7 +90,7 @@ def test_reconciled_create_separates_live_delivery_and_metric_zero_evidence() ->
         "retry_write=false",
         "metrics_evidence.zero_proven=true",
         "mutation_coverage",
-        "after_mutation_ref",
+        "cached ledger",
         "never proves live delivery",
     ):
         assert term in text

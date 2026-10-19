@@ -8,7 +8,7 @@ When advertised, prefer `entities_prepare_update`: one approval covers several e
 
 - The live schema is the authority for allowed fields; never invent a field or a level.
 - A batch may include accepted and excluded rows. Show both, including exclusion reasons; one rejected row does not erase the accepted rows. If every row is rejected, `needs_input` creates no approval.
-- Confirm once with the returned `confirm_tool`, or the tool named in a legacy result's `next_action`. The service reads fields back after the write; consume `verification_result` first.
+- Confirm once with the confirmation tool named in the prepare result. The service reads fields back after the write; consume `verification_result` first.
 - Use the per-level prepare tools in [creation-and-copy-contract.md](creation-and-copy-contract.md) only when this tool is not advertised or the level is not covered.
 
 ## Reading And Changing Ad Copy
@@ -25,4 +25,4 @@ A budget or bid change refused with `money_change_exceeds_guard` is final for th
 
 If a confirm result is unclear, call `operations_get` with the exact reference. Never replay confirm and never prepare the same change again to "try again".
 
-For a batch, that replay prohibition applies to the uncertain row. A separate `not_attempted` tail follows the same-digest, original-expiry recovery in `adsagent-approvals` when advertised.
+For a batch, that replay prohibition applies to the uncertain row. A separate proven-unsent tail follows the same-digest, original-expiry recovery in `adsagent-approvals` when advertised.

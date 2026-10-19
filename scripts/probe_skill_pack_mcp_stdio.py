@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import threading
@@ -54,6 +55,11 @@ def _wait_response(
     raise TimeoutError(f"timed out waiting for JSON-RPC id={wanted_id}")
 
 
+def _child_env() -> dict[str, str]:
+    allowed = ("PATH", "HOME", "TMPDIR", "LANG", "LC_ALL")
+    return {key: os.environ[key] for key in allowed if os.environ.get(key)}
+
+
 def probe(command: list[str], timeout: float) -> dict[str, Any]:
     proc = subprocess.Popen(
         command,
@@ -61,6 +67,7 @@ def probe(command: list[str], timeout: float) -> dict[str, Any]:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         bufsize=0,
+        env=_child_env(),
     )
     assert proc.stdin is not None
     assert proc.stdout is not None

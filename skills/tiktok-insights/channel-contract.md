@@ -10,6 +10,14 @@
 - The opaque continuation is single-use. Preserve tenant, advertiser, authorization route, dates, grouping, filters, order, page size, and source snapshot. Never add Meta `min_as_of`. On `snapshot_expired` or replay rejection, restart identical page 1 serially.
 - On 503 `dependency_unavailable` with no `task_ref`, honor `retry_after_seconds`/Retry-After and retry the identical bounded read once. For 429 fan-out, use one batch; immediate write success is not mutation verification or `config_verified_live`; age-only data is limited.
 
+## Product Cards And Templates
+
+- `products_list` returns TikTok product cards. Pass each public `product_ref` as `product_id` to `products_get_actions` and `products_get_top_campaigns`.
+- `products_get_actions` lists MMP event-name candidates. It is not a dated funnel report. `products_get_top_campaigns` ranks that card's campaigns by spend.
+- This channel does not advertise a product-health read or a funnel-values read. Do not call the Meta product tools for those questions. A missing count is unknown, not zero.
+- `templates_list` lists saved ad-creation templates. Do not group, filter, or total insights by template. When a row includes `product_link`, that is the saved card link, not a breakdown.
+- Overview and batch reads do not take `product_ref`. Do not add it.
+
 ## Creative And Create
 
 - Pass country and language names as the user said them; the server resolves them. Ask the user to choose ambiguous places or a missing language mode. Interests, devices and carriers must come from search results, never guessed codes.
@@ -24,12 +32,16 @@
 - Never supply both target IDs, guess names, use Meta `append-adset`, or replace prepared parents. Show sanitized parents, settings, count, expiry, and `call_to_action_configured`; get explicit approval. Confirm once.
 - Use `task_ref` only for `tasks_get_status`. Use canonical `operation_ref` only for `operations_get` on the original route. `failed_proven` needs corrected input, new prepare, and fresh approval. Never replay; reconnect the MCP transport after Hosted schema release.
 
+## Name Lookup
+
+To find campaigns, ad groups, or ads by name, call `entities_lookup_by_name`, then prepare the change from `prepare_groups`.
+
 ## Receipt Workflows
 
 - Require `mutation_receipts=true` and exact advertised names: `delivery_prepare_tool`, `delivery_confirm_tool`, `operation_get_tool`, budget/bid, copy/clone/recreate prepares and confirms.
 - Read `overview_get_live_configs`; keep configured/effective/operation status, budget, bid, currency, receipt, and metrics distinct. TikTok money is decimal advertiser-currency major units; bid is native `ad_group` scoped.
 - `copy_ad_quick_copy`, `copy_ad_clone_structure`, and `campaigns_recreate_from_task` are same-advertiser only. One approval/task covers 1..20 grouped items with item receipts and disabled initial delivery. Reject cross-advertiser transfer, failed/partial/foreign sources, name matching, and uncertain replay.
-- Same-kind delivery, budget or bid changes use one advertised batch, with accepted and excluded rows shown together. The returned `confirm_tool` identifies the one confirmation. Uncertain rows never replay; a separate unsent tail follows `adsagent-approvals` only within the same digest and original expiry.
+- Same-kind delivery, budget or bid changes use one advertised batch, with accepted and excluded rows shown together. Use the confirmation tool named in the prepare result and the live schema for exact fields. Uncertain rows never replay; a separate proven-unsent tail follows `adsagent-approvals` only within the same digest and original expiry.
 - Direct operations such as `creatives_abandon_upload` and `support_report_error` use their advertised authorization and result contract. Execute only within the user's request; do not seek an unadvertised prepare/confirm pair. Preserve the returned task, operation, or support reference and use only its advertised status/recovery tool; never replay an uncertain write.
 
 ## Optimization, MMP, Support

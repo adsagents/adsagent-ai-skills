@@ -4,10 +4,55 @@
 
 - Use country and language names for creation. Keep requested media groups in one approval, revise supported draft choices, and append missing groups after a resolved partial result. Meta creative rankings use cached evidence with visible freshness and coverage.
 
-- Prefer one same-kind batch approval for multiple entities. Keep exclusions visible and distinguish frozen uncertain rows from resumable unsent rows. Atomic and legacy approvals retain their existing contracts.
+## 0.7.82 - 2026-10-19
+
+Version 0.7.82 keeps the release-tag check from reading the process environment.
+
+`scripts/validate_release_manifest_tag.py` starts git with a fixed PATH and
+`GIT_TERMINAL_PROMPT=0`. It does not copy parent variables. Tag lookup and the
+GitHub release page stay anonymous requests to the public repository.
+
+## 0.7.81 - 2026-10-19
+
+Version 0.7.81 keeps one skill tree at the repository root.
+
+Directory review scans the whole repository, so the generated plugin tree is
+gone and the marketplace source is `./` again. Claude, Cursor, Codex, and
+Glama read that root. The Cursor logo is the public image on adsagent.md,
+and this repository no longer ships that image file. Credential environment
+reads and the in-repo drift checker are removed. Drift comparison runs
+outside this repository and still does not block a pack release.
+
+## 0.7.80 - 2026-10-19
+
+Version 0.7.80 points name lookup at `entities_lookup_by_name` and
+`prepare_groups`.
+
+Each channel skill finds campaigns, ad groups, and ads by name with
+`entities_lookup_by_name`, then prepares from `prepare_groups`.
+
+Claude plugin directory review scans `plugin/`. That directory is generated
+from `skills/`, `.mcp.json`, and `.claude-plugin/plugin.json`. The marketplace
+entry `adsagent` keeps the name `adsagent` and sets `source` to `./plugin`.
+
+## 0.7.79 - 2026-10-18
+
+Version 0.7.79 prefers one same-kind batch approval for multiple entities.
+Keep exclusions visible and distinguish frozen uncertain rows from resumable
+unsent rows. Advertised batch continuation retains the original agreement;
+legacy quota recovery still requires fresh approval. Exact fields come from
+the live schema. Atomic and legacy approvals retain their existing contracts.
 
 Version history for the AdsAgent tri-channel skill pack.
 The GitHub repo stays `adsagent-ai-skills`; Claude plugin slug is `adsagent`.
+
+## 0.7.78 - 2026-10-18
+
+Version 0.7.78 corrects product-card and template guidance.
+
+Insights skills treat templates as saved ad-creation objects. Product-card
+queries name registered channel tools. Meta funnel counts distinguish missing
+values from zero. Google and TikTok guidance does not advertise funnel reads.
 
 ## 0.7.77 - 2026-10-18
 
@@ -43,9 +88,9 @@ Version 0.7.76 is the stage 1 safety release:
   commit numbers, and internal workflow text; `docs/safety.md` now says tool names
   are public. The README lists ChatGPT, Claude, Codex, and Cursor.
 - Replaced the frozen tool-manifest snapshots and provenance lock with a warn-only
-  drift check against the services' current public tool-name manifests
-  (`scripts/check_drift.py`). Only warnings are tolerated in CI: exit 1 from
-  `block-removed` mode fails the job.
+  drift check against the services' current public tool-name manifests.
+  Only warnings were tolerated in CI: exit 1 from `block-removed` mode failed
+  the job. That check no longer lives in this repository.
 - The approval contract now covers approval-backed writes only; direct operations
   such as TikTok `creatives_abandon_upload` and `support_report_error` keep their
   own contract. The routing contract classifies Google prompts by object and read

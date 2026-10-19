@@ -1,7 +1,7 @@
 {
   "name": "adsagent",
   "displayName": "AdsAgent",
-  "version": "0.7.77",
+  "version": "0.7.82",
   "description": "AdsAgent Meta Ads MCP (plus Google Ads & TikTok): hosted MCP connections and behavior skills for safer ad operations.",
   "author": {
     "name": "adsagents LLC",
@@ -10,7 +10,7 @@
   "homepage": "https://adsagent.md",
   "repository": "https://github.com/adsagents/adsagent-ai-skills",
   "license": "MIT",
-  "logo": "assets/logo.png",
+  "logo": "https://adsagent.md/static/favicon-192.png",
   "keywords": [
     "adsagent",
     "mcp",

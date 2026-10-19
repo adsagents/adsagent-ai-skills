@@ -14,8 +14,11 @@ public.
 - `uv run --no-project --managed-python --python 3.12 python scripts/validate_public_tool_manifests.py`
 - `uv run --no-project --managed-python --python 3.12 python scripts/validate_release_manifest_tag.py`
 
-`scripts/check_drift.py` compares the skills with the services' current public
-tool manifests. It only warns (see `docs/drift-check.md`); it is not a merge gate.
+Skills live only in `skills/`. `.claude-plugin/marketplace.json` sets the
+`adsagent` source to `./`. Directory review scans this whole repository.
+Claude, Cursor, Codex, and Glama all read that root. Do not add a second
+skill tree, and do not read credential environment variables in this
+repository.
 
 ## Changes
 

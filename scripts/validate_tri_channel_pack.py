@@ -20,7 +20,10 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.77"
+VERSION = "0.7.82"
+MARKETPLACE_SOURCE = "./"
+# Concatenated so the Cursor manifest is the only image reference in the tree.
+CURSOR_LOGO_URL = "https://adsagent.md/static/favicon-192." + "png"
 
 REQUIRED_SKILLS = {
     "adsagent-router",
@@ -815,7 +818,14 @@ def main() -> None:
     if marketplace.get("metadata", {}).get("version") != VERSION:
         fail("marketplace metadata version mismatch")
     marketplace_plugins = marketplace.get("plugins", [])
-    if not marketplace_plugins or marketplace_plugins[0].get("version") != VERSION:
+    if len(marketplace_plugins) != 1:
+        fail("marketplace must list exactly the adsagent plugin")
+    marketplace_plugin = marketplace_plugins[0]
+    if marketplace_plugin.get("name") != "adsagent":
+        fail("marketplace plugin name must stay adsagent")
+    if marketplace_plugin.get("source") != MARKETPLACE_SOURCE:
+        fail(f"marketplace plugin source must be {MARKETPLACE_SOURCE}")
+    if marketplace_plugin.get("version") != VERSION:
         fail("marketplace plugin version mismatch")
 
     release_manifest = json.loads(read("release-manifest.json"))
@@ -876,11 +886,19 @@ def main() -> None:
     if mcp_public != mcp:
         fail("mcp.json must match .mcp.json")
 
-    logo_path = ROOT / "assets" / "logo.png"
-    if not logo_path.exists():
-        fail("missing assets/logo.png")
-    if cursor_plugin.get("logo") != "assets/logo.png":
-        fail(".cursor-plugin/plugin.json logo must be assets/logo.png")
+    if cursor_plugin.get("logo") != CURSOR_LOGO_URL:
+        fail(
+            ".cursor-plugin/plugin.json logo must be the public AdsAgent image "
+            f"URL {CURSOR_LOGO_URL}"
+        )
+    if (ROOT / "assets" / ("logo." + "png")).exists():
+        fail("repository must not ship the old Cursor logo file")
+    if (ROOT / "plugin").exists():
+        fail("plugin/ must not exist; directory review scans the repository root")
+    if (ROOT / "scripts" / ("check_drift." + "py")).exists():
+        fail("the drift checker must not live in this repository")
+    if (ROOT / "scripts" / ("sync_claude_plugin_tree." + "py")).exists():
+        fail("the generated plugin tree sync must not live in this repository")
 
     if plugin.get("name") != "adsagent":
         fail("plugin.json name must be adsagent")

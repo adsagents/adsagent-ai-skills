@@ -69,7 +69,7 @@ def test_approvals_skill_covers_shared_protection_rules() -> None:
         assert term.lower() in text.lower(), term
 
 
-def test_confirmation_tools_come_from_returned_handle_fields() -> None:
+def test_confirmation_tools_come_from_prepare_results() -> None:
     names = (
         "google-ads-create",
         "google-ads-manage",
@@ -80,7 +80,7 @@ def test_confirmation_tools_come_from_returned_handle_fields() -> None:
     text += _read("skills/meta-copy/update-contract.md")
 
     assert "next_action" in text
-    assert "confirm_tool" in text
+    assert "confirmation tool named in the prepare result" in text
     assert not re.search(r"`google_ads_[a-z_]+_confirm`", text)
     assert "copy_ad_quick_copy_confirm" not in text
     assert "overview_update_campaign_budget_confirm" not in text
@@ -138,5 +138,5 @@ def test_readme_names_all_supported_clients() -> None:
 
 
 def test_version_matches_changelog_release() -> None:
-    assert _read("VERSION").strip() == "0.7.77"
-    assert "Version 0.7.77" in _read("CHANGELOG.md")
+    assert _read("VERSION").strip() == "0.7.82"
+    assert "Version 0.7.82" in _read("CHANGELOG.md")

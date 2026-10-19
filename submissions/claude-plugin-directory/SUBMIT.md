@@ -5,10 +5,15 @@ Portal: https://claude.ai/directory/manage/new
 Choose **Bundle** (GitHub-hosted skills and MCP connections).
 **Connector only** submits one remote MCP separately.
 
+Directory review scans this **whole repository**, not a marketplace `source`
+subdirectory. `.claude-plugin/marketplace.json` keeps the plugin name
+`adsagent` and sets `"source": "./"`. Skills live only in `skills/`. Claude,
+Cursor, Codex, and Glama all read that root.
+
 ## Pre-submit
 
 ```bash
-claude plugin validate .
+claude plugin validate . --strict
 python3 scripts/validate_tri_channel_pack.py
 python3 -m pytest -q
 ```
@@ -20,7 +25,7 @@ python3 -m pytest -q
 | Repository | `adsagents/adsagent-ai-skills` |
 | Plugin slug | `adsagent` |
 | Display name | `AdsAgent` |
-| Version | See root `VERSION` (currently `0.7.77`) |
+| Version | See root `VERSION` (currently `0.7.82`) |
 | Homepage | `https://adsagent.md/connect`（**单行 URL，前后不能有空格**；文档站放 description，不要拼两个 URL） |
 | Documentation (in description copy) | `https://adsagent.md/docs/mcp-onboarding` |
 | License type | `MIT` (root `LICENSE`) |
@@ -60,13 +65,14 @@ OpenAI ChatGPT app submission artifacts in the Meta service repo.
   AdsAgent HTTP resource URLs. They declare no headers, environment variables,
   credential helpers, or local server commands. Authentication uses the
   client's OAuth flow for each resource. The bundled setup script reads no
-  installer credential and is not an MCP server or plugin hook. No API-key
-  `userConfig` option is needed for this OAuth plugin. If this flag persists,
-  request review of the actual source and destination rather than adding an
-  unused credential field.
-- `UNREAD_ASSET_REFERENCED`: `assets/logo.png` is the 192 x 192 PNG referenced by
-  `.cursor-plugin/plugin.json` for display. The Python validator checks only
-  its existence; the release test checks only the manifest's path string.
-  No bundled command executes it. Retain the logo and request the image review
-  allowed by the submission guidance; an automated hold can remain until that
-  review completes. The printable-text screening notice is informational.
+  installer credential and is not an MCP server or plugin hook. This repository
+  does not read credential environment variables.
+  `scripts/validate_release_manifest_tag.py` does not read the process
+  environment. Git receives the fixed PATH `/usr/local/bin:/usr/bin:/bin` and
+  `GIT_TERMINAL_PROMPT=0`. The GitHub release request is anonymous HTTPS with
+  no token. No API-key `userConfig` option is needed for this OAuth plugin.
+- `UNREAD_ASSET_REFERENCED`: this repository does not ship an image or font
+  file. The Cursor manifest logo is an absolute https URL on `adsagent.md`.
+- `UNKNOWN_KEY privacyPolicyUrl`: the directory reads `privacyPolicyUrl` from
+  `plugin.json`. Keep `https://adsagent.md/privacy`. Do not remove the field to
+  clear that notice.

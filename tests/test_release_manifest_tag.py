@@ -12,7 +12,6 @@ unpublished tag makes every sync run fail with 404 until the tag lands.
 from __future__ import annotations
 
 import json
-import os
 import subprocess
 import urllib.error
 import urllib.request
@@ -26,25 +25,30 @@ from scripts.validate_release_manifest_tag import (
     git_remote_tag_exists,
     git_tagged_release_files,
     github_release_exists,
+    subprocess_env,
     validate_release_manifest_tag,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
 
-_GIT_ENV = {
-    **os.environ,
-    "GIT_AUTHOR_NAME": "test",
-    "GIT_AUTHOR_EMAIL": "test@example.invalid",
-    "GIT_COMMITTER_NAME": "test",
-    "GIT_COMMITTER_EMAIL": "test@example.invalid",
-}
+def _git_env() -> dict[str, str]:
+    env = subprocess_env()
+    env.update(
+        {
+            "GIT_AUTHOR_NAME": "test",
+            "GIT_AUTHOR_EMAIL": "test@example.invalid",
+            "GIT_COMMITTER_NAME": "test",
+            "GIT_COMMITTER_EMAIL": "test@example.invalid",
+        }
+    )
+    return env
 
 
 def _git(cwd: Path, *args: str) -> None:
     subprocess.run(
         ["git", "-C", str(cwd), *args],
         check=True,
-        env=_GIT_ENV,
+        env=_git_env(),
         capture_output=True,
         text=True,
     )
@@ -80,6 +84,14 @@ def _fakes(*, version: str = "0.7.76", remote=True, tagged="same", release=True)
         "tagged_files": lambda tag: tagged,
         "release_exists": lambda release_url: release,
     }
+
+
+def test_subprocess_env_is_a_fixed_minimum():
+    assert subprocess_env() == {
+        "PATH": tag_module.GIT_PATH,
+        "GIT_TERMINAL_PROMPT": "0",
+    }
+    assert set(subprocess_env()) == {"PATH", "GIT_TERMINAL_PROMPT"}
 
 
 def _must_not_run(name: str):
@@ -169,8 +181,8 @@ def test_release_url_mismatch_fails_before_lookup(tmp_path):
 def test_git_remote_tag_exists_ignores_local_only_tag(tmp_path):
     origin = tmp_path / "origin.git"
     work = tmp_path / "work"
-    subprocess.run(["git", "init", "--bare", "-q", str(origin)], check=True)
-    subprocess.run(["git", "init", "-q", str(work)], check=True)
+    subprocess.run(["git", "init", "--bare", "-q", str(origin)], check=True, env=_git_env())
+    subprocess.run(["git", "init", "-q", str(work)], check=True, env=_git_env())
     (work / "VERSION").write_text("0.7.77\n", encoding="utf-8")
     _git(work, "add", "VERSION")
     _git(work, "commit", "-qm", "x")
@@ -186,15 +198,15 @@ def test_git_tagged_release_files_reads_origin_tag_without_local_tag(tmp_path):
     origin = tmp_path / "origin.git"
     work = tmp_path / "work"
     reader = tmp_path / "reader"
-    subprocess.run(["git", "init", "--bare", "-q", str(origin)], check=True)
-    subprocess.run(["git", "init", "-q", str(work)], check=True)
+    subprocess.run(["git", "init", "--bare", "-q", str(origin)], check=True, env=_git_env())
+    subprocess.run(["git", "init", "-q", str(work)], check=True, env=_git_env())
     _write(work, version="0.7.77", tag="v0.7.77")
     _git(work, "add", "VERSION", "release-manifest.json")
     _git(work, "commit", "-qm", "x")
     _git(work, "remote", "add", "origin", str(origin))
     _git(work, "tag", "v0.7.77")
     _git(work, "push", "-q", "origin", "v0.7.77")
-    subprocess.run(["git", "init", "-q", str(reader)], check=True)
+    subprocess.run(["git", "init", "-q", str(reader)], check=True, env=_git_env())
     _git(reader, "remote", "add", "origin", str(origin))
 
     tagged = git_tagged_release_files("v0.7.77", root=reader)
@@ -240,8 +252,15 @@ def test_github_release_exists_status_classification(monkeypatch):
         github_release_exists("http://github.com/x/releases/tag/v1")
 
 
-def test_repository_manifest_tag_is_published():
-    # Integration guard against the live checkout: whichever tag main
-    # currently references must resolve on origin, carry this version,
-    # and have a GitHub release.
-    assert validate_release_manifest_tag(ROOT)
+def test_release_manifest_tag_check_is_a_separate_ci_job():
+    # The live publication check is the release-manifest-tag job. It stays
+    # red until the git tag and GitHub release exist. Unit tests above cover
+    # the decision logic without contacting origin.
+    workflow = (ROOT / ".github/workflows/validate.yml").read_text(encoding="utf-8")
+    version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    manifest = json.loads((ROOT / "release-manifest.json").read_text(encoding="utf-8"))
+
+    assert "release-manifest-tag:" in workflow
+    assert "python scripts/validate_release_manifest_tag.py" in workflow
+    assert manifest["version"] == version
+    assert manifest["tag"] == f"v{version}"

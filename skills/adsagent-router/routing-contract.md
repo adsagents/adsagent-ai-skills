@@ -38,11 +38,11 @@ the requested status; do not turn it into a reporting intake.
   order is not significant (`performance and archived templates` equals
   `archived and performance templates`).
 - Route reports, dashboards, charts, campaign lists, comparisons, and analyses
-  to `meta-insights` when templates are a grouping, filter, subject, or
-  performance dimension rather than the lifecycle object. This includes
-  relation clauses such as "a report summarizing Meta template spend", "Meta
-  campaigns based on templates", or "a dashboard visualizing Meta template
-  performance".
+  to `meta-insights` when a template is mentioned but is not the lifecycle
+  object. A saved template is an ad-creation object. Do not group, filter, or
+  total by it. This includes relation clauses such as "a report summarizing
+  Meta template spend", "Meta campaigns based on templates", or "a dashboard
+  visualizing Meta template performance".
 - Bind a direct-template override to the same Meta-qualified clause. An email,
   document, or other non-Meta template mentioned elsewhere in a compound
   request must not capture the Meta workflow.
@@ -90,7 +90,7 @@ the requested status; do not turn it into a reporting intake.
   readiness evidence. Template state writes are direct: require the exact
   advertised tool and explicit request instead of inventing prepare/confirm.
 - Meta metadata: use live tool schemas for the historical `adsagent://guide/metadata-contract` fields; status writes use `target_configured_status`.
-- On public `invalid_fields`, correct prepare once. Never replay confirm. A strict pre-send quota defer stops the plan before later confirms; follow `adsagent-reliability`.
+- On public `invalid_fields`, correct prepare once. Never replay sent or uncertain writes. A strict pre-send quota defer stops the plan before later confirms; `adsagent-reliability` distinguishes advertised batch continuation from legacy quota plans.
 - QuickCreate tokens are single-use for 15 minutes. On `confirm_token_invalid`, prepare again; never retry old confirm.
 - Poll `task_ref`. Terminal create/copy requires `result.create_reconciliation.reconciled=true`; a `recovered_by_url_fallback` auxiliary image failure is not permission to retry. On `no_create_permission`, use `/dashboard/assets/fb-users`; never alter permissions.
 - Meta delivery confirms may return inline `verification_result`; consume it

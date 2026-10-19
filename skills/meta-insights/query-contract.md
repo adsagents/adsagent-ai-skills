@@ -6,6 +6,10 @@ Use bounded aggregates and public handles. Never expose rows, schemas, or diagno
 
 Missing scope: run `setup_get_status`, then `products_list`; ask for scope and dates.
 
+`templates_list` lists saved ad-creation templates. A row may include `product_link` for the linked product card. That link is not a report dimension. Do not group, filter, or total Insights by template. Template lifecycle stays in `meta-copy`.
+
+For sparse per-ad funnel counts, call `products_get_funnel_values` with the public `product_ref` from `products_list` and `date_from` / `date_to`. A missing event or ad key is not a verified zero; do not fill it with 0. `products_get_top_campaigns` uses the same `product_ref` to rank spend. Insights totals still come from the product-scoped overview, not from the number of funnel keys.
+
 - One scope: `insights_query_overview`; multiple scopes: one `insights_query_batch_overview`. Native reads pass `metadata_contract_version=1`.
 - With `agent_method_profile.profile_id=adsagent_agent_methods_v1` and its consistent query tool present in the client-local catalog, call `insights_query_consistent` once with root `query_contract_version=1`, `consistency=cached`, and one scope or up to 20 ordered scopes. Use the tenant ledger populated by `setup_get_status.auto_pull`; do not default to `require_fresh` unless the connection advertises `mcp.insights.pull` and the user explicitly needs a source refresh (for example post-mutation metrics verification). When that refresh path applies, call `insights_query_consistent(consistency=require_fresh)` once instead of cached.
 - If that advertised read tool is missing only from the client-local catalog, use the profile's `native_single_fallback` or `native_batch_fallback` when present, otherwise the documented native overview/batch tool above. Do not report a server registration failure or stop a read solely because of a local selector miss.
@@ -144,3 +148,7 @@ When the client advertises render tools (`render_performance_report`,
 data in an interactive widget; they never change Meta and are not approval or
 evidence. Use `render_ads_console` for a console view when advertised and fall
 back to Markdown if the client cannot render widgets.
+
+## Name Lookup
+
+To find campaigns, ad groups, or ads by name, call `entities_lookup_by_name`, then prepare the change from `prepare_groups`.

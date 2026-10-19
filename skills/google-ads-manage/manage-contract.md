@@ -1,8 +1,8 @@
 # Google Ads Manage Contract
 
-Use Google Ads fields and tools only. No generic mutate or raw GAQL write exists. Each approval identifies its confirmation tool with `confirm_tool`, or `next_action` on legacy paths.
+Use Google Ads fields and tools only. No generic mutate or raw GAQL write exists. Use the confirmation tool named in the prepare result.
 
-For same-kind budget, status or bid changes in one customer, prefer the public prepare tool's advertised `items` list. Show accepted and excluded rows together and confirm the batch once. Existing shared-budget and portfolio operations remain atomic; do not split them into campaign rows. Only advertised tools and schemas are available.
+For same-kind budget, status or bid changes in one customer, prefer an advertised batch prepare. Show accepted and excluded rows together and confirm the batch once. Existing shared-budget and portfolio operations remain atomic; do not split them into campaign rows. Only advertised tools and schemas are available.
 
 ## Tools By Change
 

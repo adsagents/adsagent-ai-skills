@@ -20,7 +20,8 @@ def test_meta_pagination_guidance_keeps_one_cached_snapshot_contract():
 
     assert "page 2 and later" in combined
     assert "consistency=cached" in combined
-    assert "min_as_of" in combined
+    assert "实时刷新未开放" in combined
+    assert "source_observed_at" in combined
     assert "require_complete_range=true" in combined
     assert "pagination_anchor_unavailable" in combined
     assert "do not rerun page 1" in combined

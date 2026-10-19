@@ -11,7 +11,7 @@ Missing scope: run `setup_get_status`, then `products_list`; ask for scope and d
 For sparse per-ad funnel counts, call `products_get_funnel_values` with the public `product_ref` from `products_list` and `date_from` / `date_to`. A missing event or ad key is not a verified zero; do not fill it with 0. `products_get_top_campaigns` uses the same `product_ref` to rank spend. Insights totals still come from the product-scoped overview, not from the number of funnel keys.
 
 - One scope: `insights_query_overview`; multiple scopes: one `insights_query_batch_overview`. Native reads pass `metadata_contract_version=1`.
-- With `agent_method_profile.profile_id=adsagent_agent_methods_v1` and its consistent query tool present in the client-local catalog, call `insights_query_consistent` once with root `query_contract_version=1`, `consistency=cached`, and one scope or up to 20 ordered scopes. Use the tenant ledger populated by `setup_get_status.auto_pull`; do not default to `require_fresh` unless the connection advertises `mcp.insights.pull` and the user explicitly needs a source refresh (for example post-mutation metrics verification). When that refresh path applies, call `insights_query_consistent(consistency=require_fresh)` once instead of cached.
+- Live Insights refresh is not open (实时刷新未开放). With `agent_method_profile.profile_id=adsagent_agent_methods_v1` and its consistent query tool present in the client-local catalog, call `insights_query_consistent` once with root `query_contract_version=1` and `consistency=cached` or `consistency=fresh_if_available`, plus one scope or up to 20 ordered scopes. Both values read the stored ledger from `setup_get_status.auto_pull`. To see the latest data, read that cache and use the data as-of time on the result (`result.meta.source_observed_at`). Scheduled pulls still update the ledger.
 - If that advertised read tool is missing only from the client-local catalog, use the profile's `native_single_fallback` or `native_batch_fallback` when present, otherwise the documented native overview/batch tool above. Do not report a server registration failure or stop a read solely because of a local selector miss.
 - On `mcp_fanout_detected`, stop, batch current plus pending scopes, and do not retry the blocked call.
 
@@ -48,12 +48,12 @@ With `group_by=ad`, preserve `ad_account_id`, `ad_account_name`, `campaign_id`, 
 For matches, preserve each `ad_id`; advance pages serially while the single-scope
 overview reports `data.meta.has_more=true` (or the corresponding
 `data.items[].result.meta.has_more=true` for a batch item). Page 1 must be
-complete. For page 2 and later, keep `consistency=cached`,
-`query_contract_version=1`, `require_complete_range=true`, scope, dates,
-timezone, grouping, filters, sorting, and `page_size` unchanged; increment only
-`page` and pin `min_as_of` to task `result.meta.source_observed_at` or the scope
-overview's `query_contract.coverage.source_observed_at`. Use the earliest
-multi-scope source anchor.
+complete. For page 2 and later, keep `consistency=cached` or
+`fresh_if_available`, `query_contract_version=1`,
+`require_complete_range=true`, scope, dates, timezone, grouping, filters,
+sorting, and `page_size` unchanged; increment only `page`. Read the data
+as-of time on the page: task `result.meta.source_observed_at`, or a scope
+overview's `query_contract.coverage.source_observed_at`. Live refresh is not open.
 
 Locate a single-scope overview at `data`, and each ordered multi-scope overview
 at `data.items[].result`. Preserve every first-page overview
@@ -62,7 +62,7 @@ through `inventory_anchors` on page 2 and later. If the server returns
 `continuation_valid=false` or
 rejects an inventory anchor, discard all partially collected rows and restart
 from page 1 serially. Never combine rows from different inventory generations.
-Do not rerun page 1 merely to continue or switch to `require_fresh`.
+Do not rerun page 1 merely to continue. Live refresh is not open.
 Never enlarge or parallelize pages. On `pagination_anchor_unavailable`, stop and
 preserve `support_ref`; do not broaden, refresh, or treat it as a permission
 error. Large output uses grouped `insights_export_csv` with identical filters.
@@ -119,15 +119,17 @@ Before each poll, wait for the latest valid positive `poll_after_ms` in
 milliseconds; use 3000ms only when absent or invalid. Keep a 60-second local
 waiting budget and stop if the next wait exceeds it. Stop polling at terminal.
 A local deadline preserves the same task reference; never submit another
-query or request `require_fresh` just to check its status.
+query just to check its status. Live refresh is not open. Read the cache
+and its as-of time.
 
 `freshness_kind=age_only` is not mutation coverage. Do not decide on `verification_pending`, `data_not_fresh`, unknown launch date, or incomplete data.
 
 When `freshness.entity_activity_after_watermark=true` or warning
 `entity_activity_after_watermark` is present, treat metrics as stale relative to
 inventory: entities were created after the metrics watermark. Do not use those
-rows for spend totals, optimization, or pause decisions without
-`require_fresh` or live verification.
+rows for spend totals, optimization, or pause decisions. Live refresh is
+not open; the as-of time is the newest stored ledger time, and scheduled
+pulls update it.
 
 ## Verification And Output
 
@@ -137,7 +139,7 @@ configuration. Follow `next_action` to `overview_get_live_configs` only while
 verification remains pending. If the client cannot select that read after
 `mutation_applied=true`, preserve `mutation_ref` and report applied-but-pending;
 do not reauthorize, replace the bearer, or repeat the write.
-`after_mutation_ref=mutation_ref` covers post-write metrics and does not verify delivery configuration. `mutation_coverage` is applicable only when that request field was supplied; it never proves current configured or delivery state.
+Post-write metrics are the cached ledger and its as-of time. A post-write metrics read does not verify delivery configuration. `mutation_coverage` never proves current configured or delivery state.
 Recover task-backed uncertainty with
 `operations_get_context`; never repeat writes.
 

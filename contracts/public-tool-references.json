@@ -309,6 +309,12 @@
         {
           "name": "ads_update_url_prepare",
           "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "creatives_cloud_bind"
+        },
+        {
+          "name": "creatives_cloud_status"
         }
       ]
     },
@@ -552,6 +558,24 @@
         {
           "name": "entities_lookup_by_name",
           "required_capability": "mcp.read"
+        },
+        {
+          "name": "creatives_list"
+        },
+        {
+          "name": "creatives_get"
+        },
+        {
+          "name": "creatives_list_folders"
+        },
+        {
+          "name": "google_ads_video_upload_prepare"
+        },
+        {
+          "name": "creatives_cloud_bind"
+        },
+        {
+          "name": "creatives_cloud_status"
         }
       ]
     },
@@ -674,6 +698,15 @@
         {
           "name": "entities_lookup_by_name",
           "required_capability": "mcp.read"
+        },
+        {
+          "name": "creatives_list"
+        },
+        {
+          "name": "creatives_cloud_bind"
+        },
+        {
+          "name": "creatives_cloud_status"
         }
       ]
     }

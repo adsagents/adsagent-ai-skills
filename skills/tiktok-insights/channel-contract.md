@@ -21,6 +21,7 @@
 ## Creative And Create
 
 - Use local `creative_id` only with `readiness.create_eligible=true`; inspect `readiness.reason_code`, `readiness.retryable`, and `readiness.next_action`.
+- `creatives_list` also returns read-only Google Drive cloud files (`library_source=cloud`). Their `creative_id` is the `gdrive:` selection key and `readiness.status=prepared_on_use`; use it in `campaigns_quick_create` like any creative.
 - Send 1..20 requested `verification_pending` IDs once to `creatives_reconcile`. `upload_failed` needs returned remediation and a new explicit upload. Use advertised `creatives_abandon_upload` to remove a cancelled pending attempt, not provider media.
 - Give `campaigns_quick_create` one source. `append_mode=append-campaign` plus `target_campaign_id` creates ad group/ad; `append_mode=append-adgroup` plus `target_adgroup_id` creates ad only.
 - For Smart+ image, the server verifies ownership and maps `creative_info.image_info[].web_uri`. Do not send a CDN image URL, synthesize `CAROUSEL_ADS`, or invent provider CTA, music, or identity IDs.

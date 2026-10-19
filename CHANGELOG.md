@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Creative library guidance covers read-only Google Drive cloud folders on all
+  three channels: `creatives_list` returns uploaded and cloud files together,
+  a cloud file's `selection_key` is used like any creative, and
+  `creatives_cloud_bind` returns the one-time link to connect a folder (up to
+  10). `creatives_list_cloud` and `creatives_refresh_cloud` are deprecated
+  until 2026-11-18.
+
 ## 0.7.83 - 2026-10-19
 
 Version 0.7.83 removes process-environment reads from this repository.

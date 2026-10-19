@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.81 - 2026-10-19
+
+Version 0.7.81 keeps one skill tree at the repository root.
+
+Directory review scans the whole repository, so the generated plugin tree is
+gone and the marketplace source is `./` again. Claude, Cursor, Codex, and
+Glama read that root. The Cursor logo is the public image on adsagent.md,
+and this repository no longer ships that image file. Credential environment
+reads and the in-repo drift checker are removed. Drift comparison runs
+outside this repository and still does not block a pack release.
+
 ## 0.7.80 - 2026-10-19
 
 Version 0.7.80 points name lookup at `entities_lookup_by_name` and
@@ -65,9 +76,9 @@ Version 0.7.76 is the stage 1 safety release:
   commit numbers, and internal workflow text; `docs/safety.md` now says tool names
   are public. The README lists ChatGPT, Claude, Codex, and Cursor.
 - Replaced the frozen tool-manifest snapshots and provenance lock with a warn-only
-  drift check against the services' current public tool-name manifests
-  (`scripts/check_drift.py`). Only warnings are tolerated in CI: exit 1 from
-  `block-removed` mode fails the job.
+  drift check against the services' current public tool-name manifests.
+  Only warnings were tolerated in CI: exit 1 from `block-removed` mode failed
+  the job. That check no longer lives in this repository.
 - The approval contract now covers approval-backed writes only; direct operations
   such as TikTok `creatives_abandon_upload` and `support_report_error` keep their
   own contract. The routing contract classifies Google prompts by object and read

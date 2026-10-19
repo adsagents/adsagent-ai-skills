@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.7.84 - 2026-10-19
+
+Version 0.7.84 teaches named country and language targeting, grouped creation
+with one approval, read-only Drive cloud folders in the creative library, and
+closed Meta Insights live refresh.
 
 Meta Insights live refresh is not open. Agents read the stored ledger with
 `consistency=cached` or `consistency=fresh_if_available` and use the data

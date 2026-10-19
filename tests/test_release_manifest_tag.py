@@ -86,6 +86,14 @@ def _fakes(*, version: str = "0.7.76", remote=True, tagged="same", release=True)
     }
 
 
+def test_subprocess_env_is_a_fixed_minimum():
+    assert subprocess_env() == {
+        "PATH": tag_module.GIT_PATH,
+        "GIT_TERMINAL_PROMPT": "0",
+    }
+    assert set(subprocess_env()) == {"PATH", "GIT_TERMINAL_PROMPT"}
+
+
 def _must_not_run(name: str):
     def fake(arg):
         pytest.fail(f"{name} must not run")

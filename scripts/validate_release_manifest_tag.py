@@ -11,12 +11,16 @@ into a 404 until the tag lands.
 must advertise the tag, the tagged tree's own ``VERSION`` and
 ``release-manifest.json`` must name this version and tag, and the
 GitHub release behind ``release_url`` must exist.
+
+Git and the release-page request do not receive the parent process
+environment. Git runs with a fixed PATH and ``GIT_TERMINAL_PROMPT=0``.
+The release page is an anonymous HTTPS request with no token.
 """
 
 from __future__ import annotations
 
 import json
-import os
+import shutil
 import subprocess
 import sys
 import urllib.error
@@ -27,6 +31,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FETCH_TIMEOUT_SECONDS = 20
+# Fixed search path for distro git. Nothing is copied from the parent process.
+GIT_PATH = "/usr/local/bin:/usr/bin:/bin"
+# Command-line config overrides a credential header that actions/checkout
+# writes into .git/config, so public tag lookup stays anonymous.
+_ANONYMOUS_GIT_CONFIG = (
+    "credential.helper=",
+    "http.extraheader=",
+    "http.https://github.com/.extraheader=",
+)
 
 
 class ManifestTagError(RuntimeError):
@@ -34,20 +47,31 @@ class ManifestTagError(RuntimeError):
 
 
 def subprocess_env() -> dict[str, str]:
-    """Environment for child processes.
+    """Environment for git child processes.
 
-    Forward only process basics. Do not pass the parent environment, so a
-    credential variable cannot reach git or another child.
+    PATH is the fixed constant above and git must not prompt. The mapping
+    is built only from those literals.
     """
-    allowed = ("PATH", "HOME", "TMPDIR", "LANG", "LC_ALL", "SSL_CERT_FILE", "SSL_CERT_DIR")
-    env = {key: os.environ[key] for key in allowed if os.environ.get(key)}
-    env["GIT_TERMINAL_PROMPT"] = "0"
-    return env
+    return {
+        "PATH": GIT_PATH,
+        "GIT_TERMINAL_PROMPT": "0",
+    }
+
+
+def git_executable() -> str:
+    found = shutil.which("git", path=GIT_PATH)
+    if found is None:
+        raise OSError("git is not on the fixed path /usr/local/bin:/usr/bin:/bin")
+    return found
 
 
 def _git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    command = [git_executable()]
+    for item in _ANONYMOUS_GIT_CONFIG:
+        command.extend(("-c", item))
+    command.extend(("-C", str(root), *args))
     return subprocess.run(
-        ["git", "-C", str(root), *args],
+        command,
         capture_output=True,
         text=True,
         timeout=30,
@@ -63,7 +87,16 @@ def git_remote_tag_exists(tag: str, *, root: Path = ROOT) -> bool:
     still get a 404 until the tag is pushed.
     """
     remote = _git(root, "ls-remote", "--exit-code", "origin", f"refs/tags/{tag}")
-    return remote.returncode == 0
+    if remote.returncode == 0:
+        return True
+    # git uses status 2 when the remote answered and no ref matched.
+    if remote.returncode == 2:
+        return False
+    detail = (remote.stderr or remote.stdout).strip()
+    raise OSError(
+        f"git ls-remote origin refs/tags/{tag} failed"
+        + (f": {detail}" if detail else f" with status {remote.returncode}")
+    )
 
 
 def git_tagged_release_files(

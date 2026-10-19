@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.7.82 - 2026-10-19
+
+Version 0.7.82 keeps the release-tag check from reading the process environment.
+
+`scripts/validate_release_manifest_tag.py` starts git with a fixed PATH and
+`GIT_TERMINAL_PROMPT=0`. It does not copy parent variables. Tag lookup and the
+GitHub release page stay anonymous requests to the public repository.
+
 ## 0.7.81 - 2026-10-19
 
 Version 0.7.81 keeps one skill tree at the repository root.

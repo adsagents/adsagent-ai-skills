@@ -16,7 +16,7 @@
   "plugins": [
     {
       "name": "adsagent",
-      "source": "./",
+      "source": "./plugin",
       "description": "Hosted MCP (Meta, Google Ads, TikTok) and tri-channel behavior skills for bounded reads and safer ad workflows.",
       "version": "0.7.79",
       "author": {

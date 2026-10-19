@@ -98,6 +98,7 @@ class PublicReleaseContractTests(unittest.TestCase):
             "scripts/skill_contract.py",
             "scripts/skill_routing_contract.py",
             "scripts/validate_public_tool_manifests.py",
+            "scripts/sync_claude_plugin_tree.py",
         ):
             tree = ast.parse(self._read(path))
             for node in ast.walk(tree):

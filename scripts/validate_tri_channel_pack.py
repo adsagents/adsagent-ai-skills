@@ -14,6 +14,7 @@ from skill_contract import (
     markdown_references,
     read_skill_bundle,
 )
+from sync_claude_plugin_tree import PLUGIN_SOURCE, plugin_tree_problems
 from validate_public_tool_manifests import (
     ManifestValidationError,
     validate_offline,
@@ -236,6 +237,7 @@ PUBLIC_SAFETY_PATTERNS = {
 }
 PUBLIC_SAFETY_PATHS = (
     "skills",
+    "plugin",
     "docs",
     "contracts",
     "submissions",
@@ -815,7 +817,14 @@ def main() -> None:
     if marketplace.get("metadata", {}).get("version") != VERSION:
         fail("marketplace metadata version mismatch")
     marketplace_plugins = marketplace.get("plugins", [])
-    if not marketplace_plugins or marketplace_plugins[0].get("version") != VERSION:
+    if len(marketplace_plugins) != 1:
+        fail("marketplace must list exactly the adsagent plugin")
+    marketplace_plugin = marketplace_plugins[0]
+    if marketplace_plugin.get("name") != "adsagent":
+        fail("marketplace plugin name must stay adsagent")
+    if marketplace_plugin.get("source") != PLUGIN_SOURCE:
+        fail(f"marketplace plugin source must be {PLUGIN_SOURCE}")
+    if marketplace_plugin.get("version") != VERSION:
         fail("marketplace plugin version mismatch")
 
     release_manifest = json.loads(read("release-manifest.json"))
@@ -1100,6 +1109,14 @@ def main() -> None:
     for client in ("ChatGPT", "Claude", "Codex", "Cursor"):
         if client not in readme:
             fail(f"README must name supported client {client}")
+
+    tree_problems = plugin_tree_problems(ROOT)
+    if tree_problems:
+        preview = tree_problems[:20]
+        suffix = ""
+        if len(tree_problems) > len(preview):
+            suffix = f"; and {len(tree_problems) - len(preview)} more"
+        fail("claude plugin tree: " + "; ".join(preview) + suffix)
 
     print("PASS: tri-channel skill pack contract satisfied")
 

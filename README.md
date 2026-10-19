@@ -16,7 +16,7 @@ Public skill pack and plugin for AdsAgent tri-channel hosted MCP: Meta, Google A
 
 | Client | How it uses this repo | Status |
 | --- | --- | --- |
-| **Claude** (Code, Desktop, Cowork) | `adsagent` plugin: skills + `.mcp.json` OAuth MCP URLs | Listed in the Claude plugin directory; also installable from this repo's marketplace |
+| **Claude** (Code, Desktop, Cowork) | `adsagent` plugin from generated `plugin/`: skills + `.mcp.json` OAuth MCP URLs | Listed in the Claude plugin directory; also installable from this repo's marketplace |
 | **ChatGPT** | The same `skills/<name>/SKILL.md` Agent Skills folders, plus a connection to the three hosted MCP endpoints | Skills supported |
 | **Codex** | Plugin marketplace (`codex plugin marketplace add adsagents/adsagent-ai-skills`) or a plain skills clone | Submitted |
 | **Cursor** | `.cursor-plugin/` + `mcp.json` | Current version listed on Cursor Directory and MCP Market |
@@ -27,7 +27,7 @@ Skills describe client-independent behavior. Install steps differ per client and
 
 | Surface | What it is | This repo? |
 | --- | --- | --- |
-| **Claude plugin** (self-hosted marketplace) | Skills + root `.mcp.json` HTTP MCP URLs (OAuth) | Yes |
+| **Claude plugin** (self-hosted marketplace) | Generated `plugin/` (skills, `.mcp.json`, `.claude-plugin/plugin.json`). Marketplace `source` is `./plugin` | Yes |
 | **Cursor plugin** (marketplace manifest) | Skills + `mcp.json` HTTP MCP URLs (OAuth) | Yes |
 | **Anthropic Connectors Directory** | Hosted MCP server listing only | No — separate submission on `adsagent.md` services |
 
@@ -44,6 +44,8 @@ Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [C
 
 Current contract version: `0.7.79`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 
+Claude and Codex marketplace installs resolve `adsagent` to `plugin/`. Edit `skills/`, `.mcp.json`, and `.claude-plugin/plugin.json`, then run `python scripts/sync_claude_plugin_tree.py` and commit `plugin/`. Cursor still reads `.cursor-plugin/plugin.json`, root `mcp.json`, `skills/`, and `assets/logo.png`. Glama still builds from the root `Dockerfile` and root `skills/`.
+
 For contributor cloud environments, provision `uv` in the image and run the
 bundled `bash scripts/cloud-agent-setup.sh`; see
 [cloud setup](docs/cloud-agent-setup.md). Plugin users do not run this setup.
@@ -58,7 +60,7 @@ The local helper `scripts/update_reminder.py` compares strict semantic versions 
 
 ## What This Is
 
-- A public Claude plugin marketplace package: **behavior skills** plus **hosted MCP URLs** via `.mcp.json`.
+- A public Claude plugin marketplace package. Installed name `adsagent` loads `plugin/`, generated from **behavior skills** plus the hosted MCP URLs in `.mcp.json`.
 - A behavior guide for Claude Code, Cursor, Codex, and other MCP-aware clients.
 - A reliability and safety layer that tells agents when to retry, when to wait, and when to stop.
 - A versioned GitHub distribution for AdsAgent user onboarding and agent behavior guidance.

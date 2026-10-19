@@ -20,6 +20,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install pytest==9.0.2
+      - name: Check generated Claude plugin directory
+        run: python scripts/sync_claude_plugin_tree.py --check
       - run: python scripts/validate_tri_channel_pack.py
       - name: Check release manifest tag is published
         run: python scripts/validate_release_manifest_tag.py

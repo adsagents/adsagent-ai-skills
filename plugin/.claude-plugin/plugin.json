@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "adsagent",
+  "displayName": "AdsAgent",
+  "version": "0.7.79",
+  "description": "AdsAgent tri-channel Claude plugin: hosted MCP connections (Meta, Google Ads, TikTok) plus behavior skills for safer ad operations.",
+  "author": {
+    "name": "adsagents LLC",
+    "email": "support@adsagent.md",
+    "url": "https://adsagent.md"
+  },
+  "homepage": "https://adsagent.md",
+  "privacyPolicyUrl": "https://adsagent.md/privacy",
+  "repository": "https://github.com/adsagents/adsagent-ai-skills",
+  "license": "MIT",
+  "keywords": [
+    "adsagent",
+    "mcp",
+    "meta-ads",
+    "google-ads",
+    "tiktok-ads",
+    "advertising",
+    "ai-agents",
+    "campaign-insights"
+  ],
+  "skills": [
+    "./skills/adsagent-router",
+    "./skills/adsagent-setup",
+    "./skills/adsagent-notifications",
+    "./skills/adsagent-reliability",
+    "./skills/agent-scheduled-tasks",
+    "./skills/meta-insights",
+    "./skills/meta-copy",
+    "./skills/google-ads-insights",
+    "./skills/tiktok-insights",
+    "./skills/adsagent-approvals",
+    "./skills/google-ads-create",
+    "./skills/google-ads-manage",
+    "./skills/adsagent-diagnosis"
+  ]
+}

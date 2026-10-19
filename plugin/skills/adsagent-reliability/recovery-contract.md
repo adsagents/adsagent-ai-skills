@@ -1,0 +1,83 @@
+# AdsAgent Recovery Contract
+
+Preserve the failed call's workflow connection through every recovery branch.
+Read [connection-routing.md](connection-routing.md) before retry or task/approval
+recovery; a missing handle on another tenant is not proof of expiry.
+
+## Query Plan
+
+Use server-side batch.
+
+Read `setup_get_status.capabilities`. For `agent_method_profile.profile_id=adsagent_agent_methods_v1`, call one root `query_contract_version=1` `insights_query_consistent` only when that advertised read tool is present in the client-local catalog.
+
+Native fallback applies when the profile is absent or its advertised read tool is missing only from the client-local catalog. Prefer profile `native_single_fallback` / `native_batch_fallback` names when present, otherwise use this table. A local selector miss is not a server registration failure and never authorizes reauthentication or write replay.
+
+| Platform | One scope | Multiple scopes |
+| --- | --- | --- |
+| Meta | `insights_query_overview` | `insights_query_batch_overview` |
+| TikTok | `insights_query_overview` | `insights_query_batch_overview` |
+| Google Ads | `google_ads_insights_overview_query` | `google_ads_insights_overview_batch` |
+
+Never fan out. Trust top-level `complete=true` in profile mode; otherwise trust `meta.complete=true`. For Meta, combine AND `filters`; correct `adsagent_query_invalid` once.
+
+Poll advertised `next_action`; Meta uses `tasks_get_status(task_ref=..., response_mode=compact)`. Before the first and each later poll, wait for the latest valid positive `poll_after_ms` in milliseconds; use 3000ms only when it is absent or invalid. Deduplicate task references and keep polls serial. Use a 60-second local waiting budget; if the next wait exceeds the remaining budget, stop waiting and preserve the same `task_ref` for later status checks. Never resubmit the task, repeat the original query, or switch to `require_fresh` merely to check status. At `terminal=true`, stop polling immediately and consume `result`; never rerun page 1. For create/copy, require `result.create_reconciliation.reconciled=true` before claiming complete accounting. Prefer `creative_results[]` over raw `result.ads`; duplicate ad names in one adset reconcile by positional FIFO with `selection_key` (for example `name#1`). When prepare summary shows `naming_collision_policy=positional_reconciliation`, that is expected, not a client bug. Map `creative_results` to created IDs. When `create_reconciliation.next_action` is present, call that exact bounded read once and require `retry_write=false`; use its live configured/effective/delivery fields for current delivery state. It does not prove spend and never authorizes replaying the write. Then report `result.failures.items`, obey retry/review flags, and stop on unclassified failures.
+
+For common Insights results, exact zero requires
+`metrics_evidence.zero_proven=true`. Otherwise report no observed metrics and
+say the exact amount is unproven. `mutation_coverage` applies only when the
+metrics request supplied `after_mutation_ref`; it never proves live delivery.
+
+For terminal export, GET `result.artifact.download_url` byte-for-byte. `artifact_status=expired` requires export. Keep opaque continuation. Never move Meta `min_as_of` into Google or TikTok requests.
+
+## Client Limits
+
+- Let the MCP client negotiate the protocol. Modern `2026-07-28` uses stateless
+  `server/discover`; session recovery is legacy-only and begins only from a
+  structured `mcp_session_not_found` response. Never
+  invent protocol/session headers, re-register, or replace a bearer solely
+  because the guide or protocol changed.
+- Retry only bounded reads or proven-unsent writes under their live recovery contract; never parallel-retry or replay sent or uncertain writes.
+- After a Meta delivery confirm, consume inline `verification` and
+  `verification_result` first. Follow `next_action` to
+  `overview_get_live_configs` only while verification remains pending. A local
+  selector miss after `mutation_applied=true` is client snapshot drift: keep
+  the `mutation_ref`, report applied-but-pending, and never reauthorize, replace
+  the bearer, or replay the confirm/write. Recover task-backed uncertainty via
+  `operations_get_context(task_ref=...)`.
+- Bulk Meta Ad writes may use configurable sequential chunks, not evidence of a fixed Meta limit. Preserve acknowledged objects; `manual_new_task_allowed=true` requires a fresh task and approval.
+- `operations_get_context(response_mode=compact)` returns receipt totals, create reconciliation, and anomalous receipts. Use `standard` only when every receipt is required.
+- A failed auxiliary `adimages` receipt marked `workflow_status=recovered_by_url_fallback` is compensated, has no final-Ad impact, and never authorizes retry or a new task.
+- `meta_write_rejected` or `verified_not_created` is eligible only when flags permit. Reuse `verified_created`; keep `meta_write_verification_pending` or `verification_ambiguous` in `operations_get_context`, never replay.
+- TikTok approval-backed ad changes require advertised tools and `mutation_receipts=true`; recover on the original route. Direct operations follow their own advertised authorization and result contract, without an invented prepare/confirm pair.
+- Parse backoff from headers, `data`, and `error.data`; see [retry-parser.md](retry-parser.md).
+
+## Recovery Matrix
+
+| Signal | Required action |
+| --- | --- |
+| Legacy 404 `mcp_session_not_found` + `discard_session_and_initialize` | Reconnect the existing transport, re-list, retry one read. Never apply this branch to modern stateless MCP. |
+| 429 `mcp_fanout_detected` | Stop; batch pending scopes. |
+| 429 `mcp_concurrency_limited` / 429 concurrency | Honor `Retry-After` plus jitter; retry one read serially. |
+| 503 dependency unavailable structured tool error | Without `task_ref`, honor `retry_after_seconds` and retry the identical bounded read once; otherwise poll that task. |
+| `snapshot_expired` / replayed continuation | Restart page 1 unchanged. Do not reuse the continuation or broaden. |
+| `read_query_too_large` with `operator_review_required=false` | Do not escalate or repeat unchanged. Narrow the query; for one known entity use direct prepare or one typed `overview_get_live_configs` preflight; use export only for an explicitly requested large table. |
+| 410 `confirm_token_invalid` | Do not retry; re-prepare, show the fresh summary, and obtain approval. |
+| Launch confirm: `recommended_action=retry_launch_confirm` and `confirm_token_consumed=false` | Retry the same `launch_confirm` once with the same confirm_token. Do not re-prepare first. |
+| Launch confirm: `recommended_action=prepare_again` / `prepare_quick_create_again` or used/expired token | Re-run prepare, show the fresh summary, obtain approval, confirm with the new token. Never replay the old token. |
+| Launch confirm: `operator_review_required=true` without `retry_launch_confirm` | Stop; preserve `support_ref`. Do not replay confirm or infer retry from message text. |
+| `mcp_meta_quota_deferred` with `request_sent=false`, `safe_to_retry=true`, `operator_review_required=false` | STOP before later confirms; preserve receipts and wait. Use advertised batch continuation only within the unchanged approval and original expiry; legacy quota plans instead re-prepare the unchanged remainder with fresh approval and new tokens. Select the applicable path in [meta-quota-plan.md](meta-quota-plan.md). |
+| `no_create_permission` | Send the user to `/dashboard/assets/fb-users`, then prepare again. |
+| Prepare call: `adsagent_request_incomplete` + `invalid_fields` | Correct only the advertised public fields (including any `expected_path`) and prepare once; on repeat preserve any returned `support_ref`. |
+| `approval_ref` present and `capabilities.mutation_lifecycle` advertised | Resolve with `operations_get_approval`; show the same summary. Advertised batch continuation keeps the original agreement only for unchanged, proven-unsent rows under the same digest and original expiry, as defined in `adsagent-approvals`. Otherwise obtain fresh explicit approval before confirming a pending approval. Use the operation-specific confirmation tool named in the result and its live schema. Never regenerate the payload or resend completed or uncertain rows. |
+| Lost `mutation_ref` or `upload_ref` after a direct write | Call `operations_get` with the exact ref before any retry; never replay from chat memory. |
+| Legacy hosted service without durable lifecycle | Follow [mutation-lifecycle-contract.md](mutation-lifecycle-contract.md) dual-stack rules: keep bounded prepare/token flow; never claim ref-first recovery restored the original plan. |
+| Rejected Meta template direct write, with or without bounded public fields | Stop; show fields if returned; any later template write is a new explicit request. Preserve `support_ref` when present, report when absent, and never infer a hidden schema or replay. |
+| Indeterminate Meta template direct write without task/operation recovery | Never replay. Perform at most one exact-name template read-back when advertised; remain outcome-unknown without authoritative write-bound evidence, then hand off. |
+| `scope_unavailable` | Do not infer permissions. Discover once; retry only if still listed. Never alter permissions. |
+| `fb_user_token_expired` resolved / FB token reconnect succeeded | Expect a bounded `pull_insights` recovery task for that FB user's routed accounts. Do not manually replay a stale session; check dashboard/task status and use `notifications_list` for remaining alerts. `notifications_scan` updates alerts and may queue external delivery; use it only for a requested or already authorized alert refresh, with that effect clear, never as a passive recovery check. |
+| Advertised profile read missing only from client-local catalog | Use the named native read fallback once; do not file a server-registration claim, reauthorize, or replay a write. |
+
+If retries fail, report the category. Task/operation-backed sent or uncertain
+writes use operation recovery; indeterminate Meta template direct writes
+follow the row above. On `operator_review_required`, stop, preserve any
+returned `support_ref` and report when absent; it is not authorization.

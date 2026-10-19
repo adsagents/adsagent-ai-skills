@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+Claude plugin directory review scans `plugin/`. That directory is generated
+from `skills/`, `.mcp.json`, and `.claude-plugin/plugin.json`. The marketplace
+entry `adsagent` sets `source` to `./plugin`.
+
 ## 0.7.79 - 2026-10-18
 
 Version 0.7.79 prefers one same-kind batch approval for multiple entities.

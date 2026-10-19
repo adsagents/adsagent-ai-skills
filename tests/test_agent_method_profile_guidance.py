@@ -204,6 +204,19 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
         ):
             self.assertIn(term, text)
 
+    def test_name_lookup_prepares_from_returned_groups(self) -> None:
+        sentence = (
+            "To find campaigns, ad groups, or ads by name, call "
+            "`entities_lookup_by_name`, then prepare the change from "
+            "`prepare_groups`."
+        )
+        for path in (
+            "skills/meta-insights/query-contract.md",
+            "skills/google-ads-insights/query-contract.md",
+            "skills/tiktok-insights/channel-contract.md",
+        ):
+            self.assertIn(sentence, self._read(path), path)
+
     def test_error_handoff_uses_only_opaque_support_ref(self) -> None:
         text = "\n".join(
             self._read(path)

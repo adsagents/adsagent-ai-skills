@@ -1,0 +1,31 @@
+---
+name: meta-insights
+description: Use when reading or analyzing Meta Ads performance, delivery, MMP, cohorts, or exports.
+---
+
+# Meta Insights
+
+Follow [routing](connection-routing.md) and [data rules](data-boundary.md).
+
+Missing tools/authorization: use `adsagent-setup`, then resume.
+
+1. Classify health or performance. Templates are creation objects in `meta-copy`.
+   Never group or total insights by template.
+2. For product health, call `products_list`, select one public `product_ref`,
+   then call `products_get_health`. This path does not require a date range or
+   an Insights query.
+3. For performance, resolve one product/account scope and date range, inspect
+   `setup_get_status.capabilities`, and choose one advertised aggregate query.
+   Use one server-side batch for multiple scopes; never fan out.
+4. Require complete evidence before totals, filtering, pagination, or a
+   decision. Missing scopes stay unknown.
+5. Preserve opaque task and continuation contracts exactly.
+6. Return Markdown or server artifacts; hide raw rows,
+   schemas, diagnostics, and internal errors.
+
+Read [query-contract.md](query-contract.md) only when the request needs
+filtering, hierarchy metadata, exhaustive pagination, freshness, MMP,
+post-write verification, or export handling.
+
+Read [product-health-contract.md](product-health-contract.md) for product,
+account, Page, Pixel, or delivery health, blockers, and spend readiness.

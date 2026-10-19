@@ -10,9 +10,16 @@ public.
 ## Validation
 
 - `uv run --no-project --managed-python --python 3.12 --with pytest==9.0.2 python -m pytest -q`
+- `uv run --no-project --managed-python --python 3.12 python scripts/sync_claude_plugin_tree.py --check`
 - `uv run --no-project --managed-python --python 3.12 python scripts/validate_tri_channel_pack.py`
 - `uv run --no-project --managed-python --python 3.12 python scripts/validate_public_tool_manifests.py`
 - `uv run --no-project --managed-python --python 3.12 python scripts/validate_release_manifest_tag.py`
+
+`plugin/` is generated. After changing `skills/`, `.mcp.json`, or
+`.claude-plugin/plugin.json`, run `scripts/sync_claude_plugin_tree.py` and
+commit `plugin/`. The tri-channel validator and the validate workflow reject a
+stale tree, an `os.environ` / `getenv` credential read, or an image or font
+reference inside `plugin/`.
 
 `scripts/check_drift.py` compares the skills with the services' current public
 tool manifests. It only warns (see `docs/drift-check.md`); it is not a merge gate.

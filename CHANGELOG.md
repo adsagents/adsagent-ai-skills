@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.7.80 - 2026-10-19
+
+Version 0.7.80 points name lookup at `entities_lookup_by_name` and
+`prepare_groups`.
+
+Each channel skill finds campaigns, ad groups, and ads by name with
+`entities_lookup_by_name`, then prepares from `prepare_groups`.
+
+Claude plugin directory review scans `plugin/`. That directory is generated
+from `skills/`, `.mcp.json`, and `.claude-plugin/plugin.json`. The marketplace
+entry `adsagent` keeps the name `adsagent` and sets `source` to `./plugin`.
+
 ## 0.7.79 - 2026-10-18
 
 Version 0.7.79 prefers one same-kind batch approval for multiple entities.

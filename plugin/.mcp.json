@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "meta": {
+      "type": "http",
+      "url": "https://adsagent.md/mcp/v2"
+    },
+    "google": {
+      "type": "http",
+      "url": "https://google.adsagent.md/mcp"
+    },
+    "tiktok": {
+      "type": "http",
+      "url": "https://tiktok.adsagent.md/mcp"
+    }
+  }
+}

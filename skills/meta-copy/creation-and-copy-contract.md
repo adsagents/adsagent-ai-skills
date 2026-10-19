@@ -1,5 +1,7 @@
 # Meta Creation And Copy Contract
 
+For new template-based campaigns, read [create-plan-contract.md](create-plan-contract.md) for ranked creatives, media groups, names, revision and partial completion.
+
 ## Route
 
 - One Ad: `copy_ad_quick_copy`.

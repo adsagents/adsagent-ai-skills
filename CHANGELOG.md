@@ -14,6 +14,8 @@ as-of time. The skill no longer tells agents to send a strict refresh,
   10). `creatives_list_cloud` and `creatives_refresh_cloud` are deprecated
   until 2026-11-18.
 
+- Use country and language names for creation. Keep requested media groups in one approval, revise supported draft choices, and append missing groups after a resolved partial result. Meta creative rankings use cached evidence with visible freshness and coverage.
+
 ## 0.7.83 - 2026-10-19
 
 Version 0.7.83 removes process-environment reads from this repository.

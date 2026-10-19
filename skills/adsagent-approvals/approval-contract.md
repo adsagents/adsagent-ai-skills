@@ -51,6 +51,8 @@ The service refuses a budget, bid, or cap change when it is unreasonably large o
 
 ## Several Operations, One Approval
 
+Creation revise changes one unconfirmed creation draft; a batch combines changes to existing entities. Use revise only where the channel advertises it. Supported name, schedule, activation and selection edits replace the displayed summary; show it again and obtain approval of the new digest, because the old digest is invalid. The original expiry does not extend. A change to budget or targeting requires a new prepare. One creation tree remains one approval, including its groups; do not compose separate drafts merely to create that tree.
+
 Same-kind changes use the channel's advertised batch preparation. Different kinds of already validated drafts can use `approval_plan_prepare` when advertised on Meta, Google or TikTok. `approval_plan_get` reads that plan, `approval_plan_confirm` confirms it once, and `approval_plan_deny` discards it. Mixed plans retain their failure-stop contract. Atomic creates, clones, shared budgets and portfolio changes retain one atomic approval; they are not split into batch rows. Never fan out single prepares to simulate one approval.
 
 ## Results You Cannot Trust Yet

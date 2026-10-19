@@ -37,8 +37,9 @@ def test_google_create_requires_location_and_language() -> None:
     text = " ".join(_read("skills/google-ads-create/SKILL.md").split())
 
     assert "Location and language are required" in text
-    assert "google_ads_geo_targets_suggest" in text
-    assert "never create a worldwide campaign" in text
+    assert "country and language names" in text
+    assert "server resolves" in text
+    assert "never create a worldwide campaign" in text.lower()
     contract = _read("skills/google-ads-create/create-contract.md")
     assert "Never choose a location or language on the user's behalf" in contract
     assert "google_ads_creation_capabilities_get" in contract

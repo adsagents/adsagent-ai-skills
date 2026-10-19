@@ -136,11 +136,19 @@
           "required_capability": "mcp.launch.prepare"
         },
         {
+          "name": "campaigns_quick_create_revise",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
           "name": "campaigns_reconcile_campaign_plan",
           "required_capability": "mcp.read"
         },
         {
           "name": "creatives_list"
+        },
+        {
+          "name": "creatives_top",
+          "required_capability": "mcp.read"
         },
         {
           "name": "templates_reverse_engineer",
@@ -632,6 +640,9 @@
         },
         {
           "name": "campaigns_quick_create"
+        },
+        {
+          "name": "campaigns_quick_create_revise"
         },
         {
           "name": "operations_get"

@@ -16,6 +16,29 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from scripts import validate_tri_channel_pack
 
 
+def _call_is_remote_client(node: ast.Call) -> bool:
+    """True when a subprocess call's argv starts with git or curl."""
+    func = node.func
+    if isinstance(func, ast.Attribute):
+        name = func.attr
+    elif isinstance(func, ast.Name):
+        name = func.id
+    else:
+        name = ""
+    if name not in {"run", "Popen", "call", "check_call", "check_output"}:
+        return False
+    if not node.args or not isinstance(node.args[0], (ast.List, ast.Tuple)):
+        return False
+    constants = [
+        elt.value
+        for elt in node.args[0].elts
+        if isinstance(elt, ast.Constant) and isinstance(elt.value, str)
+    ]
+    if not constants:
+        return False
+    return Path(constants[0]).name in {"git", "curl"}
+
+
 class PublicReleaseContractTests(unittest.TestCase):
     def _read(self, relative_path: str) -> str:
         return read_contract(ROOT, relative_path)
@@ -311,6 +334,45 @@ class PublicReleaseContractTests(unittest.TestCase):
             except UnicodeDecodeError:
                 continue
             if forwarded in text or token_name in text:
+                offenders.append(str(path.relative_to(ROOT)))
+        self.assertEqual(offenders, [])
+
+    def test_network_code_does_not_read_process_environment(self) -> None:
+        network_roots = {"urllib", "requests", "http", "httpx", "socket"}
+        offenders: list[str] = []
+        tag_script = self._read("scripts/validate_release_manifest_tag.py")
+        self.assertNotIn("os.environ", tag_script)
+        self.assertNotIn("getenv", tag_script)
+        for path in ROOT.rglob("*.py"):
+            if any(
+                part in {".git", "__pycache__", ".pytest_cache"} for part in path.parts
+            ):
+                continue
+            tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+            imported: set[str] = set()
+            reads_environment = False
+            runs_remote_client = False
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Import):
+                    imported.update(
+                        alias.name.split(".", 1)[0] for alias in node.names
+                    )
+                elif isinstance(node, ast.ImportFrom) and node.module:
+                    imported.add(node.module.split(".", 1)[0])
+                elif isinstance(node, ast.Attribute) and node.attr in {
+                    "environ",
+                    "getenv",
+                }:
+                    reads_environment = True
+                elif isinstance(node, ast.Name) and node.id in {"environ", "getenv"}:
+                    reads_environment = True
+                elif isinstance(node, ast.Call):
+                    runs_remote_client = runs_remote_client or _call_is_remote_client(
+                        node
+                    )
+            if reads_environment and (
+                not imported.isdisjoint(network_roots) or runs_remote_client
+            ):
                 offenders.append(str(path.relative_to(ROOT)))
         self.assertEqual(offenders, [])
 

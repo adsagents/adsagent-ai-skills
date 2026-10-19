@@ -36,6 +36,6 @@ def test_setup_and_recovery_explain_dual_era_without_reregistration() -> None:
 def test_release_identity_is_current() -> None:
     version = _read("VERSION").strip()
     release = json.loads(_read("release-manifest.json"))
-    assert version == "0.7.81"
+    assert version == "0.7.82"
     assert release["version"] == version
     assert release["tag"] == f"v{version}"

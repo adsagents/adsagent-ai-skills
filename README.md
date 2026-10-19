@@ -42,7 +42,7 @@ Skills describe client-independent behavior. Install steps differ per client and
 
 Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [Cursor Directory](https://cursor.directory/plugins/adsagent-meta-mcp), and [MCP Market](https://mcpmarket.com/zh/server/adsagent-ai-skills).
 
-Current contract version: `0.7.81`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.82`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 
 Claude, Codex, Cursor, and Glama read this repository root. Skills live only in `skills/`. Marketplace `source` is `./`. Cursor reads `.cursor-plugin/plugin.json` and root `mcp.json`. Glama builds from the root `Dockerfile` and root `skills/`.
 

@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.81"
+VERSION = "0.7.82"
 MARKETPLACE_SOURCE = "./"
 # Concatenated so the Cursor manifest is the only image reference in the tree.
 CURSOR_LOGO_URL = "https://adsagent.md/static/favicon-192." + "png"

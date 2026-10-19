@@ -25,7 +25,7 @@ python3 -m pytest -q
 | Repository | `adsagents/adsagent-ai-skills` |
 | Plugin slug | `adsagent` |
 | Display name | `AdsAgent` |
-| Version | See root `VERSION` (currently `0.7.81`) |
+| Version | See root `VERSION` (currently `0.7.82`) |
 | Homepage | `https://adsagent.md/connect`（**单行 URL，前后不能有空格**；文档站放 description，不要拼两个 URL） |
 | Documentation (in description copy) | `https://adsagent.md/docs/mcp-onboarding` |
 | License type | `MIT` (root `LICENSE`) |
@@ -66,8 +66,11 @@ OpenAI ChatGPT app submission artifacts in the Meta service repo.
   credential helpers, or local server commands. Authentication uses the
   client's OAuth flow for each resource. The bundled setup script reads no
   installer credential and is not an MCP server or plugin hook. This repository
-  does not read credential environment variables. No API-key `userConfig`
-  option is needed for this OAuth plugin.
+  does not read credential environment variables.
+  `scripts/validate_release_manifest_tag.py` does not read the process
+  environment. Git receives the fixed PATH `/usr/local/bin:/usr/bin:/bin` and
+  `GIT_TERMINAL_PROMPT=0`. The GitHub release request is anonymous HTTPS with
+  no token. No API-key `userConfig` option is needed for this OAuth plugin.
 - `UNREAD_ASSET_REFERENCED`: this repository does not ship an image or font
   file. The Cursor manifest logo is an absolute https URL on `adsagent.md`.
 - `UNKNOWN_KEY privacyPolicyUrl`: the directory reads `privacyPolicyUrl` from

@@ -16,7 +16,7 @@ Public skill pack and plugin for AdsAgent tri-channel hosted MCP: Meta, Google A
 
 | Client | How it uses this repo | Status |
 | --- | --- | --- |
-| **Claude** (Code, Desktop, Cowork) | `adsagent` plugin from generated `plugin/`: skills + `.mcp.json` OAuth MCP URLs | Listed in the Claude plugin directory; also installable from this repo's marketplace |
+| **Claude** (Code, Desktop, Cowork) | `adsagent` plugin from this repository root: `skills/` plus `.mcp.json` OAuth MCP URLs | Listed in the Claude plugin directory; also installable from this repo's marketplace |
 | **ChatGPT** | The same `skills/<name>/SKILL.md` Agent Skills folders, plus a connection to the three hosted MCP endpoints | Skills supported |
 | **Codex** | Plugin marketplace (`codex plugin marketplace add adsagents/adsagent-ai-skills`) or a plain skills clone | Submitted |
 | **Cursor** | `.cursor-plugin/` + `mcp.json` | Current version listed on Cursor Directory and MCP Market |
@@ -27,7 +27,7 @@ Skills describe client-independent behavior. Install steps differ per client and
 
 | Surface | What it is | This repo? |
 | --- | --- | --- |
-| **Claude plugin** (self-hosted marketplace) | Generated `plugin/` (skills, `.mcp.json`, `.claude-plugin/plugin.json`). Marketplace `source` is `./plugin` | Yes |
+| **Claude plugin** (self-hosted marketplace) | Skills at `skills/` plus root `.mcp.json` HTTP MCP URLs (OAuth). Marketplace `source` is `./`. Directory review scans this whole repository | Yes |
 | **Cursor plugin** (marketplace manifest) | Skills + `mcp.json` HTTP MCP URLs (OAuth) | Yes |
 | **Anthropic Connectors Directory** | Hosted MCP server listing only | No — separate submission on `adsagent.md` services |
 
@@ -42,9 +42,9 @@ Skills describe client-independent behavior. Install steps differ per client and
 
 Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [Cursor Directory](https://cursor.directory/plugins/adsagent-meta-mcp), and [MCP Market](https://mcpmarket.com/zh/server/adsagent-ai-skills).
 
-Current contract version: `0.7.80`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.81`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 
-Claude and Codex marketplace installs resolve `adsagent` to `plugin/`. Edit `skills/`, `.mcp.json`, and `.claude-plugin/plugin.json`, then run `python scripts/sync_claude_plugin_tree.py` and commit `plugin/`. Cursor still reads `.cursor-plugin/plugin.json`, root `mcp.json`, `skills/`, and `assets/logo.png`. Glama still builds from the root `Dockerfile` and root `skills/`.
+Claude, Codex, Cursor, and Glama read this repository root. Skills live only in `skills/`. Marketplace `source` is `./`. Cursor reads `.cursor-plugin/plugin.json` and root `mcp.json`. Glama builds from the root `Dockerfile` and root `skills/`.
 
 For contributor cloud environments, provision `uv` in the image and run the
 bundled `bash scripts/cloud-agent-setup.sh`; see
@@ -60,7 +60,7 @@ The local helper `scripts/update_reminder.py` compares strict semantic versions 
 
 ## What This Is
 
-- A public Claude plugin marketplace package. Installed name `adsagent` loads `plugin/`, generated from **behavior skills** plus the hosted MCP URLs in `.mcp.json`.
+- A public Claude plugin marketplace package: **behavior skills** in `skills/` plus the hosted MCP URLs in `.mcp.json`. Directory review scans the whole repository.
 - A behavior guide for Claude Code, Cursor, Codex, and other MCP-aware clients.
 - A reliability and safety layer that tells agents when to retry, when to wait, and when to stop.
 - A versioned GitHub distribution for AdsAgent user onboarding and agent behavior guidance.
@@ -284,10 +284,9 @@ The blocking checks are offline: skill structure, the tool reference contract
 python scripts/validate_public_tool_manifests.py
 ```
 
-Whether the skills still match the services is checked separately by
-`scripts/check_drift.py` against the services' current public tool-name
-manifests. That check only warns and opens an issue; it never blocks a merge or a
-release. See [docs/drift-check.md](docs/drift-check.md).
+Whether the skills still match the services is compared outside this
+repository. That comparison only warns and does not block a merge or a
+release.
 
 ## Installation
 

@@ -98,7 +98,6 @@ class PublicReleaseContractTests(unittest.TestCase):
             "scripts/skill_contract.py",
             "scripts/skill_routing_contract.py",
             "scripts/validate_public_tool_manifests.py",
-            "scripts/sync_claude_plugin_tree.py",
         ):
             tree = ast.parse(self._read(path))
             for node in ast.walk(tree):
@@ -174,7 +173,17 @@ class PublicReleaseContractTests(unittest.TestCase):
         self.assertEqual(manifest.get("name"), "adsagent")
         self.assertEqual(manifest.get("mcpServers"), "./mcp.json")
         self.assertEqual(manifest.get("skills"), "./skills/")
-        self.assertEqual(manifest.get("logo"), "assets/logo.png")
+        self.assertEqual(
+            manifest.get("logo"),
+            validate_tri_channel_pack.CURSOR_LOGO_URL,
+        )
+        self.assertTrue(
+            str(manifest.get("logo", "")).startswith("https://adsagent.md/")
+        )
+        self.assertFalse((ROOT / "assets" / ("logo." + "png")).exists())
+        self.assertFalse((ROOT / "plugin").exists())
+        marketplace = json.loads(self._read(".claude-plugin/marketplace.json"))
+        self.assertEqual(marketplace["plugins"][0]["source"], "./")
         self.assertEqual(
             manifest.get("version"),
             self._read("VERSION").strip(),
@@ -271,6 +280,39 @@ class PublicReleaseContractTests(unittest.TestCase):
         self.assertIn("Copyright (c) 2026 adsagents LLC", license_text)
         self.assertIn("Permission is hereby granted, free of charge", license_text)
         self.assertNotIn("All rights reserved", license_text)
+
+    def test_repository_does_not_forward_credential_environment(self) -> None:
+        forwarded = "*" + "*os.environ"
+        token_name = "ADSAGENT_DRIFT_GITHUB_" + "TOKEN"
+        asset_suffixes = {
+            "." + ext
+            for ext in (
+                "png",
+                "jpg",
+                "jpeg",
+                "gif",
+                "webp",
+                "ico",
+                "ttf",
+                "otf",
+                "woff",
+                "woff2",
+            )
+        }
+        offenders: list[str] = []
+        for path in ROOT.rglob("*"):
+            if not path.is_file() or ".git" in path.parts:
+                continue
+            if path.suffix.lower() in asset_suffixes:
+                offenders.append(f"image or font file {path.relative_to(ROOT)}")
+                continue
+            try:
+                text = path.read_text(encoding="utf-8")
+            except UnicodeDecodeError:
+                continue
+            if forwarded in text or token_name in text:
+                offenders.append(str(path.relative_to(ROOT)))
+        self.assertEqual(offenders, [])
 
     def test_plugin_manifests_declare_mit_license(self) -> None:
         for path in (

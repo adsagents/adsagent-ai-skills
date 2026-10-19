@@ -598,8 +598,8 @@ def main() -> int:
         description=(
             "Validate skill tool references. With no --manifest, runs only the "
             "offline checks; with --manifest it also compares each channel's "
-            "service manifest (see scripts/check_drift.py for the warn-only "
-            "comparison against live manifests)."
+            "local service manifest. Live drift comparison runs outside this "
+            "repository."
         )
     )
     parser.add_argument(

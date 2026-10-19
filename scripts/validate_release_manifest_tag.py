@@ -16,6 +16,7 @@ GitHub release behind ``release_url`` must exist.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import urllib.error
@@ -32,6 +33,18 @@ class ManifestTagError(RuntimeError):
     pass
 
 
+def subprocess_env() -> dict[str, str]:
+    """Environment for child processes.
+
+    Forward only process basics. Do not pass the parent environment, so a
+    credential variable cannot reach git or another child.
+    """
+    allowed = ("PATH", "HOME", "TMPDIR", "LANG", "LC_ALL", "SSL_CERT_FILE", "SSL_CERT_DIR")
+    env = {key: os.environ[key] for key in allowed if os.environ.get(key)}
+    env["GIT_TERMINAL_PROMPT"] = "0"
+    return env
+
+
 def _git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         ["git", "-C", str(root), *args],
@@ -39,6 +52,7 @@ def _git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
         text=True,
         timeout=30,
         check=False,
+        env=subprocess_env(),
     )
 
 

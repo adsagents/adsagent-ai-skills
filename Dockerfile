@@ -4,7 +4,6 @@ FROM python:3.12-slim-bookworm
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    SKILL_PACK_ROOT=/app \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
 WORKDIR /app
@@ -22,4 +21,5 @@ COPY --chown=app:app README.md VERSION mcp.json LICENSE NOTICE.md /app/
 USER app
 
 # Glama wraps this stdio process; do not switch to HTTP here.
-CMD ["python", "-m", "skill_pack_mcp"]
+# /app is the image workdir that holds skills/, VERSION, and mcp.json.
+CMD ["python", "-m", "skill_pack_mcp", "--root", "/app"]

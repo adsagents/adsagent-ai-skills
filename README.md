@@ -42,7 +42,7 @@ Skills describe client-independent behavior. Install steps differ per client and
 
 Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [Cursor Directory](https://cursor.directory/plugins/adsagent-meta-mcp), and [MCP Market](https://mcpmarket.com/zh/server/adsagent-ai-skills).
 
-Current contract version: `0.7.82`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.83`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 
 Claude, Codex, Cursor, and Glama read this repository root. Skills live only in `skills/`. Marketplace `source` is `./`. Cursor reads `.cursor-plugin/plugin.json` and root `mcp.json`. Glama builds from the root `Dockerfile` and root `skills/`.
 
@@ -56,7 +56,7 @@ legacy initialize clients.
 
 Version history lives in [CHANGELOG.md](CHANGELOG.md).
 
-The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `$XDG_CACHE_HOME/adsagent-ai-skills/update-reminder-v1.json` (or `~/.cache/...`). Cache failure never blocks MCP work.
+The local helper `scripts/update_reminder.py` compares strict semantic versions and stores only bounded version/timestamp state in `~/.cache/adsagent-ai-skills/update-reminder-v1.json`. Pass `--cache-dir` to choose another directory. Cache failure never blocks MCP work.
 
 ## What This Is
 
@@ -429,6 +429,9 @@ TikTok: https://tiktok.adsagent.md/mcp
 
 The root `Dockerfile` builds **AdsAgent Skill Pack (docs)** — a stdio MCP that
 exposes `list_skills`, `get_skill`, `get_hosted_mcp_urls`, and `get_pack_readme`.
+The image command is `python -m skill_pack_mcp --root /app`. Without `--root`,
+the server uses the directory that contains the `skill_pack_mcp` package.
+`glama.json` only names maintainers; Glama starts the Dockerfile command.
 Glama Build → Make Release scores that docs server. It does **not** replace
 `https://adsagent.md/mcp/v2`, `https://google.adsagent.md/mcp`, or
 `https://tiktok.adsagent.md/mcp`. Details: [docs/glama-release.md](docs/glama-release.md).

@@ -19,6 +19,24 @@ from skill_pack_mcp.pack import (
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_root_argument_selects_the_pack_directory(tmp_path: Path) -> None:
+    from skill_pack_mcp import pack
+
+    assert pack.package_root() == ROOT
+    assert pack.resolve_root(None) == ROOT
+    assert pack.resolve_root("  ") == ROOT
+    assert pack.resolve_root(str(tmp_path)) == tmp_path.resolve()
+    previous = pack._root_override
+    pack.set_root_override(str(tmp_path))
+    try:
+        assert pack.default_root() == tmp_path.resolve()
+    finally:
+        pack.set_root_override(previous)
+    entry = (ROOT / "skill_pack_mcp" / "__main__.py").read_text(encoding="utf-8")
+    assert "--root" in entry
+    assert entry.index("set_root_override") < entry.index("skill_pack_mcp.server")
+
+
 def test_list_skills_reads_frontmatter_without_network() -> None:
     payload = list_skills(ROOT)
     ids = [row["id"] for row in payload["skills"]]
@@ -116,7 +134,8 @@ def test_dockerfile_is_stdio_docs_image_without_secrets() -> None:
     assert text.startswith("# AdsAgent Skill Pack (docs) MCP")
     assert "FROM python:3.12-slim-bookworm" in text
     assert "USER app" in text
-    assert 'CMD ["python", "-m", "skill_pack_mcp"]' in text
+    assert 'CMD ["python", "-m", "skill_pack_mcp", "--root", "/app"]' in text
+    assert "SKILL_PACK_ROOT" not in text
     assert ".env" not in text
     assert "TOKEN" not in text
     assert "SECRET" not in text

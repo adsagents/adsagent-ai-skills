@@ -104,14 +104,13 @@ def _now_utc() -> datetime:
     return datetime.now(timezone.utc)
 
 
-def _cache_path() -> Path:
-    cache_root = os.environ.get("XDG_CACHE_HOME")
-    base = Path(cache_root).expanduser() if cache_root else Path.home() / ".cache"
+def _cache_path(cache_dir: Path | None = None) -> Path:
+    base = Path.home() / ".cache" if cache_dir is None else Path(cache_dir).expanduser()
     return base / "adsagent-ai-skills" / "update-reminder-v1.json"
 
 
-def _read_cache() -> dict[str, str]:
-    path = _cache_path()
+def _read_cache(cache_dir: Path | None = None) -> dict[str, str]:
+    path = _cache_path(cache_dir)
     file_stat = path.lstat()
     if not stat.S_ISREG(file_stat.st_mode) or file_stat.st_size > _MAX_CACHE_BYTES:
         return {}
@@ -123,8 +122,8 @@ def _read_cache() -> dict[str, str]:
     return {key: raw[key] for key in _CACHE_KEYS}
 
 
-def _write_cache(payload: dict[str, str]) -> None:
-    path = _cache_path()
+def _write_cache(payload: dict[str, str], cache_dir: Path | None = None) -> None:
+    path = _cache_path(cache_dir)
     path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
     temp_path: Path | None = None
     try:
@@ -159,6 +158,8 @@ def evaluate_update(
     recommended_version: str,
     minimum_safe_version: str,
     check_interval_hours: int,
+    *,
+    cache_dir: Path | None = None,
 ) -> dict[str, str | bool]:
     """Return a bounded decision and persist only version/timestamp state."""
     status = classify_versions(
@@ -181,7 +182,7 @@ def evaluate_update(
 
     now = _now_utc()
     try:
-        cache = _read_cache()
+        cache = _read_cache(cache_dir)
     except (OSError, ValueError, json.JSONDecodeError):
         cache = {}
 
@@ -207,7 +208,7 @@ def evaluate_update(
             "reminded_for_version": recommended_version,
         }
         try:
-            _write_cache(payload)
+            _write_cache(payload, cache_dir)
         except OSError:
             pass
 
@@ -220,6 +221,10 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--recommended-version", required=True)
     parser.add_argument("--minimum-safe-version", required=True)
     parser.add_argument("--check-interval-hours", required=True, type=int)
+    parser.add_argument(
+        "--cache-dir",
+        help="Directory for reminder state. Defaults to ~/.cache under the home directory.",
+    )
     args, unknown = parser.parse_known_args()
     if unknown:
         parser.error("unsupported argument")
@@ -228,11 +233,13 @@ def _parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = _parse_args()
+    cache_dir = Path(args.cache_dir) if args.cache_dir else None
     result = evaluate_update(
         args.installed_version,
         args.recommended_version,
         args.minimum_safe_version,
         args.check_interval_hours,
+        cache_dir=cache_dir,
     )
     print(json.dumps(result, separators=(",", ":"), sort_keys=True))
     return 0

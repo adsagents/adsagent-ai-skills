@@ -42,7 +42,7 @@ Skills describe client-independent behavior. Install steps differ per client and
 
 Also listed on [Product Hunt](https://www.producthunt.com/products/adsagent), [Cursor Directory](https://cursor.directory/plugins/adsagent-meta-mcp), and [MCP Market](https://mcpmarket.com/zh/server/adsagent-ai-skills).
 
-Current contract version: `0.7.85`. The plugin slug is `adsagent` (marketplace key `adsagent`).
+Current contract version: `0.7.86`. The plugin slug is `adsagent` (marketplace key `adsagent`).
 
 Claude, Codex, Cursor, and Glama read this repository root. Skills live only in `skills/`. Marketplace `source` is `./`. Cursor reads `.cursor-plugin/plugin.json` and root `mcp.json`. Glama builds from the root `Dockerfile` and root `skills/`.
 
@@ -266,15 +266,16 @@ Run the local release contract and tests:
 
 ```bash
 python scripts/validate_tri_channel_pack.py
-python scripts/validate_release_manifest_tag.py
 python -m pytest -q
 ```
 
-Releases are published tag-first: create the git tag and GitHub release,
-then point `release-manifest.json` on main at that tag. The tag check above
-passes only when the tag is published on origin, the tagged tree carries
-that version, and the GitHub release exists, because sync clients fetch
-the tagged manifest and would otherwise fail with 404.
+Before merging a release head, publish the git tag and GitHub release for
+that head's tree, then run `bin/check-skillpack-release-tag` in
+adsagent-ops with this clone and the head. The check passes only when the
+tag named in `release-manifest.json` is already published and the tag's
+tree is the same as the head. Sync clients fetch that tagged manifest, so
+a head that names an unpublished tag must not be merged. This repository
+does not contact GitHub.
 
 The blocking checks are offline: skill structure, the tool reference contract
 (`contracts/public-tool-references.json`), and the list of deprecated tools

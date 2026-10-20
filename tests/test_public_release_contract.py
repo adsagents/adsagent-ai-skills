@@ -347,6 +347,48 @@ class PublicReleaseContractTests(unittest.TestCase):
         self.assertIn("Permission is hereby granted, free of charge", license_text)
         self.assertNotIn("All rights reserved", license_text)
 
+    def test_python_files_do_not_import_network_clients_or_run_git(self) -> None:
+        banned_roots = {"urllib", "requests", "httpx", "socket", "http"}
+        allowed_subprocess = {
+            Path("scripts/probe_skill_pack_mcp_stdio.py"),
+            Path("tests/test_cloud_agent_setup.py"),
+        }
+        offenders: list[str] = []
+        for path in ROOT.rglob("*.py"):
+            if any(
+                part in {".git", "__pycache__", ".pytest_cache"} for part in path.parts
+            ):
+                continue
+            tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+            imported: set[str] = set()
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Import):
+                    imported.update(
+                        alias.name.split(".", 1)[0] for alias in node.names
+                    )
+                elif isinstance(node, ast.ImportFrom) and node.module:
+                    imported.add(node.module.split(".", 1)[0])
+                if isinstance(node, ast.Call) and _call_is_remote_client(node):
+                    offenders.append(f"{path.relative_to(ROOT)} runs git or curl")
+            rel = path.relative_to(ROOT)
+            banned_hit = imported & banned_roots
+            if banned_hit:
+                offenders.append(f"{rel} imports {sorted(banned_hit)}")
+            if "subprocess" in imported and rel not in allowed_subprocess:
+                offenders.append(f"{rel} imports subprocess")
+        self.assertEqual(offenders, [])
+
+    def test_release_tag_checker_is_not_in_this_repository(self) -> None:
+        script_name = "validate_release_manifest_" + "tag.py"
+        self.assertFalse((ROOT / "scripts" / script_name).exists())
+        self.assertFalse(
+            (ROOT / "tests" / ("test_release_manifest_" + "tag.py")).exists()
+        )
+        workflow = self._read(".github/workflows/validate.yml")
+        self.assertNotIn("release-manifest-" + "tag", workflow)
+        self.assertNotIn(script_name, workflow)
+        self.assertIn("python -m pytest -q", workflow)
+
     def test_repository_does_not_forward_credential_environment(self) -> None:
         banned = tuple(fragment.casefold() for fragment in _banned_environment_fragments())
         token_name = "ADSAGENT_DRIFT_GITHUB_" + "TOKEN"

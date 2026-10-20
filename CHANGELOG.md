@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.85 - 2026-10-20
+
+Version 0.7.85 teaches exact-name creative lookup: pass `names` (1-50 exact
+file names) to `creatives_list` once to get every uploaded and cloud match
+with `missing_names`, instead of repeated `q` searches.
+
 ## 0.7.84 - 2026-10-19
 
 Version 0.7.84 teaches named country and language targeting, grouped creation

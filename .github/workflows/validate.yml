@@ -26,14 +26,3 @@ jobs:
       - name: Check hosted Registry manifest consistency
         run: python scripts/validate_registry_manifests.py
       - run: python -m pytest -q
-
-  release-manifest-tag:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
-        with:
-          python-version: "3.12"
-      - name: Check release manifest tag is published
-        run: python scripts/validate_release_manifest_tag.py

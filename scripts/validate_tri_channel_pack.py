@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.85"
+VERSION = "0.7.86"
 MARKETPLACE_SOURCE = "./"
 # Concatenated so the Cursor manifest is the only image reference in the tree.
 CURSOR_LOGO_URL = "https://adsagent.md/static/favicon-192." + "png"
@@ -897,6 +897,8 @@ def main() -> None:
         fail("plugin/ must not exist; directory review scans the repository root")
     if (ROOT / "scripts" / ("check_drift." + "py")).exists():
         fail("the drift checker must not live in this repository")
+    if (ROOT / "scripts" / ("validate_release_manifest_" + "tag.py")).exists():
+        fail("the release-tag checker must not live in this repository")
     if (ROOT / "scripts" / ("sync_claude_plugin_tree." + "py")).exists():
         fail("the generated plugin tree sync must not live in this repository")
 

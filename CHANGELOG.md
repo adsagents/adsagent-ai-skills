@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.86 - 2026-10-20
+
+Version 0.7.86 moves the release-tag check out of this repository.
+
+Directory review scans the whole tree. The check that asks GitHub whether
+the release tag is published now runs in adsagent-ops
+(`bin/check-skillpack-release-tag`) before a skill-pack pull request is
+merged. This repository no longer starts git or requests the GitHub
+release page.
+
 ## 0.7.85 - 2026-10-20
 
 Version 0.7.85 teaches exact-name creative lookup: pass `names` (1-50 exact

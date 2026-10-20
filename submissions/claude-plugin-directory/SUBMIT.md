@@ -25,7 +25,7 @@ python3 -m pytest -q
 | Repository | `adsagents/adsagent-ai-skills` |
 | Plugin slug | `adsagent` |
 | Display name | `AdsAgent` |
-| Version | See root `VERSION` (currently `0.7.85`) |
+| Version | See root `VERSION` (currently `0.7.86`) |
 | Homepage | `https://adsagent.md/connect`（**单行 URL，前后不能有空格**；文档站放 description，不要拼两个 URL） |
 | Documentation (in description copy) | `https://adsagent.md/docs/mcp-onboarding` |
 | License type | `MIT` (root `LICENSE`) |
@@ -70,10 +70,10 @@ OpenAI ChatGPT app submission artifacts in the Meta service repo.
   and manifest paths are arguments. The docs image starts with
   `python -m skill_pack_mcp --root /app`. Child processes for the stdio probe
   receive a fixed literal environment.
-  `scripts/validate_release_manifest_tag.py` does not copy parent variables.
-  Git receives the fixed PATH `/usr/local/bin:/usr/bin:/bin` and
-  `GIT_TERMINAL_PROMPT=0`. The GitHub release request is anonymous HTTPS with
-  no token. No API-key `userConfig` option is needed for this OAuth plugin.
+  The release-tag check runs in adsagent-ops
+  (`bin/check-skillpack-release-tag`), not in this repository. This
+  repository does not start git, read a token, or request GitHub.
+  No API-key `userConfig` option is needed for this OAuth plugin.
 - `UNREAD_ASSET_REFERENCED`: this repository does not ship an image or font
   file. The Cursor manifest logo is an absolute https URL on `adsagent.md`.
 - `UNKNOWN_KEY privacyPolicyUrl`: the directory reads `privacyPolicyUrl` from

@@ -12,7 +12,6 @@ public.
 - `uv run --no-project --managed-python --python 3.12 --with pytest==9.0.2 python -m pytest -q`
 - `uv run --no-project --managed-python --python 3.12 python scripts/validate_tri_channel_pack.py`
 - `uv run --no-project --managed-python --python 3.12 python scripts/validate_public_tool_manifests.py`
-- `uv run --no-project --managed-python --python 3.12 python scripts/validate_release_manifest_tag.py`
 
 Skills live only in `skills/`. `.claude-plugin/marketplace.json` sets the
 `adsagent` source to `./`. Directory review scans this whole repository.
@@ -28,9 +27,10 @@ Pass paths as arguments.
 - Releases are batched. Feature PRs add their notes under `Unreleased` in
   `CHANGELOG.md` and do not touch `VERSION`; a release batch bumps `VERSION`,
   the manifests that mirror it, and the changelog together.
-- Release order: tag the release commit and create the GitHub release first,
-  then update `VERSION` and `release-manifest.json` on main. The manifest on
-  main must never reference an unpublished tag — sync clients fetch the
-  tagged manifest and fail with 404 until the tag exists.
-  `scripts/validate_release_manifest_tag.py` enforces this in CI.
+- Release order: the candidate head already carries `VERSION` and
+  `release-manifest.json`. Before merging it, run
+  `bin/check-skillpack-release-tag` in adsagent-ops against this clone and
+  that head. It passes only when the manifest tag is already published and
+  the tag tree is the same tree as the head. This repository does not run
+  that check and does not contact GitHub.
 - Never force-add generated bootstrap files or in-repo virtual environments.

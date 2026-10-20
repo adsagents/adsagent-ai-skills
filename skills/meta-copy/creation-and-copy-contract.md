@@ -1,5 +1,7 @@
 # Meta Creation And Copy Contract
 
+For new template-based campaigns, read [create-plan-contract.md](create-plan-contract.md) for ranked creatives, media groups, names, revision and partial completion.
+
 ## Route
 
 - One Ad: `copy_ad_quick_copy`.
@@ -92,6 +94,8 @@ Use explicit `campaign_name`, `adset_name`, `ad_name`, `template_name`, `new_tem
 
 Discover one upload window with `creatives_list(created_from=<inclusive>, created_to=<exclusive>)`; bounds are timezone-aware ISO 8601.
 
+The creative library also holds read-only Google Drive cloud folders. `creatives_list` returns uploaded and cloud files together; `library_source`, `read_only` and `folder_path` are for display, and `library_source=upload|cloud` narrows the list. Use a cloud file's `selection_key` like any creative; the server fetches the original when the ad uses it. Browse a cloud folder with `creatives_list(folder_name=...)`; cloud folders sync in the background.
+
 ## Append
 
 - `append_mode=append-campaign` plus `target_campaign_id`.
@@ -183,8 +187,8 @@ or request fresh Insights merely to check status.
 
 Claim an exact zero only when the common Insights result has
 `metrics_evidence.zero_proven=true`. Otherwise say no metrics were observed and
-the exact amount is unproven. `mutation_coverage` is relevant only when the
-metrics request supplied `after_mutation_ref`; it never proves live delivery.
+the exact amount is unproven. `mutation_coverage` never proves live delivery. Post-write metrics are the
+cached ledger and its as-of time. Live Insights refresh is not open.
 
 Report `result.failures.items` `code`, `message`, and `next_action`; never expose a raw Meta error or retry the unchanged write. `recovered_by_url_fallback` is compensated and never permits retry or a new task. Only `manual_new_task_allowed=true` permits a new task with fresh approval. Stop on `failures.unclassified_count>0`.
 

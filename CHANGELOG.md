@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.7.84 - 2026-10-19
+
+Version 0.7.84 teaches named country and language targeting, grouped creation
+with one approval, read-only Drive cloud folders in the creative library, and
+closed Meta Insights live refresh.
+
+Meta Insights live refresh is not open. Agents read the stored ledger with
+`consistency=cached` or `consistency=fresh_if_available` and use the data
+as-of time. The skill no longer tells agents to send a strict refresh,
+`min_as_of`, or `after_mutation_ref`.
+
+- Creative library guidance covers read-only Google Drive cloud folders on all
+  three channels: `creatives_list` returns uploaded and cloud files together,
+  a cloud file's `selection_key` is used like any creative, and
+  `creatives_cloud_bind` returns the one-time link to connect a folder (up to
+  10). `creatives_list_cloud` and `creatives_refresh_cloud` are deprecated
+  until 2026-11-18.
+
+- Use country and language names for creation. Keep requested media groups in one approval, revise supported draft choices, and append missing groups after a resolved partial result. Meta creative rankings use cached evidence with visible freshness and coverage.
+
 ## 0.7.83 - 2026-10-19
 
 Version 0.7.83 removes process-environment reads from this repository.

@@ -20,7 +20,13 @@
 
 ## Creative And Create
 
+- Pass country and language names as the user said them; the server resolves them. Ask the user to choose ambiguous places or a missing language mode. Interests, devices and carriers must come from search results, never guessed codes.
+- Use `groups` to preserve the requested video and image grouping and creative selection. Creation is paused by default; request activation only when the user explicitly asks to start delivery. Show the whole prepared tree and partial-completion policy in one approval, then confirm once.
+- Before confirmation, use advertised `campaigns_quick_create_revise` for supported name, schedule, activation or selection edits. Do not deny and recreate for those edits. Show the revised summary and obtain approval of the current digest. Changing budget or targeting requires a new prepare; revision retains the original expiry.
+- On partial completion, show completed groups, failed groups, cleanup and unresolved results. By default complete groups follow the user's approved activation choice; keeping them paused or rolling back all new objects is a prepare-time choice. For a resolved failure that permits a new attempt, append missing groups to the same Campaign under fresh approval, preserving successes. Unknown results never permit replay.
+
 - Use local `creative_id` only with `readiness.create_eligible=true`; inspect `readiness.reason_code`, `readiness.retryable`, and `readiness.next_action`.
+- `creatives_list` also returns read-only Google Drive cloud files (`library_source=cloud`). Their `creative_id` is the `gdrive:` selection key and `readiness.status=prepared_on_use`; use it in `campaigns_quick_create` like any creative.
 - Send 1..20 requested `verification_pending` IDs once to `creatives_reconcile`. `upload_failed` needs returned remediation and a new explicit upload. Use advertised `creatives_abandon_upload` to remove a cancelled pending attempt, not provider media.
 - Give `campaigns_quick_create` one source. `append_mode=append-campaign` plus `target_campaign_id` creates ad group/ad; `append_mode=append-adgroup` plus `target_adgroup_id` creates ad only.
 - For Smart+ image, the server verifies ownership and maps `creative_info.image_info[].web_uri`. Do not send a CDN image URL, synthesize `CAROUSEL_ADS`, or invent provider CTA, music, or identity IDs.

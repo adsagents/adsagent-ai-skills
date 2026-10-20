@@ -130,7 +130,7 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
             "Do not prefetch or fan out parents",
             "preserve each `ad_id`",
             "data.meta.has_more=true",
-            "min_as_of",
+            "实时刷新未开放",
             "result.meta.source_observed_at",
             "Exact Ad-name deduplication",
             "language classification",
@@ -200,7 +200,7 @@ class AgentMethodProfileGuidanceTests(unittest.TestCase):
             "result.meta.complete=true",
             "never rerun page 1",
             "result.meta.source_observed_at",
-            "min_as_of",
+            "实时刷新未开放",
         ):
             self.assertIn(term, text)
 

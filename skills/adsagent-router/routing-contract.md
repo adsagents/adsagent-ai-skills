@@ -98,9 +98,9 @@ the requested status; do not turn it into a reporting intake.
   while pending, and never substitute an Insights watermark. A local selector
   miss after `mutation_applied=true` is client snapshot drift, not a reason to
   reauthorize, replace the bearer, or replay the write.
-- Meta decisions use `insights_query_consistent(require_fresh)` only when advertised; uncertain task writes use `operations_get_context` and are never replayed.
+- Meta decisions call `insights_query_consistent` with `consistency=cached` or `fresh_if_available` and use the data as-of time. Live Insights refresh is not open (实时刷新未开放). Uncertain task writes use `operations_get_context` and are never replayed.
 - Meta candidate reads use one AND plan; keep IDs; deduplicate and group client-side.
-- Continue Meta pages with the unchanged cached contract and first-page `min_as_of`; do not rerun page 1 merely to continue. If the server rejects the continuation anchor, discard partial rows and restart page 1 serially.
+- Continue Meta pages with the unchanged cached contract and read each page's data as-of time; do not rerun page 1 merely to continue. Live Insights refresh is not open. If the server rejects the continuation anchor, discard partial rows and restart page 1 serially.
 - Use the common envelope only for `agent_method_profile.profile_id=adsagent_agent_methods_v1`; otherwise preserve native output.
 - Preserve `support_ref` for unresolved handoff. It is not authorization.
 - Google Insights uses a cached read-only ledger; separately advertised native writes follow their own approval contract. TikTok features are capability-gated; a shared profile does not imply evidence parity.

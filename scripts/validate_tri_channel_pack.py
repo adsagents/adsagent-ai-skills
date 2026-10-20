@@ -20,7 +20,7 @@ from validate_public_tool_manifests import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.7.83"
+VERSION = "0.7.84"
 MARKETPLACE_SOURCE = "./"
 # Concatenated so the Cursor manifest is the only image reference in the tree.
 CURSOR_LOGO_URL = "https://adsagent.md/static/favicon-192." + "png"
@@ -298,13 +298,13 @@ META_TERMS = [
     "native_single_fallback",
     "native_batch_fallback",
     "server registration failure",
-    "consistency=require_fresh",
+    "实时刷新未开放",
+    "consistency=fresh_if_available",
     "freshness_kind=age_only",
     "not mutation coverage",
     "verification_pending",
     "data_not_fresh",
     "mutation_ref",
-    "after_mutation_ref",
     "config_verified_live",
     "overview_get_live_configs",
     "next_action",

@@ -37,8 +37,9 @@ def test_google_create_requires_location_and_language() -> None:
     text = " ".join(_read("skills/google-ads-create/SKILL.md").split())
 
     assert "Location and language are required" in text
-    assert "google_ads_geo_targets_suggest" in text
-    assert "never create a worldwide campaign" in text
+    assert "country and language names" in text
+    assert "server resolves" in text
+    assert "never create a worldwide campaign" in text.lower()
     contract = _read("skills/google-ads-create/create-contract.md")
     assert "Never choose a location or language on the user's behalf" in contract
     assert "google_ads_creation_capabilities_get" in contract
@@ -137,5 +138,5 @@ def test_readme_names_all_supported_clients() -> None:
 
 
 def test_version_matches_changelog_release() -> None:
-    assert _read("VERSION").strip() == "0.7.83"
-    assert "Version 0.7.83" in _read("CHANGELOG.md")
+    assert _read("VERSION").strip() == "0.7.84"
+    assert "Version 0.7.84" in _read("CHANGELOG.md")

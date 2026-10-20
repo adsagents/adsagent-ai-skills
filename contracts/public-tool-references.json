@@ -136,11 +136,19 @@
           "required_capability": "mcp.launch.prepare"
         },
         {
+          "name": "campaigns_quick_create_revise",
+          "required_capability": "mcp.launch.prepare"
+        },
+        {
           "name": "campaigns_reconcile_campaign_plan",
           "required_capability": "mcp.read"
         },
         {
           "name": "creatives_list"
+        },
+        {
+          "name": "creatives_top",
+          "required_capability": "mcp.read"
         },
         {
           "name": "templates_reverse_engineer",
@@ -309,6 +317,12 @@
         {
           "name": "ads_update_url_prepare",
           "required_capability": "mcp.optimize.write"
+        },
+        {
+          "name": "creatives_cloud_bind"
+        },
+        {
+          "name": "creatives_cloud_status"
         }
       ]
     },
@@ -552,6 +566,24 @@
         {
           "name": "entities_lookup_by_name",
           "required_capability": "mcp.read"
+        },
+        {
+          "name": "creatives_list"
+        },
+        {
+          "name": "creatives_get"
+        },
+        {
+          "name": "creatives_list_folders"
+        },
+        {
+          "name": "google_ads_video_upload_prepare"
+        },
+        {
+          "name": "creatives_cloud_bind"
+        },
+        {
+          "name": "creatives_cloud_status"
         }
       ]
     },
@@ -608,6 +640,9 @@
         },
         {
           "name": "campaigns_quick_create"
+        },
+        {
+          "name": "campaigns_quick_create_revise"
         },
         {
           "name": "operations_get"
@@ -674,6 +709,15 @@
         {
           "name": "entities_lookup_by_name",
           "required_capability": "mcp.read"
+        },
+        {
+          "name": "creatives_list"
+        },
+        {
+          "name": "creatives_cloud_bind"
+        },
+        {
+          "name": "creatives_cloud_status"
         }
       ]
     }

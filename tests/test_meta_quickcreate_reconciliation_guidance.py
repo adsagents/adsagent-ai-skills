@@ -45,11 +45,11 @@ def test_meta_quickcreate_reconciliation_contract_is_public() -> None:
 
 
 def test_meta_quickcreate_reconciliation_release_is_current() -> None:
-    assert _read("VERSION").strip() == "0.7.83"
-    assert '"version": "0.7.83"' in _read(".claude-plugin/plugin.json")
-    assert '"version": "0.7.83"' in _read(".claude-plugin/marketplace.json")
-    assert "Current contract version: `0.7.83`" in _read("README.md")
-    assert 'VERSION = "0.7.83"' in _read(
+    assert _read("VERSION").strip() == "0.7.84"
+    assert '"version": "0.7.84"' in _read(".claude-plugin/plugin.json")
+    assert '"version": "0.7.84"' in _read(".claude-plugin/marketplace.json")
+    assert "Current contract version: `0.7.84`" in _read("README.md")
+    assert 'VERSION = "0.7.84"' in _read(
         "scripts/validate_tri_channel_pack.py"
     )
 
@@ -90,7 +90,7 @@ def test_reconciled_create_separates_live_delivery_and_metric_zero_evidence() ->
         "retry_write=false",
         "metrics_evidence.zero_proven=true",
         "mutation_coverage",
-        "after_mutation_ref",
+        "cached ledger",
         "never proves live delivery",
     ):
         assert term in text

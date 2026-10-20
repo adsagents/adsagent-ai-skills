@@ -61,6 +61,18 @@
       "deprecated_since": "2026-08-06",
       "remove_after": "2026-11-04",
       "replacement": "overview_update_deny"
+    },
+    "creatives_list_cloud": {
+      "channel": "meta",
+      "deprecated_since": "2026-10-19",
+      "remove_after": "2026-11-18",
+      "replacement": "creatives_list"
+    },
+    "creatives_refresh_cloud": {
+      "channel": "meta",
+      "deprecated_since": "2026-10-19",
+      "remove_after": "2026-11-18",
+      "replacement": "creatives_cloud_status"
     }
   }
 }

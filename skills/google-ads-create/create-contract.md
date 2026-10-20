@@ -7,13 +7,20 @@ Use Google Ads fields and tools only. Never substitute Meta or TikTok tools.
 1. `setup_get_status`, then `google_ads_accounts_list`. Choose one customer whose account list entry is usable and is not a manager.
 2. `google_ads_creation_capabilities_get(customer_id)` states which campaign types, writer access, and route this customer can create. Switches, writer access, a create route, and the budget ceiling are checked separately from provider eligibility; an unavailable type is a stop, not something to work around.
 
+These are readiness requirements, not mandatory repeated calls. Reuse current
+verified evidence for the same connection and customer; refresh it if the scope,
+permissions or advertised validity changes, or a response requests a refresh.
+
 ## Location And Language Are Required
 
-Search and Performance Max creation both require location ids and language ids. Without them the server answers `needs_input`; it never builds a worldwide campaign, and neither should you.
+Search and Performance Max creation both require an explicit location and language choice. Without them the server answers `needs_input`; it never builds a worldwide campaign, and neither should you.
 
 1. Ask the user which countries or regions and which languages they want.
-2. Resolve location ids with `google_ads_geo_targets_suggest`; show the matches and let the user pick. Never choose a location or language on the user's behalf and never default to "all".
-3. Pass the chosen ids, show the approval summary (it lists locations and exclusions), and confirm only after explicit approval.
+2. Pass the user's country and language names to the creation tool; the server resolves and validates them. Never choose a location or language on the user's behalf and never default to "all". Use all languages only when the user explicitly requests it.
+3. When a place is ambiguous, show the returned names and levels and ask the user to choose. `google_ads_geo_targets_suggest` can help explore places; do not turn its results into a separate code-conversion task.
+4. Show the approval summary, including locations, exclusions and languages, and confirm only after explicit approval.
+
+For keyword creation, ask for a missing match type. Pass the user's exact, phrase or broad match choice by name; do not silently select broad match.
 
 ## Choosing The Tool
 
@@ -45,3 +52,7 @@ Google test accounts are marked `test_account` in `google_ads_accounts_list`; th
 ## After Confirm
 
 Follow the confirm result. If the outcome is uncertain, use only the read-back tools in `adsagent-approvals`; never replay.
+
+## Creative Files
+
+`creatives_list`, `creatives_get` and `creatives_list_folders` read the account's read-only Google Drive cloud folders; Google has no uploaded library here. Pass a file's `selection_key` as `base64_data` to `google_ads_asset_upload_prepare` or as `source_url` to `google_ads_video_upload_prepare`; the original is fetched from Drive then. Images over 5 MiB carry `cloud_file_too_large`.

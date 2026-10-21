@@ -39,8 +39,19 @@ def _manifest_for(channel: str) -> dict:
             entry["required_capability"] = reference[
                 "required_capability"
             ]
-        if "capability_gate" in reference:
-            entry["capability_gates"] = [reference["capability_gate"]]
+        gates: list[str] = []
+        gate = reference.get("capability_gate")
+        if isinstance(gate, str):
+            gates.append(gate)
+        elif isinstance(gate, list):
+            gates.extend(gate)
+        extra_gates = reference.get("capability_gates")
+        if isinstance(extra_gates, str):
+            gates.append(extra_gates)
+        elif isinstance(extra_gates, list):
+            gates.extend(extra_gates)
+        if gates:
+            entry["capability_gates"] = gates
         tools.append(entry)
     return {
         "manifest_version": 1,

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.87 - 2026-10-21
+
+Version 0.7.87 points cloud-folder refresh at `creatives_cloud_refresh`.
+
+`creatives_cloud_status` is read-only and does not queue work. Calling
+`creatives_cloud_refresh` queues a refresh of connected cloud folders on
+Meta, Google Ads, and TikTok. `creatives_refresh_cloud` still answers until
+2026-11-18; its replacement is now `creatives_cloud_refresh`.
+
 ## 0.7.86 - 2026-10-20
 
 Version 0.7.86 moves the release-tag check out of this repository.

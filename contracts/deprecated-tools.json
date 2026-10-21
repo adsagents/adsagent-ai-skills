@@ -72,7 +72,7 @@
       "channel": "meta",
       "deprecated_since": "2026-10-19",
       "remove_after": "2026-11-18",
-      "replacement": "creatives_cloud_status"
+      "replacement": "creatives_cloud_refresh"
     }
   }
 }

@@ -323,6 +323,10 @@
         },
         {
           "name": "creatives_cloud_status"
+        },
+        {
+          "name": "creatives_cloud_refresh",
+          "required_capability": "mcp.read"
         }
       ]
     },
@@ -584,6 +588,14 @@
         },
         {
           "name": "creatives_cloud_status"
+        },
+        {
+          "name": "creatives_cloud_refresh",
+          "capability_gates": [
+            "mcp_authenticated",
+            "tenant_scope"
+          ],
+          "required_capability": "mcp.assets.refresh"
         }
       ]
     },
@@ -718,6 +730,11 @@
         },
         {
           "name": "creatives_cloud_status"
+        },
+        {
+          "name": "creatives_cloud_refresh",
+          "capability_gate": "mcp_authenticated",
+          "required_capability": "mcp_authenticated"
         }
       ]
     }

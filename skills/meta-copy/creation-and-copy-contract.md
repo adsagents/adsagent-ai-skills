@@ -94,7 +94,7 @@ Use explicit `campaign_name`, `adset_name`, `ad_name`, `template_name`, `new_tem
 
 Discover one upload window with `creatives_list(created_from=<inclusive>, created_to=<exclusive>)`; bounds are timezone-aware ISO 8601.
 
-The creative library also holds read-only Google Drive cloud folders. `creatives_list` returns uploaded and cloud files together; `library_source`, `read_only` and `folder_path` are for display, and `library_source=upload|cloud` narrows the list. Use a cloud file's `selection_key` like any creative; the server fetches the original when the ad uses it. Browse a cloud folder with `creatives_list(folder_name=...)`; cloud folders sync in the background.
+The creative library also holds read-only Google Drive cloud folders. `creatives_list` returns uploaded and cloud files together; `library_source`, `read_only` and `folder_path` are for display, and `library_source=upload|cloud` narrows the list. Use a cloud file's `selection_key` like any creative; the server fetches the original when the ad uses it. Browse a cloud folder with `creatives_list(folder_name=...)`. `creatives_cloud_status` is read-only. `creatives_cloud_refresh` queues a refresh of connected cloud folders.
 
 To fetch known files by exact file name, pass `names` (1-50 exact names) to `creatives_list` once; it returns every uploaded and cloud match with `missing_names`, instead of repeated `q` searches.
 

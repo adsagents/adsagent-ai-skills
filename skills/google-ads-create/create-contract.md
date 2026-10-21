@@ -55,4 +55,4 @@ Follow the confirm result. If the outcome is uncertain, use only the read-back t
 
 ## Creative Files
 
-`creatives_list`, `creatives_get` and `creatives_list_folders` read the account's read-only Google Drive cloud folders; Google has no uploaded library here. Pass a file's `selection_key` as `base64_data` to `google_ads_asset_upload_prepare` or as `source_url` to `google_ads_video_upload_prepare`; the original is fetched from Drive then. Images over 5 MiB carry `cloud_file_too_large`.
+`creatives_list`, `creatives_get` and `creatives_list_folders` read the account's read-only Google Drive cloud folders; Google has no uploaded library here. Pass a file's `selection_key` as `base64_data` to `google_ads_asset_upload_prepare` or as `source_url` to `google_ads_video_upload_prepare`; the original is fetched from Drive then. Images over 5 MiB carry `cloud_file_too_large`. `creatives_cloud_status` is read-only. `creatives_cloud_refresh` queues a refresh of connected cloud folders.

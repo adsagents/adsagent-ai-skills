@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+Meta `products_list` accepts an optional `view=refs` that returns only product
+identities and spend sort fields, up to 100 per page. The default view is
+unchanged. Pages of one listing come from the first page's snapshot for a few
+minutes; when that snapshot expires the cursor is rejected and pagination
+restarts without a cursor.
+
 ## 0.7.87 - 2026-10-21
 
 Version 0.7.87 points cloud-folder refresh at `creatives_cloud_refresh`.

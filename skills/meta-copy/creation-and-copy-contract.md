@@ -140,7 +140,7 @@ Use only this advertised object-field matrix:
 
 For pausing every live ACTIVE Campaign under one or more saved products:
 
-1. `products_list` to resolve `product_ref` values.
+1. `products_list` (with `view=refs` when only identities are needed) to resolve `product_ref` values.
 2. `products_delivery_pause_prepare(product_refs=[...], expected_scope=all_live_active_campaigns)`.
 3. Show grouped live campaigns, exclusions (`mapping_required`, `no_routable_token`, `already_paused`, budget drift), and `mutation_count`.
 4. After explicit approval, `products_delivery_pause_confirm(confirm_token=pd_confirm_*)` once; `products_delivery_pause_deny` discards.

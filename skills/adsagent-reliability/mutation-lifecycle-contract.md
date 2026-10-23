@@ -23,7 +23,7 @@ handles, and fail closed.
 Read `setup_get_status.capabilities.mutation_lifecycle` before advanced writes.
 When advertised, prefer ref-first confirm and recovery:
 
-| Intent | Tool | Required inputs |
+| Intent | Tool | Handle inputs |
 | --- | --- | --- |
 | Resolve approval | `operations_get_approval` | `approval_ref` |
 | Confirm | operation-specific confirmation tool from `next_action` | `approval_ref`, `expected_plan_digest` |
@@ -34,6 +34,11 @@ When advertised, prefer ref-first confirm and recovery:
 Confirm and deny with the tool named in the prepare result's `next_action`;
 never pick a confirmation tool from memory, and never treat a confirmation
 tool as durable recovery.
+
+The handle inputs above are not a complete confirmation payload. Use the live
+schema for any displayed approval values it accepts, and copy those values
+exactly from the approved summary. They do not replace the immutable plan or
+authorize edits to it.
 
 ## Direct-Write Receipt Families
 

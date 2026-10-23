@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.7.88 - 2026-10-23
+
+Meta `products_list` accepts an optional `view=refs` that returns only product
+identities and spend sort fields, up to 100 per page. The default view is
+unchanged. Pages share a short-lived snapshot. If the server rejects a
+continuation, discard prior pages and restart without a cursor.
+
+Confirmation guidance follows the live schema for displayed approval values
+and copies them exactly from the approved summary. Approval handles do not
+describe the whole confirmation payload.
+
+Creative ranking guidance respects the tool's advertised time window.
+
 ## 0.7.87 - 2026-10-21
 
 Version 0.7.87 points cloud-folder refresh at `creatives_cloud_refresh`.

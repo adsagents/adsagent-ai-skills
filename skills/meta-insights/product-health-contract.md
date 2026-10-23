@@ -1,7 +1,10 @@
 # Meta Product Health Contract
 
 Use `products_list` first and pass only the selected public `product_ref` to
-`products_get_health`. The tool is cached-only and never calls Meta.
+`products_get_health`.
+When you only need to pick a product, call `products_list` with `view=refs`:
+items carry only the public `product_ref`, names, type, and spend sort fields,
+so one page holds up to 100 products in the same order as the default view. The tool is cached-only and never calls Meta.
 `products_get_health` never starts an asset refresh. It returns a bounded
 snapshot, not proof that every advertising object can deliver now.
 

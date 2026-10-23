@@ -7,7 +7,7 @@ Applies to approval-backed writes on Meta, Google Ads, and TikTok. Use the confi
 1. Prefer one advertised batch prepare for same-kind changes to several entities in one account. Prepare reads live state and saves an approval; it never changes delivery.
 2. Show the sanitized before/after summary, including currency for money and the exact entities.
 3. Wait for the user's explicit approval of that summary. Silence, an earlier approval, or approval of a different draft is not approval.
-4. Confirm once with the confirmation tool named in the prepare result. Do not choose a confirmation tool from memory or from a tool list.
+4. Confirm once with the confirmation tool named in the prepare result. When its live schema accepts displayed approval values, copy them from the approved summary exactly. Never invent missing values or send fields absent from that schema. Do not choose a confirmation tool from memory or from a tool list.
 5. Legacy single-use drafts retain their existing expiry and recovery contract. The batch recovery rules below apply only when the live tool advertises them.
 
 ## Partial Validation, One Agreement

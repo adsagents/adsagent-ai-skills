@@ -1,8 +1,10 @@
 # Meta Creation Plans
 
 For performance-based creative selection, use `creatives_top` with the user's
-account or product, time window and metric. Its rankings use cached observations;
-show the reported age and coverage limits. Keep the returned creative references.
+account or product and metric within its advertised time window. If the user
+requested another window, explain the limit before using the ranking.
+Its rankings use cached observations. Show the reported age and coverage limits.
+Keep the returned creative references.
 Use only selections marked eligible for creation in `groups`. If the ranking
 reports that a selection cannot be used by the available creation tool, explain
 the limit and choose a supported source with the user. Keep the account's allowed

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import json
+import sys
 from pathlib import Path
 
 import pytest
@@ -68,10 +69,23 @@ def test_get_skill_rejects_unknown_and_escaping_paths() -> None:
         get_skill(ROOT, "not-a-real-skill")
     with pytest.raises(PackError, match="skill_id"):
         get_skill(ROOT, "../secrets")
-        with pytest.raises(PackError, match="references"):
-            get_skill(ROOT, "meta-insights", references=["../../README.md"])
-        with pytest.raises(PackError, match="references"):
-            get_skill(ROOT, "meta-insights", references=["/etc/passwd"])
+    with pytest.raises(PackError, match="references"):
+        get_skill(ROOT, "meta-insights", references=["../../README.md"])
+    with pytest.raises(PackError, match="references"):
+        get_skill(ROOT, "meta-insights", references=["/etc/passwd"])
+
+
+def test_stdio_probe_timeout_terminates_child(capsys: pytest.CaptureFixture[str]) -> None:
+    from scripts.probe_skill_pack_mcp_stdio import probe
+
+    command = [
+        sys.executable,
+        "-c",
+        "import sys, time; print('child stalled', file=sys.stderr, flush=True); time.sleep(60)",
+    ]
+    with pytest.raises(TimeoutError):
+        probe(command, timeout=0.1)
+    assert "child stalled" in capsys.readouterr().err
 
 
 def test_get_hosted_mcp_urls_matches_public_mcp_json() -> None:

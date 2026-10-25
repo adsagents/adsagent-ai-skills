@@ -125,12 +125,12 @@ def probe(command: list[str], timeout: float) -> dict[str, Any]:
         tools = _wait_response(buffer, 2, timeout)
         return {"initialize": initialize, "tools": tools}
     except Exception:
-        err = b""
-        if proc.stderr is not None:
-            try:
-                err = proc.stderr.read() or b""
-            except OSError:
-                err = b""
+        proc.terminate()
+        try:
+            _, err = proc.communicate(timeout=3)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            _, err = proc.communicate(timeout=3)
         if err:
             sys.stderr.write(err.decode("utf-8", errors="replace"))
         raise
@@ -138,14 +138,15 @@ def probe(command: list[str], timeout: float) -> dict[str, Any]:
         stop.set()
         try:
             proc.stdin.close()
-        except OSError:
+        except (OSError, ValueError):
             pass
-        proc.terminate()
-        try:
-            proc.wait(timeout=3)
-        except subprocess.TimeoutExpired:
-            proc.kill()
-            proc.wait(timeout=3)
+        if proc.poll() is None:
+            proc.terminate()
+            try:
+                proc.wait(timeout=3)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait(timeout=3)
 
 
 def main() -> int:

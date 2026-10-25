@@ -58,9 +58,11 @@ jobs return `task_ref`; `support_report_error` returns `support_ref`.
 | Notifications | `notifications_ack`, `notifications_resolve` | `mutation_ref` |
 | Tasks | `tasks_cancel` | `mutation_ref` |
 
-On any lost or ambiguous response, call `operations_get` with the exact ref
-before retrying. Never replay from chat memory or infer success from a later
-read.
+On an ambiguous response when an exact ref was already persisted, call
+`operations_get` with that ref before considering any retry. If the transport
+response was lost before a ref could be captured, stop and hand off for
+operator reconciliation; do not guess a ref, replay from chat memory, or infer
+success from an unrelated later read.
 
 Persist when advertised: `tool_name`, `schema_version`, `approval_ref`,
 `plan_digest`, `mutation_ref`, `upload_ref`, `task_ref`, `expiry`. Handles are
@@ -85,10 +87,14 @@ specified in [connection-routing.md](connection-routing.md).
 
 | Field | QuickCreate | Quick Copy |
 | --- | --- | --- |
-| `append_mode`, `target_*` | root `request.*` | not accepted |
+| `append_mode` | root `request.append_mode` | not accepted |
 | `campaign_count`, `adset_count` | `request.execution.*` | root `request.*` |
 | `ads_per_adset` | not accepted | root `request.*` |
 | `status_option` | not accepted | clone only |
+
+Quick Copy accepts its advertised destination selectors in supported modes;
+the live tool schema determines which ones. Do not reject every `target_*`
+field or invent a selector for another mode.
 
 On `adsagent_request_incomplete` with public `invalid_fields`, correct only
 the advertised paths (including any `expected_path`) and rerun prepare once.

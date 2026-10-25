@@ -9,7 +9,7 @@ For new template-based campaigns, read [create-plan-contract.md](create-plan-con
 - Campaign/AdSet: `copy_ad_clone_structure`.
 - Prior task: `campaigns_recreate_from_task`.
 - New campaign from a saved template: `campaigns_quick_create`.
-- Fixed existing-Ad campaign scope check (read-only): `campaigns_reconcile_campaign_plan`.
+- Fixed existing-Ad campaign scope check (read-only): `campaigns_reconcile_campaign_plan`. Before prepare, follow the `adsagent-reliability` plan reconciliation contract for strict versus partial handling. Never substitute a different Ad for a missing or ambiguous match.
 
 When the user wants a **fresh** QuickCreate after a partial failure — not task continuation — set `creation_intent=fresh` on `campaigns_quick_create`. Do not silently choose `campaigns_recreate_from_task`. Use `name_collision_policy=abort` when exact campaign names must not collide; prepare returns `creation_context.name_collisions` and may block with `status=blocked`.
 
@@ -73,7 +73,7 @@ Omitted required statuses fail closed at prepare with a validation error. Never 
 Legacy/unversioned requests remain compatible: the server may apply paused-by-default or legacy ACTIVE defaults, but the approval summary must expose each level's `requested_status`, `resolved_status`, `default_applied`, and `compatibility_rule`, plus an activation-risk warning when any resolved status is `ACTIVE`.
 
 ```json
-{"request":{"creation_contract_version":3,"request_mode":"single","source_ad_id":"<ad>","source_ad_account_id":"<source>","target_ad_account_id":"<target>","campaign_count":1,"adset_count":1,"ads_per_adset":1,"copy_mode":"deep","target_campaign_name":"<optional>"}}
+{"request":{"creation_contract_version":3,"request_mode":"single","source_ad_id":"<ad>","source_ad_account_id":"<source>","target_ad_account_id":"<target>","campaign_count":1,"adset_count":1,"ads_per_adset":1,"copy_mode":"deep","target_campaign_name":"<optional>","campaign_status":"PAUSED","adset_status":"PAUSED","ad_status":"PAUSED"}}
 ```
 
 To add Ad Sets to an existing Campaign with `copy_ad_quick_copy`, use
@@ -87,7 +87,7 @@ sent to Quick Copy. `append_mode` belongs only to `campaigns_quick_create`.
 ```
 
 ```json
-{"request":{"creation_contract_version":3,"request_mode":"grouped","grouped_plan":{"source_ad_account_id":"<source>","target_ad_account_id":"<target>","copy_mode":"deep","campaigns":[{"campaign_name":"<campaign>","adsets":[{"adset_name":"<optional>","ads":[{"source_ad_id":"<ad>","ad_name":"<optional>"}]}]}]}}}
+{"request":{"creation_contract_version":3,"request_mode":"grouped","campaign_status":"PAUSED","adset_status":"PAUSED","ad_status":"PAUSED","grouped_plan":{"source_ad_account_id":"<source>","target_ad_account_id":"<target>","copy_mode":"deep","campaigns":[{"campaign_name":"<campaign>","adsets":[{"adset_name":"<optional>","ads":[{"source_ad_id":"<ad>","ad_name":"<optional>"}]}]}]}}}
 ```
 
 Use explicit `campaign_name`, `adset_name`, `ad_name`, `template_name`, `new_template_name`, `folder_name`, and `interest_pack_name`; bare `name` is legacy-only. QuickCreate sends typed `execution`, one `creative_source`, and `destination.type=web|app`: web requires `web_url`; app requires `app_id`, `store_url`, or `deep_link` and forbids `web_url`. Never substitute Meta raw adapter fields.

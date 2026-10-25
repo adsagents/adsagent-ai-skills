@@ -62,10 +62,12 @@ only when `setup_get_status.capabilities.template_mutations.allowed=true`, its
 `required_capability` is exactly `mcp.templates.write`, and the user explicitly
 requested that exact write. The block's named tools and `inline_contract`
 remain the request-scoped authority; a tool name elsewhere in discovery is not
-a grant. When `guide_resource_required=false`, a client does not expose MCP
-Resources, or reading the optional resource returns `Unknown resource`, use the
-inline contract and continue the normal guarded workflow. That resource failure
-must not block the write or be reported as a server tool-registration failure.
+a grant. When `guide_resource_required=false`, use the inline contract if the
+client does not expose MCP Resources or the optional resource returns
+`Unknown resource`, and continue the normal guarded workflow. That optional
+resource failure is not a server tool-registration failure. When
+`guide_resource_required=true`, require the live guide; if it cannot be read,
+stop before the write.
 
 Before create, an exact-name availability check may return `complete=true`,
 `found=false`, and `status=not_found`. This is a normal pre-create read outcome,

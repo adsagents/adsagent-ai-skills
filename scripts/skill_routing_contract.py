@@ -6,7 +6,7 @@ import re
 
 
 _RELIABILITY = re.compile(
-    r"\b(?:429|503|retry-after|retry|fan[- ]?out|partial|timeout|"
+    r"\b(?:429|503|retry-after|retry|fan[- ]?out|partial|timeout|timed[- ]out|"
     r"verification_pending|operator review)\b|"
     r"限流|重试|超时|部分完成|服务不可用",
     re.IGNORECASE,
@@ -28,7 +28,7 @@ _SCHEDULED = re.compile(
     re.IGNORECASE,
 )
 _NOTIFICATIONS = re.compile(
-    r"\b(?:notification|webhook|feishu|telegram|email alert)\b|"
+    r"\b(?:notification|notify|webhook|feishu|telegram|email alert)\b|"
     r"通知|飞书|电报|邮件告警",
     re.IGNORECASE,
 )
@@ -414,14 +414,21 @@ def _has_direct_object_boundary(
         return True
     for coordinator in _ACTION_COORDINATOR.finditer(text):
         following = text[coordinator.end():]
-        if template_plural and _COMPOUND_TEMPLATE_MODIFIER.match(following):
-            continue
         prior_object = text[:coordinator.start()]
-        if (
+        prior_analytics = bool(
             _META_TEMPLATE_ANALYTICS_SIGNAL.search(prior_object)
             or _META_TEMPLATE_ANALYTICS_NOUN.search(prior_object)
-            or _META_TEMPLATE_ANALYTICS_CONTAINER.search(prior_object)
+        )
+        prior_container = bool(
+            _META_TEMPLATE_ANALYTICS_CONTAINER.search(prior_object)
+        )
+        if (
+            template_plural
+            and _COMPOUND_TEMPLATE_MODIFIER.match(following)
+            and not (prior_analytics and prior_container)
         ):
+            continue
+        if prior_analytics or prior_container:
             return True
     return False
 
@@ -647,7 +654,11 @@ def expected_skill_activation(prompt: str) -> tuple[str, ...]:
 
     # Diagnosis wins over scheduling and channel routes: a request to put
     # a diagnosis on a schedule must land on the skill that refuses it.
-    if _DIAGNOSIS.search(prompt):
+    if _DIAGNOSIS.search(prompt) and not (
+        _NOTIFICATIONS.search(prompt)
+        or _RELIABILITY.search(prompt)
+        or _SETUP.search(prompt)
+    ):
         return ("adsagent-diagnosis",)
     if _SCHEDULED.search(prompt):
         return ("agent-scheduled-tasks",)

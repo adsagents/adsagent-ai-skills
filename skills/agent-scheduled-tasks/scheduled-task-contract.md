@@ -62,9 +62,12 @@ metrics-only read, but it cannot prove candidate delivery state.
 For writes, the matching prepare tool is the live preflight and does not mutate
 the provider. Use recorded authorization, confirm once, and consume inline
 `verification_result` first. Only while verification remains pending, follow
-the advertised read-back. If the profile's canonical `operation_get_tool` is
-absent from the client-local catalog, use its `native_operation_fallback`
+the advertised read-back. If the profile's canonical `operation_get_tool` or
+the pending confirm's advertised live-config read-back selector is absent from
+the client-local catalog, use its `native_operation_fallback`
 (`operations_get_context` for Meta) scoped to the same known entity and run.
+That fallback can recover the operation receipt; if live configuration cannot
+be read, leave verification pending and keep consequential runs read-only.
 A selector miss before any mutation must not disable read-only schedule evaluation.
 If an applied write cannot be recovered, preserve its `task_ref`/`mutation_ref`
 receipt and keep subsequent runs read-only until it is reconciled; never replay

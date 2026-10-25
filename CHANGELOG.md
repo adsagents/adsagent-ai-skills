@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+Resolve historical Codex review findings still present in the current pack:
+route setup, recovery, and notifications ahead of diagnosis; preserve Meta
+analytics routing for coordinated plural templates; stop a stalled docs MCP
+probe at its timeout; and exercise unsafe reference rejection.
+
+Clarify native read completeness and stale client-catalog fallback, scheduled
+write read-back, required template guides, supported copy fields and statuses,
+fresh-copy Page selection, optional docs MCP dependencies, and Cursor/Claude
+installation examples.
+
 ## 0.7.88 - 2026-10-23
 
 Meta `products_list` accepts an optional `view=refs` that returns only product

@@ -39,11 +39,11 @@ the write. Native receipts do not imply common mutation-aware freshness.
 
 - When `agent_method_profile.profile_id=adsagent_agent_methods_v1` and its consistent query tool is present in the client-local catalog, call that tool once with root `query_contract_version=1`, `consistency=cached`, and exactly one `scope` or one ordered `scopes` batch up to advertised `max_scopes`.
 - If that advertised read tool is missing only from the client-local catalog, use the profile's named native fallback when present, otherwise `google_ads_insights_overview_query` or `google_ads_insights_overview_batch`. Do not report a server registration failure solely from a local selector miss.
-- Trust top-level `complete=true`, ordered result contracts, and server `summary/total`; missing scopes are unknown, never zero.
+- For a profile result, trust top-level `complete=true`, ordered result contracts, and server `summary/total`. For a native fallback, require `meta.complete=true` instead. Missing scopes are unknown, never zero.
 - Follow returned `next_action` only; poll its task tool with exact `task_ref` and `poll_after_ms`. Consume a completed bounded terminal `result` directly; never rerun page 1 or invent a refresh task.
 - Without the profile, or during the client-local read fallback above, use `google_ads_insights_overview_query` for one scope and `google_ads_insights_overview_batch` for multiple scopes.
 - Do not create client-side fan-out by customer or date.
-- If the server returns `mcp_fanout_detected`, stop the loop and combine current plus pending scopes through profile `insights_query_consistent` when advertised, otherwise `google_ads_insights_overview_batch`.
+- If the server returns `mcp_fanout_detected`, stop the loop and combine current plus pending scopes through profile `insights_query_consistent` only when advertised and present in the client-local catalog; otherwise use `google_ads_insights_overview_batch`.
 - For later pages, use the opaque continuation only through its advertised path. Keep customer, login-customer route, dates, grouping, filters, order, page size, and source snapshot unchanged. Never add Meta `min_as_of`.
 - Never sum visible rows; distinguish rows shown from totals.
 

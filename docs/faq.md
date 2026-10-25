@@ -12,7 +12,7 @@ from this marketplace for the skills + MCP bundle.
 
 **Cursor plugin installs:** yes — `.cursor-plugin/plugin.json` plus root
 `mcp.json` ship the same HTTP MCP URLs. Install from the AdsAgent skill-pack repo
-when listed on Cursor Marketplace, or add the hosted Meta URL via Cursor MCP settings.
+when listed on Cursor Marketplace. If it is not listed, add the hosted Meta URL via Cursor MCP settings.
 
 **Other clients / MCP-only fallback:** add the requested hosted HTTP URL with
 OAuth, or use Settings -> MCP Access -> Copy install prompt when that page is
@@ -124,7 +124,7 @@ No. `client_skill_pack` is notify-only policy. The local helper compares strict 
 
 ## Should agents use the same overview tool for every platform?
 
-When `setup_get_status.capabilities.agent_method_profile.profile_id=adsagent_agent_methods_v1`, all three platforms prefer `insights_query_consistent` with exactly one `scope` or one ordered `scopes` batch. Without that profile, Meta and TikTok fall back to `insights_query_overview` / `insights_query_batch_overview`; Google Ads falls back to `google_ads_insights_overview_query` / `google_ads_insights_overview_batch`.
+When `setup_get_status.capabilities.agent_method_profile.profile_id=adsagent_agent_methods_v1` and `insights_query_consistent` is in the client-local catalog, all three platforms prefer it with exactly one `scope` or one ordered `scopes` batch. If that tool cannot be selected, use the advertised native fallback when present. Otherwise Meta and TikTok use `insights_query_overview` / `insights_query_batch_overview`, and Google Ads uses `google_ads_insights_overview_query` / `google_ads_insights_overview_batch`.
 
 ## Does fresh mean the same thing on every platform?
 

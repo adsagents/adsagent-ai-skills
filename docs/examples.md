@@ -83,11 +83,11 @@ Use the cleaned product-scoped MMP summary. Do not use per-ad funnel visualizati
 ## Google Ads Insights
 
 ```text
-Use AdsAgent Google Ads MCP. Run setup_get_status, inspect agent_method_profile, then google_ads_accounts_list. Pick an enabled non-manager customer. When the profile is advertised, use one query_contract_version=1 insights_query_consistent request with consistency=cached; otherwise use the native overview fallback.
+Use AdsAgent Google Ads MCP. Run setup_get_status, inspect agent_method_profile, then google_ads_accounts_list. Pick an enabled non-manager customer. When the profile is advertised and insights_query_consistent is in the client-local catalog, use one query_contract_version=1 request with consistency=cached; otherwise use the advertised native fallback or native overview tool.
 ```
 
 ```text
-Compare these Google Ads customers over the last 7 days. Prefer one insights_query_consistent scopes request when adsagent_agent_methods_v1 is advertised; otherwise use google_ads_insights_overview_batch. Do not fan out one request per customer or sum visible rows.
+Compare these Google Ads customers over the last 7 days. Prefer one insights_query_consistent scopes request when adsagent_agent_methods_v1 is advertised and the tool is in the client-local catalog; otherwise use the advertised native fallback or google_ads_insights_overview_batch. Do not fan out one request per customer or sum visible rows.
 ```
 
 ```text
@@ -105,7 +105,7 @@ Use AdsAgent TikTok MCP. Run setup_get_status, discover my TikTok advertisers, t
 ```
 
 ```text
-For these TikTok advertisers, inspect agent_method_profile. Prefer one query_contract_version=1 insights_query_consistent scopes request when advertised; otherwise use insights_query_batch_overview. Preserve result order and report server totals and completeness.
+For these TikTok advertisers, inspect agent_method_profile. Prefer one query_contract_version=1 insights_query_consistent scopes request when advertised and present in the client-local catalog; otherwise use the advertised native fallback or insights_query_batch_overview. Preserve result order and report server totals and completeness.
 ```
 
 ```text
